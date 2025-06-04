@@ -1,0 +1,60 @@
+body,html{
+  margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  font-family:Arial,Helvetica,sans-serif;
+  overflow:hidden;
+}
+
+.initials{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:4rem;
+  font-weight:bold;
+  opacity:0;
+  animation:fadeIn 1s forwards;
+}
+
+@keyframes fadeIn{
+  from{opacity:0;}
+  to{opacity:1;}
+}
+
+.nav{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:0;
+  height:0;
+  pointer-events:none;
+}
+
+.section{
+  position:absolute;
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-decoration:none;
+  color:#000;
+  opacity:0;
+  transform:translate(-50%,-50%);
+  transition:opacity .6s, transform .6s;
+  font-size:1.1rem;
+  pointer-events:auto;
+}
+
+.education{background:#fff;color:#000;}
+.miseducation{background:#000;color:#fff;}
+.works{background:#f0f0f0;color:#000;}
+.contact{background:#999;color:#fff;}
+
+.nav.show .education{opacity:1;transform:translate(-200px,-50%);}
+.nav.show .miseducation{opacity:1;transform:translate(200px,-50%);}
+.nav.show .works{opacity:1;transform:translate(-50%,150px);}
+.nav.show .contact{opacity:1;transform:translate(-50%,-250px);}
