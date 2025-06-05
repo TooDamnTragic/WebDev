@@ -3,8 +3,10 @@ body,html{
   padding:0;
   width:100%;
   height:100%;
-  font-family:Arial,Helvetica,sans-serif;
+  font-family:"Century Gothic",fantasy;
   overflow:hidden;
+  background:#111;
+  color:#f0ead6;
 }
 
 .initials{
@@ -12,8 +14,9 @@ body,html{
   top:50%;
   left:50%;
   transform:translate(-50%,-50%);
-  font-size:4rem;
+  font-size:8rem;
   font-weight:bold;
+  color:#f0ead6;
   opacity:0;
   animation:fadeIn 1s forwards;
 }
@@ -41,20 +44,85 @@ body,html{
   align-items:center;
   justify-content:center;
   text-decoration:none;
-  color:#000;
+  color:var(--textColor,#111);
   opacity:0;
   transform:translate(-50%,-50%);
-  transition:opacity .6s, transform .6s;
+  transition:opacity .5s, transform 4s cubic-bezier(0.2,0.8,0.4,1.0), box-shadow .3s;
   font-size:1.1rem;
   pointer-events:auto;
+  background:radial-gradient(circle at 30% 30%, var(--light,#eee), var(--dark,#666) 70%, #444);
+  box-shadow:inset -5px -5px 10px rgba(255,255,255,0.3),
+             inset 5px 5px 15px rgba(0,0,0,0.6);
+  transform-style:preserve-3d;
 }
 
-.education{background:#fff;color:#000;}
-.miseducation{background:#000;color:#fff;}
-.works{background:#f0f0f0;color:#000;}
-.contact{background:#999;color:#fff;}
+.education{
+  --dx:-207px;
+  --dy:-75px;
+  --light:#fafafa;
+  --dark:#bcbcbc;
+  --textColor:#111;
+  width:170px;
+  height:170px;
+}
+.miseducation{
+  --dx:170px;
+  --dy:-140px;
+  --light:#666;
+  --dark:#222;
+  --textColor:#f0ead6;
+  width:170px;
+  height:170px;
+}
+.works{
+  --dx:-38px;
+  --dy:216px;
+  --light:#ddd;
+  --dark:#777;
+  --textColor:#111;
+  width:140px;
+  height:140px;
+}
+.contact{
+  --dx:75px;
+  --dy:207px;
+  --light:#aaa;
+  --dark:#555;
+  --textColor:#111;
+  width:80px;
+  height:80px;
+  z-index:-1;
+}
 
-.nav.show .education{opacity:1;transform:translate(-200px,-50%);}
-.nav.show .miseducation{opacity:1;transform:translate(200px,-50%);}
-.nav.show .works{opacity:1;transform:translate(-50%,150px);}
-.nav.show .contact{opacity:1;transform:translate(-50%,-250px);}
+.section:hover{
+  box-shadow:inset -2px -2px 5px rgba(255,255,255,0.6),
+             inset 2px 2px 8px rgba(0,0,0,0.6),
+             0 0 20px rgba(255,255,255,0.3);
+}
+
+.section span{
+  display:inline-block;
+  transition:transform .6s;
+  transform-origin:50% 100%;
+}
+
+.section:hover span{
+  transform:rotateX(360deg);
+}
+
+.section.zoom{
+  transition:transform .6s cubic-bezier(0.2,0.8,0.4,1.0);
+  transform:translate(-50%,-50%) scale(20);
+  z-index:999;
+}
+.nav.show .section{
+  opacity:1;
+  transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)));
+  animation:drift 8s forwards;
+}
+
+@keyframes drift{
+  0%{transform:translate(-50%,-50%);}
+  40%{transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)));}
+  100%{transform:translate(calc(-50% + var(--dx) * 1.3), calc(-50% + var(--dy) * 1.3));}
+}
