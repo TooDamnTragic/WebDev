@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function(){
   const nav = document.querySelector('.nav');
-  setTimeout(()=>{nav.classList.add('show');}, 100);
+  setTimeout(()=>{nav.classList.add('show');}, 1200);
 
   document.querySelectorAll('.section').forEach(link=>{
     const text = link.textContent.trim().split('');
