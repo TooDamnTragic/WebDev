@@ -6,9 +6,50 @@
   <title>Education</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="education-page">
   <h1>Education</h1>
-  <p>This page will contain education info.</p>
-  <p><a href="index.html">Back to home</a></p>
+  <div class="tabs reveal">
+    <a href="#curricular">Curricular</a>
+    <a href="#extracurricular">Extra Curricular</a>
+  </div>
+  <div class="divider"></div>
+  <div class="edu-container reveal">
+    <div class="left-column">
+      <section id="curricular">
+        <ul class="items">
+          <li class="item reveal" data-image="https://via.placeholder.com/300?text=RIT" data-text="Rochester Institute of Technology">
+            <h2>RIT - Rochester Institute of Technology</h2>
+            <p class="years">Aug 2023 - Aug 2027</p>
+          </li>
+          <li class="item reveal" data-image="https://via.placeholder.com/300?text=Major" data-text="Major: Software Engineering">
+            Major: CSEC
+          </li>
+          <li class="item reveal" data-image="https://via.placeholder.com/300?text=Minor1" data-text="Minor: Creative Writing">
+            Minor: Math
+          </li>
+          <li class="item reveal" data-image="https://via.placeholder.com/300?text=Minor2" data-text="Minor: Philosophy">
+            Minor: NSSA
+          </li>
+        </ul>
+      </section>
+      <section id="extracurricular">
+        <ul class="items">
+          <li class="item reveal" data-image="https://via.placeholder.com/300?text=Club" data-text="Member of the Coding Club">
+            Wordsmiths Club
+          </li>
+          <li class="item reveal" data-image="https://via.placeholder.com/300?text=Sports" data-text="Intramural Soccer Team">
+            Signatures
+          </li>
+        </ul>
+      </section>
+    </div>
+    <div class="right-column">
+      <div id="info">
+        <img id="info-image" src="https://via.placeholder.com/300?text=Education" alt="info">
+        <p id="info-text">Hover over an item to see more information.</p>
+      </div>
+    </div>
+  </div>
+  <script src="education.js"></script>
 </body>
 </html>
