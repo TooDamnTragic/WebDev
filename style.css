@@ -188,24 +188,34 @@ body.education-page{
 
 
 
-
-
+/*************************************************************************************************************************/
 /* Education page styles */
+/*************************************************************************************************************************/
 .edu-container.reveal {
   opacity:0;
   transform:translateY(40px);
   transition:opacity .6s, transform .6s;
-}
+} 
 .edu-container.reveal.visible {
   opacity:1;
   transform:none;
 }
 
 body.education-page {
-  background:#b96b6b;
+  background:linear-gradient(to bottom, #b96b6b, #e02b2b);
   overflow-y:auto;
   height:auto;
   min-height:100vh;
+  position:relative;
+}
+
+body.education-page.dimmed::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.4);
+  pointer-events:none;
+  z-index:5;
 }
 .education-page h1 {
   text-align:center;
@@ -242,7 +252,7 @@ body.show-content .edu-module{
   font-size:1.2rem;
 }
 .edu-container {
-  display:flex;
+  display:block;
   position:relative;
   margin-top:0;
 }
@@ -255,30 +265,54 @@ body.show-content .edu-module{
   background:#f0ead6;
   transform:translateX(-50%);
 }
-.left-column, .right-column {
-  width:50%;
+.left-column{
+  width:100%;
   padding:4rem;
 }
 .right-column {
+  position:absolute;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
   display:flex;
-  flex-direction:column;
-  align-items:center;
-  position:relative;
+  justify-content:center;
 }
+
+.items {
+  list-style:none;
+  padding:0;
+}
+
 .items li {
   margin:4rem 0;
   cursor:pointer;
   position:relative;
+  width:40%;
+}
+.items li.left{
+  margin-right:55%;
+  text-align:right;
+}
+.items li.right{
+  margin-left:55%;
+  text-align:left;
 }
 .items li .dot{
   position:absolute;
-  right:-0.75rem;
   top:50%;
-  transform:translateY(-50%);
+  left:50%;
+  transform:translate(-50%, -50%);
   width:8px;
   height:8px;
   border-radius:50%;
   background:#f0ead6;
+  pointer-events:none;
+}
+.items a{
+  color:inherit;
+  text-decoration:none;
 }
 
 #extracurricular .items li {
@@ -288,9 +322,26 @@ body.show-content .edu-module{
   font-size:0.9rem;
   margin-top:0.5rem;
 }
+
+
+@media (max-width: 700px) {
+  .items li {
+    width:100%;
+    margin:2rem 0;
+  }
+  .items li.left,
+  .items li.right {
+    margin-left:0;
+    margin-right:0;
+    text-align:left;
+  }
+  .items li .dot {
+    left:50%;
+  }
+}
 #info {
   position:absolute;
-  left:0;
+  left:50%;
   top:0;
   display:flex;
   align-items:center;
@@ -298,24 +349,31 @@ body.show-content .edu-module{
   perspective:800px;
   pointer-events:none;
   opacity:0;
-  transform:scale(0);
-  transform-origin:left center;
+  transform:translateX(-100%) scale(0);
+  transform-origin:right center;
   transition:opacity .3s, transform .3s;
+}
+#info.right{
+  transform:translateX(0) scale(0);
+  transform-origin:left center;
 }
 #info.visible {
   opacity:1;
-  transform:scale(1);
+  transform:translateX(-100%) scale(1);
+}
+#info.right.visible{
+  transform:translateX(0) scale(1);
 }
 #info .popup {
   background:#1e1e1e;
   padding:1rem;
-  border-radius:8px;
+  border-radius:12px;
   box-shadow:0 8px 20px rgba(0,0,0,0.5), inset 0 0 10px rgba(255,255,255,0.15);
   border:1px solid rgba(240,234,214,0.4);
   transform-style:preserve-3d;
-  animation:swivel 5s ease-in-out infinite alternate;
+  animation:glisten 3s ease-in-out infinite alternate;
   position:relative;
-}
+  }
 #info-image-wrapper{
   width:30vmin;
   height:30vmin;
@@ -337,7 +395,9 @@ body.show-content .edu-module{
 }
 #info-text-wrapper{
   min-width:120px;
+  max-width:30ch;
   width:max-content;
+  word-wrap:break-word;
 }
 #info-text{
   margin:0;
@@ -351,9 +411,9 @@ body.show-content .edu-module{
   background:linear-gradient(135deg,rgba(255,255,255,0.25),rgba(255,255,255,0) 40%);
   transform:translateZ(1px);
 }
-@keyframes swivel{
-  from{transform:rotateY(-8deg);} 
-  to{transform:rotateY(8deg);} 
+@keyframes glisten{
+  from{filter:brightness(1);}
+  to{filter:brightness(1.2);}
 }
 .reveal {
   opacity:0;
