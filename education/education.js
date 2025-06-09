@@ -10,8 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const text = item.getAttribute('data-text');
       if (img) infoImage.src = img;
       if (text) infoText.textContent = text;
-      info.style.top = item.offsetTop + 'px';
       info.classList.add('visible');
+      const offset = item.offsetTop + item.offsetHeight / 2 - info.offsetHeight / 2;
+      info.style.top = offset + 'px';
     });
     item.addEventListener('mouseleave', () => {
       info.classList.remove('visible');

@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('click', e => {
       e.preventDefault();
       link.classList.add('zoom');
+      document.body.classList.add('fade-out');
       setTimeout(() => {
         window.location = link.getAttribute('href');
       }, 600);
