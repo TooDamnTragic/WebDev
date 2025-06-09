@@ -5,8 +5,14 @@ body,html{
   height:100%;
   font-family:"Century Gothic", fantasy;
   /* overflow:hidden; */
-  background:#0b0b0b;
+  background:#212427;
   color:#f0ead6;
+}
+@font-face {
+  font-family: 'Hackney'; 
+  src: url('fonts/HackneyPersonalUseOnly.ttf') format('truetype'); /* Adjust the file name and path as needed */
+  font-weight: normal; /*  Or 400 */
+  font-style: normal;
 }
 
 body.index-page{
@@ -22,6 +28,7 @@ body.education-page{
   top:50vmin;
   left:50%;
   transform:translate(-50%,-50%) scale(var(--scale,1));
+  font-family: 'Hackney', sans-serif;
   font-size:20vmin;
   font-weight:bold;
   color:#f0ead6;
@@ -178,6 +185,8 @@ body.education-page{
   from{transform:translate(-50%,-50%) scale(var(--scale,1));}
   to{transform:translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(var(--scale,1));}
 }
+
+
 
 
 
