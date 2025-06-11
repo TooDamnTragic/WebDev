@@ -1,7 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
   const nav = document.querySelector('.nav');
+  const loader = document.getElementById('loader');
   setTimeout(() => {
     nav.classList.add('show');
+    if(loader){
+      loader.classList.add('hide');
+      setTimeout(() => loader.remove(), 6000);
+    }
   }, 1200);
 
   document.querySelectorAll('.section').forEach(link => {
