@@ -344,6 +344,14 @@ body.show-content .edu-module{
 #extracurricular .items li{ margin:50vw 0; }   /* big gap for timeline */
 .desc{ font-size:0.9rem; margin-top:0.5rem; }
 
+
+
+/* ▸ keep .items’ floats from collapsing the timeline container */
+.items::after{
+  content:"";
+  display:table;
+  clear:both;
+}
 /*───────────────────────────────────────────────
   Mobile – collapse to one column, hide dots
 ───────────────────────────────────────────────*/

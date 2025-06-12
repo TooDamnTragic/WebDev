@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const infoImage = document.getElementById('info-image');
   const infoText = document.getElementById('info-text');
     const body = document.body;
-  const defaultBg = getComputedStyle(body).backgroundImage;
+  const defaultBg = getComputedStyle(body).background;
 
   items.forEach(item => {
     item.addEventListener('mouseenter', () => {

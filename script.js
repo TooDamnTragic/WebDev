@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     link.innerHTML = text.map(ch => `<span>${ch}</span>`).join('');
 
     link.addEventListener('click', e => {
-      e.preventDefault();
+      e.preventDefault();s
       const target = link.getAttribute('href');
       const color = getComputedStyle(link).getPropertyValue('--dark');
       document.body.classList.add('transitioning');
