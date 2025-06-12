@@ -61,4 +61,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { threshold: 0.1 });
 
   document.querySelectorAll('.item').forEach(el => observer.observe(el));
+
+  const infoImageWrapper = document.getElementById('info-image-wrapper');
+  const infoTextWrapper = document.getElementById('info-text-wrapper');
+
+  function adjustInfoLayout(){
+    if(!infoImageWrapper || !infoTextWrapper) return;
+    const totalWidth = infoImageWrapper.offsetWidth + infoTextWrapper.offsetWidth;
+    if(totalWidth > window.innerWidth){
+      info.classList.add('stacked');
+    } else {
+      info.classList.remove('stacked');
+    }
+  }
+
+  window.addEventListener('resize', adjustInfoLayout);
+  adjustInfoLayout();
 });
