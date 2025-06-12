@@ -42,14 +42,31 @@ document.addEventListener('DOMContentLoaded', () => {
   const tabs = document.querySelector('.tabs');
   const title = document.querySelector('h1');
 
+  const divider = document.querySelector('.divider');
+  const eduContainer = document.querySelector('.edu-container');
+
+  function updateDividerProgress(){
+    if(!divider || !eduContainer) return;
+    const rect = eduContainer.getBoundingClientRect();
+    const viewport = window.innerHeight;
+    let progress = (viewport - rect.top) / (rect.height + viewport);
+    if(progress < 0){
+      progress = 0;
+    } else if(progress > 1){
+      progress = 1;
+    }
+    divider.style.setProperty('--progress', progress);
+  }
   const onScroll = () => {
     if (title.getBoundingClientRect().top <= 0) {
       tabs.classList.add('visible');
     } else {
       tabs.classList.remove('visible');
     }
+    updateDividerProgress();
   };
   window.addEventListener('scroll', onScroll);
+  window.addEventListener('resize', updateDividerProgress);
   onScroll();
 
   const observer = new IntersectionObserver(entries => {
@@ -77,4 +94,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('resize', adjustInfoLayout);
   adjustInfoLayout();
+  updateDividerProgress();
 });

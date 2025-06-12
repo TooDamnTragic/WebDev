@@ -269,9 +269,37 @@ body.show-content .edu-module{
   bottom:0;
   left:50%;
   width:2px;
-  background:#ffffff;
+  background:#ffffff40;
   transform:translateX(-50%);
+  overflow:hidden;
 }
+
+.divider::after {
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:1000%;
+  height:calc(var(--progress, 0) * 100%);
+  background:linear-gradient(to bottom, #ffffff 0%, #6ef5ea 0%,  #00ff88 100%, #80c5ec 0%,#ffffff 0% );
+  transition:height .15s linear;
+}
+
+.divider::before {
+  content:"";
+  position:absolute;
+  left:50%;
+  width:0.75rem;
+  height:0.75rem;
+  border-radius:50%;
+  background:#00ff88;
+  border:5px solid #ff0000;
+  box-shadow:0 3px 8px rgba(0, 255, 21, 0.24);
+  transform:translate(-50%, -50%);
+  top:calc(var(--progress, 0) * 110%);
+  transition:top 0.3s linear;
+}
+
 
 /*──────────────────────────────
   Columns + exact centre dots
