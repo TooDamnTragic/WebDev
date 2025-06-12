@@ -66,6 +66,7 @@ body.education-page{
 .section{
   position:absolute;
   --size:15vmin;
+  --scale:1;
   width:var(--size);
   height:var(--size);
   border-radius:50%;
@@ -75,8 +76,8 @@ body.education-page{
   text-decoration:none;
   color:var(--textColor,#111);
   opacity:0;
-  transform:translate(-50%,-50%);
-  transition:opacity .5s, transform 10s cubic-bezier(.03,.95,0,.84), box-shadow .3s;
+  transform:translate(-50%,-50%) scale(var(--scale));
+  transition:opacity .5s, transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .3s, filter .3s;
   font-size:calc(var(--size)*0.1);
   pointer-events:auto;
   background:radial-gradient(circle at var(--mx,50%) var(--my,50%), var(--light,#eee), var(--dark,#666) 70%, #444);
@@ -97,6 +98,7 @@ body.education-page{
   opacity:0;
   transition:opacity .7s;
   pointer-events:none;
+  z-index:0;
 }
 
 .section:hover::before{
@@ -144,24 +146,20 @@ body.education-page{
 }
 
 .section:hover{
-  --scale:1.05;
-
+  --scale:1.1;
   box-shadow:inset -2px -2px 5px rgba(255,255,255,0.6),
              inset 2px 2px 8px rgba(0,0,0,0.6),
              0 0 20px rgba(194, 194, 194, 0.3);
-}
-
-
-.section:hover{
   filter:brightness(calc(1 + var(--intensity,0) * 0.8));
 }
 
+
 .section span{
+  position:relative;
+  z-index:1;
   display:inline-block;
   transition:transform .4s;
 }
-
-
 
 .section:hover span{
   transform:scale(1.1);
@@ -285,26 +283,39 @@ body.show-content .edu-module{
   justify-content:center;
 }
 
-.items {
-  list-style:none;
-  padding:0;
+.items{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr)); /* two equal columns */
+  gap:4rem 0;
 }
 
 .items li {
   margin:4rem 0;
   cursor:pointer;
   position:relative;
-  width:45%;
+  width:auto;
   z-index:6;
 }
-.items li.left{
-  margin-right:5%;
-  text-align:right;
+
+
+
+.items li.left  { grid-column:1; text-align:right; }
+.items li.right { grid-column:2; text-align:left; }
+
+
+.items li::before{
+  content:"";
+  position:absolute;
+  top:50%;
+  left:50%;                       /* ← centre of the page */
+  transform:translate(-50%,-50%);
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:#f0ead6;
+  pointer-events:none;
 }
-.items li.right{
-  margin-left:5%;
-  text-align:left;
-}
+
 .items li.left .dot{
   right:-5%;
   left:auto;
@@ -475,7 +486,9 @@ body.fade-out {
   transition:opacity .4s ease;
 }
 
-
+body.transitioning {
+  transition:background-color .6s ease, opacity .6s ease;
+}
 
 
 
