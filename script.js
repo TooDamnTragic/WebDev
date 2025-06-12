@@ -15,10 +15,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     link.addEventListener('click', e => {
       e.preventDefault();
+      const target = link.getAttribute('href');
+      const color = getComputedStyle(link).getPropertyValue('--dark');
+      document.body.classList.add('transitioning');
+      document.body.style.backgroundColor = color;
       link.classList.add('zoom');
       document.body.classList.add('fade-out');
       setTimeout(() => {
-        window.location = link.getAttribute('href');
+        window.location = target;
       }, 600);
     });
   });

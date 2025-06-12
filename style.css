@@ -268,47 +268,53 @@ body.show-content .edu-module{
   background:#ffffff;
   transform:translateX(-50%);
 }
+
+/*───────────────────────────────────────────────
+  Columns + centre-line dots
+───────────────────────────────────────────────*/
 .left-column{
   width:100%;
   padding:4rem;
 }
-.right-column {
+
+.right-column{                 /* overlay that holds the preview box */
   position:absolute;
-  left:0;
-  top:0;
-  width:100%;
-  height:100%;
+  inset:0;
   pointer-events:none;
   display:flex;
   justify-content:center;
 }
 
-.items{
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr)); /* two equal columns */
-  gap:4rem 0;
-}
+/* natural block flow, then shove to a side with margins */
+.items{ position:relative; }   /* so we can clear floats later        */
 
-.items li {
-  margin:4rem 0;
-  cursor:pointer;
+.items li{
   position:relative;
-  width:auto;
+  width:45%;                   /* card width                         */
+  margin:4rem 0;               /* vertical spacing                   */
+  cursor:pointer;
   z-index:6;
+  float:left;                  /* makes left / right margins behave  */
+  clear:both;                  /* each card starts on its own row    */
 }
 
+.items li.left {               /* left-hand timeline items           */
+  margin-right:55%;            /* 50 % column + 5 % gap              */
+  text-align:right;
+}
 
+.items li.right{               /* right-hand timeline items          */
+  margin-left:55%;             /* 50 % column + 5 % gap              */
+  text-align:left;
+  float:right;                 /* stick to the right edge            */
+}
 
-.items li.left  { grid-column:1; text-align:right; }
-.items li.right { grid-column:2; text-align:left; }
-
-
+/* centre-line dot, one per card */
 .items li::before{
   content:"";
   position:absolute;
   top:50%;
-  left:50%;                       /* ← centre of the page */
-  transform:translate(-50%,-50%);
+  transform:translateY(-50%);
   width:10px;
   height:10px;
   border-radius:50%;
@@ -316,69 +322,42 @@ body.show-content .edu-module{
   pointer-events:none;
 }
 
-.items li.left .dot{
-  right:-5%;
-  left:auto;
-}
-.items li.right .dot{
-  left:-5%;
-  right:auto;
-}
-.items li .dot{
-  position:absolute;
-  top:50%;
-  transform:translate(-50%, -50%);
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:#f0ead6;
-  pointer-events:none;
-}
-.items a{
-  color:inherit;
-  text-decoration:none;
-}
+.items li.left::before { right:-5%; }  /* 5 % gap puts dot on divider */
+.items li.right::before{ left :-5%; }
+
+/*───────────────────────────────────────────────
+  Typography + hover colour
+───────────────────────────────────────────────*/
+.items a{ color:inherit; text-decoration:none; }
+
 .items h2,
 .items h3,
-.items h4 {
-  font-size:clamp(1rem, 2.5vw, 2rem);
+.items h4{
+  font-size:clamp(1rem,2.5vw,2rem);
   transition:color .3s;
 }
 
 .items li:hover h2,
 .items li:hover h3,
-.items li:hover h4 {
-  color:#ffd700;
-}
+.items li:hover h4{ color:#ffd700; }
 
-#extracurricular .items li {
-  margin:50vw 0;
-}
-.desc {
-  font-size:0.9rem;
-  margin-top:0.5rem;
-}
+#extracurricular .items li{ margin:50vw 0; }   /* big gap for timeline */
+.desc{ font-size:0.9rem; margin-top:0.5rem; }
 
-
-@media (max-width: 700px) {
-  .items li {
+/*───────────────────────────────────────────────
+  Mobile – collapse to one column, hide dots
+───────────────────────────────────────────────*/
+@media(max-width:700px){
+  .items li{
+    float:none;
     width:100%;
     margin:2rem 0;
-  }
-  .items li.left,
-  .items li.right {
-    margin-left:0;
-    margin-right:0;
     text-align:left;
   }
-  .items li.left .dot,
-  .items li.right .dot,
-  .items li .dot {
-    left:auto;
-    right:auto;
-    transform:translate(-50%, -50%);
-  }
+  .items li::before{ display:none; }            /* no dots on phones */
 }
+
+
 #info {
   position:absolute;
   left:50%;
