@@ -2,19 +2,78 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Full-Box Random Text Card</title>
+
+  <!-- Tailwind (play CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* Fade-out mask for the glow */
+    .glow-mask{
+      mask-image: linear-gradient(white,transparent);
+      -webkit-mask-image: linear-gradient(white,transparent);
+    }
+  </style>
 </head>
-<body class="index-page">
-  <div class="initials">MB</div>
-  <div class="nav">
-    <a href="education.html" class="section education">Education</a>
-    <a href="miseducation.html" class="section miseducation">Miseducation</a>
-    <a href="works.html" class="section works">Works</a>
-    <a href="contact.html" class="section contact">Contact</a>
+<body class="flex min-h-screen items-center justify-center bg-[#0d0d0d]">
+
+  <!-- Card -->
+  <div id="card"
+       class="group relative w-80 aspect-square overflow-hidden rounded-3xl
+              bg-transparent cursor-pointer">
+
+    <!-- Cursor-driven glow -->
+    <div id="glow"
+         class="pointer-events-none absolute inset-0 rounded-2xl glow-mask
+                opacity-50 transition-opacity duration-500
+                group-hover:opacity-100"></div>
+
+    <!-- Colour flow backdrop (appears on hover) -->
+    <div class="pointer-events-none absolute inset-0 rounded-2xl
+                bg-gradient-to-r from-green-500 to-blue-700
+                opacity-0 backdrop-blur-xl transition duration-500
+                group-hover:opacity-100"></div>
+
+    <!-- TOP-LEFT-ANCHORED random text filling the box -->
+    <p id="randomText"
+       class="absolute inset-0 overflow-hidden p-2
+              whitespace-pre-wrap break-words leading-tight
+              font-mono text-xs font-bold text-white">
+    </p>
   </div>
-  <script src="script.js"></script>
-  <script src="transition.js"></script>
+
+  <script>
+    const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    /* Make a very long random string ( ≈1500 chars) so wrapping fills the box */
+    function longRandomString() {
+      let out = "";
+      for (let i = 0; i < 1500; i++) {
+        out += CHARS[Math.floor(Math.random() * CHARS.length)];
+      }
+      return out;
+    }
+
+    const card = document.getElementById("card");
+    const glow = document.getElementById("glow");
+    const randomText = document.getElementById("randomText");
+
+    // Seed it once
+    randomText.textContent = longRandomString();
+
+    card.addEventListener("mousemove", e => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      glow.style.background =
+        `radial-gradient(250px at ${x}px ${y}px, rgba(255,255,255,0.35), transparent 70%)`;
+
+      randomText.textContent = longRandomString();
+    });
+
+    card.addEventListener("mouseleave", () => {
+      glow.style.background = "none";
+    });
+  </script>
 </body>
 </html>
