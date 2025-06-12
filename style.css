@@ -20,7 +20,7 @@ body.index-page{
 }
 
 body.education-page{
-  overflow:hidden;
+  overflow-x:hidden;
 }
 
 .initials{
@@ -202,6 +202,7 @@ body.education-page{
 body.education-page {
   background:linear-gradient(to bottom, #b96b6b, #e02b2b);
   overflow-y:auto;
+  overflow-x: hidden;
   height:auto;
   min-height:100vh;
   position:relative;
@@ -322,10 +323,11 @@ body.show-content .edu-module{
   pointer-events:none;
 }
 
-.items li.left::before { right:-5%; }  /* 5 % gap puts dot on divider */
-.items li.right::before{ left :-5%; }
+.items li.left::before { right:-11%; }  /* 5 % gap puts dot on divider */
+.items li.right::before{ left :-11%; }
 
-/*───────────────────────────────────────────────
+
+/*────────s───────────────────────────────────────
   Typography + hover colour
 ───────────────────────────────────────────────*/
 .items a{ color:inherit; text-decoration:none; }
