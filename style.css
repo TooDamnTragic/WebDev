@@ -339,7 +339,7 @@ body.show-content .edu-module{
 .items li{
   position:relative;
   width:45%;
-  margin:2rem 0; /* space between sections / dots */
+  margin:1rem 0; /* space between sections / dots */
   float:left;
   clear:both;
   cursor:pointer;
@@ -405,7 +405,7 @@ body.education-page{ overflow-x:hidden; }
   .items li{
     float:none;
     width:100%;
-    margin:2rem 0;
+    margin:1rem 0;
     text-align:left;
   }
   .items li::before{ display:none; }            /* no dots on phones */
@@ -419,7 +419,7 @@ body.education-page{ overflow-x:hidden; }
   display:flex;
   align-items:center;
   flex-wrap:wrap;
-  gap:0rem;
+  gap:2rem;
   perspective:800px;
   pointer-events:none;
   opacity:0;
@@ -445,7 +445,7 @@ body.education-page{ overflow-x:hidden; }
 }
 #info .popup {
   background:#40d6cf;
-  padding:1rem;
+  padding:1.5rem;
   border-radius:12px;
   box-shadow:0 8px 20px rgba(0,0,0,0.5), inset 0 0 10px rgba(255,255,255,0.15);
   border:1px solid rgba(240,234,214,0.4);
@@ -480,7 +480,7 @@ body.education-page{ overflow-x:hidden; }
 }
 #info-text{
   margin:0;
-font-size:clamp(0.9rem, 2vw, 1.2rem);
+font-size:clamp(0.45rem, 1vw, 0.8rem);
 }
 
 #info .popup::before{

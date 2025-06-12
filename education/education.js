@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         info.classList.remove('right');
       }
+      void info.offsetWidth; // force reflow to avoid sliding from edge
       info.classList.add('visible');
       const offset = item.offsetTop + item.offsetHeight / 2 - info.offsetHeight / 2;
       info.style.top = offset + 'px';
@@ -30,6 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     item.addEventListener('mouseleave', () => {
       info.classList.remove('visible');
       info.classList.remove('right');
+      void info.offsetWidth;
       body.classList.remove('dimmed');
       body.style.background = defaultBg;
     });
