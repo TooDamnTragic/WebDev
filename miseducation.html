@@ -4,11 +4,9 @@
   <meta charset="UTF-8">
   <title>Full-Box Random Text Card</title>
 
-  <!-- Tailwind (play CDN) -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    /* Fade-out mask for the glow */
     .glow-mask{
       mask-image: linear-gradient(white,transparent);
       -webkit-mask-image: linear-gradient(white,transparent);
@@ -30,15 +28,12 @@
 
     <!-- TOP-LEFT-ANCHORED random text filling the box -->
     <p id="randomText"
-      class="absolute inset-0 overflow-hidden p-2
-              whitespace-pre-wrap break-words leading-tight
-              font-mono text-xs font-bold text-white">
+      class="absolute inset-0 overflow-hidden p-2 whitespace-pre-wrap break-words leading-tight font-mono text-xs font-bold text-white">
     </p>
   </div>
 
   <script>
     const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    /* Make a very long random string ( ≈1500 chars) so wrapping fills the box */
     function longRandomString() {
       let out = "";
       for (let i = 0; i < 1500; i++) {
