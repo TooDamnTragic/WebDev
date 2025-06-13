@@ -483,46 +483,48 @@ body.show-content .edu-module{
 
 .gravity-item {
   position: absolute;
-  width: 280px;
-  padding: 1.5rem;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 12px;
-  border: 2px solid rgba(240, 234, 214, 0.3);
-  backdrop-filter: blur(10px);
+  width: 320px;
+  padding: 1.8rem;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 15px;
+  border: 2px solid rgba(240, 234, 214, 0.4);
+  backdrop-filter: blur(15px);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   user-select: none;
-  z-index: 1;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
 .gravity-item:hover {
-  transform: scale(1.05) !important;
-  box-shadow: 0 4px 20px rgba(240, 234, 214, 0.3);
-  z-index: 100 !important;
+  transform: scale(1.08) !important;
+  box-shadow: 0 12px 40px rgba(240, 234, 214, 0.4);
+  z-index: 1000 !important;
 }
 
 .gravity-item.minor-activity {
-  width: 250px;
-  padding: 1.25rem;
-  opacity: 0.9;
-  font-size: 0.95rem;
+  width: 280px;
+  padding: 1.5rem;
+  opacity: 0.95;
+  font-size: 0.98rem;
 }
 
 .gravity-item h4,
 .gravity-item h5 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.1rem;
+  margin: 0 0 0.8rem 0;
+  font-size: 1.2rem;
   color: #f0ead6;
+  font-weight: 600;
 }
 
 .gravity-item.minor-activity h5 {
-  font-size: 1rem;
+  font-size: 1.1rem;
 }
 
 .gravity-item p {
-  margin: 0.25rem 0;
-  font-size: 0.85rem;
-  opacity: 0.9;
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+  opacity: 0.95;
+  line-height: 1.4;
 }
 
 /*──────────────────────────────

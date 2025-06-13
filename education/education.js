@@ -16,9 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
   // Mobile detection
   const isMobile = () => window.innerWidth <= 768;
   
-  // Hover timeout management
-  let hoverTimeout = null;
-  let currentHoveredItem = null;
+  // Multiple popup management
+  const activePopups = new Set();
+  const popupTimeouts = new Map();
+  
+  // Physics state for window shake detection
+  let lastWindowX = window.screenX;
+  let lastWindowY = window.screenY;
+  let windowShakeIntensity = 0;
   
   // Debounce function for performance
   const debounce = (func, wait) => {
@@ -68,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // Show info function with improved timing
+  // Show info function with overlapping support
   const showInfo = (item, isExtracurricular = false) => {
     if (isMobile()) return; // Skip on mobile
     
@@ -80,13 +85,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentInfoImage = isExtracurricular ? infoExtraImage : infoImage;
     const currentInfoText = isExtracurricular ? infoExtraText : infoText;
     
-    // Clear any existing timeout
-    if (hoverTimeout) {
-      clearTimeout(hoverTimeout);
-      hoverTimeout = null;
+    const popupId = isExtracurricular ? 'extra' : 'main';
+    
+    // Clear any existing timeout for this popup
+    if (popupTimeouts.has(popupId)) {
+      clearTimeout(popupTimeouts.get(popupId));
+      popupTimeouts.delete(popupId);
     }
     
-    currentHoveredItem = item;
+    // Add to active popups
+    activePopups.add(popupId);
     
     if (img) {
       const skeleton = currentInfo.querySelector('.image-skeleton');
@@ -99,7 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (text) currentInfoText.textContent = text;
     
-    if (color) {
+    // Only change background if no other popups are active or this is the first one
+    if (color && (activePopups.size === 1 || !body.classList.contains('dimmed'))) {
       body.style.background = `linear-gradient(to bottom, ${color}, rgb(0, 255, 136))`;
     }
     
@@ -118,36 +127,51 @@ document.addEventListener('DOMContentLoaded', () => {
     currentInfo.style.top = offset + 'px';
   };
 
-  // Hide info function with delay
+  // Hide info function with overlapping support
   const hideInfo = (isExtracurricular = false, immediate = false) => {
     if (isMobile()) return; // Skip on mobile
     
     const currentInfo = isExtracurricular ? infoExtra : info;
+    const popupId = isExtracurricular ? 'extra' : 'main';
     
     if (immediate) {
       // Clear any existing timeout
-      if (hoverTimeout) {
-        clearTimeout(hoverTimeout);
-        hoverTimeout = null;
+      if (popupTimeouts.has(popupId)) {
+        clearTimeout(popupTimeouts.get(popupId));
+        popupTimeouts.delete(popupId);
       }
+      
+      // Remove from active popups
+      activePopups.delete(popupId);
       
       currentInfo.classList.remove('visible');
       currentInfo.classList.remove('right');
       void currentInfo.offsetWidth;
-      body.classList.remove('dimmed');
-      body.style.background = defaultBg;
-      currentHoveredItem = null;
+      
+      // Only remove dimmed state if no other popups are active
+      if (activePopups.size === 0) {
+        body.classList.remove('dimmed');
+        body.style.background = defaultBg;
+      }
     } else {
       // Set timeout for delayed hiding
-      hoverTimeout = setTimeout(() => {
+      const timeoutId = setTimeout(() => {
+        activePopups.delete(popupId);
+        
         currentInfo.classList.remove('visible');
         currentInfo.classList.remove('right');
         void currentInfo.offsetWidth;
-        body.classList.remove('dimmed');
-        body.style.background = defaultBg;
-        currentHoveredItem = null;
-        hoverTimeout = null;
+        
+        // Only remove dimmed state if no other popups are active
+        if (activePopups.size === 0) {
+          body.classList.remove('dimmed');
+          body.style.background = defaultBg;
+        }
+        
+        popupTimeouts.delete(popupId);
       }, 2000); // 2 second delay
+      
+      popupTimeouts.set(popupId, timeoutId);
     }
   };
 
@@ -178,86 +202,145 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Gravity physics simulation
+  // Window shake detection
+  const detectWindowShake = () => {
+    const currentX = window.screenX;
+    const currentY = window.screenY;
+    
+    const deltaX = Math.abs(currentX - lastWindowX);
+    const deltaY = Math.abs(currentY - lastWindowY);
+    
+    // Calculate shake intensity
+    const shakeAmount = deltaX + deltaY;
+    windowShakeIntensity = Math.min(shakeAmount / 10, 5); // Cap at 5
+    
+    // Apply shake to gravity items
+    if (windowShakeIntensity > 0.5) {
+      gravityItems.forEach(item => {
+        if (item.physicsData) {
+          // Add random velocity based on shake intensity
+          item.physicsData.vx += (Math.random() - 0.5) * windowShakeIntensity;
+          item.physicsData.vy += (Math.random() - 0.5) * windowShakeIntensity;
+          item.physicsData.rotationSpeed += (Math.random() - 0.5) * windowShakeIntensity;
+        }
+      });
+    }
+    
+    // Decay shake intensity
+    windowShakeIntensity *= 0.9;
+    
+    lastWindowX = currentX;
+    lastWindowY = currentY;
+  };
+
+  // Enhanced gravity physics simulation
   const initializeGravity = () => {
     if (isMobile()) return; // Skip gravity on mobile for performance
     
     const gravityContainer = document.querySelector('.gravity-container');
     if (!gravityContainer) return;
     
-    const containerRect = gravityContainer.getBoundingClientRect();
     const containerHeight = gravityContainer.offsetHeight;
     const containerWidth = gravityContainer.offsetWidth;
     
+    // Priority-based z-index assignment
+    const priorities = [
+      'Wordsmiths Writing Club',
+      'Phi Sigma Pi Frat', 
+      'Global Union',
+      'Campus Volunteers',
+      'Tech Support Club',
+      'Gaming Society',
+      'Green Initiative',
+      'Photo Club',
+      'Event Planning'
+    ];
+    
     gravityItems.forEach((item, index) => {
+      // Assign z-index based on priority
+      const itemTitle = item.querySelector('h4, h5')?.textContent || '';
+      const priorityIndex = priorities.findIndex(p => itemTitle.includes(p.split(' ')[0]));
+      const zIndex = priorityIndex !== -1 ? (priorities.length - priorityIndex) * 10 : 5;
+      item.style.zIndex = zIndex;
+      
       // Set initial random positions at the top
-      const initialX = Math.random() * (containerWidth - 280);
-      const initialY = -150 - Math.random() * 300; // Start well above container
+      const initialX = Math.random() * (containerWidth - 320);
+      const initialY = -200 - Math.random() * 400; // Start well above container
       
       // Physics properties
-      let x = initialX;
-      let y = initialY;
-      let vx = (Math.random() - 0.5) * 8; // Random horizontal velocity
-      let vy = Math.random() * 3; // Small initial downward velocity
-      let rotation = Math.random() * 360;
-      let rotationSpeed = (Math.random() - 0.5) * 8;
+      const physicsData = {
+        x: initialX,
+        y: initialY,
+        vx: (Math.random() - 0.5) * 10, // Random horizontal velocity
+        vy: Math.random() * 4, // Small initial downward velocity
+        rotation: Math.random() * 360,
+        rotationSpeed: (Math.random() - 0.5) * 10,
+        gravity: 0.6,
+        bounce: 0.8,
+        friction: 0.94,
+        groundY: containerHeight - item.offsetHeight - 20,
+        width: item.offsetWidth,
+        height: item.offsetHeight
+      };
       
-      const gravity = 0.5;
-      const bounce = 0.75;
-      const friction = 0.92;
-      const groundY = containerHeight - item.offsetHeight - 20; // Ground level
+      // Store physics data on the element
+      item.physicsData = physicsData;
       
       // Set initial position
       item.style.position = 'absolute';
-      item.style.left = x + 'px';
-      item.style.top = y + 'px';
-      item.style.transform = `rotate(${rotation}deg)`;
-      item.style.zIndex = Math.floor(Math.random() * 10) + 1;
+      item.style.left = physicsData.x + 'px';
+      item.style.top = physicsData.y + 'px';
+      item.style.transform = `rotate(${physicsData.rotation}deg)`;
       
       // Add some delay before starting animation
       setTimeout(() => {
         const animate = () => {
           // Apply gravity
-          vy += gravity;
+          physicsData.vy += physicsData.gravity;
           
           // Update position
-          x += vx;
-          y += vy;
-          rotation += rotationSpeed;
+          physicsData.x += physicsData.vx;
+          physicsData.y += physicsData.vy;
+          physicsData.rotation += physicsData.rotationSpeed;
           
           // Bounce off walls
-          if (x <= 0 || x >= containerWidth - item.offsetWidth) {
-            vx *= -bounce;
-            x = Math.max(0, Math.min(containerWidth - item.offsetWidth, x));
+          if (physicsData.x <= 0 || physicsData.x >= containerWidth - physicsData.width) {
+            physicsData.vx *= -physicsData.bounce;
+            physicsData.x = Math.max(0, Math.min(containerWidth - physicsData.width, physicsData.x));
           }
           
           // Bounce off ground
-          if (y >= groundY) {
-            vy *= -bounce;
-            vx *= friction;
-            rotationSpeed *= friction;
-            y = groundY;
+          if (physicsData.y >= physicsData.groundY) {
+            physicsData.vy *= -physicsData.bounce;
+            physicsData.vx *= physicsData.friction;
+            physicsData.rotationSpeed *= physicsData.friction;
+            physicsData.y = physicsData.groundY;
             
             // Stop bouncing when velocity is very low
-            if (Math.abs(vy) < 1.5) {
-              vy = 0;
+            if (Math.abs(physicsData.vy) < 2) {
+              physicsData.vy = 0;
             }
           }
           
-          // Apply position and rotation
-          item.style.left = x + 'px';
-          item.style.top = y + 'px';
-          item.style.transform = `rotate(${rotation}deg)`;
+          // Apply position and rotation (only if not being hovered)
+          if (!item.matches(':hover')) {
+            item.style.left = physicsData.x + 'px';
+            item.style.top = physicsData.y + 'px';
+            item.style.transform = `rotate(${physicsData.rotation}deg)`;
+          }
           
           // Continue animation if still moving
-          if (Math.abs(vx) > 0.2 || Math.abs(vy) > 0.2 || y < groundY) {
+          if (Math.abs(physicsData.vx) > 0.3 || Math.abs(physicsData.vy) > 0.3 || physicsData.y < physicsData.groundY) {
             requestAnimationFrame(animate);
           }
         };
         
         requestAnimationFrame(animate);
-      }, index * 400 + Math.random() * 1500); // Staggered start times
+      }, index * 500 + Math.random() * 2000); // Staggered start times
     });
+    
+    // Start window shake detection
+    setInterval(detectWindowShake, 50); // Check every 50ms
   };
 
   // Setup item event listeners
@@ -376,6 +459,10 @@ document.addEventListener('DOMContentLoaded', () => {
         item.classList.remove('expanded');
         item.setAttribute('aria-expanded', 'false');
       });
+      // Clear all popups
+      activePopups.clear();
+      popupTimeouts.forEach(timeout => clearTimeout(timeout));
+      popupTimeouts.clear();
       hideInfo(false, true);
       hideInfo(true, true);
     }
@@ -458,6 +545,10 @@ document.addEventListener('DOMContentLoaded', () => {
           item.setAttribute('aria-expanded', 'false');
         });
       } else {
+        // Clear all popups immediately
+        activePopups.clear();
+        popupTimeouts.forEach(timeout => clearTimeout(timeout));
+        popupTimeouts.clear();
         hideInfo(false, true);
         hideInfo(true, true);
       }
