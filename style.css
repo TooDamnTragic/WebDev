@@ -219,7 +219,7 @@ body.education-page::before{
   pointer-events:none;
   z-index:5;
   opacity:0;
-  transition:opacity .6s;
+  transition:opacity 1.5s ease;
 }
 body.education-page.dimmed::before{
   opacity:1;
@@ -296,6 +296,39 @@ body.show-content .edu-module{
   overflow:hidden;
 }
 
+/* Twisted wire divider for extracurricular section */
+.extracurricular-section .divider {
+  background: none;
+  width: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.extracurricular-section .divider::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: #f0ead640;
+  transform: translateX(-50%);
+  clip-path: polygon(
+    40% 0%, 60% 0%,
+    70% 5%, 30% 10%,
+    20% 15%, 80% 20%,
+    90% 25%, 10% 30%,
+    5% 35%, 95% 40%,
+    85% 45%, 15% 50%,
+    25% 55%, 75% 60%,
+    80% 65%, 20% 70%,
+    10% 75%, 90% 80%,
+    95% 85%, 5% 90%,
+    15% 95%, 85% 100%,
+    40% 100%, 60% 100%
+  );
+}
+
 .extracurricular-divider {
   background: #f0ead640;
 }
@@ -327,10 +360,20 @@ body.show-content .edu-module{
       0 0  28px 10px #ff5100;
   animation: cometPulse 1.2s ease-in-out infinite alternate;
   transition:top .3s linear;
+  z-index: 10;
+}
+
+/* Special comet for twisted divider */
+.extracurricular-section .divider::before {
+  background: #f0ead6;
+  box-shadow:
+      0 0   6px  2px #f0ead6,
+      0 0  12px  4px #ffffff,
+      0 0  28px 10px #f0ead680;
 }
 
 /* Comet tail effect */
-.divider::after{
+.curricular-section .divider::after{
   content:"";
   position:absolute;
   left:0;
@@ -342,6 +385,35 @@ body.show-content .edu-module{
     #ff3c00 60%, 
     #ff5100 100%);
   transition:height .3s linear;
+}
+
+.extracurricular-section .divider::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  width:4px;
+  height:calc(var(--progress,0) * 100%);
+  background:linear-gradient(to bottom, 
+    transparent 0%, 
+    #f0ead6 20%, 
+    #ffffff 60%, 
+    #f0ead680 100%);
+  transform: translateX(-50%);
+  transition:height .3s linear;
+  clip-path: polygon(
+    40% 0%, 60% 0%,
+    70% 5%, 30% 10%,
+    20% 15%, 80% 20%,
+    90% 25%, 10% 30%,
+    5% 35%, 95% 40%,
+    85% 45%, 15% 50%,
+    25% 55%, 75% 60%,
+    80% 65%, 20% 70%,
+    10% 75%, 90% 80%,
+    95% 85%, 5% 90%,
+    15% 95%, 85% 100%,
+    40% 100%, 60% 100%
+  );
 }
 
 @keyframes cometPulse{
@@ -370,6 +442,12 @@ body.show-content .edu-module{
   position: relative;
   animation: slideInFromSide 0.8s ease-out forwards;
   opacity: 0;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  border: 2px solid rgba(240, 234, 214, 0.3);
+  backdrop-filter: blur(10px);
+  margin: 1.5rem 0;
 }
 
 .featured-item:nth-child(1) { animation-delay: 0.2s; }
@@ -405,11 +483,11 @@ body.show-content .edu-module{
 
 .gravity-item {
   position: absolute;
-  width: 200px;
-  padding: 1rem;
+  width: 280px;
+  padding: 1.5rem;
   background: rgba(0, 0, 0, 0.3);
-  border-radius: 8px;
-  border: 1px solid rgba(240, 234, 214, 0.2);
+  border-radius: 12px;
+  border: 2px solid rgba(240, 234, 214, 0.3);
   backdrop-filter: blur(10px);
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -424,26 +502,26 @@ body.show-content .edu-module{
 }
 
 .gravity-item.minor-activity {
-  width: 150px;
-  padding: 0.75rem;
-  opacity: 0.8;
-  font-size: 0.9rem;
+  width: 250px;
+  padding: 1.25rem;
+  opacity: 0.9;
+  font-size: 0.95rem;
 }
 
 .gravity-item h4,
 .gravity-item h5 {
   margin: 0 0 0.5rem 0;
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: #f0ead6;
 }
 
 .gravity-item.minor-activity h5 {
-  font-size: 0.9rem;
+  font-size: 1rem;
 }
 
 .gravity-item p {
   margin: 0.25rem 0;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   opacity: 0.9;
 }
 
@@ -683,7 +761,7 @@ body.education-page{ overflow-x:hidden; }
   opacity:0;
   transform:translateX(-100%) scale(0);
   transform-origin:right center;
-  transition:opacity .5s, transform .5s;
+  transition:opacity .8s ease, transform .8s ease;
   z-index:10;
 }
 

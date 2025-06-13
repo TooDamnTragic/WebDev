@@ -16,6 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Mobile detection
   const isMobile = () => window.innerWidth <= 768;
   
+  // Hover timeout management
+  let hoverTimeout = null;
+  let currentHoveredItem = null;
+  
   // Debounce function for performance
   const debounce = (func, wait) => {
     let timeout;
@@ -64,8 +68,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // Show info function
+  // Show info function with improved timing
   const showInfo = (item, isExtracurricular = false) => {
+    if (isMobile()) return; // Skip on mobile
+    
     const img = item.getAttribute('data-image');
     const text = item.getAttribute('data-text');
     const color = item.getAttribute('data-color');
@@ -73,6 +79,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentInfo = isExtracurricular ? infoExtra : info;
     const currentInfoImage = isExtracurricular ? infoExtraImage : infoImage;
     const currentInfoText = isExtracurricular ? infoExtraText : infoText;
+    
+    // Clear any existing timeout
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+      hoverTimeout = null;
+    }
+    
+    currentHoveredItem = item;
     
     if (img) {
       const skeleton = currentInfo.querySelector('.image-skeleton');
@@ -85,36 +99,55 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (text) currentInfoText.textContent = text;
     
-    if (color && !isMobile()) {
+    if (color) {
       body.style.background = `linear-gradient(to bottom, ${color}, rgb(0, 255, 136))`;
     }
     
-    if (!isMobile()) {
-      body.classList.add('dimmed');
-      
-      if (item.classList.contains('left')) {
-        currentInfo.classList.add('right');
-      } else {
-        currentInfo.classList.remove('right');
-      }
-      
-      void currentInfo.offsetWidth; // force reflow
-      currentInfo.classList.add('visible');
-      
-      const offset = item.offsetTop + item.offsetHeight / 2 - currentInfo.offsetHeight / 2;
-      currentInfo.style.top = offset + 'px';
+    body.classList.add('dimmed');
+    
+    if (item.classList.contains('left')) {
+      currentInfo.classList.add('right');
+    } else {
+      currentInfo.classList.remove('right');
     }
+    
+    void currentInfo.offsetWidth; // force reflow
+    currentInfo.classList.add('visible');
+    
+    const offset = item.offsetTop + item.offsetHeight / 2 - currentInfo.offsetHeight / 2;
+    currentInfo.style.top = offset + 'px';
   };
 
-  // Hide info function
-  const hideInfo = (isExtracurricular = false) => {
+  // Hide info function with delay
+  const hideInfo = (isExtracurricular = false, immediate = false) => {
+    if (isMobile()) return; // Skip on mobile
+    
     const currentInfo = isExtracurricular ? infoExtra : info;
-    if (!isMobile()) {
+    
+    if (immediate) {
+      // Clear any existing timeout
+      if (hoverTimeout) {
+        clearTimeout(hoverTimeout);
+        hoverTimeout = null;
+      }
+      
       currentInfo.classList.remove('visible');
       currentInfo.classList.remove('right');
       void currentInfo.offsetWidth;
       body.classList.remove('dimmed');
       body.style.background = defaultBg;
+      currentHoveredItem = null;
+    } else {
+      // Set timeout for delayed hiding
+      hoverTimeout = setTimeout(() => {
+        currentInfo.classList.remove('visible');
+        currentInfo.classList.remove('right');
+        void currentInfo.offsetWidth;
+        body.classList.remove('dimmed');
+        body.style.background = defaultBg;
+        currentHoveredItem = null;
+        hoverTimeout = null;
+      }, 2000); // 2 second delay
     }
   };
 
@@ -158,20 +191,20 @@ document.addEventListener('DOMContentLoaded', () => {
     
     gravityItems.forEach((item, index) => {
       // Set initial random positions at the top
-      const initialX = Math.random() * (containerWidth - 200);
-      const initialY = -100 - Math.random() * 200; // Start above container
+      const initialX = Math.random() * (containerWidth - 280);
+      const initialY = -150 - Math.random() * 300; // Start well above container
       
       // Physics properties
       let x = initialX;
       let y = initialY;
-      let vx = (Math.random() - 0.5) * 6; // Random horizontal velocity
-      let vy = Math.random() * 2; // Small initial downward velocity
+      let vx = (Math.random() - 0.5) * 8; // Random horizontal velocity
+      let vy = Math.random() * 3; // Small initial downward velocity
       let rotation = Math.random() * 360;
-      let rotationSpeed = (Math.random() - 0.5) * 6;
+      let rotationSpeed = (Math.random() - 0.5) * 8;
       
-      const gravity = 0.4;
-      const bounce = 0.7;
-      const friction = 0.95;
+      const gravity = 0.5;
+      const bounce = 0.75;
+      const friction = 0.92;
       const groundY = containerHeight - item.offsetHeight - 20; // Ground level
       
       // Set initial position
@@ -206,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
             y = groundY;
             
             // Stop bouncing when velocity is very low
-            if (Math.abs(vy) < 1) {
+            if (Math.abs(vy) < 1.5) {
               vy = 0;
             }
           }
@@ -217,13 +250,13 @@ document.addEventListener('DOMContentLoaded', () => {
           item.style.transform = `rotate(${rotation}deg)`;
           
           // Continue animation if still moving
-          if (Math.abs(vx) > 0.1 || Math.abs(vy) > 0.1 || y < groundY) {
+          if (Math.abs(vx) > 0.2 || Math.abs(vy) > 0.2 || y < groundY) {
             requestAnimationFrame(animate);
           }
         };
         
         requestAnimationFrame(animate);
-      }, index * 300 + Math.random() * 1000); // Staggered start times
+      }, index * 400 + Math.random() * 1500); // Staggered start times
     });
   };
 
@@ -232,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set initial ARIA attributes
     item.setAttribute('aria-expanded', 'false');
     
-    // Mouse events (desktop)
+    // Mouse events (desktop only)
     item.addEventListener('mouseenter', () => {
       if (!isMobile()) {
         showInfo(item, isExtracurricular);
@@ -241,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     item.addEventListener('mouseleave', () => {
       if (!isMobile()) {
-        hideInfo(isExtracurricular);
+        hideInfo(isExtracurricular, false); // Use delayed hiding
       }
     });
     
@@ -254,6 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         toggleMobileInfo(item);
       } else {
+        // On desktop, clicking should show info immediately and keep it visible
         showInfo(item, isExtracurricular);
       }
     });
@@ -275,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
             item.classList.remove('expanded');
             item.setAttribute('aria-expanded', 'false');
           } else {
-            hideInfo(isExtracurricular);
+            hideInfo(isExtracurricular, true); // Immediate hiding on escape
           }
           break;
       }
@@ -294,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Delay hiding to allow for focus to move to close button
         setTimeout(() => {
           if (!currentInfo.contains(document.activeElement)) {
-            hideInfo(isExtracurricular);
+            hideInfo(isExtracurricular, false);
           }
         }, 100);
       }
@@ -312,21 +346,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Close button functionality
   if (infoClose) {
-    infoClose.addEventListener('click', () => hideInfo(false));
+    infoClose.addEventListener('click', () => hideInfo(false, true));
     infoClose.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        hideInfo(false);
+        hideInfo(false, true);
       }
     });
   }
   
   if (infoExtraClose) {
-    infoExtraClose.addEventListener('click', () => hideInfo(true));
+    infoExtraClose.addEventListener('click', () => hideInfo(true, true));
     infoExtraClose.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        hideInfo(true);
+        hideInfo(true, true);
       }
     });
   }
@@ -342,8 +376,8 @@ document.addEventListener('DOMContentLoaded', () => {
         item.classList.remove('expanded');
         item.setAttribute('aria-expanded', 'false');
       });
-      hideInfo(false);
-      hideInfo(true);
+      hideInfo(false, true);
+      hideInfo(true, true);
     }
   }, 250);
 
@@ -424,8 +458,8 @@ document.addEventListener('DOMContentLoaded', () => {
           item.setAttribute('aria-expanded', 'false');
         });
       } else {
-        hideInfo(false);
-        hideInfo(true);
+        hideInfo(false, true);
+        hideInfo(true, true);
       }
     }
   });
