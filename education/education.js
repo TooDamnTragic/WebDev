@@ -1,15 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
   const items = document.querySelectorAll('.item');
   const info = document.getElementById('info');
+  const infoExtra = document.getElementById('info-extra');
   const infoImage = document.getElementById('info-image');
   const infoText = document.getElementById('info-text');
+  const infoExtraImage = document.getElementById('info-extra-image');
+  const infoExtraText = document.getElementById('info-extra-text');
   const infoClose = document.getElementById('info-close');
+  const infoExtraClose = document.getElementById('info-extra-close');
   const body = document.body;
   const defaultBg = getComputedStyle(body).background;
   
-  // Tab functionality
-  const tabButtons = document.querySelectorAll('.tab-button');
-  const tabContents = document.querySelectorAll('.tab-content');
+  const extracurricularOverlay = document.querySelector('.extracurricular-overlay');
+  const gravityItems = document.querySelectorAll('.gravity-item');
   
   // Mobile detection
   const isMobile = () => window.innerWidth <= 768;
@@ -43,10 +46,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize image loading for all images
   const initializeImages = () => {
-    // Desktop info panel image
+    // Desktop info panel images
     const infoImageSkeleton = document.querySelector('#info-image-wrapper .image-skeleton');
+    const infoExtraImageSkeleton = document.querySelector('#info-extra-image-wrapper .image-skeleton');
     if (infoImageSkeleton) {
       handleImageLoad(infoImage, infoImageSkeleton);
+    }
+    if (infoExtraImageSkeleton) {
+      handleImageLoad(infoExtraImage, infoExtraImageSkeleton);
     }
     
     // Mobile images
@@ -58,78 +65,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // Tab switching functionality
-  const switchTab = (targetTabId) => {
-    tabButtons.forEach(btn => {
-      btn.classList.remove('active');
-      btn.setAttribute('aria-selected', 'false');
-    });
-    
-    tabContents.forEach(content => {
-      content.classList.remove('active');
-    });
-    
-    const activeButton = document.getElementById(`tab-${targetTabId}`);
-    const activeContent = document.getElementById(targetTabId);
-    
-    if (activeButton && activeContent) {
-      activeButton.classList.add('active');
-      activeButton.setAttribute('aria-selected', 'true');
-      activeContent.classList.add('active');
-    }
-  };
-
-  // Tab button event listeners
-  tabButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const targetTab = button.getAttribute('aria-controls');
-      switchTab(targetTab);
-    });
-    
-    // Keyboard navigation for tabs
-    button.addEventListener('keydown', (e) => {
-      const currentIndex = Array.from(tabButtons).indexOf(button);
-      let nextIndex;
-      
-      switch(e.key) {
-        case 'ArrowLeft':
-          e.preventDefault();
-          nextIndex = currentIndex > 0 ? currentIndex - 1 : tabButtons.length - 1;
-          tabButtons[nextIndex].focus();
-          break;
-        case 'ArrowRight':
-          e.preventDefault();
-          nextIndex = currentIndex < tabButtons.length - 1 ? currentIndex + 1 : 0;
-          tabButtons[nextIndex].focus();
-          break;
-        case 'Home':
-          e.preventDefault();
-          tabButtons[0].focus();
-          break;
-        case 'End':
-          e.preventDefault();
-          tabButtons[tabButtons.length - 1].focus();
-          break;
-      }
-    });
-  });
-
   // Show info function
-  const showInfo = (item) => {
+  const showInfo = (item, isExtracurricular = false) => {
     const img = item.getAttribute('data-image');
     const text = item.getAttribute('data-text');
     const color = item.getAttribute('data-color');
     
+    const currentInfo = isExtracurricular ? infoExtra : info;
+    const currentInfoImage = isExtracurricular ? infoExtraImage : infoImage;
+    const currentInfoText = isExtracurricular ? infoExtraText : infoText;
+    
     if (img) {
-      const infoImageSkeleton = document.querySelector('#info-image-wrapper .image-skeleton');
-      if (infoImageSkeleton) {
-        infoImageSkeleton.style.display = 'block';
+      const skeleton = currentInfo.querySelector('.image-skeleton');
+      if (skeleton) {
+        skeleton.style.display = 'block';
       }
-      infoImage.style.opacity = '0';
-      infoImage.src = img;
+      currentInfoImage.style.opacity = '0';
+      currentInfoImage.src = img;
     }
     
-    if (text) infoText.textContent = text;
+    if (text) currentInfoText.textContent = text;
     
     if (color && !isMobile()) {
       body.style.background = `linear-gradient(to bottom, ${color}, rgb(0, 255, 136))`;
@@ -139,25 +94,26 @@ document.addEventListener('DOMContentLoaded', () => {
       body.classList.add('dimmed');
       
       if (item.classList.contains('left')) {
-        info.classList.add('right');
+        currentInfo.classList.add('right');
       } else {
-        info.classList.remove('right');
+        currentInfo.classList.remove('right');
       }
       
-      void info.offsetWidth; // force reflow
-      info.classList.add('visible');
+      void currentInfo.offsetWidth; // force reflow
+      currentInfo.classList.add('visible');
       
-      const offset = item.offsetTop + item.offsetHeight / 2 - info.offsetHeight / 2;
-      info.style.top = offset + 'px';
+      const offset = item.offsetTop + item.offsetHeight / 2 - currentInfo.offsetHeight / 2;
+      currentInfo.style.top = offset + 'px';
     }
   };
 
   // Hide info function
-  const hideInfo = () => {
+  const hideInfo = (isExtracurricular = false) => {
+    const currentInfo = isExtracurricular ? infoExtra : info;
     if (!isMobile()) {
-      info.classList.remove('visible');
-      info.classList.remove('right');
-      void info.offsetWidth;
+      currentInfo.classList.remove('visible');
+      currentInfo.classList.remove('right');
+      void currentInfo.offsetWidth;
       body.classList.remove('dimmed');
       body.style.background = defaultBg;
     }
@@ -190,21 +146,101 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Item event listeners
-  items.forEach(item => {
+  // Gravity physics simulation
+  const initializeGravity = () => {
+    if (isMobile()) return; // Skip gravity on mobile for performance
+    
+    const gravityContainer = document.querySelector('.gravity-container');
+    const containerRect = gravityContainer.getBoundingClientRect();
+    const containerHeight = window.innerHeight;
+    const containerWidth = containerRect.width;
+    
+    gravityItems.forEach((item, index) => {
+      // Set initial random positions
+      const initialX = Math.random() * (containerWidth - 200);
+      const initialY = Math.random() * 200 - 100; // Start above or slightly below
+      
+      // Physics properties
+      let x = initialX;
+      let y = initialY;
+      let vx = (Math.random() - 0.5) * 4; // Random horizontal velocity
+      let vy = Math.random() * 2; // Small initial downward velocity
+      let rotation = Math.random() * 360;
+      let rotationSpeed = (Math.random() - 0.5) * 4;
+      
+      const gravity = 0.3;
+      const bounce = 0.6;
+      const friction = 0.98;
+      const groundY = containerHeight - 100 - (Math.random() * 50); // Vary ground level
+      
+      // Set initial position
+      item.style.position = 'absolute';
+      item.style.left = x + 'px';
+      item.style.top = y + 'px';
+      item.style.transform = `rotate(${rotation}deg)`;
+      item.style.zIndex = Math.floor(Math.random() * 10) + 1;
+      
+      // Add some delay before starting animation
+      setTimeout(() => {
+        const animate = () => {
+          // Apply gravity
+          vy += gravity;
+          
+          // Update position
+          x += vx;
+          y += vy;
+          rotation += rotationSpeed;
+          
+          // Bounce off walls
+          if (x <= 0 || x >= containerWidth - item.offsetWidth) {
+            vx *= -bounce;
+            x = Math.max(0, Math.min(containerWidth - item.offsetWidth, x));
+          }
+          
+          // Bounce off ground
+          if (y >= groundY) {
+            vy *= -bounce;
+            vx *= friction;
+            rotationSpeed *= friction;
+            y = groundY;
+            
+            // Stop bouncing when velocity is very low
+            if (Math.abs(vy) < 0.5) {
+              vy = 0;
+            }
+          }
+          
+          // Apply position and rotation
+          item.style.left = x + 'px';
+          item.style.top = y + 'px';
+          item.style.transform = `rotate(${rotation}deg)`;
+          
+          // Continue animation if still moving
+          if (Math.abs(vx) > 0.1 || Math.abs(vy) > 0.1 || y < groundY) {
+            requestAnimationFrame(animate);
+          }
+        };
+        
+        requestAnimationFrame(animate);
+      }, index * 200 + Math.random() * 1000); // Staggered start times
+    });
+  };
+
+  // Setup item event listeners
+  const setupItemListeners = (item, isExtracurricular = false) => {
     // Set initial ARIA attributes
     item.setAttribute('aria-expanded', 'false');
     
     // Mouse events (desktop)
     item.addEventListener('mouseenter', () => {
       if (!isMobile()) {
-        showInfo(item);
+        showInfo(item, isExtracurricular);
       }
     });
     
     item.addEventListener('mouseleave', () => {
       if (!isMobile()) {
-        hideInfo();
+        hideInfo(isExtracurricular);
       }
     });
     
@@ -217,7 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         toggleMobileInfo(item);
       } else {
-        showInfo(item);
+        showInfo(item, isExtracurricular);
       }
     });
     
@@ -230,7 +266,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (isMobile()) {
             toggleMobileInfo(item);
           } else {
-            showInfo(item);
+            showInfo(item, isExtracurricular);
           }
           break;
         case 'Escape':
@@ -238,21 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
             item.classList.remove('expanded');
             item.setAttribute('aria-expanded', 'false');
           } else {
-            hideInfo();
-          }
-          break;
-        case 'ArrowDown':
-          e.preventDefault();
-          const nextItem = item.nextElementSibling;
-          if (nextItem && nextItem.classList.contains('item')) {
-            nextItem.focus();
-          }
-          break;
-        case 'ArrowUp':
-          e.preventDefault();
-          const prevItem = item.previousElementSibling;
-          if (prevItem && prevItem.classList.contains('item')) {
-            prevItem.focus();
+            hideInfo(isExtracurricular);
           }
           break;
       }
@@ -261,32 +283,75 @@ document.addEventListener('DOMContentLoaded', () => {
     // Focus events for keyboard navigation
     item.addEventListener('focus', () => {
       if (!isMobile()) {
-        showInfo(item);
+        showInfo(item, isExtracurricular);
       }
     });
     
     item.addEventListener('blur', () => {
       if (!isMobile()) {
+        const currentInfo = isExtracurricular ? infoExtra : info;
         // Delay hiding to allow for focus to move to close button
         setTimeout(() => {
-          if (!info.contains(document.activeElement)) {
-            hideInfo();
+          if (!currentInfo.contains(document.activeElement)) {
+            hideInfo(isExtracurricular);
           }
         }, 100);
       }
     });
+  };
+
+  // Setup all item listeners
+  document.querySelectorAll('.curricular-section .item').forEach(item => {
+    setupItemListeners(item, false);
+  });
+  
+  document.querySelectorAll('.extracurricular-overlay .item').forEach(item => {
+    setupItemListeners(item, true);
   });
 
   // Close button functionality
   if (infoClose) {
-    infoClose.addEventListener('click', hideInfo);
+    infoClose.addEventListener('click', () => hideInfo(false));
     infoClose.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        hideInfo();
+        hideInfo(false);
       }
     });
   }
+  
+  if (infoExtraClose) {
+    infoExtraClose.addEventListener('click', () => hideInfo(true));
+    infoExtraClose.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        hideInfo(true);
+      }
+    });
+  }
+
+  // Scroll-based overlay transition
+  const handleScroll = debounce(() => {
+    const scrollY = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const curricularHeight = document.querySelector('.curricular-section').offsetHeight;
+    
+    // Calculate overlay visibility based on scroll
+    const overlayTrigger = curricularHeight * 0.7; // Start showing overlay at 70% through curricular
+    const overlayProgress = Math.max(0, Math.min(1, (scrollY - overlayTrigger) / (windowHeight * 0.5)));
+    
+    // Apply overlay transform
+    extracurricularOverlay.style.transform = `translateY(${(1 - overlayProgress) * 100}%)`;
+    extracurricularOverlay.style.opacity = overlayProgress;
+    
+    // Update divider progress for curricular section
+    updateDividerProgress();
+    
+    // Initialize gravity when overlay becomes visible
+    if (overlayProgress > 0.5 && !gravityItems[0].style.position) {
+      initializeGravity();
+    }
+  }, 16);
 
   // Handle window resize
   const handleResize = debounce(() => {
@@ -299,7 +364,8 @@ document.addEventListener('DOMContentLoaded', () => {
         item.classList.remove('expanded');
         item.setAttribute('aria-expanded', 'false');
       });
-      hideInfo();
+      hideInfo(false);
+      hideInfo(true);
     }
   }, 250);
 
@@ -308,9 +374,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add('show-content');
   }, 1000);
 
-  // Sticky tabs functionality
-  const tabs = document.querySelector('.tabs');
-  const title = document.querySelector('h1');
   const divider = document.querySelector('.divider');
   const eduContainer = document.querySelector('.edu-container');
 
@@ -327,18 +390,9 @@ document.addEventListener('DOMContentLoaded', () => {
     divider.style.setProperty('--progress', progress);
   };
 
-  const onScroll = debounce(() => {
-    if (title && title.getBoundingClientRect().top <= 0) {
-      tabs.classList.add('visible');
-    } else {
-      tabs.classList.remove('visible');
-    }
-    updateDividerProgress();
-  }, 16); // ~60fps
-
-  window.addEventListener('scroll', onScroll);
+  window.addEventListener('scroll', handleScroll);
   window.addEventListener('resize', handleResize);
-  onScroll();
+  handleScroll();
 
   // Intersection Observer for reveal animations
   const observer = new IntersectionObserver(entries => {
@@ -352,17 +406,20 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.item').forEach(el => observer.observe(el));
 
   // Info layout adjustment
-  const infoImageWrapper = document.getElementById('info-image-wrapper');
-  const infoTextWrapper = document.getElementById('info-text-wrapper');
-
   const adjustInfoLayout = () => {
-    if (!infoImageWrapper || !infoTextWrapper || isMobile()) return;
-    const totalWidth = infoImageWrapper.offsetWidth + infoTextWrapper.offsetWidth;
-    if (totalWidth > window.innerWidth * 0.8) {
-      info.classList.add('stacked');
-    } else {
-      info.classList.remove('stacked');
-    }
+    [info, infoExtra].forEach(currentInfo => {
+      if (!currentInfo || isMobile()) return;
+      const imageWrapper = currentInfo.querySelector('[id$="-image-wrapper"]');
+      const textWrapper = currentInfo.querySelector('[id$="-text-wrapper"]');
+      if (!imageWrapper || !textWrapper) return;
+      
+      const totalWidth = imageWrapper.offsetWidth + textWrapper.offsetWidth;
+      if (totalWidth > window.innerWidth * 0.8) {
+        currentInfo.classList.add('stacked');
+      } else {
+        currentInfo.classList.remove('stacked');
+      }
+    });
   };
 
   // Initialize everything
@@ -379,7 +436,8 @@ document.addEventListener('DOMContentLoaded', () => {
           item.setAttribute('aria-expanded', 'false');
         });
       } else {
-        hideInfo();
+        hideInfo(false);
+        hideInfo(true);
       }
     }
   });
