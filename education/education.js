@@ -232,21 +232,20 @@ document.addEventListener('DOMContentLoaded', () => {
     lastWindowX = currentX;
     lastWindowY = currentY;
   };
-
-  // Enhanced gravity physics simulation
+// Enhanced gravity physics simulation
   const initializeGravity = () => {
     if (isMobile()) return; // Skip gravity on mobile for performance
-    
+
     const gravityContainer = document.querySelector('.gravity-container');
     if (!gravityContainer) return;
-    
+
     const containerHeight = gravityContainer.offsetHeight;
     const containerWidth = gravityContainer.offsetWidth;
-    
+
     // Priority-based z-index assignment
     const priorities = [
       'Wordsmiths Writing Club',
-      'Phi Sigma Pi Frat', 
+      'Phi Sigma Pi Frat',
       'Global Union',
       'Campus Volunteers',
       'Tech Support Club',
@@ -255,24 +254,26 @@ document.addEventListener('DOMContentLoaded', () => {
       'Photo Club',
       'Event Planning'
     ];
-    
+
+    const activeItems = [];
+
     gravityItems.forEach((item, index) => {
       // Assign z-index based on priority
       const itemTitle = item.querySelector('h4, h5')?.textContent || '';
       const priorityIndex = priorities.findIndex(p => itemTitle.includes(p.split(' ')[0]));
       const zIndex = priorityIndex !== -1 ? (priorities.length - priorityIndex) * 10 : 5;
       item.style.zIndex = zIndex;
-      
+
       // Set initial random positions at the top
-      const initialX = Math.random() * (containerWidth - 320);
+      const initialX = Math.random() * (containerWidth - item.offsetWidth);
       const initialY = -200 - Math.random() * 400; // Start well above container
-      
+
       // Physics properties
       const physicsData = {
         x: initialX,
         y: initialY,
-        vx: (Math.random() - 0.5) * 10, // Random horizontal velocity
-        vy: Math.random() * 4, // Small initial downward velocity
+        vx: (Math.random() - 0.5) * 10,
+        vy: Math.random() * 4,
         rotation: Math.random() * 360,
         rotationSpeed: (Math.random() - 0.5) * 10,
         gravity: 0.6,
@@ -282,65 +283,108 @@ document.addEventListener('DOMContentLoaded', () => {
         width: item.offsetWidth,
         height: item.offsetHeight
       };
-      
-      // Store physics data on the element
+
       item.physicsData = physicsData;
-      
-      // Set initial position
+
       item.style.position = 'absolute';
       item.style.left = physicsData.x + 'px';
       item.style.top = physicsData.y + 'px';
       item.style.transform = `rotate(${physicsData.rotation}deg)`;
-      
-      // Add some delay before starting animation
-      setTimeout(() => {
-        const animate = () => {
-          // Apply gravity
-          physicsData.vy += physicsData.gravity;
-          
-          // Update position
-          physicsData.x += physicsData.vx;
-          physicsData.y += physicsData.vy;
-          physicsData.rotation += physicsData.rotationSpeed;
-          
-          // Bounce off walls
-          if (physicsData.x <= 0 || physicsData.x >= containerWidth - physicsData.width) {
-            physicsData.vx *= -physicsData.bounce;
-            physicsData.x = Math.max(0, Math.min(containerWidth - physicsData.width, physicsData.x));
-          }
-          
-          // Bounce off ground
-          if (physicsData.y >= physicsData.groundY) {
-            physicsData.vy *= -physicsData.bounce;
-            physicsData.vx *= physicsData.friction;
-            physicsData.rotationSpeed *= physicsData.friction;
-            physicsData.y = physicsData.groundY;
-            
-            // Stop bouncing when velocity is very low
-            if (Math.abs(physicsData.vy) < 2) {
-              physicsData.vy = 0;
+
+      activeItems.push(item);
+    });
+
+    const resolveCollisions = () => {
+      for (let i = 0; i < activeItems.length; i++) {
+        const a = activeItems[i].physicsData;
+        for (let j = i + 1; j < activeItems.length; j++) {
+          const b = activeItems[j].physicsData;
+          if (
+            a.x < b.x + b.width &&
+            a.x + a.width > b.x &&
+            a.y < b.y + b.height &&
+            a.y + a.height > b.y
+          ) {
+            const overlapX = (a.width + b.width) / 2 - Math.abs(a.x + a.width / 2 - (b.x + b.width / 2));
+            const overlapY = (a.height + b.height) / 2 - Math.abs(a.y + a.height / 2 - (b.y + b.height / 2));
+
+            if (overlapX > 0 && overlapY > 0) {
+              if (overlapX < overlapY) {
+                const push = overlapX / 2;
+                if (a.x < b.x) {
+                  a.x -= push;
+                  b.x += push;
+                } else {
+                  a.x += push;
+                  b.x -= push;
+                }
+                const temp = a.vx;
+                a.vx = b.vx;
+                b.vx = temp;
+              } else {
+                const push = overlapY / 2;
+                if (a.y < b.y) {
+                  a.y -= push;
+                  b.y += push;
+                } else {
+                  a.y += push;
+                  b.y -= push;
+                }
+                const temp = a.vy;
+                a.vy = b.vy;
+                b.vy = temp;
+              }
             }
           }
-          
-          // Apply position and rotation (only if not being hovered)
-          if (!item.matches(':hover')) {
-            item.style.left = physicsData.x + 'px';
-            item.style.top = physicsData.y + 'px';
-            item.style.transform = `rotate(${physicsData.rotation}deg)`;
+        }
+      }
+    };
+
+    const animateAll = () => {
+      activeItems.forEach(item => {
+        const physicsData = item.physicsData;
+
+        physicsData.vy += physicsData.gravity;
+
+        physicsData.x += physicsData.vx;
+        physicsData.y += physicsData.vy;
+        physicsData.rotation += physicsData.rotationSpeed;
+
+        if (physicsData.x <= 0 || physicsData.x >= containerWidth - physicsData.width) {
+          physicsData.vx *= -physicsData.bounce;
+          physicsData.x = Math.max(0, Math.min(containerWidth - physicsData.width, physicsData.x));
+        }
+
+        if (physicsData.y >= physicsData.groundY) {
+          physicsData.vy *= -physicsData.bounce;
+          physicsData.vx *= physicsData.friction;
+          physicsData.rotationSpeed *= physicsData.friction;
+          physicsData.y = physicsData.groundY;
+
+          if (Math.abs(physicsData.vy) < 2) {
+            physicsData.vy = 0;
           }
-          
-          // Continue animation if still moving
-          if (Math.abs(physicsData.vx) > 0.3 || Math.abs(physicsData.vy) > 0.3 || physicsData.y < physicsData.groundY) {
-            requestAnimationFrame(animate);
-          }
-        };
-        
-        requestAnimationFrame(animate);
-      }, index * 500 + Math.random() * 2000); // Staggered start times
-    });
-    
+        }
+      });
+
+      resolveCollisions();
+
+      activeItems.forEach(item => {
+        const physicsData = item.physicsData;
+        if (!item.matches(':hover')) {
+          item.style.left = physicsData.x + 'px';
+          item.style.top = physicsData.y + 'px';
+          item.style.transform = `rotate(${physicsData.rotation}deg)`;
+        }
+      });
+
+      requestAnimationFrame(animateAll);
+    };
+
+    requestAnimationFrame(animateAll);
+
     // Start window shake detection
-    setInterval(detectWindowShake, 50); // Check every 50ms
+    requestAnimationFrame(shakeLoop);
   };
 
   // Setup item event listeners

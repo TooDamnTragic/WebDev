@@ -502,7 +502,6 @@ body.show-content .edu-module{
 }
 
 .gravity-item.minor-activity {
-  width: 280px;
   padding: 1.5rem;
   opacity: 0.95;
   font-size: 0.98rem;
@@ -578,6 +577,20 @@ body.education-page{ overflow-x:hidden; }
   Typography + hover colour
 ───────────────────────────────────────────────*/
 .items a{ color:inherit; text-decoration:none; }
+.link-button{
+  background:none;
+  border:none;
+  padding:0;
+  font:inherit;
+  color:inherit;
+  text-decoration:underline;
+  cursor:pointer;
+}
+.link-button:hover,
+.link-button:focus{
+  color:#ffffff;
+  text-decoration:underline;
+}
 
 .items h2,
 .items h3,
