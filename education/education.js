@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const body = document.body;
   const defaultBg = getComputedStyle(body).background;
   
-  const extracurricularOverlay = document.querySelector('.extracurricular-overlay');
   const gravityItems = document.querySelectorAll('.gravity-item');
   
   // Mobile detection
@@ -151,27 +150,29 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isMobile()) return; // Skip gravity on mobile for performance
     
     const gravityContainer = document.querySelector('.gravity-container');
+    if (!gravityContainer) return;
+    
     const containerRect = gravityContainer.getBoundingClientRect();
-    const containerHeight = window.innerHeight;
-    const containerWidth = containerRect.width;
+    const containerHeight = gravityContainer.offsetHeight;
+    const containerWidth = gravityContainer.offsetWidth;
     
     gravityItems.forEach((item, index) => {
-      // Set initial random positions
+      // Set initial random positions at the top
       const initialX = Math.random() * (containerWidth - 200);
-      const initialY = Math.random() * 200 - 100; // Start above or slightly below
+      const initialY = -100 - Math.random() * 200; // Start above container
       
       // Physics properties
       let x = initialX;
       let y = initialY;
-      let vx = (Math.random() - 0.5) * 4; // Random horizontal velocity
+      let vx = (Math.random() - 0.5) * 6; // Random horizontal velocity
       let vy = Math.random() * 2; // Small initial downward velocity
       let rotation = Math.random() * 360;
-      let rotationSpeed = (Math.random() - 0.5) * 4;
+      let rotationSpeed = (Math.random() - 0.5) * 6;
       
-      const gravity = 0.3;
-      const bounce = 0.6;
-      const friction = 0.98;
-      const groundY = containerHeight - 100 - (Math.random() * 50); // Vary ground level
+      const gravity = 0.4;
+      const bounce = 0.7;
+      const friction = 0.95;
+      const groundY = containerHeight - item.offsetHeight - 20; // Ground level
       
       // Set initial position
       item.style.position = 'absolute';
@@ -205,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
             y = groundY;
             
             // Stop bouncing when velocity is very low
-            if (Math.abs(vy) < 0.5) {
+            if (Math.abs(vy) < 1) {
               vy = 0;
             }
           }
@@ -222,7 +223,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
         
         requestAnimationFrame(animate);
-      }, index * 200 + Math.random() * 1000); // Staggered start times
+      }, index * 300 + Math.random() * 1000); // Staggered start times
     });
   };
 
@@ -305,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupItemListeners(item, false);
   });
   
-  document.querySelectorAll('.extracurricular-overlay .item').forEach(item => {
+  document.querySelectorAll('.extracurricular-section .item').forEach(item => {
     setupItemListeners(item, true);
   });
 
@@ -330,29 +331,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Scroll-based overlay transition
-  const handleScroll = debounce(() => {
-    const scrollY = window.scrollY;
-    const windowHeight = window.innerHeight;
-    const curricularHeight = document.querySelector('.curricular-section').offsetHeight;
-    
-    // Calculate overlay visibility based on scroll
-    const overlayTrigger = curricularHeight * 0.7; // Start showing overlay at 70% through curricular
-    const overlayProgress = Math.max(0, Math.min(1, (scrollY - overlayTrigger) / (windowHeight * 0.5)));
-    
-    // Apply overlay transform
-    extracurricularOverlay.style.transform = `translateY(${(1 - overlayProgress) * 100}%)`;
-    extracurricularOverlay.style.opacity = overlayProgress;
-    
-    // Update divider progress for curricular section
-    updateDividerProgress();
-    
-    // Initialize gravity when overlay becomes visible
-    if (overlayProgress > 0.5 && !gravityItems[0].style.position) {
-      initializeGravity();
-    }
-  }, 16);
-
   // Handle window resize
   const handleResize = debounce(() => {
     adjustInfoLayout();
@@ -372,27 +350,37 @@ document.addEventListener('DOMContentLoaded', () => {
   // Show content after initial load
   setTimeout(() => {
     document.body.classList.add('show-content');
+    // Initialize gravity after content is shown
+    setTimeout(() => {
+      initializeGravity();
+    }, 500);
   }, 1000);
 
-  const divider = document.querySelector('.divider');
-  const eduContainer = document.querySelector('.edu-container');
+  const dividers = document.querySelectorAll('.divider');
+  const eduContainers = document.querySelectorAll('.edu-container');
 
   const updateDividerProgress = () => {
-    if (!divider || !eduContainer) return;
-    const rect = eduContainer.getBoundingClientRect();
-    const viewport = window.innerHeight;
-    let progress = (viewport - rect.top) / (rect.height + viewport);
-    if (progress < 0) {
-      progress = 0;
-    } else if (progress > 1) {
-      progress = 1;
-    }
-    divider.style.setProperty('--progress', progress);
+    dividers.forEach((divider, index) => {
+      const container = eduContainers[index];
+      if (!container) return;
+      
+      const rect = container.getBoundingClientRect();
+      const viewport = window.innerHeight;
+      let progress = (viewport - rect.top) / (rect.height + viewport);
+      
+      if (progress < 0) {
+        progress = 0;
+      } else if (progress > 1) {
+        progress = 1;
+      }
+      
+      divider.style.setProperty('--progress', progress);
+    });
   };
 
-  window.addEventListener('scroll', handleScroll);
+  window.addEventListener('scroll', debounce(updateDividerProgress, 16));
   window.addEventListener('resize', handleResize);
-  handleScroll();
+  updateDividerProgress();
 
   // Intersection Observer for reveal animations
   const observer = new IntersectionObserver(entries => {
