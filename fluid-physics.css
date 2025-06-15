@@ -1,0 +1,394 @@
+/* Fluid Physics Styles */
+#fluidContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+#fluidCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.8;
+}
+
+#bubbleContainer,
+#dropletContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Enhanced Glue Styles */
+.glue {
+  position: absolute;
+  top: 50vmin;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40vmin;
+  height: 40vmin;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at var(--light-x, 30%) var(--light-y, 30%),
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(200, 230, 255, 0.4) 20%,
+    rgba(150, 200, 255, 0.3) 40%,
+    rgba(100, 150, 255, 0.2) 60%,
+    rgba(50, 100, 255, 0.1) 80%,
+    rgba(0, 50, 255, 0.05) 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+  filter: blur(0.5px) drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+  transition: all 0.1s ease-out;
+}
+
+.glue::before {
+  content: '';
+  position: absolute;
+  top: 10%;
+  left: 15%;
+  width: 25%;
+  height: 25%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  filter: blur(1px);
+  animation: bubble1 4s ease-in-out infinite;
+}
+
+.glue::after {
+  content: '';
+  position: absolute;
+  top: 60%;
+  right: 20%;
+  width: 15%;
+  height: 15%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(255, 255, 255, 0.2) 50%,
+    transparent 100%
+  );
+  filter: blur(0.5px);
+  animation: bubble2 3s ease-in-out infinite reverse;
+}
+
+@keyframes bubble1 {
+  0%, 100% {
+    transform: scale(1) translate(0, 0);
+    opacity: 0.8;
+  }
+  25% {
+    transform: scale(1.2) translate(5px, -3px);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(0.9) translate(-3px, 2px);
+    opacity: 0.9;
+  }
+  75% {
+    transform: scale(1.1) translate(2px, -5px);
+    opacity: 0.7;
+  }
+}
+
+@keyframes bubble2 {
+  0%, 100% {
+    transform: scale(1) translate(0, 0);
+    opacity: 0.6;
+  }
+  33% {
+    transform: scale(0.8) translate(-4px, 3px);
+    opacity: 0.8;
+  }
+  66% {
+    transform: scale(1.3) translate(2px, -2px);
+    opacity: 0.4;
+  }
+}
+
+/* Fluid Strand Styles */
+.fluid-strand {
+  position: absolute;
+  background: linear-gradient(
+    var(--strand-angle, 45deg),
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 10%,
+    rgba(200, 230, 255, 0.4) 30%,
+    rgba(150, 200, 255, 0.5) 50%,
+    rgba(200, 230, 255, 0.4) 70%,
+    rgba(255, 255, 255, 0.3) 90%,
+    transparent 100%
+  );
+  border-radius: 50px;
+  filter: blur(0.5px) drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.7;
+  animation: fluidFlow 2s ease-in-out infinite;
+}
+
+@keyframes fluidFlow {
+  0%, 100% {
+    filter: blur(0.5px) drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
+    opacity: 0.7;
+  }
+  50% {
+    filter: blur(1px) drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
+    opacity: 0.9;
+  }
+}
+
+/* Bubble Styles */
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0.4) 30%,
+    rgba(200, 230, 255, 0.3) 60%,
+    rgba(150, 200, 255, 0.1) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  filter: blur(0.5px) drop-shadow(0 0 3px rgba(255, 255, 255, 0.2));
+  pointer-events: none;
+  animation: bubbleFloat 3s ease-in-out infinite;
+}
+
+.bubble::before {
+  content: '';
+  position: absolute;
+  top: 15%;
+  left: 20%;
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  filter: blur(1px);
+}
+
+@keyframes bubbleFloat {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.8;
+  }
+  25% {
+    transform: translateY(-5px) scale(1.05);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-8px) scale(0.95);
+    opacity: 0.9;
+  }
+  75% {
+    transform: translateY(-3px) scale(1.02);
+    opacity: 0.7;
+  }
+}
+
+/* Droplet Styles */
+.droplet {
+  position: absolute;
+  width: 8px;
+  height: 12px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(200, 230, 255, 0.6) 40%,
+    rgba(150, 200, 255, 0.4) 80%,
+    transparent 100%
+  );
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  filter: blur(0.5px) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  pointer-events: none;
+  animation: dropletFall linear;
+}
+
+.droplet::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 30%;
+  width: 40%;
+  height: 40%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  filter: blur(0.5px);
+}
+
+@keyframes dropletFall {
+  0% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100vh) rotate(180deg);
+  }
+}
+
+/* Enhanced Section Styles for Physics */
+.section {
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: transform;
+}
+
+.section.physics-active {
+  transition: none;
+}
+
+/* Refraction Effect */
+.refraction-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 25%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.1) 75%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  animation: refraction 4s ease-in-out infinite;
+}
+
+@keyframes refraction {
+  0%, 100% {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translateX(100%);
+  }
+}
+
+/* Caustic Light Effects */
+.caustic-light {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(200, 230, 255, 0.2) 30%,
+    transparent 60%
+  );
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.section:hover .caustic-light {
+  opacity: 1;
+}
+
+/* Surface Tension Effects */
+.surface-tension {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    transparent 30%,
+    transparent 70%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  pointer-events: none;
+  opacity: 0.5;
+  animation: surfaceTension 3s ease-in-out infinite;
+}
+
+@keyframes surfaceTension {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.8;
+  }
+}
+
+/* Viscosity Animation */
+.viscous-flow {
+  position: absolute;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.6),
+    rgba(200, 230, 255, 0.4),
+    transparent
+  );
+  border-radius: 1px;
+  pointer-events: none;
+  animation: viscousFlow linear;
+}
+
+@keyframes viscousFlow {
+  0% {
+    height: 0;
+    opacity: 1;
+  }
+  100% {
+    height: var(--flow-length, 100px);
+    opacity: 0;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .glue {
+    width: 60vmin;
+    height: 60vmin;
+  }
+  
+  .fluid-strand {
+    filter: blur(1px);
+  }
+  
+  .bubble {
+    filter: blur(1px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble,
+  .droplet,
+  .glue::before,
+  .glue::after,
+  .fluid-strand,
+  .refraction-overlay,
+  .surface-tension {
+    animation: none;
+  }
+  
+  .caustic-light {
+    transition: none;
+  }
+}

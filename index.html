@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="fluid-physics.css">
 </head>
 <body class="index-page">
     <div id="loader">
@@ -22,15 +23,26 @@
       </div>
     </div>
   </div>
-  <div class="initials">MB</div>
-  <div class="glue"></div>
-  <div class="nav">
-    <a href="education/education.html" class="section education">Education</a>
-    <a href="works.html" class="section works">Works</a>
-    <a href="contact.html" class="section contact">Contact</a>
-    <a href="miseducation.html" class="section miseducation">Miseducation</a>
+  
+  <!-- Fluid Physics Container -->
+  <div id="fluidContainer">
+    <canvas id="fluidCanvas"></canvas>
+    <div id="bubbleContainer"></div>
+    <div id="dropletContainer"></div>
   </div>
+  
+  <div class="initials">MB</div>
+  <div class="glue" id="centralGlue"></div>
+  
+  <div class="nav" id="navContainer">
+    <a href="education/education.html" class="section education" data-direction="top-left">Education</a>
+    <a href="works.html" class="section works" data-direction="top-right">Works</a>
+    <a href="contact.html" class="section contact" data-direction="bottom-left">Contact</a>
+    <a href="miseducation.html" class="section miseducation" data-direction="bottom-right">Miseducation</a>
+  </div>
+  
   <script src="script.js"></script>
+  <script src="fluid-physics.js"></script>
   <script src="transition.js"></script>
 </body>
 </html>
