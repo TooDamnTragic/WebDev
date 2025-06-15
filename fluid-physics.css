@@ -1,4 +1,4 @@
-/* Fluid Physics Styles */
+/* 3D Fluid Physics Styles */
 #fluidContainer {
   position: fixed;
   top: 0;
@@ -8,6 +8,8 @@
   pointer-events: none;
   z-index: 2;
   overflow: hidden;
+  perspective: 1000px;
+  transform-style: preserve-3d;
 }
 
 #fluidCanvas {
@@ -16,379 +18,403 @@
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
-#bubbleContainer,
-#dropletContainer {
+#particleContainer {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  transform-style: preserve-3d;
 }
 
-/* Enhanced Glue Styles */
-.glue {
+/* 3D Fluid Particle */
+.fluid-particle {
   position: absolute;
-  top: 50vmin;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 40vmin;
-  height: 40vmin;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle at var(--light-x, 30%) var(--light-y, 30%),
-    rgba(255, 255, 255, 0.6) 0%,
-    rgba(200, 230, 255, 0.4) 20%,
-    rgba(150, 200, 255, 0.3) 40%,
-    rgba(100, 150, 255, 0.2) 60%,
-    rgba(50, 100, 255, 0.1) 80%,
-    rgba(0, 50, 255, 0.05) 100%
-  );
-  pointer-events: none;
-  z-index: 1;
-  filter: blur(0.5px) drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
-  transition: all 0.1s ease-out;
-}
-
-.glue::before {
-  content: '';
-  position: absolute;
-  top: 10%;
-  left: 15%;
-  width: 25%;
-  height: 25%;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.8) 0%,
-    rgba(255, 255, 255, 0.4) 50%,
-    transparent 100%
-  );
-  filter: blur(1px);
-  animation: bubble1 4s ease-in-out infinite;
-}
-
-.glue::after {
-  content: '';
-  position: absolute;
-  top: 60%;
-  right: 20%;
-  width: 15%;
-  height: 15%;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.6) 0%,
-    rgba(255, 255, 255, 0.2) 50%,
-    transparent 100%
-  );
-  filter: blur(0.5px);
-  animation: bubble2 3s ease-in-out infinite reverse;
-}
-
-@keyframes bubble1 {
-  0%, 100% {
-    transform: scale(1) translate(0, 0);
-    opacity: 0.8;
-  }
-  25% {
-    transform: scale(1.2) translate(5px, -3px);
-    opacity: 0.6;
-  }
-  50% {
-    transform: scale(0.9) translate(-3px, 2px);
-    opacity: 0.9;
-  }
-  75% {
-    transform: scale(1.1) translate(2px, -5px);
-    opacity: 0.7;
-  }
-}
-
-@keyframes bubble2 {
-  0%, 100% {
-    transform: scale(1) translate(0, 0);
-    opacity: 0.6;
-  }
-  33% {
-    transform: scale(0.8) translate(-4px, 3px);
-    opacity: 0.8;
-  }
-  66% {
-    transform: scale(1.3) translate(2px, -2px);
-    opacity: 0.4;
-  }
-}
-
-/* Fluid Strand Styles */
-.fluid-strand {
-  position: absolute;
-  background: linear-gradient(
-    var(--strand-angle, 45deg),
-    transparent 0%,
-    rgba(255, 255, 255, 0.3) 10%,
-    rgba(200, 230, 255, 0.4) 30%,
-    rgba(150, 200, 255, 0.5) 50%,
-    rgba(200, 230, 255, 0.4) 70%,
-    rgba(255, 255, 255, 0.3) 90%,
-    transparent 100%
-  );
-  border-radius: 50px;
-  filter: blur(0.5px) drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.7;
-  animation: fluidFlow 2s ease-in-out infinite;
-}
-
-@keyframes fluidFlow {
-  0%, 100% {
-    filter: blur(0.5px) drop-shadow(0 0 5px rgba(255, 255, 255, 0.2));
-    opacity: 0.7;
-  }
-  50% {
-    filter: blur(1px) drop-shadow(0 0 10px rgba(255, 255, 255, 0.4));
-    opacity: 0.9;
-  }
-}
-
-/* Bubble Styles */
-.bubble {
-  position: absolute;
+  width: var(--size, 8px);
+  height: var(--size, 8px);
   border-radius: 50%;
   background: radial-gradient(
     circle at 30% 30%,
-    rgba(255, 255, 255, 0.8) 0%,
-    rgba(255, 255, 255, 0.4) 30%,
-    rgba(200, 230, 255, 0.3) 60%,
-    rgba(150, 200, 255, 0.1) 100%
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(200, 230, 255, 0.7) 30%,
+    rgba(150, 200, 255, 0.5) 60%,
+    rgba(100, 150, 255, 0.3) 80%,
+    rgba(50, 100, 255, 0.1) 100%
   );
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  filter: blur(0.5px) drop-shadow(0 0 3px rgba(255, 255, 255, 0.2));
-  pointer-events: none;
-  animation: bubbleFloat 3s ease-in-out infinite;
+  box-shadow: 
+    0 0 4px rgba(255, 255, 255, 0.6),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.8),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.2);
+  transform-style: preserve-3d;
+  transform: translate3d(var(--x, 0px), var(--y, 0px), var(--z, 0px));
+  transition: none;
+  will-change: transform;
 }
 
-.bubble::before {
+.fluid-particle::before {
   content: '';
   position: absolute;
   top: 15%;
   left: 20%;
-  width: 30%;
-  height: 30%;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.6);
-  filter: blur(1px);
-}
-
-@keyframes bubbleFloat {
-  0%, 100% {
-    transform: translateY(0) scale(1);
-    opacity: 0.8;
-  }
-  25% {
-    transform: translateY(-5px) scale(1.05);
-    opacity: 0.6;
-  }
-  50% {
-    transform: translateY(-8px) scale(0.95);
-    opacity: 0.9;
-  }
-  75% {
-    transform: translateY(-3px) scale(1.02);
-    opacity: 0.7;
-  }
-}
-
-/* Droplet Styles */
-.droplet {
-  position: absolute;
-  width: 8px;
-  height: 12px;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(255, 255, 255, 0.8) 0%,
-    rgba(200, 230, 255, 0.6) 40%,
-    rgba(150, 200, 255, 0.4) 80%,
-    transparent 100%
-  );
-  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  filter: blur(0.5px) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-  pointer-events: none;
-  animation: dropletFall linear;
-}
-
-.droplet::before {
-  content: '';
-  position: absolute;
-  top: 20%;
-  left: 30%;
   width: 40%;
   height: 40%;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.9);
   filter: blur(0.5px);
+  transform: translateZ(1px);
 }
 
-@keyframes dropletFall {
+/* Metaball Effect for Fluid Connections */
+.metaball-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  filter: blur(2px) contrast(20);
+  mix-blend-mode: screen;
+}
+
+.metaball {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(200, 230, 255, 0.6) 40%,
+    rgba(150, 200, 255, 0.4) 70%,
+    transparent 100%
+  );
+  transform: translate3d(var(--x, 0px), var(--y, 0px), var(--z, 0px));
+  width: var(--size, 20px);
+  height: var(--size, 20px);
+  will-change: transform;
+}
+
+/* 3D Fluid Strand */
+.fluid-strand-3d {
+  position: absolute;
+  background: linear-gradient(
+    var(--angle, 0deg),
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 10%,
+    rgba(200, 230, 255, 0.6) 30%,
+    rgba(150, 200, 255, 0.8) 50%,
+    rgba(200, 230, 255, 0.6) 70%,
+    rgba(255, 255, 255, 0.4) 90%,
+    transparent 100%
+  );
+  border-radius: 50px;
+  transform-style: preserve-3d;
+  transform: translate3d(var(--x, 0px), var(--y, 0px), var(--z, 0px)) 
+             rotateX(var(--rx, 0deg)) 
+             rotateY(var(--ry, 0deg)) 
+             rotateZ(var(--rz, 0deg));
+  width: var(--width, 4px);
+  height: var(--height, 100px);
+  box-shadow: 
+    0 0 8px rgba(255, 255, 255, 0.4),
+    inset 0 0 4px rgba(255, 255, 255, 0.6);
+  opacity: var(--opacity, 0.8);
+  will-change: transform;
+}
+
+.fluid-strand-3d::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateX(-50%) translateZ(1px);
+  border-radius: 1px;
+  filter: blur(0.5px);
+}
+
+/* 3D Bubble */
+.bubble-3d {
+  position: absolute;
+  width: var(--size, 16px);
+  height: var(--size, 16px);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 25% 25%,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(255, 255, 255, 0.6) 20%,
+    rgba(200, 230, 255, 0.4) 40%,
+    rgba(150, 200, 255, 0.2) 70%,
+    rgba(100, 150, 255, 0.1) 90%,
+    transparent 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transform-style: preserve-3d;
+  transform: translate3d(var(--x, 0px), var(--y, 0px), var(--z, 0px)) 
+             rotateX(var(--rx, 0deg)) 
+             rotateY(var(--ry, 0deg));
+  box-shadow: 
+    0 0 6px rgba(255, 255, 255, 0.3),
+    inset 2px 2px 4px rgba(255, 255, 255, 0.7),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.1);
+  animation: bubble3DFloat var(--duration, 4s) ease-in-out infinite;
+  will-change: transform;
+}
+
+.bubble-3d::before {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 25%;
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateZ(2px);
+  filter: blur(1px);
+}
+
+.bubble-3d::after {
+  content: '';
+  position: absolute;
+  top: 60%;
+  right: 30%;
+  width: 15%;
+  height: 15%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  transform: translateZ(1px);
+  filter: blur(0.5px);
+}
+
+@keyframes bubble3DFloat {
+  0%, 100% {
+    transform: translate3d(var(--x, 0px), var(--y, 0px), var(--z, 0px)) 
+               rotateX(var(--rx, 0deg)) 
+               rotateY(var(--ry, 0deg)) 
+               scale(1);
+  }
+  25% {
+    transform: translate3d(var(--x, 0px), calc(var(--y, 0px) - 5px), calc(var(--z, 0px) + 10px)) 
+               rotateX(calc(var(--rx, 0deg) + 5deg)) 
+               rotateY(calc(var(--ry, 0deg) + 10deg)) 
+               scale(1.05);
+  }
+  50% {
+    transform: translate3d(var(--x, 0px), calc(var(--y, 0px) - 8px), calc(var(--z, 0px) + 15px)) 
+               rotateX(calc(var(--rx, 0deg) + 10deg)) 
+               rotateY(calc(var(--ry, 0deg) + 20deg)) 
+               scale(0.95);
+  }
+  75% {
+    transform: translate3d(var(--x, 0px), calc(var(--y, 0px) - 3px), calc(var(--z, 0px) + 5px)) 
+               rotateX(calc(var(--rx, 0deg) + 3deg)) 
+               rotateY(calc(var(--ry, 0deg) + 15deg)) 
+               scale(1.02);
+  }
+}
+
+/* 3D Droplet */
+.droplet-3d {
+  position: absolute;
+  width: var(--width, 6px);
+  height: var(--height, 10px);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(200, 230, 255, 0.7) 30%,
+    rgba(150, 200, 255, 0.5) 60%,
+    rgba(100, 150, 255, 0.3) 80%,
+    transparent 100%
+  );
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  transform-style: preserve-3d;
+  transform: translate3d(var(--x, 0px), var(--y, 0px), var(--z, 0px)) 
+             rotateX(var(--rx, 0deg)) 
+             rotateY(var(--ry, 0deg)) 
+             rotateZ(var(--rz, 0deg));
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.8);
+  animation: droplet3DFall linear var(--duration, 3s);
+  will-change: transform;
+}
+
+.droplet-3d::before {
+  content: '';
+  position: absolute;
+  top: 25%;
+  left: 35%;
+  width: 30%;
+  height: 30%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateZ(1px);
+  filter: blur(0.5px);
+}
+
+@keyframes droplet3DFall {
   0% {
     opacity: 1;
-    transform: translateY(0) rotate(0deg);
+    transform: translate3d(var(--x, 0px), var(--y, 0px), var(--z, 0px)) 
+               rotateX(0deg) 
+               rotateY(0deg) 
+               rotateZ(0deg);
   }
   100% {
     opacity: 0;
-    transform: translateY(100vh) rotate(180deg);
+    transform: translate3d(var(--x, 0px), calc(var(--y, 0px) + 100vh), calc(var(--z, 0px) - 50px)) 
+               rotateX(180deg) 
+               rotateY(360deg) 
+               rotateZ(180deg);
   }
 }
 
-/* Enhanced Section Styles for Physics */
+/* Surface Tension Effect */
+.surface-tension-3d {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at var(--cx, 50%) var(--cy, 50%),
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(200, 230, 255, 0.05) 30%,
+    transparent 60%
+  );
+  transform-style: preserve-3d;
+  transform: translateZ(var(--z, 0px));
+  border-radius: 50%;
+  animation: surfaceTension3D 3s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes surfaceTension3D {
+  0%, 100% {
+    transform: translateZ(var(--z, 0px)) scale(1) rotateX(0deg);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateZ(calc(var(--z, 0px) + 10px)) scale(1.05) rotateX(5deg);
+    opacity: 0.6;
+  }
+}
+
+/* Caustic Light 3D */
+.caustic-light-3d {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(200, 230, 255, 0.3) 20%,
+    rgba(150, 200, 255, 0.2) 40%,
+    transparent 70%
+  );
+  transform-style: preserve-3d;
+  transform: translateZ(var(--z, 5px)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.1s ease;
+  will-change: transform, opacity;
+}
+
+/* Refraction Effect 3D */
+.refraction-3d {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    var(--angle, 45deg),
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(200, 230, 255, 0.3) 40%,
+    rgba(255, 255, 255, 0.2) 60%,
+    transparent 80%
+  );
+  transform-style: preserve-3d;
+  transform: translateZ(var(--z, 2px)) rotateZ(var(--rz, 0deg));
+  border-radius: inherit;
+  opacity: 0;
+  animation: refraction3D 4s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes refraction3D {
+  0%, 100% {
+    opacity: 0;
+    transform: translateZ(var(--z, 2px)) rotateZ(var(--rz, 0deg)) translateX(-100%);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateZ(calc(var(--z, 2px) + 5px)) rotateZ(calc(var(--rz, 0deg) + 10deg)) translateX(100%);
+  }
+}
+
+/* Enhanced Section Styles for 3D Physics */
 .section {
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   will-change: transform;
+  transform-style: preserve-3d;
 }
 
 .section.physics-active {
   transition: none;
 }
 
-/* Refraction Effect */
-.refraction-overlay {
+/* Add 3D effects to sections */
+.section::after {
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    45deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.1) 25%,
-    transparent 50%,
-    rgba(255, 255, 255, 0.1) 75%,
-    transparent 100%
-  );
-  border-radius: inherit;
-  pointer-events: none;
-  opacity: 0;
-  animation: refraction 4s ease-in-out infinite;
-}
-
-@keyframes refraction {
-  0%, 100% {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-  50% {
-    opacity: 0.6;
-    transform: translateX(100%);
-  }
-}
-
-/* Caustic Light Effects */
-.caustic-light {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(
-    circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(255, 255, 255, 0.3) 0%,
-    rgba(200, 230, 255, 0.2) 30%,
-    transparent 60%
-  );
-  border-radius: inherit;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.section:hover .caustic-light {
-  opacity: 1;
-}
-
-/* Surface Tension Effects */
-.surface-tension {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.2) 0%,
-    transparent 30%,
-    transparent 70%,
-    rgba(255, 255, 255, 0.1) 100%
-  );
-  pointer-events: none;
-  opacity: 0.5;
-  animation: surfaceTension 3s ease-in-out infinite;
-}
-
-@keyframes surfaceTension {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.5;
-  }
-  50% {
-    transform: scale(1.02);
-    opacity: 0.8;
-  }
-}
-
-/* Viscosity Animation */
-.viscous-flow {
-  position: absolute;
-  width: 2px;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.6),
-    rgba(200, 230, 255, 0.4),
-    transparent
-  );
-  border-radius: 1px;
-  pointer-events: none;
-  animation: viscousFlow linear;
-}
-
-@keyframes viscousFlow {
-  0% {
-    height: 0;
-    opacity: 1;
-  }
-  100% {
-    height: var(--flow-length, 100px);
-    opacity: 0;
-  }
+  border-radius: 50%;
+  background: inherit;
+  transform: translateZ(-10px) scale(0.9);
+  opacity: 0.3;
+  filter: blur(2px);
+  z-index: -1;
 }
 
 /* Responsive Adjustments */
 @media (max-width: 768px) {
-  .glue {
-    width: 60vmin;
-    height: 60vmin;
+  .fluid-particle {
+    --size: 6px;
   }
   
-  .fluid-strand {
-    filter: blur(1px);
+  .bubble-3d {
+    --size: 12px;
   }
   
-  .bubble {
-    filter: blur(1px);
+  .fluid-strand-3d {
+    --width: 3px;
+  }
+  
+  .droplet-3d {
+    --width: 4px;
+    --height: 8px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bubble,
-  .droplet,
-  .glue::before,
-  .glue::after,
-  .fluid-strand,
-  .refraction-overlay,
-  .surface-tension {
+  .bubble-3d,
+  .droplet-3d,
+  .surface-tension-3d,
+  .refraction-3d {
     animation: none;
   }
   
-  .caustic-light {
+  .caustic-light-3d {
     transition: none;
+  }
+  
+  .fluid-particle,
+  .metaball,
+  .fluid-strand-3d {
+    will-change: auto;
   }
 }
