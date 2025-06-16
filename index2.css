@@ -38,7 +38,7 @@ body, html {
   mix-blend-mode: screen;
 }
 
-/* Main Text - Removed glow animation to prevent interference */
+/* Main Text with Ripple Distortion Response */
 .text-container {
   position: absolute;
   top: 50%;
@@ -46,6 +46,7 @@ body, html {
   transform: translate(-50%, -50%);
   z-index: 3;
   pointer-events: none;
+  transition: filter 0.1s ease-out;
 }
 
 .main-text {
@@ -58,7 +59,24 @@ body, html {
     0 0 24px rgba(255, 0, 0, 0.2);
   letter-spacing: 0.1em;
   user-select: none;
-  /* Removed animation to prevent glow interference */
+  transition: transform 0.1s ease-out, filter 0.1s ease-out;
+  will-change: transform, filter;
+}
+
+/* Text distortion classes for ripple response */
+.text-distort-light {
+  transform: scale(1.01) skew(0.2deg, 0.1deg);
+  filter: blur(0.3px) hue-rotate(5deg);
+}
+
+.text-distort-medium {
+  transform: scale(1.02) skew(0.4deg, 0.2deg);
+  filter: blur(0.6px) hue-rotate(10deg);
+}
+
+.text-distort-heavy {
+  transform: scale(1.03) skew(0.6deg, 0.3deg);
+  filter: blur(0.9px) hue-rotate(15deg);
 }
 
 /* Ripple Container */
@@ -72,126 +90,223 @@ body, html {
   z-index: 1;
 }
 
-/* Optimized Ripple Effects */
-.ripple {
+/* Completely Remade Primary Ripple Effect */
+.ripple-primary {
   position: absolute;
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(255, 255, 255, 0.4) 0%,
-    rgba(0, 130, 247, 0.3) 40%,
-    rgba(0, 130, 247, 0.1) 70%,
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(0, 130, 247, 0.5) 20%,
+    rgba(0, 200, 255, 0.4) 40%,
+    rgba(0, 130, 247, 0.2) 70%,
+    rgba(255, 255, 255, 0.1) 85%,
     transparent 100%
   );
   pointer-events: none;
-  animation: rippleExpand var(--duration, 1.5s) ease-out forwards;
+  animation: ripplePrimaryExpand var(--duration, 2s) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
   transform: translate(-50%, -50%);
-  filter: blur(0.5px);
+  filter: blur(0.8px);
   mix-blend-mode: screen;
+  box-shadow: 
+    0 0 20px rgba(0, 130, 247, 0.3),
+    inset 0 0 15px rgba(255, 255, 255, 0.2);
 }
 
-@keyframes rippleExpand {
+@keyframes ripplePrimaryExpand {
   0% {
     width: 0;
     height: 0;
-    opacity: 0.8;
-  }
-  30% {
-    opacity: 0.6;
-  }
-  70% {
-    opacity: 0.3;
-  }
-  100% {
-    width: var(--size, 300px);
-    height: var(--size, 300px);
-    opacity: 0;
-  }
-}
-
-/* Smoother Water Ripple Effect */
-.water-ripple {
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    transparent 0%,
-    rgba(255, 255, 255, 0.05) 30%,
-    rgba(0, 130, 247, 0.15) 50%,
-    rgba(0, 130, 247, 0.1) 70%,
-    transparent 90%
-  );
-  pointer-events: none;
-  animation: waterRipple var(--duration, 2s) ease-out forwards;
-  transform: translate(-50%, -50%);
-  filter: blur(1px);
-  mix-blend-mode: overlay;
-}
-
-@keyframes waterRipple {
-  0% {
-    width: 0;
-    height: 0;
-    opacity: 0.8;
+    opacity: 0.9;
     filter: blur(0px);
+    transform: translate(-50%, -50%) scale(0.8);
   }
-  20% {
+  15% {
+    opacity: 0.8;
+    filter: blur(0.3px);
+    transform: translate(-50%, -50%) scale(0.95);
+  }
+  35% {
     opacity: 0.6;
-    filter: blur(0.5px);
+    filter: blur(0.6px);
+    transform: translate(-50%, -50%) scale(1.02);
   }
-  50% {
-    opacity: 0.4;
-    filter: blur(1px);
+  60% {
+    opacity: 0.3;
+    filter: blur(0.9px);
+    transform: translate(-50%, -50%) scale(1.01);
   }
-  80% {
-    opacity: 0.2;
-    filter: blur(1.5px);
+  85% {
+    opacity: 0.1;
+    filter: blur(1.2px);
+    transform: translate(-50%, -50%) scale(0.98);
   }
   100% {
     width: var(--size, 400px);
     height: var(--size, 400px);
     opacity: 0;
-    filter: blur(2px);
+    filter: blur(1.5px);
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 
-/* Reduced Chromatic Dispersion Effect */
-.chromatic-ripple {
+/* Remade Secondary Ripple with Enhanced Waves */
+.ripple-secondary {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 130, 247, 0.4);
+  background: transparent;
+  pointer-events: none;
+  animation: rippleSecondaryWave var(--duration, 2.5s) ease-out forwards;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 0 8px rgba(0, 130, 247, 0.4));
+  mix-blend-mode: overlay;
+}
+
+@keyframes rippleSecondaryWave {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.7;
+    border-width: 3px;
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  25% {
+    opacity: 0.6;
+    border-width: 2.5px;
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+  50% {
+    opacity: 0.4;
+    border-width: 2px;
+    transform: translate(-50%, -50%) rotate(180deg);
+  }
+  75% {
+    opacity: 0.2;
+    border-width: 1.5px;
+    transform: translate(-50%, -50%) rotate(270deg);
+  }
+  100% {
+    width: var(--size, 350px);
+    height: var(--size, 350px);
+    opacity: 0;
+    border-width: 1px;
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Remade Chromatic Dispersion Ripple */
+.ripple-chromatic {
   position: absolute;
   border-radius: 50%;
   background: conic-gradient(
     from 0deg,
-    rgba(255, 0, 0, 0.15),
-    rgba(255, 255, 0, 0.15),
-    rgba(0, 255, 0, 0.15),
-    rgba(0, 255, 255, 0.15),
-    rgba(0, 0, 255, 0.15),
-    rgba(255, 0, 255, 0.15),
-    rgba(255, 0, 0, 0.15)
+    rgba(255, 0, 0, 0.3),
+    rgba(255, 127, 0, 0.3),
+    rgba(255, 255, 0, 0.3),
+    rgba(0, 255, 0, 0.3),
+    rgba(0, 255, 255, 0.3),
+    rgba(0, 0, 255, 0.3),
+    rgba(127, 0, 255, 0.3),
+    rgba(255, 0, 255, 0.3),
+    rgba(255, 0, 0, 0.3)
   );
   pointer-events: none;
-  animation: chromaticExpand var(--duration, 2s) ease-out forwards;
+  animation: rippleChromaticSpin var(--duration, 3s) linear forwards;
   transform: translate(-50%, -50%);
-  filter: blur(1px);
+  filter: blur(1.2px);
   mix-blend-mode: color-dodge;
 }
 
-@keyframes chromaticExpand {
+@keyframes rippleChromaticSpin {
   0% {
     width: 0;
     height: 0;
-    opacity: 0.6;
-    transform: translate(-50%, -50%) rotate(0deg);
+    opacity: 0.8;
+    transform: translate(-50%, -50%) rotate(0deg) scale(0.9);
+    filter: blur(0.5px);
   }
-  50% {
+  30% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) rotate(180deg) scale(1.05);
+    filter: blur(0.8px);
+  }
+  60% {
     opacity: 0.3;
-    transform: translate(-50%, -50%) rotate(180deg);
+    transform: translate(-50%, -50%) rotate(360deg) scale(1.02);
+    filter: blur(1.1px);
   }
   100% {
-    width: var(--size, 200px);
-    height: var(--size, 200px);
+    width: var(--size, 300px);
+    height: var(--size, 300px);
     opacity: 0;
-    transform: translate(-50%, -50%) rotate(360deg);
+    transform: translate(-50%, -50%) rotate(540deg) scale(1);
+    filter: blur(1.5px);
+  }
+}
+
+/* New Turbulence Glow Effect with Doubled Duration */
+.turbulence-glow {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(0, 130, 247, 0.8) 0%,
+    rgba(0, 200, 255, 0.6) 30%,
+    rgba(255, 255, 255, 0.4) 60%,
+    rgba(0, 130, 247, 0.2) 80%,
+    transparent 100%
+  );
+  pointer-events: none;
+  animation: turbulenceGlowPulse var(--duration, 4s) ease-in-out forwards;
+  transform: translate(-50%, -50%);
+  filter: blur(2px);
+  mix-blend-mode: screen;
+  box-shadow: 
+    0 0 30px rgba(0, 130, 247, 0.6),
+    0 0 60px rgba(0, 130, 247, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+@keyframes turbulenceGlowPulse {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 1;
+    filter: blur(1px);
+    transform: translate(-50%, -50%) scale(0.7);
+  }
+  10% {
+    opacity: 0.9;
+    filter: blur(1.5px);
+    transform: translate(-50%, -50%) scale(0.85);
+  }
+  25% {
+    opacity: 0.8;
+    filter: blur(2px);
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  40% {
+    opacity: 0.6;
+    filter: blur(2.2px);
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  60% {
+    opacity: 0.4;
+    filter: blur(2.5px);
+    transform: translate(-50%, -50%) scale(1.02);
+  }
+  80% {
+    opacity: 0.15;
+    filter: blur(3px);
+    transform: translate(-50%, -50%) scale(0.98);
+  }
+  100% {
+    width: var(--size, 500px);
+    height: var(--size, 500px);
+    opacity: 0;
+    filter: blur(3.5px);
+    transform: translate(-50%, -50%) scale(1);
   }
 }
 
@@ -201,8 +316,10 @@ body, html {
     font-size: clamp(2rem, 10vw, 4rem);
   }
   
-  .ripple,
-  .water-ripple {
+  .ripple-primary,
+  .ripple-secondary,
+  .ripple-chromatic,
+  .turbulence-glow {
     --size: 250px;
   }
 }
@@ -213,17 +330,20 @@ body, html {
     letter-spacing: 0.05em;
   }
   
-  .ripple,
-  .water-ripple {
-    --size: 150px;
+  .ripple-primary,
+  .ripple-secondary,
+  .ripple-chromatic,
+  .turbulence-glow {
+    --size: 180px;
   }
 }
 
 /* Performance optimizations */
-.ripple,
-.water-ripple,
-.chromatic-ripple {
-  will-change: transform, opacity;
+.ripple-primary,
+.ripple-secondary,
+.ripple-chromatic,
+.turbulence-glow {
+  will-change: transform, opacity, filter;
   backface-visibility: hidden;
   transform-style: preserve-3d;
 }
@@ -231,4 +351,8 @@ body, html {
 #rippleCanvas,
 #trailCanvas {
   will-change: contents;
+}
+
+.text-container {
+  will-change: transform, filter;
 }
