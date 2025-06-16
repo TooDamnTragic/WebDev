@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
       loader.classList.add('hide');
       setTimeout(() => loader.remove(), 6000);
     }
-  }, 1200);
+  }, 3200);
 
 document.querySelectorAll('.section').forEach(link => {
   const text = link.textContent.trim().split('');

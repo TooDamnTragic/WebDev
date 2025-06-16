@@ -9,12 +9,17 @@ body,html{
   color:#f0ead6;
 }
 @font-face {
-  font-family: 'Hackney'; 
+  font-family: 'Hackney';
   src: url('fonts/ArchesDemoRegular-gwJB5.otf') format('truetype'); /* Adjust the file name and path as needed */
   font-weight: normal; /*  Or 400 */
   font-style: normal;
 }
-
+@font-face {
+  font-family: 'DTGetai';
+  src: url('fonts/DTGetaiGroteskDisplay-Black.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
 body.index-page{
   overflow:hidden;
 }
@@ -232,6 +237,12 @@ body.education-page.dimmed::before{
   font-size:clamp(2rem, 10vw, 6rem);
   opacity:0;
   animation:fadeIn 1s forwards;
+}
+.education-page h1,
+.education-page h2,
+.education-page h3,
+.education-page h4 {
+  font-family: 'DTGetai', 'Hackney', sans-serif;
 }
 
 .edu-module{
