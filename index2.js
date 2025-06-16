@@ -3,7 +3,6 @@ class TooDamnTragicEffects {
     this.rippleCanvas = document.getElementById('rippleCanvas');
     this.trailCanvas = document.getElementById('trailCanvas');
     this.rippleContainer = document.getElementById('rippleContainer');
-    this.glowContainer = document.getElementById('glowContainer');
     
     this.rippleCtx = this.rippleCanvas.getContext('2d');
     this.trailCtx = this.trailCanvas.getContext('2d');
@@ -16,6 +15,7 @@ class TooDamnTragicEffects {
     
     // Trail particles
     this.trailParticles = [];
+    this.turbulenceParticles = [];
     this.maxTrailParticles = 50;
     
     // Ripple effects
@@ -142,7 +142,7 @@ class TooDamnTragicEffects {
     this.ripples.push(ripple);
   }
   
-  createChromaticRipple(x, y) {
+ createChromaticRipple(x, y) {
     const ripple = document.createElement('div');
     ripple.className = 'chromatic-ripple';
     
@@ -164,7 +164,6 @@ class TooDamnTragicEffects {
   }
   
   createGlowTrail() {
-    // Create trail particle
     const particle = {
       x: this.mouseX,
       y: this.mouseY,
@@ -184,25 +183,7 @@ class TooDamnTragicEffects {
       this.trailParticles.shift();
     }
     
-    // Create DOM glow particle
-    const glowParticle = document.createElement('div');
-    glowParticle.className = 'glow-particle';
-    
-    const size = particle.size * this.settings.mouseDraw.radius * 2;
-    const lifetime = particle.maxLife;
-    
-    glowParticle.style.left = this.mouseX + 'px';
-    glowParticle.style.top = this.mouseY + 'px';
-    glowParticle.style.setProperty('--size', size + 'px');
-    glowParticle.style.setProperty('--lifetime', lifetime + 'ms');
-    
-    this.glowContainer.appendChild(glowParticle);
-    
-    setTimeout(() => {
-      if (glowParticle.parentNode) {
-        glowParticle.parentNode.removeChild(glowParticle);
-      }
-    }, lifetime);
+    // Particle will be rendered on canvas only
   }
   
   createTurbulenceParticles() {
@@ -215,31 +196,23 @@ class TooDamnTragicEffects {
       const particleCount = Math.floor(velocity * this.settings.mouseDraw.turbulence * 0.1);
       
       for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'turbulence-particle';
-        
         const angle = Math.random() * Math.PI * 2;
         const distance = 20 + Math.random() * 40;
         const dx = Math.cos(angle) * distance;
         const dy = Math.sin(angle) * distance;
-        
+
         const size = 2 + Math.random() * 6;
         const lifetime = 1000 + Math.random() * 2000;
-        
-        particle.style.left = this.mouseX + 'px';
-        particle.style.top = this.mouseY + 'px';
-        particle.style.setProperty('--size', size + 'px');
-        particle.style.setProperty('--lifetime', lifetime + 'ms');
-        particle.style.setProperty('--dx', dx + 'px');
-        particle.style.setProperty('--dy', dy + 'px');
-        
-        this.glowContainer.appendChild(particle);
-        
-        setTimeout(() => {
-          if (particle.parentNode) {
-            particle.parentNode.removeChild(particle);
-          }
-        }, lifetime);
+
+        this.turbulenceParticles.push({
+          x: this.mouseX,
+          y: this.mouseY,
+          dx,
+          dy,
+          size,
+          lifetime,
+          startTime: Date.now()
+        });
       }
     }
   }
@@ -261,6 +234,20 @@ class TooDamnTragicEffects {
       particle.vx *= this.settings.waterRipple.viscosity;
       particle.vy *= this.settings.waterRipple.viscosity;
       
+      return true;
+    });
+  }
+
+  updateTurbulenceParticles() {
+    const now = Date.now();
+
+    this.turbulenceParticles = this.turbulenceParticles.filter(p => {
+      const age = now - p.startTime;
+      const progress = age / p.lifetime;
+      if (progress >= 1) return false;
+      p.currentX = p.x + p.dx * progress;
+      p.currentY = p.y + p.dy * progress;
+      p.alpha = 1 - progress;
       return true;
     });
   }
@@ -312,6 +299,16 @@ class TooDamnTragicEffects {
       }
     });
   }
+
+  drawTurbulenceParticles() {
+    this.turbulenceParticles.forEach(p => {
+      const size = p.size;
+      this.trailCtx.fillStyle = `rgba(0, 130, 247, ${p.alpha})`;
+      this.trailCtx.beginPath();
+      this.trailCtx.arc(p.currentX, p.currentY, size, 0, Math.PI * 2);
+      this.trailCtx.fill();
+    });
+  }
   
   drawRipples() {
     this.ripples.forEach(ripple => {
@@ -337,8 +334,10 @@ class TooDamnTragicEffects {
   
   animate() {
     this.updateTrailParticles();
+    this.updateTurbulenceParticles();
     this.updateRipples();
     this.drawTrailParticles();
+    this.drawTurbulenceParticles();
     this.drawRipples();
     
     requestAnimationFrame(() => this.animate());

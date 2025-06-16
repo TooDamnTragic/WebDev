@@ -125,53 +125,6 @@ body, html {
   }
 }
 
-/* Glow Container */
-#glowContainer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* Glow Trail Particle */
-.glow-particle {
-  position: absolute;
-  width: var(--size, 8px);
-  height: var(--size, 8px);
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(0, 130, 247, 1) 0%,
-    rgba(0, 130, 247, 0.8) 30%,
-    rgba(0, 130, 247, 0.4) 60%,
-    transparent 100%
-  );
-  pointer-events: none;
-  animation: glowFade var(--lifetime, 2s) ease-out forwards;
-  transform: translate(-50%, -50%);
-  box-shadow: 
-    0 0 10px rgba(0, 130, 247, 0.8),
-    0 0 20px rgba(0, 130, 247, 0.4);
-  mix-blend-mode: screen;
-}
-
-@keyframes glowFade {
-  0% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: translate(-50%, -50%) scale(1.2);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.5);
-  }
-}
 
 /* Water Ripple Shader Effect */
 .water-ripple {
@@ -255,28 +208,6 @@ body, html {
   }
 }
 
-/* Turbulence Effect */
-.turbulence-particle {
-  position: absolute;
-  width: var(--size, 4px);
-  height: var(--size, 4px);
-  border-radius: 50%;
-  background: rgba(0, 130, 247, 0.8);
-  pointer-events: none;
-  animation: turbulenceMove var(--lifetime, 3s) ease-out forwards;
-  box-shadow: 0 0 6px rgba(0, 130, 247, 0.6);
-}
-
-@keyframes turbulenceMove {
-  0% {
-    opacity: 1;
-    transform: translate(0, 0) scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: translate(var(--dx, 0px), var(--dy, 0px)) scale(0.2);
-  }
-}
 
 /* Responsive Design */
 @media (max-width: 768px) {
