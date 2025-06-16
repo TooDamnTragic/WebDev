@@ -1,0 +1,303 @@
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000000;
+  font-family: 'Arial', sans-serif;
+  cursor: none;
+}
+
+.container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: #000000;
+}
+
+/* Canvas Layers */
+#rippleCanvas,
+#trailCanvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+#trailCanvas {
+  z-index: 2;
+  mix-blend-mode: screen;
+}
+
+/* Main Text */
+.text-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.main-text {
+  font-size: clamp(3rem, 12vw, 8rem);
+  font-weight: 900;
+  color: #ff0000;
+  text-shadow: 
+    0 0 10px rgba(255, 0, 0, 0.8),
+    0 0 20px rgba(255, 0, 0, 0.6),
+    0 0 30px rgba(255, 0, 0, 0.4),
+    0 0 40px rgba(255, 0, 0, 0.2);
+  letter-spacing: 0.1em;
+  user-select: none;
+  animation: textGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes textGlow {
+  from {
+    text-shadow: 
+      0 0 10px rgba(255, 0, 0, 0.8),
+      0 0 20px rgba(255, 0, 0, 0.6),
+      0 0 30px rgba(255, 0, 0, 0.4),
+      0 0 40px rgba(255, 0, 0, 0.2);
+  }
+  to {
+    text-shadow: 
+      0 0 15px rgba(255, 0, 0, 1),
+      0 0 25px rgba(255, 0, 0, 0.8),
+      0 0 35px rgba(255, 0, 0, 0.6),
+      0 0 45px rgba(255, 0, 0, 0.4),
+      0 0 55px rgba(255, 0, 0, 0.2);
+  }
+}
+
+/* Ripple Container */
+#rippleContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Individual Ripple */
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(0, 130, 247, 0.6) 30%,
+    rgba(0, 130, 247, 0.3) 60%,
+    transparent 100%
+  );
+  pointer-events: none;
+  animation: rippleExpand var(--duration, 2s) ease-out forwards;
+  transform: translate(-50%, -50%);
+  filter: blur(1px);
+  mix-blend-mode: screen;
+}
+
+@keyframes rippleExpand {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    width: var(--size, 400px);
+    height: var(--size, 400px);
+    opacity: 0;
+  }
+}
+
+/* Glow Container */
+#glowContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Glow Trail Particle */
+.glow-particle {
+  position: absolute;
+  width: var(--size, 8px);
+  height: var(--size, 8px);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(0, 130, 247, 1) 0%,
+    rgba(0, 130, 247, 0.8) 30%,
+    rgba(0, 130, 247, 0.4) 60%,
+    transparent 100%
+  );
+  pointer-events: none;
+  animation: glowFade var(--lifetime, 2s) ease-out forwards;
+  transform: translate(-50%, -50%);
+  box-shadow: 
+    0 0 10px rgba(0, 130, 247, 0.8),
+    0 0 20px rgba(0, 130, 247, 0.4);
+  mix-blend-mode: screen;
+}
+
+@keyframes glowFade {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+}
+
+/* Water Ripple Shader Effect */
+.water-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 20%,
+    rgba(0, 130, 247, 0.3) 40%,
+    rgba(0, 130, 247, 0.2) 60%,
+    transparent 80%
+  );
+  pointer-events: none;
+  animation: waterRipple var(--duration, 3s) ease-out forwards;
+  transform: translate(-50%, -50%);
+  filter: blur(2px);
+  mix-blend-mode: overlay;
+}
+
+@keyframes waterRipple {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 1;
+    filter: blur(0px);
+  }
+  30% {
+    opacity: 0.8;
+    filter: blur(1px);
+  }
+  70% {
+    opacity: 0.4;
+    filter: blur(2px);
+  }
+  100% {
+    width: var(--size, 600px);
+    height: var(--size, 600px);
+    opacity: 0;
+    filter: blur(3px);
+  }
+}
+
+/* Chromatic Dispersion Effect */
+.chromatic-ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    rgba(255, 0, 0, 0.3),
+    rgba(255, 255, 0, 0.3),
+    rgba(0, 255, 0, 0.3),
+    rgba(0, 255, 255, 0.3),
+    rgba(0, 0, 255, 0.3),
+    rgba(255, 0, 255, 0.3),
+    rgba(255, 0, 0, 0.3)
+  );
+  pointer-events: none;
+  animation: chromaticExpand var(--duration, 2.5s) ease-out forwards;
+  transform: translate(-50%, -50%);
+  filter: blur(1px);
+  mix-blend-mode: color-dodge;
+}
+
+@keyframes chromaticExpand {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.8;
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) rotate(180deg);
+  }
+  100% {
+    width: var(--size, 300px);
+    height: var(--size, 300px);
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Turbulence Effect */
+.turbulence-particle {
+  position: absolute;
+  width: var(--size, 4px);
+  height: var(--size, 4px);
+  border-radius: 50%;
+  background: rgba(0, 130, 247, 0.8);
+  pointer-events: none;
+  animation: turbulenceMove var(--lifetime, 3s) ease-out forwards;
+  box-shadow: 0 0 6px rgba(0, 130, 247, 0.6);
+}
+
+@keyframes turbulenceMove {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx, 0px), var(--dy, 0px)) scale(0.2);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-text {
+    font-size: clamp(2rem, 10vw, 4rem);
+  }
+  
+  .ripple,
+  .water-ripple {
+    --size: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-text {
+    font-size: clamp(1.5rem, 8vw, 3rem);
+    letter-spacing: 0.05em;
+  }
+  
+  .ripple,
+  .water-ripple {
+    --size: 200px;
+  }
+}
