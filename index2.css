@@ -19,10 +19,23 @@ body, html {
   width: 100vw;
   height: 100vh;
   background: #000000;
+  transform-style: preserve-3d;
+  perspective: 1000px;
 }
 
-/* Canvas Layers */
-#rippleCanvas,
+/* Full-Screen Water Surface Canvas */
+#waterSurface {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* Mouse Trail Canvas */
 #trailCanvas {
   position: absolute;
   top: 0;
@@ -30,23 +43,33 @@ body, html {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 1;
-}
-
-#trailCanvas {
   z-index: 2;
   mix-blend-mode: screen;
 }
 
-/* Main Text with Ripple Distortion Response */
+/* Water Distortion Layer */
+#distortionLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+  backdrop-filter: blur(0px);
+  transition: backdrop-filter 0.1s ease;
+}
+
+/* Main Text with Water Distortion */
 .text-container {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 3;
+  z-index: 4;
   pointer-events: none;
-  transition: filter 0.1s ease-out;
+  transition: all 0.1s ease-out;
+  transform-style: preserve-3d;
 }
 
 .main-text {
@@ -59,254 +82,254 @@ body, html {
     0 0 24px rgba(255, 0, 0, 0.2);
   letter-spacing: 0.1em;
   user-select: none;
-  transition: transform 0.1s ease-out, filter 0.1s ease-out;
+  transition: all 0.1s ease-out;
   will-change: transform, filter;
+  transform-style: preserve-3d;
 }
 
-/* Text distortion classes for ripple response */
-.text-distort-light {
-  transform: scale(1.01) skew(0.2deg, 0.1deg);
-  filter: blur(0.3px) hue-rotate(5deg);
+/* Water Distortion Classes */
+.water-distort-light {
+  transform: translate(-50%, -50%) 
+             perspective(800px) 
+             rotateX(0.5deg) 
+             rotateY(0.3deg) 
+             scale(1.002);
+  filter: blur(0.2px) 
+          hue-rotate(2deg) 
+          brightness(1.02);
 }
 
-.text-distort-medium {
-  transform: scale(1.02) skew(0.4deg, 0.2deg);
-  filter: blur(0.6px) hue-rotate(10deg);
+.water-distort-medium {
+  transform: translate(-50%, -50%) 
+             perspective(800px) 
+             rotateX(1deg) 
+             rotateY(0.6deg) 
+             scale(1.005);
+  filter: blur(0.4px) 
+          hue-rotate(5deg) 
+          brightness(1.05) 
+          contrast(1.02);
 }
 
-.text-distort-heavy {
-  transform: scale(1.03) skew(0.6deg, 0.3deg);
-  filter: blur(0.9px) hue-rotate(15deg);
+.water-distort-heavy {
+  transform: translate(-50%, -50%) 
+             perspective(800px) 
+             rotateX(1.8deg) 
+             rotateY(1deg) 
+             scale(1.008);
+  filter: blur(0.7px) 
+          hue-rotate(8deg) 
+          brightness(1.08) 
+          contrast(1.05);
 }
 
-/* Ripple Container */
-#rippleContainer {
+.water-distort-extreme {
+  transform: translate(-50%, -50%) 
+             perspective(800px) 
+             rotateX(2.5deg) 
+             rotateY(1.5deg) 
+             scale(1.012);
+  filter: blur(1px) 
+          hue-rotate(12deg) 
+          brightness(1.12) 
+          contrast(1.08);
+}
+
+/* Water Surface Reflection Effect */
+.water-reflection {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Completely Remade Primary Ripple Effect */
-.ripple-primary {
-  position: absolute;
-  border-radius: 50%;
   background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.6) 0%,
-    rgba(0, 130, 247, 0.5) 20%,
-    rgba(0, 200, 255, 0.4) 40%,
-    rgba(0, 130, 247, 0.2) 70%,
-    rgba(255, 255, 255, 0.1) 85%,
-    transparent 100%
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(0, 130, 247, 0.05) 30%,
+    transparent 60%
   );
+  opacity: 0;
+  transition: opacity 0.2s ease;
   pointer-events: none;
-  animation: ripplePrimaryExpand var(--duration, 2s) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-  transform: translate(-50%, -50%);
-  filter: blur(0.8px);
-  mix-blend-mode: screen;
-  box-shadow: 
-    0 0 20px rgba(0, 130, 247, 0.3),
-    inset 0 0 15px rgba(255, 255, 255, 0.2);
-}
-
-@keyframes ripplePrimaryExpand {
-  0% {
-    width: 0;
-    height: 0;
-    opacity: 0.9;
-    filter: blur(0px);
-    transform: translate(-50%, -50%) scale(0.8);
-  }
-  15% {
-    opacity: 0.8;
-    filter: blur(0.3px);
-    transform: translate(-50%, -50%) scale(0.95);
-  }
-  35% {
-    opacity: 0.6;
-    filter: blur(0.6px);
-    transform: translate(-50%, -50%) scale(1.02);
-  }
-  60% {
-    opacity: 0.3;
-    filter: blur(0.9px);
-    transform: translate(-50%, -50%) scale(1.01);
-  }
-  85% {
-    opacity: 0.1;
-    filter: blur(1.2px);
-    transform: translate(-50%, -50%) scale(0.98);
-  }
-  100% {
-    width: var(--size, 400px);
-    height: var(--size, 400px);
-    opacity: 0;
-    filter: blur(1.5px);
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-
-/* Remade Secondary Ripple with Enhanced Waves */
-.ripple-secondary {
-  position: absolute;
-  border-radius: 50%;
-  border: 2px solid rgba(0, 130, 247, 0.4);
-  background: transparent;
-  pointer-events: none;
-  animation: rippleSecondaryWave var(--duration, 2.5s) ease-out forwards;
-  transform: translate(-50%, -50%);
-  filter: drop-shadow(0 0 8px rgba(0, 130, 247, 0.4));
+  z-index: 5;
   mix-blend-mode: overlay;
 }
 
-@keyframes rippleSecondaryWave {
-  0% {
-    width: 0;
-    height: 0;
-    opacity: 0.7;
-    border-width: 3px;
-    transform: translate(-50%, -50%) rotate(0deg);
+/* Caustic Light Patterns */
+.caustic-pattern {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(ellipse at 20% 30%, rgba(0, 130, 247, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 70%, rgba(255, 255, 255, 0.08) 0%, transparent 40%),
+    radial-gradient(ellipse at 60% 20%, rgba(0, 200, 255, 0.06) 0%, transparent 45%),
+    radial-gradient(ellipse at 30% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 35%);
+  opacity: 0;
+  animation: causticFlow 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: screen;
+}
+
+@keyframes causticFlow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translateX(0) translateY(0) scale(1);
   }
   25% {
     opacity: 0.6;
-    border-width: 2.5px;
-    transform: translate(-50%, -50%) rotate(90deg);
+    transform: translateX(10px) translateY(-5px) scale(1.02);
   }
   50% {
     opacity: 0.4;
-    border-width: 2px;
-    transform: translate(-50%, -50%) rotate(180deg);
+    transform: translateX(-5px) translateY(8px) scale(0.98);
   }
   75% {
-    opacity: 0.2;
-    border-width: 1.5px;
-    transform: translate(-50%, -50%) rotate(270deg);
-  }
-  100% {
-    width: var(--size, 350px);
-    height: var(--size, 350px);
-    opacity: 0;
-    border-width: 1px;
-    transform: translate(-50%, -50%) rotate(360deg);
+    opacity: 0.7;
+    transform: translateX(8px) translateY(-3px) scale(1.01);
   }
 }
 
-/* Remade Chromatic Dispersion Ripple */
-.ripple-chromatic {
+/* Water Ripple Rings */
+.water-ripple {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: radial-gradient(
+    circle,
+    transparent 70%,
+    rgba(255, 255, 255, 0.1) 80%,
+    rgba(0, 130, 247, 0.2) 90%,
+    transparent 100%
+  );
+  pointer-events: none;
+  animation: waterRippleExpand var(--duration, 3s) ease-out forwards;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: overlay;
+  filter: blur(0.5px);
+}
+
+@keyframes waterRippleExpand {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.8;
+    border-width: 2px;
+    filter: blur(0px);
+  }
+  20% {
+    opacity: 0.6;
+    border-width: 1.5px;
+    filter: blur(0.2px);
+  }
+  50% {
+    opacity: 0.4;
+    border-width: 1px;
+    filter: blur(0.4px);
+  }
+  80% {
+    opacity: 0.2;
+    border-width: 0.5px;
+    filter: blur(0.6px);
+  }
+  100% {
+    width: var(--size, 600px);
+    height: var(--size, 600px);
+    opacity: 0;
+    border-width: 0.2px;
+    filter: blur(0.8px);
+  }
+}
+
+/* Secondary Ripple Waves */
+.water-wave {
   position: absolute;
   border-radius: 50%;
   background: conic-gradient(
     from 0deg,
-    rgba(255, 0, 0, 0.3),
-    rgba(255, 127, 0, 0.3),
-    rgba(255, 255, 0, 0.3),
-    rgba(0, 255, 0, 0.3),
-    rgba(0, 255, 255, 0.3),
-    rgba(0, 0, 255, 0.3),
-    rgba(127, 0, 255, 0.3),
-    rgba(255, 0, 255, 0.3),
-    rgba(255, 0, 0, 0.3)
-  );
-  pointer-events: none;
-  animation: rippleChromaticSpin var(--duration, 3s) linear forwards;
-  transform: translate(-50%, -50%);
-  filter: blur(1.2px);
-  mix-blend-mode: color-dodge;
-}
-
-@keyframes rippleChromaticSpin {
-  0% {
-    width: 0;
-    height: 0;
-    opacity: 0.8;
-    transform: translate(-50%, -50%) rotate(0deg) scale(0.9);
-    filter: blur(0.5px);
-  }
-  30% {
-    opacity: 0.6;
-    transform: translate(-50%, -50%) rotate(180deg) scale(1.05);
-    filter: blur(0.8px);
-  }
-  60% {
-    opacity: 0.3;
-    transform: translate(-50%, -50%) rotate(360deg) scale(1.02);
-    filter: blur(1.1px);
-  }
-  100% {
-    width: var(--size, 300px);
-    height: var(--size, 300px);
-    opacity: 0;
-    transform: translate(-50%, -50%) rotate(540deg) scale(1);
-    filter: blur(1.5px);
-  }
-}
-
-/* New Turbulence Glow Effect with Doubled Duration */
-.turbulence-glow {
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(0, 130, 247, 0.8) 0%,
-    rgba(0, 200, 255, 0.6) 30%,
-    rgba(255, 255, 255, 0.4) 60%,
-    rgba(0, 130, 247, 0.2) 80%,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 25%,
+    transparent 50%,
+    rgba(0, 130, 247, 0.15) 75%,
     transparent 100%
   );
   pointer-events: none;
-  animation: turbulenceGlowPulse var(--duration, 4s) ease-in-out forwards;
+  animation: waterWaveRotate var(--duration, 4s) linear forwards;
   transform: translate(-50%, -50%);
-  filter: blur(2px);
-  mix-blend-mode: screen;
-  box-shadow: 
-    0 0 30px rgba(0, 130, 247, 0.6),
-    0 0 60px rgba(0, 130, 247, 0.3),
-    inset 0 0 20px rgba(255, 255, 255, 0.4);
+  mix-blend-mode: color-dodge;
+  filter: blur(1px);
 }
 
-@keyframes turbulenceGlowPulse {
+@keyframes waterWaveRotate {
   0% {
     width: 0;
     height: 0;
-    opacity: 1;
-    filter: blur(1px);
-    transform: translate(-50%, -50%) scale(0.7);
-  }
-  10% {
-    opacity: 0.9;
-    filter: blur(1.5px);
-    transform: translate(-50%, -50%) scale(0.85);
-  }
-  25% {
-    opacity: 0.8;
-    filter: blur(2px);
-    transform: translate(-50%, -50%) scale(1.1);
-  }
-  40% {
     opacity: 0.6;
-    filter: blur(2.2px);
-    transform: translate(-50%, -50%) scale(1.05);
+    transform: translate(-50%, -50%) rotate(0deg);
+    filter: blur(0.5px);
   }
-  60% {
+  30% {
     opacity: 0.4;
-    filter: blur(2.5px);
-    transform: translate(-50%, -50%) scale(1.02);
+    transform: translate(-50%, -50%) rotate(180deg);
+    filter: blur(0.8px);
   }
-  80% {
-    opacity: 0.15;
-    filter: blur(3px);
-    transform: translate(-50%, -50%) scale(0.98);
+  70% {
+    opacity: 0.2;
+    transform: translate(-50%, -50%) rotate(360deg);
+    filter: blur(1.2px);
   }
   100% {
     width: var(--size, 500px);
     height: var(--size, 500px);
     opacity: 0;
-    filter: blur(3.5px);
+    transform: translate(-50%, -50%) rotate(540deg);
+    filter: blur(1.5px);
+  }
+}
+
+/* Water Displacement Effect */
+.water-displacement {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(0, 130, 247, 0.15) 40%,
+    rgba(255, 255, 255, 0.1) 70%,
+    transparent 100%
+  );
+  pointer-events: none;
+  animation: waterDisplace var(--duration, 2.5s) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: soft-light;
+  filter: blur(2px);
+}
+
+@keyframes waterDisplace {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(0.8);
+    filter: blur(1px);
+  }
+  25% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.1);
+    filter: blur(1.5px);
+  }
+  60% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(1.05);
+    filter: blur(2px);
+  }
+  100% {
+    width: var(--size, 400px);
+    height: var(--size, 400px);
+    opacity: 0;
     transform: translate(-50%, -50%) scale(1);
+    filter: blur(2.5px);
   }
 }
 
@@ -316,11 +339,10 @@ body, html {
     font-size: clamp(2rem, 10vw, 4rem);
   }
   
-  .ripple-primary,
-  .ripple-secondary,
-  .ripple-chromatic,
-  .turbulence-glow {
-    --size: 250px;
+  .water-ripple,
+  .water-wave,
+  .water-displacement {
+    --size: 400px;
   }
 }
 
@@ -330,29 +352,50 @@ body, html {
     letter-spacing: 0.05em;
   }
   
-  .ripple-primary,
-  .ripple-secondary,
-  .ripple-chromatic,
-  .turbulence-glow {
-    --size: 180px;
+  .water-ripple,
+  .water-wave,
+  .water-displacement {
+    --size: 300px;
   }
 }
 
 /* Performance optimizations */
-.ripple-primary,
-.ripple-secondary,
-.ripple-chromatic,
-.turbulence-glow {
+.water-ripple,
+.water-wave,
+.water-displacement,
+.caustic-pattern {
   will-change: transform, opacity, filter;
   backface-visibility: hidden;
   transform-style: preserve-3d;
 }
 
-#rippleCanvas,
-#trailCanvas {
+#waterSurface,
+#trailCanvas,
+#distortionLayer {
   will-change: contents;
 }
 
-.text-container {
+.text-container,
+.main-text {
   will-change: transform, filter;
+}
+
+/* Global water surface animation */
+body {
+  animation: globalWaterMotion 12s ease-in-out infinite;
+}
+
+@keyframes globalWaterMotion {
+  0%, 100% {
+    filter: hue-rotate(0deg) brightness(1);
+  }
+  25% {
+    filter: hue-rotate(2deg) brightness(1.02);
+  }
+  50% {
+    filter: hue-rotate(-1deg) brightness(0.98);
+  }
+  75% {
+    filter: hue-rotate(1deg) brightness(1.01);
+  }
 }
