@@ -10,7 +10,7 @@ body,html{
 }
 @font-face {
   font-family: 'Hackney'; 
-  src: url('fonts/HackneyPersonalUseOnly.ttf') format('truetype'); /* Adjust the file name and path as needed */
+  src: url('fonts/ArchesDemoRegular-gwJB5.otf') format('truetype'); /* Adjust the file name and path as needed */
   font-weight: normal; /*  Or 400 */
   font-style: normal;
 }
@@ -29,7 +29,7 @@ body.education-page{
   left:50%;
   transform:translate(-50%,-50%) scale(var(--scale,1));
   font-family: 'Hackney', sans-serif;
-  font-size:20vmin;
+  font-size:6vmin;
   font-weight:bold;
   color:#f0ead6;
   z-index:10;
