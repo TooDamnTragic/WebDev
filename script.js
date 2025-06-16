@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
   const nav = document.querySelector('.nav');
   const loader = document.getElementById('loader');
@@ -10,34 +9,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, 1200);
 
-  document.querySelectorAll('.section').forEach(link => {
-    const text = link.textContent.trim().split('');
-    link.innerHTML = text.map(ch => `<span>${ch}</span>`).join('');
+document.querySelectorAll('.section').forEach(link => {
+  const text = link.textContent.trim().split('');
+  link.innerHTML = text.map(ch => `<span>${ch}</span>`).join('');
 
-    link.addEventListener('click', e => {
-      e.preventDefault();
-      link.classList.add('zoom');
-      document.body.classList.add('fade-out');
-      setTimeout(() => {
-        window.location = link.getAttribute('href');
-      }, 600);
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    link.classList.add('zoom');
+    document.body.classList.add('fade-out');
+    setTimeout(() => {
+      window.location = link.getAttribute('href');
+    }, 600);
+  });
+});
+
+document.addEventListener('mousemove', e => {
+  document.querySelectorAll('.section').forEach(section => {
+    const rect = section.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+    const dx = x - cx;
+    const dy = y - cy;
+    const dist = Math.hypot(dx, dy);
+    const maxDist = Math.hypot(rect.width, rect.height) / 2;
+    const intensity = 1 - Math.min(dist / maxDist, 1);
+    section.style.setProperty('--mx', `${x}px`);
+    section.style.setProperty('--my', `${y}px`);
+    section.style.setProperty('--intensity', intensity.toFixed(3));
     });
   });
-
-  document.addEventListener('mousemove', e => {
-    document.querySelectorAll('.section').forEach(section => {
-      const rect = section.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const cx = rect.width / 2;
-      const cy = rect.height / 2;
-      const dx = x - cx;
-      const dy = y - cy;
-      const dist = Math.hypot(dx, dy);
-      const maxDist = Math.hypot(rect.width, rect.height) / 2;
-      const intensity = 1 - Math.min(dist / maxDist, 1);
-      section.style.setProperty('--mx', `${x}px`);
-      section.style.setProperty('--my', `${y}px`);
-      section.style.setProperty('--intensity', intensity.toFixed(3));
-    });
-  });
+});
