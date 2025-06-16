@@ -1,32 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-boot="0">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TooDamnTragic - Water Surface with Realistic Glue</title>
   <link rel="stylesheet" href="index2.css">
+  <link rel="stylesheet" href="loader.css">
 </head>
 <body>
-  <div class="container">
-    <!-- Full-Screen Water Surface -->
-    <canvas id="waterSurface"></canvas>
-    
-    <!-- Mouse Trail Canvas -->
-    <canvas id="trailCanvas"></canvas>
-    
-    <!-- Water Distortion Layer -->
-    <div id="distortionLayer"></div>
-    
-    <!-- Glue Layer - Realistic Adhesive Effects -->
-    <div id="glueLayer"></div>
-    
-    <!-- Main Text -->
-    <div class="text-container">
-      <h1 class="main-text">TooDamnTragic</h1>
+  <!-- ASCII Loader -->
+  <pre id="scrim">
+████████╗ ██████╗  ██████╗     ██████╗  █████╗ ███╗   ███╗███╗   ██╗
+╚══██╔══╝██╔═══██╗██╔═══██╗    ██╔══██╗██╔══██╗████╗ ████║████╗  ██║
+   ██║   ██║   ██║██║   ██║    ██║  ██║███████║██╔████╔██║██╔██╗ ██║
+   ██║   ██║   ██║██║   ██║    ██║  ██║██╔══██║██║╚██╔╝██║██║╚██╗██║
+   ██║   ╚██████╔╝╚██████╔╝    ██████╔╝██║  ██║██║ ╚═╝ ██║██║ ╚████║
+   ╚═╝    ╚═════╝  ╚═════╝     ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═══╝
+                                                                      
+████████╗██████╗  █████╗  ██████╗ ██╗ ██████╗                       
+╚══██╔══╝██╔══██╗██╔══██╗██╔════╝ ██║██╔════╝                       
+   ██║   ██████╔╝███████║██║  ███╗██║██║                            
+   ██║   ██╔══██╗██╔══██║██║   ██║██║██║                            
+   ██║   ██║  ██║██║  ██║╚██████╔╝██║╚██████╗                       
+   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚═╝ ╚═════╝                       
+  </pre>
+
+  <!-- Main App Content -->
+  <div id="app">
+    <div class="container">
+      <!-- Full-Screen Water Surface -->
+      <canvas id="waterSurface"></canvas>
+      
+      <!-- Mouse Trail Canvas -->
+      <canvas id="trailCanvas"></canvas>
+      
+      <!-- Water Distortion Layer -->
+      <div id="distortionLayer"></div>
+      
+      <!-- Glue Layer - Realistic Adhesive Effects -->
+      <div id="glueLayer"></div>
+      
+      <!-- Main Text -->
+      <div class="text-container">
+        <h1 class="main-text">TooDamnTragic</h1>
+      </div>
     </div>
-    
   </div>
   
+  <script src="loader.js" type="module"></script>
   <script src="index2.js"></script>
 </body>
 </html>

@@ -1,0 +1,153 @@
+/* loader.css */
+@font-face{
+  font-family:"DiatypeMono";
+  src:local("Courier New");        /* fall-back; Aino uses Dinamo Diatype */
+}
+
+html,body{height:100%;margin:0}
+body{
+  display:flex;justify-content:center;align-items:center;
+  background:#000000;color:#ff0000;font-family:"DiatypeMono",monospace;
+  overflow:hidden;                 /* stop scroll-bars while scrim is up   */
+}
+
+/* The app is invisible until boot flag flips */
+html[data-boot="0"] #app{opacity:0;pointer-events:none}
+
+/* ASCII block styling */
+#scrim{
+  line-height:1.1;
+  font-size:clamp(6px, 1.2vw, 14px);
+  letter-spacing:.2ch;
+  user-select:none;
+  animation:spark 1.5s steps(20) infinite;
+  text-align:center;
+  white-space:pre;
+  font-weight:bold;
+  text-shadow: 
+    0 0 5px #ff0000,
+    0 0 10px #ff0000,
+    0 0 15px #ff0000;
+  transform:scale(0.9);
+  opacity:0.9;
+}
+
+/* Enhanced spark effect with red glow */
+@keyframes spark{
+  0% {
+    filter:drop-shadow(0 0 3px #ff0000) brightness(1);
+    transform:scale(0.9);
+  }
+  25% {
+    filter:drop-shadow(0 0 8px #ff0000) brightness(1.2);
+    transform:scale(0.95);
+  }
+  50% {
+    filter:drop-shadow(0 0 12px #ff0000) brightness(1.4);
+    transform:scale(1);
+  }
+  75% {
+    filter:drop-shadow(0 0 8px #ff0000) brightness(1.2);
+    transform:scale(0.95);
+  }
+  100% {
+    filter:drop-shadow(0 0 3px #ff0000) brightness(1);
+    transform:scale(0.9);
+  }
+}
+
+/* fade-out once JS removes boot flag */
+html[data-boot="1"] #scrim{
+  animation:scrimFadeOut 0.8s ease-out forwards;
+  pointer-events:none;
+}
+
+@keyframes scrimFadeOut {
+  0% {
+    opacity:0.9;
+    transform:scale(1);
+    filter:drop-shadow(0 0 12px #ff0000) brightness(1.4);
+  }
+  50% {
+    opacity:0.5;
+    transform:scale(1.05);
+    filter:drop-shadow(0 0 20px #ff0000) brightness(1.6);
+  }
+  100% {
+    opacity:0;
+    transform:scale(1.1);
+    filter:drop-shadow(0 0 30px #ff0000) brightness(2);
+  }
+}
+
+/* App fade-in animation */
+html[data-boot="1"] #app{
+  animation:appFadeIn 1s ease-out forwards;
+}
+
+@keyframes appFadeIn {
+  0% {
+    opacity:0;
+    transform:scale(0.95);
+    filter:blur(2px);
+  }
+  50% {
+    opacity:0.5;
+    transform:scale(0.98);
+    filter:blur(1px);
+  }
+  100% {
+    opacity:1;
+    transform:scale(1);
+    filter:blur(0px);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  #scrim {
+    font-size:clamp(4px, 2vw, 10px);
+    letter-spacing:.1ch;
+    transform:scale(0.8);
+  }
+}
+
+@media (max-width: 480px) {
+  #scrim {
+    font-size:clamp(3px, 2.5vw, 8px);
+    letter-spacing:.05ch;
+    transform:scale(0.7);
+    line-height:1;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  #scrim {
+    text-shadow: none;
+    color: #ffffff;
+    background: #000000;
+  }
+  
+  @keyframes spark{
+    to{filter:drop-shadow(0 0 2px #ffffff)}
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  #scrim {
+    animation: none;
+    filter: drop-shadow(0 0 5px #ff0000);
+  }
+  
+  html[data-boot="1"] #scrim {
+    transition: opacity 0.4s ease;
+    opacity: 0;
+  }
+  
+  html[data-boot="1"] #app {
+    transition: opacity 0.4s ease;
+    opacity: 1;
+  }
+}
