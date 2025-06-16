@@ -38,7 +38,7 @@ body, html {
   mix-blend-mode: screen;
 }
 
-/* Main Text */
+/* Main Text - Removed glow animation to prevent interference */
 .text-container {
   position: absolute;
   top: 50%;
@@ -53,31 +53,12 @@ body, html {
   font-weight: 900;
   color: #ff0000;
   text-shadow: 
-    0 0 10px rgba(255, 0, 0, 0.8),
-    0 0 20px rgba(255, 0, 0, 0.6),
-    0 0 30px rgba(255, 0, 0, 0.4),
-    0 0 40px rgba(255, 0, 0, 0.2);
+    0 0 8px rgba(255, 0, 0, 0.6),
+    0 0 16px rgba(255, 0, 0, 0.4),
+    0 0 24px rgba(255, 0, 0, 0.2);
   letter-spacing: 0.1em;
   user-select: none;
-  animation: textGlow 3s ease-in-out infinite alternate;
-}
-
-@keyframes textGlow {
-  from {
-    text-shadow: 
-      0 0 10px rgba(255, 0, 0, 0.8),
-      0 0 20px rgba(255, 0, 0, 0.6),
-      0 0 30px rgba(255, 0, 0, 0.4),
-      0 0 40px rgba(255, 0, 0, 0.2);
-  }
-  to {
-    text-shadow: 
-      0 0 15px rgba(255, 0, 0, 1),
-      0 0 25px rgba(255, 0, 0, 0.8),
-      0 0 35px rgba(255, 0, 0, 0.6),
-      0 0 45px rgba(255, 0, 0, 0.4),
-      0 0 55px rgba(255, 0, 0, 0.2);
-  }
+  /* Removed animation to prevent glow interference */
 }
 
 /* Ripple Container */
@@ -91,21 +72,21 @@ body, html {
   z-index: 1;
 }
 
-/* Individual Ripple */
+/* Optimized Ripple Effects */
 .ripple {
   position: absolute;
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(255, 255, 255, 0.8) 0%,
-    rgba(0, 130, 247, 0.6) 30%,
-    rgba(0, 130, 247, 0.3) 60%,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(0, 130, 247, 0.3) 40%,
+    rgba(0, 130, 247, 0.1) 70%,
     transparent 100%
   );
   pointer-events: none;
-  animation: rippleExpand var(--duration, 2s) ease-out forwards;
+  animation: rippleExpand var(--duration, 1.5s) ease-out forwards;
   transform: translate(-50%, -50%);
-  filter: blur(1px);
+  filter: blur(0.5px);
   mix-blend-mode: screen;
 }
 
@@ -113,35 +94,37 @@ body, html {
   0% {
     width: 0;
     height: 0;
-    opacity: 1;
-  }
-  50% {
     opacity: 0.8;
   }
+  30% {
+    opacity: 0.6;
+  }
+  70% {
+    opacity: 0.3;
+  }
   100% {
-    width: var(--size, 400px);
-    height: var(--size, 400px);
+    width: var(--size, 300px);
+    height: var(--size, 300px);
     opacity: 0;
   }
 }
 
-
-/* Water Ripple Shader Effect */
+/* Smoother Water Ripple Effect */
 .water-ripple {
   position: absolute;
   border-radius: 50%;
   background: radial-gradient(
     circle,
     transparent 0%,
-    rgba(255, 255, 255, 0.1) 20%,
-    rgba(0, 130, 247, 0.3) 40%,
-    rgba(0, 130, 247, 0.2) 60%,
-    transparent 80%
+    rgba(255, 255, 255, 0.05) 30%,
+    rgba(0, 130, 247, 0.15) 50%,
+    rgba(0, 130, 247, 0.1) 70%,
+    transparent 90%
   );
   pointer-events: none;
-  animation: waterRipple var(--duration, 3s) ease-out forwards;
+  animation: waterRipple var(--duration, 2s) ease-out forwards;
   transform: translate(-50%, -50%);
-  filter: blur(2px);
+  filter: blur(1px);
   mix-blend-mode: overlay;
 }
 
@@ -149,41 +132,45 @@ body, html {
   0% {
     width: 0;
     height: 0;
-    opacity: 1;
+    opacity: 0.8;
     filter: blur(0px);
   }
-  30% {
-    opacity: 0.8;
+  20% {
+    opacity: 0.6;
+    filter: blur(0.5px);
+  }
+  50% {
+    opacity: 0.4;
     filter: blur(1px);
   }
-  70% {
-    opacity: 0.4;
-    filter: blur(2px);
+  80% {
+    opacity: 0.2;
+    filter: blur(1.5px);
   }
   100% {
-    width: var(--size, 600px);
-    height: var(--size, 600px);
+    width: var(--size, 400px);
+    height: var(--size, 400px);
     opacity: 0;
-    filter: blur(3px);
+    filter: blur(2px);
   }
 }
 
-/* Chromatic Dispersion Effect */
+/* Reduced Chromatic Dispersion Effect */
 .chromatic-ripple {
   position: absolute;
   border-radius: 50%;
   background: conic-gradient(
     from 0deg,
-    rgba(255, 0, 0, 0.3),
-    rgba(255, 255, 0, 0.3),
-    rgba(0, 255, 0, 0.3),
-    rgba(0, 255, 255, 0.3),
-    rgba(0, 0, 255, 0.3),
-    rgba(255, 0, 255, 0.3),
-    rgba(255, 0, 0, 0.3)
+    rgba(255, 0, 0, 0.15),
+    rgba(255, 255, 0, 0.15),
+    rgba(0, 255, 0, 0.15),
+    rgba(0, 255, 255, 0.15),
+    rgba(0, 0, 255, 0.15),
+    rgba(255, 0, 255, 0.15),
+    rgba(255, 0, 0, 0.15)
   );
   pointer-events: none;
-  animation: chromaticExpand var(--duration, 2.5s) ease-out forwards;
+  animation: chromaticExpand var(--duration, 2s) ease-out forwards;
   transform: translate(-50%, -50%);
   filter: blur(1px);
   mix-blend-mode: color-dodge;
@@ -193,21 +180,20 @@ body, html {
   0% {
     width: 0;
     height: 0;
-    opacity: 0.8;
+    opacity: 0.6;
     transform: translate(-50%, -50%) rotate(0deg);
   }
   50% {
-    opacity: 0.6;
+    opacity: 0.3;
     transform: translate(-50%, -50%) rotate(180deg);
   }
   100% {
-    width: var(--size, 300px);
-    height: var(--size, 300px);
+    width: var(--size, 200px);
+    height: var(--size, 200px);
     opacity: 0;
     transform: translate(-50%, -50%) rotate(360deg);
   }
 }
-
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -217,7 +203,7 @@ body, html {
   
   .ripple,
   .water-ripple {
-    --size: 300px;
+    --size: 250px;
   }
 }
 
@@ -229,6 +215,20 @@ body, html {
   
   .ripple,
   .water-ripple {
-    --size: 200px;
+    --size: 150px;
   }
+}
+
+/* Performance optimizations */
+.ripple,
+.water-ripple,
+.chromatic-ripple {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+#rippleCanvas,
+#trailCanvas {
+  will-change: contents;
 }
