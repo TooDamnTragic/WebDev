@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', () => {
   const nav = document.querySelector('.nav');
   const loader = document.getElementById('loader');
@@ -15,14 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     link.addEventListener('click', e => {
       e.preventDefault();
-      const target = link.getAttribute('href');
-      const color = getComputedStyle(link).getPropertyValue('--dark');
-      document.body.classList.add('transitioning');
-      document.body.style.backgroundColor = color;
       link.classList.add('zoom');
       document.body.classList.add('fade-out');
       setTimeout(() => {
-        window.location = target;
+        window.location = link.getAttribute('href');
       }, 600);
     });
   });
@@ -44,4 +41,3 @@ document.addEventListener('DOMContentLoaded', () => {
       section.style.setProperty('--intensity', intensity.toFixed(3));
     });
   });
-});
