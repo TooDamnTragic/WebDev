@@ -3,6 +3,7 @@ class FullScreenWaterSurface {
     this.waterCanvas = document.getElementById('waterSurface');
     this.trailCanvas = document.getElementById('trailCanvas');
     this.distortionLayer = document.getElementById('distortionLayer');
+    this.glueLayer = document.getElementById('glueLayer');
     this.textContainer = document.querySelector('.text-container');
     this.container = document.querySelector('.container');
     
@@ -48,6 +49,16 @@ class FullScreenWaterSurface {
     this.lastRippleTime = 0;
     this.rippleDelay = 80;
     
+    // Glue system
+    this.glueStrands = [];
+    this.glueDroplets = [];
+    this.glueAdhesionPoints = [];
+    this.activeGlueConnections = [];
+    this.lastGlueTime = 0;
+    this.glueDelay = 150;
+    this.maxGlueDistance = 80;
+    this.glueViscosity = 0.95;
+    
     // Physics constants
     this.waterPhysics = {
       damping: 0.985,
@@ -61,6 +72,19 @@ class FullScreenWaterSurface {
       waveSpeed: 1.2,
       distortionRadius: 120,
       maxDistortion: 8
+    };
+    
+    // Glue physics
+    this.gluePhysics = {
+      adhesionStrength: 0.8,
+      surfaceTension: 0.6,
+      viscosity: 0.95,
+      elasticity: 0.3,
+      breakingPoint: 120,
+      formationTime: 800,
+      maxOpacity: 0.6,
+      minStrandWidth: 2,
+      maxStrandWidth: 8
     };
     
     // Noise for organic movement
@@ -121,6 +145,7 @@ class FullScreenWaterSurface {
       this.updateMousePosition(e.clientX, e.clientY);
       this.createWaterDisturbance(e.clientX, e.clientY, false);
       this.createTrailParticles();
+      this.updateGlueSystem();
       this.updateGlobalDistortion();
     });
     
@@ -128,6 +153,7 @@ class FullScreenWaterSurface {
     document.addEventListener('click', (e) => {
       this.createWaterDisturbance(e.clientX, e.clientY, true);
       this.createMajorRipple(e.clientX, e.clientY);
+      this.createGlueAdhesion(e.clientX, e.clientY);
     });
     
     // Touch events for mobile
@@ -136,12 +162,14 @@ class FullScreenWaterSurface {
       const touch = e.touches[0];
       this.updateMousePosition(touch.clientX, touch.clientY);
       this.createWaterDisturbance(touch.clientX, touch.clientY, false);
+      this.updateGlueSystem();
     });
     
     document.addEventListener('touchstart', (e) => {
       const touch = e.touches[0];
       this.createWaterDisturbance(touch.clientX, touch.clientY, true);
       this.createMajorRipple(touch.clientX, touch.clientY);
+      this.createGlueAdhesion(touch.clientX, touch.clientY);
     });
   }
   
@@ -161,6 +189,280 @@ class FullScreenWaterSurface {
     if (this.mouseHistory.length > 10) {
       this.mouseHistory.shift();
     }
+  }
+  
+  updateGlueSystem() {
+    const now = Date.now();
+    
+    // Only create glue if mouse is moving slowly (realistic adhesive behavior)
+    if (this.mouseVelocity > 2 && this.mouseVelocity < 15 && now - this.lastGlueTime > this.glueDelay) {
+      this.createGlueStrand();
+      this.lastGlueTime = now;
+    }
+    
+    // Update existing glue elements
+    this.updateGlueStrands();
+    this.updateGlueDroplets();
+    this.updateGlueConnections();
+  }
+  
+  createGlueStrand() {
+    if (this.mouseHistory.length < 3) return;
+    
+    const recent = this.mouseHistory.slice(-3);
+    const start = recent[0];
+    const end = recent[recent.length - 1];
+    
+    const distance = Math.sqrt(
+      Math.pow(end.x - start.x, 2) + 
+      Math.pow(end.y - start.y, 2)
+    );
+    
+    if (distance < 10 || distance > this.maxGlueDistance) return;
+    
+    const strand = document.createElement('div');
+    strand.className = 'glue-strand';
+    
+    // Calculate strand properties
+    const angle = Math.atan2(end.y - start.y, end.x - start.x) * 180 / Math.PI;
+    const centerX = (start.x + end.x) / 2;
+    const centerY = (start.y + end.y) / 2;
+    
+    // Realistic strand width based on velocity and distance
+    const baseWidth = this.gluePhysics.minStrandWidth;
+    const velocityFactor = Math.min(this.mouseVelocity * 0.3, 4);
+    const distanceFactor = Math.max(1, distance * 0.05);
+    const width = Math.min(baseWidth + velocityFactor, this.gluePhysics.maxStrandWidth);
+    
+    // Strand opacity based on formation conditions
+    const opacity = Math.min(
+      this.gluePhysics.maxOpacity * (1 - distance / this.maxGlueDistance),
+      this.gluePhysics.maxOpacity
+    );
+    
+    strand.style.left = centerX + 'px';
+    strand.style.top = centerY + 'px';
+    strand.style.width = width + 'px';
+    strand.style.height = distance + 'px';
+    strand.style.transform = `translate(-50%, -50%) rotate(${angle + 90}deg)`;
+    strand.style.setProperty('--angle', angle + 'deg');
+    strand.style.setProperty('--duration', this.gluePhysics.formationTime + 'ms');
+    strand.style.setProperty('--final-opacity', opacity);
+    
+    // Add subtle sheen effect
+    const sheen = document.createElement('div');
+    sheen.className = 'glue-sheen';
+    sheen.style.setProperty('--angle', (angle + 45) + 'deg');
+    sheen.style.setProperty('--duration', (this.gluePhysics.formationTime * 2) + 'ms');
+    strand.appendChild(sheen);
+    
+    this.glueLayer.appendChild(strand);
+    
+    // Track strand for physics
+    this.glueStrands.push({
+      element: strand,
+      startX: start.x,
+      startY: start.y,
+      endX: end.x,
+      endY: end.y,
+      centerX,
+      centerY,
+      length: distance,
+      width,
+      angle,
+      opacity,
+      startTime: Date.now(),
+      isStretching: false,
+      stretchFactor: 1,
+      life: 1
+    });
+    
+    // Remove strand after natural lifetime
+    setTimeout(() => {
+      this.removeGlueStrand(strand);
+    }, this.gluePhysics.formationTime + 3000 + Math.random() * 2000);
+  }
+  
+  createGlueDroplet(x, y, size = null) {
+    const droplet = document.createElement('div');
+    droplet.className = 'glue-droplet';
+    
+    const dropletSize = size || (4 + Math.random() * 8);
+    const opacity = Math.min(0.6, dropletSize * 0.08);
+    const duration = 1000 + Math.random() * 1000;
+    
+    droplet.style.left = x + 'px';
+    droplet.style.top = y + 'px';
+    droplet.style.setProperty('--size', dropletSize + 'px');
+    droplet.style.setProperty('--duration', duration + 'ms');
+    droplet.style.setProperty('--final-opacity', opacity);
+    
+    this.glueLayer.appendChild(droplet);
+    
+    this.glueDroplets.push({
+      element: droplet,
+      x, y,
+      size: dropletSize,
+      opacity,
+      startTime: Date.now(),
+      duration,
+      life: 1
+    });
+    
+    // Remove droplet after lifetime
+    setTimeout(() => {
+      this.removeGlueDroplet(droplet);
+    }, duration + 2000);
+  }
+  
+  createGlueAdhesion(x, y) {
+    const adhesion = document.createElement('div');
+    adhesion.className = 'glue-adhesion';
+    
+    const size = 8 + Math.random() * 12;
+    const opacity = 0.4 + Math.random() * 0.3;
+    const duration = 1500 + Math.random() * 1000;
+    
+    adhesion.style.left = x + 'px';
+    adhesion.style.top = y + 'px';
+    adhesion.style.setProperty('--size', size + 'px');
+    adhesion.style.setProperty('--duration', duration + 'ms');
+    adhesion.style.setProperty('--final-opacity', opacity);
+    
+    // Add surface tension effect
+    const surfaceTension = document.createElement('div');
+    surfaceTension.className = 'glue-surface-tension';
+    surfaceTension.style.width = (size * 3) + 'px';
+    surfaceTension.style.height = (size * 3) + 'px';
+    surfaceTension.style.left = x + 'px';
+    surfaceTension.style.top = y + 'px';
+    surfaceTension.style.setProperty('--duration', (duration * 1.5) + 'ms');
+    
+    this.glueLayer.appendChild(adhesion);
+    this.glueLayer.appendChild(surfaceTension);
+    
+    this.glueAdhesionPoints.push({
+      element: adhesion,
+      surfaceTension,
+      x, y,
+      size,
+      opacity,
+      startTime: Date.now(),
+      duration,
+      life: 1
+    });
+    
+    // Create small droplets around adhesion point
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => {
+        const offsetX = x + (Math.random() - 0.5) * size * 2;
+        const offsetY = y + (Math.random() - 0.5) * size * 2;
+        this.createGlueDroplet(offsetX, offsetY, 3 + Math.random() * 4);
+      }, i * 200);
+    }
+    
+    // Remove adhesion after lifetime
+    setTimeout(() => {
+      this.removeGlueAdhesion(adhesion, surfaceTension);
+    }, duration + 3000);
+  }
+  
+  updateGlueStrands() {
+    const now = Date.now();
+    
+    this.glueStrands = this.glueStrands.filter(strand => {
+      const age = now - strand.startTime;
+      const lifeProgress = age / (strand.duration || 5000);
+      
+      if (lifeProgress >= 1) {
+        this.removeGlueStrand(strand.element);
+        return false;
+      }
+      
+      // Check if strand should stretch based on mouse proximity
+      const distanceToMouse = Math.sqrt(
+        Math.pow(this.mouseX - strand.centerX, 2) + 
+        Math.pow(this.mouseY - strand.centerY, 2)
+      );
+      
+      if (distanceToMouse < 50 && this.mouseVelocity > 8) {
+        if (!strand.isStretching) {
+          strand.isStretching = true;
+          strand.element.style.animation = `glueStrandStretch 1s ease-out forwards`;
+        }
+        
+        strand.stretchFactor = Math.min(1.5, strand.stretchFactor + 0.02);
+        
+        // Break strand if stretched too much
+        if (strand.stretchFactor > 1.4) {
+          strand.element.style.animation = `glueStrandBreak 0.8s ease-out forwards`;
+          setTimeout(() => {
+            this.removeGlueStrand(strand.element);
+          }, 800);
+          return false;
+        }
+      }
+      
+      return true;
+    });
+  }
+  
+  updateGlueDroplets() {
+    const now = Date.now();
+    
+    this.glueDroplets = this.glueDroplets.filter(droplet => {
+      const age = now - droplet.startTime;
+      const lifeProgress = age / droplet.duration;
+      
+      if (lifeProgress >= 1) {
+        this.removeGlueDroplet(droplet.element);
+        return false;
+      }
+      
+      droplet.life = 1 - lifeProgress;
+      return true;
+    });
+  }
+  
+  updateGlueConnections() {
+    // Create connections between nearby glue elements
+    this.glueStrands.forEach((strand, i) => {
+      this.glueDroplets.forEach(droplet => {
+        const distance = Math.sqrt(
+          Math.pow(droplet.x - strand.centerX, 2) + 
+          Math.pow(droplet.y - strand.centerY, 2)
+        );
+        
+        if (distance < 30 && Math.random() > 0.98) {
+          // Create small connecting strand
+          this.createGlueStrand();
+        }
+      });
+    });
+  }
+  
+  removeGlueStrand(element) {
+    if (element && element.parentNode) {
+      element.parentNode.removeChild(element);
+    }
+    this.glueStrands = this.glueStrands.filter(s => s.element !== element);
+  }
+  
+  removeGlueDroplet(element) {
+    if (element && element.parentNode) {
+      element.parentNode.removeChild(element);
+    }
+    this.glueDroplets = this.glueDroplets.filter(d => d.element !== element);
+  }
+  
+  removeGlueAdhesion(element, surfaceTension) {
+    if (element && element.parentNode) {
+      element.parentNode.removeChild(element);
+    }
+    if (surfaceTension && surfaceTension.parentNode) {
+      surfaceTension.parentNode.removeChild(surfaceTension);
+    }
+    this.glueAdhesionPoints = this.glueAdhesionPoints.filter(a => a.element !== element);
   }
   
   createWaterDisturbance(x, y, isClick = false) {
@@ -305,6 +607,11 @@ class FullScreenWaterSurface {
     reflection.className = 'water-reflection';
     this.container.appendChild(reflection);
     
+    // Create glue layer
+    this.glueLayer = document.createElement('div');
+    this.glueLayer.id = 'glueLayer';
+    this.container.appendChild(this.glueLayer);
+    
     // Update reflection based on mouse position
     document.addEventListener('mousemove', (e) => {
       reflection.style.setProperty('--mx', (e.clientX / window.innerWidth * 100) + '%');
@@ -446,6 +753,10 @@ class FullScreenWaterSurface {
     // Apply global distortion to distortion layer
     const globalDistortion = Math.min(totalDistortion * 0.5, 2);
     this.distortionLayer.style.backdropFilter = `blur(${globalDistortion}px)`;
+    
+    // Show glue layer when there's interaction
+    const glueOpacity = Math.min(this.mouseVelocity * 0.05, 1);
+    this.glueLayer.style.opacity = glueOpacity;
   }
   
   updateTrailParticles() {

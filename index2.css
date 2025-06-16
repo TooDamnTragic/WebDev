@@ -60,13 +60,26 @@ body, html {
   transition: backdrop-filter 0.1s ease;
 }
 
+/* Glue Layer - Realistic Adhesive Effect */
+#glueLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 4;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
 /* Main Text with Water Distortion */
 .text-container {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 4;
+  z-index: 5;
   pointer-events: none;
   transition: all 0.1s ease-out;
   transform-style: preserve-3d;
@@ -85,6 +98,299 @@ body, html {
   transition: all 0.1s ease-out;
   will-change: transform, filter;
   transform-style: preserve-3d;
+}
+
+/* Realistic Glue Strand */
+.glue-strand {
+  position: absolute;
+  background: linear-gradient(
+    var(--angle, 0deg),
+    transparent 0%,
+    rgba(255, 255, 255, 0.02) 5%,
+    rgba(255, 255, 255, 0.08) 20%,
+    rgba(255, 255, 255, 0.12) 40%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.12) 60%,
+    rgba(255, 255, 255, 0.08) 80%,
+    rgba(255, 255, 255, 0.02) 95%,
+    transparent 100%
+  );
+  border-radius: 50px;
+  transform-origin: center;
+  opacity: 0;
+  animation: glueStrandForm var(--duration, 2s) ease-out forwards;
+  pointer-events: none;
+  filter: blur(0.3px);
+  box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.1),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.05);
+}
+
+/* Glue strand formation animation */
+@keyframes glueStrandForm {
+  0% {
+    opacity: 0;
+    transform: scaleY(0) scaleX(0.8);
+    filter: blur(0.5px);
+  }
+  15% {
+    opacity: 0.3;
+    transform: scaleY(0.3) scaleX(0.9);
+    filter: blur(0.4px);
+  }
+  40% {
+    opacity: 0.7;
+    transform: scaleY(0.8) scaleX(1);
+    filter: blur(0.3px);
+  }
+  70% {
+    opacity: 0.9;
+    transform: scaleY(1) scaleX(1);
+    filter: blur(0.2px);
+  }
+  85% {
+    opacity: 0.8;
+    transform: scaleY(1) scaleX(0.98);
+    filter: blur(0.25px);
+  }
+  100% {
+    opacity: var(--final-opacity, 0.6);
+    transform: scaleY(1) scaleX(1);
+    filter: blur(0.3px);
+  }
+}
+
+/* Glue strand stretching animation */
+@keyframes glueStrandStretch {
+  0% {
+    transform: scaleY(1) scaleX(1);
+    opacity: var(--start-opacity, 0.6);
+  }
+  30% {
+    transform: scaleY(1.1) scaleX(0.95);
+    opacity: 0.8;
+  }
+  60% {
+    transform: scaleY(1.2) scaleX(0.9);
+    opacity: 0.7;
+  }
+  85% {
+    transform: scaleY(1.3) scaleX(0.85);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scaleY(1.4) scaleX(0.8);
+    opacity: 0.3;
+  }
+}
+
+/* Glue strand breaking animation */
+@keyframes glueStrandBreak {
+  0% {
+    transform: scaleY(1.4) scaleX(0.8);
+    opacity: 0.3;
+  }
+  20% {
+    transform: scaleY(1.5) scaleX(0.7);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scaleY(1.6) scaleX(0.6);
+    opacity: 0.1;
+  }
+  80% {
+    transform: scaleY(1.7) scaleX(0.5);
+    opacity: 0.05;
+  }
+  100% {
+    transform: scaleY(1.8) scaleX(0.4);
+    opacity: 0;
+  }
+}
+
+/* Glue Droplet - Realistic adhesive droplet */
+.glue-droplet {
+  position: absolute;
+  width: var(--size, 8px);
+  height: var(--size, 8px);
+  background: radial-gradient(
+    ellipse at 30% 25%,
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(255, 255, 255, 0.15) 30%,
+    rgba(255, 255, 255, 0.08) 60%,
+    rgba(255, 255, 255, 0.03) 85%,
+    transparent 100%
+  );
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  animation: glueDropletForm var(--duration, 1.5s) ease-out forwards;
+  pointer-events: none;
+  filter: blur(0.2px);
+  box-shadow: 
+    inset 1px 1px 2px rgba(255, 255, 255, 0.1),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.05),
+    0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Glue droplet formation */
+@keyframes glueDropletForm {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+    filter: blur(0.4px);
+  }
+  25% {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(0.7);
+    filter: blur(0.3px);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0.2px);
+  }
+  75% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.05);
+    filter: blur(0.15px);
+  }
+  100% {
+    opacity: var(--final-opacity, 0.6);
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0.2px);
+  }
+}
+
+/* Glue Surface Tension Effect */
+.glue-surface-tension {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.03) 40%,
+    rgba(255, 255, 255, 0.01) 70%,
+    transparent 100%
+  );
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  animation: glueSurfaceTension var(--duration, 3s) ease-in-out forwards;
+  pointer-events: none;
+  filter: blur(1px);
+}
+
+@keyframes glueSurfaceTension {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  20% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  80% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
+/* Glue Adhesion Point */
+.glue-adhesion {
+  position: absolute;
+  width: var(--size, 12px);
+  height: var(--size, 12px);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.08) 50%,
+    rgba(255, 255, 255, 0.03) 80%,
+    transparent 100%
+  );
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  animation: glueAdhesion var(--duration, 2s) ease-out forwards;
+  pointer-events: none;
+  filter: blur(0.5px);
+  box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.08),
+    0 0 3px rgba(255, 255, 255, 0.02);
+}
+
+@keyframes glueAdhesion {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2);
+    filter: blur(0.8px);
+  }
+  30% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(0.8);
+    filter: blur(0.6px);
+  }
+  60% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0.5px);
+  }
+  85% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.02);
+    filter: blur(0.4px);
+  }
+  100% {
+    opacity: var(--final-opacity, 0.4);
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0.5px);
+  }
+}
+
+/* Subtle Glue Sheen */
+.glue-sheen {
+  position: absolute;
+  background: linear-gradient(
+    var(--angle, 45deg),
+    transparent 0%,
+    rgba(255, 255, 255, 0.03) 20%,
+    rgba(255, 255, 255, 0.08) 40%,
+    rgba(255, 255, 255, 0.12) 50%,
+    rgba(255, 255, 255, 0.08) 60%,
+    rgba(255, 255, 255, 0.03) 80%,
+    transparent 100%
+  );
+  border-radius: inherit;
+  opacity: 0;
+  animation: glueSheenMove var(--duration, 4s) ease-in-out infinite;
+  pointer-events: none;
+  filter: blur(0.5px);
+}
+
+@keyframes glueSheenMove {
+  0%, 100% {
+    opacity: 0;
+    transform: translateX(-100%) skewX(-10deg);
+  }
+  25% {
+    opacity: 0.3;
+    transform: translateX(-50%) skewX(-5deg);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateX(0%) skewX(0deg);
+  }
+  75% {
+    opacity: 0.3;
+    transform: translateX(50%) skewX(5deg);
+  }
 }
 
 /* Water Distortion Classes */
@@ -344,6 +650,14 @@ body, html {
   .water-displacement {
     --size: 400px;
   }
+  
+  .glue-strand {
+    filter: blur(0.4px);
+  }
+  
+  .glue-droplet {
+    filter: blur(0.3px);
+  }
 }
 
 @media (max-width: 480px) {
@@ -357,13 +671,21 @@ body, html {
   .water-displacement {
     --size: 300px;
   }
+  
+  .glue-strand {
+    filter: blur(0.5px);
+  }
 }
 
 /* Performance optimizations */
 .water-ripple,
 .water-wave,
 .water-displacement,
-.caustic-pattern {
+.caustic-pattern,
+.glue-strand,
+.glue-droplet,
+.glue-surface-tension,
+.glue-adhesion {
   will-change: transform, opacity, filter;
   backface-visibility: hidden;
   transform-style: preserve-3d;
@@ -371,7 +693,8 @@ body, html {
 
 #waterSurface,
 #trailCanvas,
-#distortionLayer {
+#distortionLayer,
+#glueLayer {
   will-change: contents;
 }
 
