@@ -10,14 +10,14 @@ body,html{
 
 @font-face {
   font-family: 'Hackney';
-  src: url('../fonts/ArchesDemoRegular-gwJB5.otf') format('opentype');
+  src: url('../../fonts/ArchesDemoRegular-gwJB5.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'DTGetai';
-  src: url('../fonts/DTGetaiGroteskDisplay-Black.otf') format('opentype');
+  src: url('../../fonts/DTGetaiGroteskDisplay-Black.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
