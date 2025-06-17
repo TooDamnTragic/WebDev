@@ -919,7 +919,8 @@ document.addEventListener('DOMContentLoaded', () => {
   new FullScreenWaterSurface();
 });
 
-// Enhanced custom cursor
+// DISABLED: Enhanced custom cursor (commented out for now)
+/*
 let cursorTimeout;
 document.addEventListener('mousemove', (e) => {
   clearTimeout(cursorTimeout);
@@ -977,3 +978,4 @@ style.textContent = `
   }
 `;
 document.head.appendChild(style);
+*/

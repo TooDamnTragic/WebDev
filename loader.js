@@ -4,9 +4,9 @@
  *  Simulates loading of water physics, glue system, and visual effects
  */
 
-// Configuration
+// Configuration - EXTENDED TIMING
 const BOOT_TIME_MS = 2500; // Slightly longer for dramatic effect
-const FADE_DURATION_MS = 800;
+const FADE_DURATION_MS = 5000; // Extended to 5 seconds
 
 // Loading stages for realistic simulation
 const loadingStages = [
@@ -113,7 +113,7 @@ function completeBootSequence() {
   // 1. Swap boot flag so the real site CSS becomes visible
   document.documentElement.dataset.boot = '1';
   
-  // 2. Enhanced cleanup after fade animations
+  // 2. Enhanced cleanup after fade animations - EXTENDED TIMING
   const scrim = document.getElementById('scrim');
   const loadingIndicator = document.querySelector('div[style*="loadingPulse"]');
   
@@ -145,7 +145,7 @@ function completeBootSequence() {
     });
     document.dispatchEvent(event);
     
-  }, FADE_DURATION_MS);
+  }, FADE_DURATION_MS); // Extended to 5 seconds
 }
 
 // Progress tracking for development/debugging

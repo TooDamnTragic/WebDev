@@ -14,7 +14,7 @@ body{
 /* The app is invisible until boot flag flips */
 html[data-boot="0"] #app{opacity:0;pointer-events:none}
 
-/* ASCII block styling */
+/* ASCII block styling - CENTERED */
 #scrim{
   line-height:1.1;
   font-size:clamp(6px, 1.2vw, 14px);
@@ -30,6 +30,11 @@ html[data-boot="0"] #app{opacity:0;pointer-events:none}
     0 0 15px #ff0000;
   transform:scale(0.9);
   opacity:0.9;
+  /* Ensure perfect centering */
+  display:block;
+  margin:0 auto;
+  position:relative;
+  width:fit-content;
 }
 
 /* Enhanced spark effect with red glow */
@@ -56,9 +61,9 @@ html[data-boot="0"] #app{opacity:0;pointer-events:none}
   }
 }
 
-/* fade-out once JS removes boot flag */
+/* fade-out once JS removes boot flag - EXTENDED TO 5 SECONDS */
 html[data-boot="1"] #scrim{
-  animation:scrimFadeOut 0.8s ease-out forwards;
+  animation:scrimFadeOut 5s ease-out forwards;
   pointer-events:none;
 }
 
@@ -68,10 +73,25 @@ html[data-boot="1"] #scrim{
     transform:scale(1);
     filter:drop-shadow(0 0 12px #ff0000) brightness(1.4);
   }
-  50% {
-    opacity:0.5;
-    transform:scale(1.05);
-    filter:drop-shadow(0 0 20px #ff0000) brightness(1.6);
+  20% {
+    opacity:0.8;
+    transform:scale(1.02);
+    filter:drop-shadow(0 0 15px #ff0000) brightness(1.5);
+  }
+  40% {
+    opacity:0.6;
+    transform:scale(1.04);
+    filter:drop-shadow(0 0 18px #ff0000) brightness(1.6);
+  }
+  60% {
+    opacity:0.4;
+    transform:scale(1.06);
+    filter:drop-shadow(0 0 22px #ff0000) brightness(1.7);
+  }
+  80% {
+    opacity:0.2;
+    transform:scale(1.08);
+    filter:drop-shadow(0 0 25px #ff0000) brightness(1.8);
   }
   100% {
     opacity:0;
@@ -80,9 +100,9 @@ html[data-boot="1"] #scrim{
   }
 }
 
-/* App fade-in animation */
+/* App fade-in animation - EXTENDED TO 5 SECONDS */
 html[data-boot="1"] #app{
-  animation:appFadeIn 1s ease-out forwards;
+  animation:appFadeIn 5s ease-out forwards;
 }
 
 @keyframes appFadeIn {
@@ -91,10 +111,25 @@ html[data-boot="1"] #app{
     transform:scale(0.95);
     filter:blur(2px);
   }
-  50% {
+  20% {
+    opacity:0.1;
+    transform:scale(0.96);
+    filter:blur(1.8px);
+  }
+  40% {
+    opacity:0.3;
+    transform:scale(0.97);
+    filter:blur(1.5px);
+  }
+  60% {
     opacity:0.5;
     transform:scale(0.98);
     filter:blur(1px);
+  }
+  80% {
+    opacity:0.8;
+    transform:scale(0.99);
+    filter:blur(0.5px);
   }
   100% {
     opacity:1;
@@ -142,12 +177,12 @@ html[data-boot="1"] #app{
   }
   
   html[data-boot="1"] #scrim {
-    transition: opacity 0.4s ease;
+    transition: opacity 5s ease;
     opacity: 0;
   }
   
   html[data-boot="1"] #app {
-    transition: opacity 0.4s ease;
+    transition: opacity 5s ease;
     opacity: 1;
   }
 }
