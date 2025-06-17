@@ -1,0 +1,37 @@
+/* Education Page Specific Styles */
+
+/* Additional education-specific styles can go here */
+/* Main styles are in main.css for better organization */
+
+/* Education page specific overrides */
+.education-page .items h2,
+.education-page .items h3,
+.education-page .items h4 {
+  font-family: 'DTGetai', 'Hackney', sans-serif;
+}
+
+/* Ensure proper font loading for education titles */
+.education-page h1,
+.education-page h2,
+.education-page h3,
+.education-page h4,
+.education-page h5 {
+  font-family: 'DTGetai', 'Hackney', sans-serif;
+  font-weight: normal;
+}
+
+/* Education specific animations */
+@keyframes educationFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.education-page .featured-item {
+  animation: educationFadeIn 0.8s ease-out forwards;
+}
