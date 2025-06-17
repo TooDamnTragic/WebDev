@@ -10,8 +10,8 @@ body,html{
 }
 @font-face {
   font-family: 'Hackney';
-  src: url('fonts/ArchesDemoRegular-gwJB5.otf') format('truetype'); /* Adjust the file name and path as needed */
-  font-weight: normal; /*  Or 400 */
+  src: url('fonts/ArchesDemoRegular-gwJB5.otf') format('truetype');
+  font-weight: normal;
   font-style: normal;
 }
 @font-face {
