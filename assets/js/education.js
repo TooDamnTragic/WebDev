@@ -3,8 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const info = document.getElementById('info');
   const infoExtra = document.getElementById('info-extra');
   const infoImage = document.getElementById('info-image');
+  const infoImageLink = document.getElementById('info-image-link');
   const infoText = document.getElementById('info-text');
   const infoExtraImage = document.getElementById('info-extra-image');
+  const infoExtraImageLink = document.getElementById('info-extra-image-link');
   const infoExtraText = document.getElementById('info-extra-text');
   const infoClose = document.getElementById('info-close');
   const infoExtraClose = document.getElementById('info-extra-close');
@@ -80,9 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const img = item.getAttribute('data-image');
     const text = item.getAttribute('data-text');
     const color = item.getAttribute('data-color');
+    const link = item.getAttribute('data-link');
     
     const currentInfo = isExtracurricular ? infoExtra : info;
     const currentInfoImage = isExtracurricular ? infoExtraImage : infoImage;
+    const currentInfoLink = isExtracurricular ? infoExtraImageLink : infoImageLink;
     const currentInfoText = isExtracurricular ? infoExtraText : infoText;
     
     const popupId = isExtracurricular ? 'extra' : 'main';
@@ -103,6 +107,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       currentInfoImage.style.opacity = '0';
       currentInfoImage.src = img;
+      if (currentInfoLink) {
+        if (link) {
+          currentInfoLink.href = link;
+          currentInfoLink.style.pointerEvents = 'auto';
+        } else {
+          currentInfoLink.removeAttribute('href');
+          currentInfoLink.style.pointerEvents = 'none';
+        }
+      }
     }
     
     if (text) currentInfoText.textContent = text;
@@ -397,24 +410,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set initial ARIA attributes
     item.setAttribute('aria-expanded', 'false');
     
-    // Mouse events (desktop only)
-    item.addEventListener('mouseenter', () => {
-      if (!isMobile()) {
-        showInfo(item, isExtracurricular);
-      }
-    });
-    
-    item.addEventListener('mouseleave', () => {
-      if (!isMobile()) {
-        hideInfo(isExtracurricular, false); // Use delayed hiding
-      }
-    });
-    
     // Click/touch events
     item.addEventListener('click', (e) => {
-      // Don't trigger if clicking on a link
-      if (e.target.tagName === 'A') return;
-      
+      // Prevent navigating via nested links
+      if (e.target.tagName === 'A') {
+        e.preventDefault();
+      }
+
       if (isMobile()) {
         e.preventDefault();
         toggleMobileInfo(item);
@@ -446,14 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
           break;
       }
     });
-    
-    // Focus events for keyboard navigation
-    item.addEventListener('focus', () => {
-      if (!isMobile()) {
-        showInfo(item, isExtracurricular);
-      }
-    });
-    
+
     item.addEventListener('blur', () => {
       if (!isMobile()) {
         const currentInfo = isExtracurricular ? infoExtra : info;
