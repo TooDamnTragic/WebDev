@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const defaultBg = getComputedStyle(body).background;
   
   const gravityItems = document.querySelectorAll('.gravity-item');
+  const curricularSection = document.getElementById('curricular-section');
+  const extracurricularSection = document.getElementById('extracurricular-section');
   
   // Mobile detection
   const isMobile = () => window.innerWidth <= 768;
@@ -22,10 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const activePopups = new Set();
   const popupTimeouts = new Map();
   
-  // Physics state for window shake detection
-  let lastWindowX = window.screenX;
-  let lastWindowY = window.screenY;
-  let windowShakeIntensity = 0;
+  // Scroll-based section visibility
+  let extracurricularActivated = false;
   
   // Debounce function for performance
   const debounce = (func, wait) => {
@@ -215,37 +215,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Window shake detection
-  const detectWindowShake = () => {
-    const currentX = window.screenX;
-    const currentY = window.screenY;
-    
-    const deltaX = Math.abs(currentX - lastWindowX);
-    const deltaY = Math.abs(currentY - lastWindowY);
-    
-    // Calculate shake intensity
-    const shakeAmount = deltaX + deltaY;
-    windowShakeIntensity = Math.min(shakeAmount / 10, 5); // Cap at 5
-    
-    // Apply shake to gravity items
-    if (windowShakeIntensity > 0.5) {
-      gravityItems.forEach(item => {
-        if (item.physicsData) {
-          // Add random velocity based on shake intensity
-          item.physicsData.vx += (Math.random() - 0.5) * windowShakeIntensity;
-          item.physicsData.vy += (Math.random() - 0.5) * windowShakeIntensity;
-          item.physicsData.rotationSpeed += (Math.random() - 0.5) * windowShakeIntensity;
-        }
-      });
-    }
-    
-    // Decay shake intensity
-    windowShakeIntensity *= 0.9;
-    
-    lastWindowX = currentX;
-    lastWindowY = currentY;
-  };
-
   // Enhanced gravity physics simulation
   const initializeGravity = () => {
     if (isMobile()) return; // Skip gravity on mobile for performance
@@ -279,23 +248,24 @@ document.addEventListener('DOMContentLoaded', () => {
       item.style.zIndex = zIndex;
 
       // Set initial random positions at the top
-      const initialX = Math.random() * (containerWidth - item.offsetWidth);
-      const initialY = -200 - Math.random() * 400; // Start well above container
+      const initialX = Math.random() * (containerWidth - 280); // Account for item width
+      const initialY = -100 - Math.random() * 200; // Start above container
 
-      // Physics properties
+      // Physics properties with improved values
       const physicsData = {
         x: initialX,
         y: initialY,
-        vx: (Math.random() - 0.5) * 10,
-        vy: Math.random() * 4,
+        vx: (Math.random() - 0.5) * 6, // Reduced horizontal velocity
+        vy: Math.random() * 2 + 1, // Consistent downward velocity
         rotation: Math.random() * 360,
-        rotationSpeed: (Math.random() - 0.5) * 10,
-        gravity: 0.6,
-        bounce: 0.8,
-        friction: 0.94,
-        groundY: containerHeight - item.offsetHeight - 20,
-        width: item.offsetWidth,
-        height: item.offsetHeight
+        rotationSpeed: (Math.random() - 0.5) * 4, // Reduced rotation speed
+        gravity: 0.4, // Reduced gravity for smoother fall
+        bounce: 0.6, // Reduced bounce for more realistic physics
+        friction: 0.96, // Increased friction for stability
+        groundY: containerHeight - 120, // Account for item height
+        width: 280,
+        height: 120,
+        settled: false
       };
 
       item.physicsData = physicsData;
@@ -311,44 +281,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const resolveCollisions = () => {
       for (let i = 0; i < activeItems.length; i++) {
         const a = activeItems[i].physicsData;
+        if (a.settled) continue;
+        
         for (let j = i + 1; j < activeItems.length; j++) {
           const b = activeItems[j].physicsData;
-          if (
-            a.x < b.x + b.width &&
-            a.x + a.width > b.x &&
-            a.y < b.y + b.height &&
-            a.y + a.height > b.y
-          ) {
-            const overlapX = (a.width + b.width) / 2 - Math.abs(a.x + a.width / 2 - (b.x + b.width / 2));
-            const overlapY = (a.height + b.height) / 2 - Math.abs(a.y + a.height / 2 - (b.y + b.height / 2));
-
-            if (overlapX > 0 && overlapY > 0) {
-              if (overlapX < overlapY) {
-                const push = overlapX / 2;
-                if (a.x < b.x) {
-                  a.x -= push;
-                  b.x += push;
-                } else {
-                  a.x += push;
-                  b.x -= push;
-                }
-                const temp = a.vx;
-                a.vx = b.vx;
-                b.vx = temp;
-              } else {
-                const push = overlapY / 2;
-                if (a.y < b.y) {
-                  a.y -= push;
-                  b.y += push;
-                } else {
-                  a.y += push;
-                  b.y -= push;
-                }
-                const temp = a.vy;
-                a.vy = b.vy;
-                b.vy = temp;
-              }
-            }
+          if (b.settled) continue;
+          
+          const dx = (a.x + a.width / 2) - (b.x + b.width / 2);
+          const dy = (a.y + a.height / 2) - (b.y + b.height / 2);
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          const minDistance = (a.width + b.width) / 3; // Overlap threshold
+          
+          if (distance < minDistance) {
+            const overlap = minDistance - distance;
+            const pushX = (dx / distance) * overlap * 0.5;
+            const pushY = (dy / distance) * overlap * 0.5;
+            
+            a.x += pushX;
+            a.y += pushY;
+            b.x -= pushX;
+            b.y -= pushY;
+            
+            // Exchange some velocity
+            const tempVx = a.vx * 0.8;
+            const tempVy = a.vy * 0.8;
+            a.vx = b.vx * 0.8;
+            a.vy = b.vy * 0.8;
+            b.vx = tempVx;
+            b.vy = tempVy;
           }
         }
       }
@@ -357,32 +317,52 @@ document.addEventListener('DOMContentLoaded', () => {
     const animateAll = () => {
       activeItems.forEach(item => {
         const physicsData = item.physicsData;
+        if (physicsData.settled) return;
 
+        // Apply gravity
         physicsData.vy += physicsData.gravity;
 
+        // Update position
         physicsData.x += physicsData.vx;
         physicsData.y += physicsData.vy;
         physicsData.rotation += physicsData.rotationSpeed;
 
-        if (physicsData.x <= 0 || physicsData.x >= containerWidth - physicsData.width) {
+        // Boundary checks
+        if (physicsData.x <= 0) {
+          physicsData.x = 0;
           physicsData.vx *= -physicsData.bounce;
-          physicsData.x = Math.max(0, Math.min(containerWidth - physicsData.width, physicsData.x));
+        } else if (physicsData.x >= containerWidth - physicsData.width) {
+          physicsData.x = containerWidth - physicsData.width;
+          physicsData.vx *= -physicsData.bounce;
         }
 
+        // Ground collision
         if (physicsData.y >= physicsData.groundY) {
+          physicsData.y = physicsData.groundY;
           physicsData.vy *= -physicsData.bounce;
           physicsData.vx *= physicsData.friction;
           physicsData.rotationSpeed *= physicsData.friction;
-          physicsData.y = physicsData.groundY;
 
-          if (Math.abs(physicsData.vy) < 2) {
+          // Settle if moving slowly
+          if (Math.abs(physicsData.vy) < 1 && Math.abs(physicsData.vx) < 1) {
             physicsData.vy = 0;
+            physicsData.vx = 0;
+            physicsData.rotationSpeed *= 0.9;
+            
+            if (Math.abs(physicsData.rotationSpeed) < 0.5) {
+              physicsData.settled = true;
+            }
           }
         }
+
+        // Apply air resistance
+        physicsData.vx *= 0.999;
+        physicsData.rotationSpeed *= 0.999;
       });
 
       resolveCollisions();
 
+      // Update DOM positions for non-hovered items
       activeItems.forEach(item => {
         const physicsData = item.physicsData;
         if (!item.matches(':hover')) {
@@ -395,15 +375,36 @@ document.addEventListener('DOMContentLoaded', () => {
       requestAnimationFrame(animateAll);
     };
 
-    requestAnimationFrame(animateAll);
-
-    // Start window shake detection
-    const shakeLoop = () => {
-      detectWindowShake();
-      requestAnimationFrame(shakeLoop);
-    };
-    requestAnimationFrame(shakeLoop);
+    // Start animation after a delay
+    setTimeout(() => {
+      requestAnimationFrame(animateAll);
+    }, 1000);
   };
+
+  // Scroll-based section management
+  const handleScroll = debounce(() => {
+    const scrollY = window.scrollY;
+    const windowHeight = window.innerHeight;
+    
+    // Show curricular section when scrolled past hero
+    if (scrollY > windowHeight * 0.5) {
+      curricularSection.classList.add('visible');
+    }
+    
+    // Activate extracurricular overlay when scrolled to bottom of curricular
+    const curricularRect = curricularSection.getBoundingClientRect();
+    if (curricularRect.bottom <= windowHeight * 0.3 && !extracurricularActivated) {
+      extracurricularSection.classList.add('active');
+      extracurricularActivated = true;
+      
+      // Initialize gravity after extracurricular section is visible
+      setTimeout(() => {
+        initializeGravity();
+      }, 800);
+    }
+    
+    updateDividerProgress();
+  }, 16);
 
   // Setup item event listeners
   const setupItemListeners = (item, isExtracurricular = false) => {
@@ -512,15 +513,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }, 250);
 
-  // Show content after initial load
-  setTimeout(() => {
-    document.body.classList.add('show-content');
-    // Initialize gravity after content is shown
-    setTimeout(() => {
-      initializeGravity();
-    }, 500);
-  }, 1000);
-
   const dividers = document.querySelectorAll('.divider');
   const eduContainers = document.querySelectorAll('.edu-container');
 
@@ -543,9 +535,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  window.addEventListener('scroll', debounce(updateDividerProgress, 16));
+  window.addEventListener('scroll', handleScroll);
   window.addEventListener('resize', handleResize);
-  updateDividerProgress();
 
   // Intersection Observer for reveal animations
   const observer = new IntersectionObserver(entries => {
