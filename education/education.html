@@ -3,175 +3,298 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Education - Academic Journey</title>
+  <title>Education</title>
   <link rel="stylesheet" href="../style.css">
-  <link rel="stylesheet" href="education.css">
 </head>
 <body class="education-page">
-  <!-- Header Section -->
-  <header class="education-header">
-    <div class="header-content">
-      <h1 class="page-title">Education</h1>
-      <p class="page-subtitle">Academic Journey & Achievements</p>
-    </div>
-    <div class="header-decoration"></div>
-  </header>
+  <h1>Education</h1>
 
-  <!-- Main Content -->
-  <main class="education-main">
-    <!-- Academic Education Section -->
-    <section class="academic-section">
-      <div class="section-header">
-        <h2 class="section-title">Academic Education</h2>
-        <div class="section-divider"></div>
+  <main id="main-content">
+  <!-- Curricular Section -->
+  <div class="edu-module curricular-section" id="main-content">
+    <div class="edu-container">
+      <div class="divider" aria-hidden="true"></div>
+      <div class="left-column">
+        <section id="curricular" class="section-content">
+          <ul class="items" style="list-style: none;" role="list">
+            <li class="item reveal left" 
+                data-color="#b96b6b" 
+                data-image="media/RIT-2.jpeg" 
+                data-text="The Rochester Institute of Technology is a private research university in Henrietta, New York, a suburb of Rochester. It was founded in 1829. It is one of only two institutes of technology in New York state, the other being the New York Institute of Technology."
+                role="listitem"
+                tabindex="0"
+                aria-describedby="rit-description">
+              <h2><a href="https://www.rit.edu/" target="_blank" rel="noopener noreferrer">RIT - Rochester Institute of Technology</a></h2>
+              <p class="years">Aug 2023 - Current</p>
+              <div class="mobile-info" id="rit-description">
+                <div class="mobile-image-container">
+                  <div class="image-skeleton" aria-hidden="true"></div>
+                  <img class="mobile-image" src="media/RIT-2.jpeg" alt="RIT Campus" loading="lazy">
+                </div>
+                <p class="mobile-text">The Rochester Institute of Technology is a private research university in Henrietta, New York, a suburb of Rochester. It was founded in 1829. It is one of only two institutes of technology in New York state, the other being the New York Institute of Technology.</p>
+              </div>
+            </li>
+            <li class="item reveal left" 
+                data-color="#e28585" 
+                data-image="media/RIT-honors.jpeg" 
+                data-text="The RIT Honors Program is dedicated to providing educational richness that promotes an enterprising spirit and creative approaches to modern challenges by combining professional development at a high-tech university with attention to the impact that decisions have on our shared society and individual humanity."
+                role="listitem"
+                tabindex="0"
+                aria-describedby="honors-description">
+              <h4><a href="https://www.rit.edu/honors/overview" target="_blank" rel="noopener noreferrer">Honors Program</a></h4>
+              <div class="mobile-info" id="honors-description">
+                <div class="mobile-image-container">
+                  <div class="image-skeleton" aria-hidden="true"></div>
+                  <img class="mobile-image" src="media/RIT-honors.jpeg" alt="RIT Honors Program" loading="lazy">
+                </div>
+                <p class="mobile-text">The RIT Honors Program is dedicated to providing educational richness that promotes an enterprising spirit and creative approaches to modern challenges by combining professional development at a high-tech university with attention to the impact that decisions have on our shared society and individual humanity.</p>
+              </div>
+            </li>
+            <li class="item reveal right" 
+                data-color="#5a7e91" 
+                data-image="media/RIT-1.jpg" 
+                data-text="RIT's new Global Cybersecurity Institute is one of the world's leading cybersecurity education and research centers. This 52,000-square-foot, state-of-the-art facility was designed for a holistic, multidisciplinary approach to cybersecurity."
+                role="listitem"
+                tabindex="0"
+                aria-describedby="cyber-description">
+              <h3><a href="https://www.rit.edu/study/cybersecurity-bs" target="_blank" rel="noopener noreferrer">Bachelors of Science Degree in Cybersecurity</a></h3>
+              <div class="mobile-info" id="cyber-description">
+                <div class="mobile-image-container">
+                  <div class="image-skeleton" aria-hidden="true"></div>
+                  <img class="mobile-image" src="media/RIT-1.jpg" alt="RIT Cybersecurity Institute" loading="lazy">
+                </div>
+                <p class="mobile-text">RIT's new Global Cybersecurity Institute is one of the world's leading cybersecurity education and research centers. This 52,000-square-foot, state-of-the-art facility was designed for a holistic, multidisciplinary approach to cybersecurity.</p>
+              </div>
+            </li>
+            <li class="item reveal right" 
+                data-color="#58634e" 
+                data-image="media/RIT-Gosnell.jpg" 
+                data-text="The mathematics minor is designed for students who want to learn new skills and develop new ways of framing and solving problems. It offers students the opportunity to explore connections among mathematical ideas and to further develop mathematical ways of thinking."
+                role="listitem"
+                tabindex="0"
+                aria-describedby="math-description">
+              <h4><button class="link-button" type="button" aria-label="Mathematics Minor program">Mathematics Minor</button></h4>
+              <div class="mobile-info" id="math-description">
+                <div class="mobile-image-container">
+                  <div class="image-skeleton" aria-hidden="true"></div>
+                  <img class="mobile-image" src="media/RIT-Gosnell.jpg" alt="RIT Gosnell Hall" loading="lazy">
+                </div>
+                <p class="mobile-text">The mathematics minor is designed for students who want to learn new skills and develop new ways of framing and solving problems. It offers students the opportunity to explore connections among mathematical ideas and to further develop mathematical ways of thinking.</p>
+              </div>
+            </li>
+            <li class="item reveal right" 
+                data-color="#3a3a49" 
+                data-image="media/RIT-SysAdminLab.jpg" 
+                data-text="This minor provides computing students with a firm foundation in networking and/or systems administration. Computer networks and the systems attached to these networks have become ubiquitous. Therefore, knowledge of how computer networks function, their administration, and the administration of the systems attached to them can be of value to every computing professional since their work is impacted in some way by computer networks and computer systems. Students may choose between two tracks: networking or system administration."
+                role="listitem"
+                tabindex="0"
+                aria-describedby="nsa-description">
+              <h4><button class="link-button" type="button" aria-label="Networking and Systems Administration Minor program">Networking and Systems Administration Minor</button></h4>
+              <div class="mobile-info" id="nsa-description">
+                <div class="mobile-image-container">
+                  <div class="image-skeleton" aria-hidden="true"></div>
+                  <img class="mobile-image" src="media/RIT-SysAdminLab.jpg" alt="RIT Systems Administration Lab" loading="lazy">
+                </div>
+                <p class="mobile-text">This minor provides computing students with a firm foundation in networking and/or systems administration. Computer networks and the systems attached to these networks have become ubiquitous. Therefore, knowledge of how computer networks function, their administration, and the administration of the systems attached to them can be of value to every computing professional since their work is impacted in some way by computer networks and computer systems. Students may choose between two tracks: networking or system administration.</p>
+              </div>
+            </li>
+          </ul>
+        </section>
       </div>
-      
-      <div class="timeline-container">
-        <div class="timeline-line"></div>
-        
-        <!-- University -->
-        <article class="timeline-item university-item" data-aos="fade-up">
-          <div class="timeline-marker"></div>
-          <div class="timeline-content">
-            <div class="timeline-badge">2023 - Present</div>
-            <h3 class="timeline-title">
-              <a href="https://www.rit.edu/" target="_blank" rel="noopener">
-                Rochester Institute of Technology
-              </a>
-            </h3>
-            <div class="timeline-details">
-              <div class="degree-info">
-                <h4>Bachelor of Science in Cybersecurity</h4>
-                <p class="degree-description">
-                  Comprehensive program covering network security, digital forensics, 
-                  risk assessment, and ethical hacking within RIT's state-of-the-art 
-                  Global Cybersecurity Institute.
-                </p>
+      <div class="right-column">
+        <div id="info" role="complementary" aria-live="polite">
+          <button id="info-close" class="close-button" aria-label="Close information panel" type="button">&times;</button>
+          <div id="info-image-wrapper" class="popup">
+            <div class="image-skeleton" aria-hidden="true"></div>
+            <img id="info-image" src="https://via.placeholder.com/300?text=Education" alt="Education info" loading="lazy">
+          </div>
+          <div id="info-text-wrapper" class="popup">
+            <p id="info-text">Hover over or select an item to see more information.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> 
+
+  <!-- Extracurricular Section -->
+  <div class="extracurricular-section">
+    <div class="overlay-header">
+      <h2>Extracurricular Activities</h2>
+      <div class="overlay-divider"></div>
+    </div>
+    
+    <div class="edu-container">
+      <div class="divider extracurricular-divider" aria-hidden="true"></div>
+      <div class="left-column">
+        <section id="extracurricular" class="section-content">
+          <!-- Main Featured Extracurriculars -->
+          <ul class="items featured-items" style="list-style: none;" role="list">
+            <li class="item reveal right featured-item" 
+                data-color="#d09837" 
+                data-image="media/RIT-DTS.png" 
+                data-text="The Honors Council is a student-oriented, student-run part of the Honors Program that exists to promote the pillars of citizenship, leadership, and academic excellence, to foster community and wellness among students in the Honors Program, and to represent the interests of the student body to the faculty and administration."
+                role="listitem"
+                tabindex="0"
+                aria-describedby="honors-council-description">
+              <h3><a href="https://www.rit.edu/honors/honors-council" target="_blank" rel="noopener noreferrer">Honors Council</a></h3>
+              <p>Academic Excellence Chair</p>
+              <p>International Delegate</p>
+              <div class="mobile-info" id="honors-council-description">
+                <div class="mobile-image-container">
+                  <div class="image-skeleton" aria-hidden="true"></div>
+                  <img class="mobile-image" src="media/RIT-DTS.png" alt="Honors Council" loading="lazy">
+                </div>
+                <p class="mobile-text">The Honors Council is a student-oriented, student-run part of the Honors Program that exists to promote the pillars of citizenship, leadership, and academic excellence, to foster community and wellness among students in the Honors Program, and to represent the interests of the student body to the faculty and administration.</p>
+              </div>
+            </li>
+            <li class="item reveal left featured-item" 
+                data-color="#5a7e91" 
+                data-image="media/RIT-DTS.png"
+                data-text="Student organization focused on exploring challenging and thought-provoking literature and texts."
+                role="listitem"
+                tabindex="0"
+                aria-describedby="dts-description">
+              <h3><button class="link-button" type="button" aria-label="Dangerous Texts Society organization">Dangerous Texts Society</button></h3>
+              <p>Vice-President</p>
+              <div class="mobile-info" id="dts-description">
+                <div class="mobile-image-container">
+                  <div class="image-skeleton" aria-hidden="true"></div>
+                  <img class="mobile-image" src="media/RIT-DTS.png" alt="Dangerous Texts Society" loading="lazy">
+                </div>
+                <p class="mobile-text">Student organization focused on exploring challenging and thought-provoking literature and texts.</p>
+              </div>
+            </li>
+            <li class="item reveal right featured-item" 
+                data-color="#a86aa8" 
+                data-image="media/RIT-SignaturesCollage-1.jpg"
+                data-text="RIT's premier art and literature magazine showcasing student creative works."
+                role="listitem"
+                tabindex="0"
+                aria-describedby="signatures-description">
+              <h3><button class="link-button" type="button" aria-label="Signatures Art and Literature Magazine">Signatures Art and Literature Magazine</button></h3>
+              <p>Literary team</p>
+              <div class="mobile-info" id="signatures-description">
+                <div class="mobile-image-container">
+                  <div class="image-skeleton" aria-hidden="true"></div>
+                  <img class="mobile-image" src="media/RIT-SignaturesCollage-1.jpg" alt="Signatures Magazine" loading="lazy">
+                </div>
+                <p class="mobile-text">RIT's premier art and literature magazine showcasing student creative works.</p>
+              </div>
+            </li>
+          </ul>
+
+          <!-- Gravity-affected items that fall to bottom -->
+          <div class="gravity-container">
+            <div class="gravity-items">
+              <div class="item gravity-item" 
+                  data-color="#c4875c" 
+                  data-image="media/RIT-Wordsmiths.png"
+                  data-text="A creative writing community for students to share their work and improve their craft."
+                  role="listitem"
+                  tabindex="0">
+                <h4><button class="link-button" type="button" aria-label="Wordsmiths Writing Club">Wordsmiths Writing Club</button></h4>
+                <p>E-board</p>
               </div>
               
-              <div class="programs-grid">
-                <div class="program-card honors-card">
-                  <div class="program-icon">🏆</div>
-                  <h5>Honors Program</h5>
-                  <p>Dedicated to educational excellence and leadership development</p>
-                </div>
-                
-                <div class="program-card minor-card">
-                  <div class="program-icon">📊</div>
-                  <h5>Mathematics Minor</h5>
-                  <p>Advanced mathematical concepts and problem-solving methodologies</p>
-                </div>
-                
-                <div class="program-card minor-card">
-                  <div class="program-icon">🖥️</div>
-                  <h5>Networking & Systems Administration Minor</h5>
-                  <p>Network infrastructure and systems management expertise</p>
-                </div>
+              <div class="item gravity-item" 
+                  data-color="#525252" 
+                  data-image="media/RIT-PSP.jpg"
+                  data-text="National honor fraternity based on scholarship, leadership, and fellowship."
+                  role="listitem"
+                  tabindex="0">
+                <h4><button class="link-button" type="button" aria-label="Phi Sigma Pi Fraternity">Phi Sigma Pi Frat</button></h4>
+                <p>Fundraising chair</p>
+              </div>
+              
+              <div class="item gravity-item" 
+                  data-color="#2e8b57" 
+                  data-image="media/RIT-GU.png"
+                  data-text="Organization promoting international awareness and cultural exchange on campus."
+                  role="listitem"
+                  tabindex="0">
+                <h4><button class="link-button" type="button" aria-label="Global Union organization">Global Union</button></h4>
+                <p>International Delegate</p>
+              </div>
+
+              <!-- Additional "too many to list" items -->
+              <div class="item gravity-item minor-activity" 
+                  data-color="#8b4513" 
+                  data-image="media/RIT-DTS.png"
+                  data-text="Campus volunteer organization."
+                  role="listitem"
+                  tabindex="0">
+                <h5>Campus Volunteers</h5>
+                <p>Member</p>
+              </div>
+
+              <div class="item gravity-item minor-activity" 
+                  data-color="#4682b4" 
+                  data-image="media/RIT-DTS.png"
+                  data-text="Student tech support group."
+                  role="listitem"
+                  tabindex="0">
+                <h5>Tech Support Club</h5>
+                <p>Helper</p>
+              </div>
+
+              <div class="item gravity-item minor-activity" 
+                  data-color="#9370db" 
+                  data-image="media/RIT-DTS.png"
+                  data-text="Gaming and esports community."
+                  role="listitem"
+                  tabindex="0">
+                <h5>Gaming Society</h5>
+                <p>Participant</p>
+              </div>
+
+              <div class="item gravity-item minor-activity" 
+                  data-color="#cd853f" 
+                  data-image="media/RIT-DTS.png"
+                  data-text="Environmental awareness group."
+                  role="listitem"
+                  tabindex="0">
+                <h5>Green Initiative</h5>
+                <p>Volunteer</p>
+              </div>
+
+              <div class="item gravity-item minor-activity" 
+                  data-color="#20b2aa" 
+                  data-image="media/RIT-DTS.png"
+                  data-text="Student photography club."
+                  role="listitem"
+                  tabindex="0">
+                <h5>Photo Club</h5>
+                <p>Member</p>
+              </div>
+
+              <div class="item gravity-item minor-activity" 
+                  data-color="#ff6347" 
+                  data-image="media/RIT-DTS.png"
+                  data-text="Campus event planning committee."
+                  role="listitem"
+                  tabindex="0">
+                <h5>Event Planning</h5>
+                <p>Assistant</p>
               </div>
             </div>
           </div>
-        </article>
+        </section>
       </div>
-    </section>
-
-    <!-- Extracurricular Activities Section -->
-    <section class="activities-section">
-      <div class="section-header">
-        <h2 class="section-title">Leadership & Activities</h2>
-        <div class="section-divider"></div>
-      </div>
-      
-      <!-- Leadership Roles -->
-      <div class="leadership-grid">
-        <div class="activity-card leadership-card" data-aos="fade-up" data-aos-delay="100">
-          <div class="card-header">
-            <div class="activity-icon leadership-icon">👑</div>
-            <div class="activity-badge">Leadership</div>
+      <div class="right-column">
+        <div id="info-extra" role="complementary" aria-live="polite">
+          <button id="info-extra-close" class="close-button" aria-label="Close information panel" type="button">&times;</button>
+          <div id="info-extra-image-wrapper" class="popup">
+            <div class="image-skeleton" aria-hidden="true"></div>
+            <img id="info-extra-image" src="https://via.placeholder.com/300?text=Extracurricular" alt="Extracurricular info" loading="lazy">
           </div>
-          <h3>Honors Council</h3>
-          <div class="role-list">
-            <span class="role-tag primary">Academic Excellence Chair</span>
-            <span class="role-tag secondary">International Delegate</span>
-          </div>
-          <p>Leading academic excellence initiatives and representing student interests in international programs.</p>
-        </div>
-
-        <div class="activity-card leadership-card" data-aos="fade-up" data-aos-delay="200">
-          <div class="card-header">
-            <div class="activity-icon creative-icon">📚</div>
-            <div class="activity-badge">Creative</div>
-          </div>
-          <h3>Dangerous Texts Society</h3>
-          <div class="role-list">
-            <span class="role-tag primary">Vice-President</span>
-          </div>
-          <p>Exploring challenging literature and fostering critical thinking through thought-provoking discussions.</p>
-        </div>
-
-        <div class="activity-card leadership-card" data-aos="fade-up" data-aos-delay="300">
-          <div class="card-header">
-            <div class="activity-icon creative-icon">🎨</div>
-            <div class="activity-badge">Creative</div>
-          </div>
-          <h3>Signatures Art & Literature Magazine</h3>
-          <div class="role-list">
-            <span class="role-tag secondary">Literary Team</span>
-          </div>
-          <p>Contributing to RIT's premier creative publication showcasing student artistic and literary works.</p>
-        </div>
-      </div>
-
-      <!-- Additional Involvement -->
-      <div class="involvement-section">
-        <h3 class="involvement-title">Additional Involvement</h3>
-        <div class="involvement-grid">
-          <div class="involvement-card" data-aos="fade-up" data-aos-delay="400">
-            <div class="involvement-icon">✍️</div>
-            <h4>Wordsmiths Writing Club</h4>
-            <span class="involvement-role">E-board Member</span>
-          </div>
-          
-          <div class="involvement-card" data-aos="fade-up" data-aos-delay="450">
-            <div class="involvement-icon">🤝</div>
-            <h4>Phi Sigma Pi Fraternity</h4>
-            <span class="involvement-role">Fundraising Chair</span>
-          </div>
-          
-          <div class="involvement-card" data-aos="fade-up" data-aos-delay="500">
-            <div class="involvement-icon">🌍</div>
-            <h4>Global Union</h4>
-            <span class="involvement-role">International Delegate</span>
-          </div>
-          
-          <div class="involvement-card" data-aos="fade-up" data-aos-delay="550">
-            <div class="involvement-icon">🎮</div>
-            <h4>Gaming Society</h4>
-            <span class="involvement-role">Active Member</span>
-          </div>
-          
-          <div class="involvement-card" data-aos="fade-up" data-aos-delay="600">
-            <div class="involvement-icon">📸</div>
-            <h4>Photography Club</h4>
-            <span class="involvement-role">Member</span>
-          </div>
-          
-          <div class="involvement-card" data-aos="fade-up" data-aos-delay="650">
-            <div class="involvement-icon">🌱</div>
-            <h4>Environmental Initiative</h4>
-            <span class="involvement-role">Volunteer</span>
+          <div id="info-extra-text-wrapper" class="popup">
+            <p id="info-extra-text">Hover over or select an activity to see more information.</p>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </div>
   </main>
-
-  <!-- Navigation -->
-  <nav class="education-nav">
-    <a href="../index.html" class="nav-link">
-      <span class="nav-icon">←</span>
-      <span class="nav-text">Back to Home</span>
-    </a>
-  </nav>
 
   <script src="education.js"></script>
 </body>
