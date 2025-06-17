@@ -8,11 +8,18 @@
   <link rel="stylesheet" href="../../assets/css/education.css">
 </head>
 <body class="education-page">
-  <h1>Education</h1>
+  <!-- Hero Section with Centered Title -->
+  <section class="education-hero">
+    <h1>Education</h1>
+    <div class="scroll-indicator">
+      Scroll to explore ↓
+    </div>
+  </section>
 
-  <main id="main-content">
+  <!-- Education Content -->
+  <div class="education-content">
     <!-- Curricular Section -->
-    <div class="edu-module curricular-section" id="main-content">
+    <div class="curricular-section" id="curricular-section">
       <div class="edu-container">
         <div class="divider" aria-hidden="true"></div>
         <div class="left-column">
@@ -25,7 +32,7 @@
                   role="listitem"
                   tabindex="0"
                   aria-describedby="rit-description">
-                <h2>RIT - Rochester Institute of Technology</a></h2>
+                <h2>RIT - Rochester Institute of Technology</h2>
                 <p class="years">Aug 2023 - Current</p>
                 <div class="mobile-info" id="rit-description">
                   <div class="mobile-image-container">
@@ -42,7 +49,7 @@
                   role="listitem"
                   tabindex="0"
                   aria-describedby="honors-description">
-                <h4>Honors Program</a></h4>
+                <h4>Honors Program</h4>
                 <div class="mobile-info" id="honors-description">
                   <div class="mobile-image-container">
                     <div class="image-skeleton" aria-hidden="true"></div>
@@ -58,7 +65,7 @@
                   role="listitem"
                   tabindex="0"
                   aria-describedby="cyber-description">
-                <h3>Bachelors of Science Degree in Cybersecurity</a></h3>
+                <h3>Bachelors of Science Degree in Cybersecurity</h3>
                 <div class="mobile-info" id="cyber-description">
                   <div class="mobile-image-container">
                     <div class="image-skeleton" aria-hidden="true"></div>
@@ -74,7 +81,7 @@
                   role="listitem"
                   tabindex="0"
                   aria-describedby="math-description">
-                <h4><button class="link-button" type="button" aria-label="Mathematics Minor program">Mathematics Minor</button></h4>
+                <h4>Mathematics Minor</h4>
                 <div class="mobile-info" id="math-description">
                   <div class="mobile-image-container">
                     <div class="image-skeleton" aria-hidden="true"></div>
@@ -90,7 +97,7 @@
                   role="listitem"
                   tabindex="0"
                   aria-describedby="nsa-description">
-                <h4><button class="link-button" type="button" aria-label="Networking and Systems Administration Minor program">Networking and Systems Administration Minor</button></h4>
+                <h4>Networking and Systems Administration Minor</h4>
                 <div class="mobile-info" id="nsa-description">
                   <div class="mobile-image-container">
                     <div class="image-skeleton" aria-hidden="true"></div>
@@ -119,8 +126,8 @@
       </div>
     </div> 
 
-    <!-- Extracurricular Section -->
-    <div class="extracurricular-section">
+    <!-- Extracurricular Section - Full Overlay -->
+    <div class="extracurricular-section" id="extracurricular-section">
       <div class="overlay-header">
         <h2>Extracurricular Activities</h2>
         <div class="overlay-divider"></div>
@@ -139,7 +146,7 @@
                   role="listitem"
                   tabindex="0"
                   aria-describedby="honors-council-description">
-                <h3>Honors Council</a></h3>
+                <h3>Honors Council</h3>
                 <p>Academic Excellence Chair</p>
                 <p>International Delegate</p>
                 <div class="mobile-info" id="honors-council-description">
@@ -157,7 +164,7 @@
                   role="listitem"
                   tabindex="0"
                   aria-describedby="dts-description">
-                <h3><button class="link-button" type="button" aria-label="Dangerous Texts Society organization">Dangerous Texts Society</button></h3>
+                <h3>Dangerous Texts Society</h3>
                 <p>Vice-President</p>
                 <div class="mobile-info" id="dts-description">
                   <div class="mobile-image-container">
@@ -174,7 +181,7 @@
                   role="listitem"
                   tabindex="0"
                   aria-describedby="signatures-description">
-                <h3><button class="link-button" type="button" aria-label="Signatures Art and Literature Magazine">Signatures Art and Literature Magazine</button></h3>
+                <h3>Signatures Art and Literature Magazine</h3>
                 <p>Literary team</p>
                 <div class="mobile-info" id="signatures-description">
                   <div class="mobile-image-container">
@@ -186,7 +193,7 @@
               </li>
             </ul>
 
-            <!-- Gravity-affected items that fall to bottom -->
+            <!-- Improved Gravity-affected items -->
             <div class="gravity-container">
               <div class="gravity-items">
                 <div class="item gravity-item" 
@@ -195,7 +202,7 @@
                     data-text="A creative writing community for students to share their work and improve their craft."
                     role="listitem"
                     tabindex="0">
-                  <h4><button class="link-button" type="button" aria-label="Wordsmiths Writing Club">Wordsmiths Writing Club</button></h4>
+                  <h4>Wordsmiths Writing Club</h4>
                   <p>E-board</p>
                 </div>
                 
@@ -205,7 +212,7 @@
                     data-text="National honor fraternity based on scholarship, leadership, and fellowship."
                     role="listitem"
                     tabindex="0">
-                  <h4><button class="link-button" type="button" aria-label="Phi Sigma Pi Fraternity">Phi Sigma Pi Frat</button></h4>
+                  <h4>Phi Sigma Pi Frat</h4>
                   <p>Fundraising chair</p>
                 </div>
                 
@@ -215,11 +222,11 @@
                     data-text="Organization promoting international awareness and cultural exchange on campus."
                     role="listitem"
                     tabindex="0">
-                  <h4><button class="link-button" type="button" aria-label="Global Union organization">Global Union</button></h4>
+                  <h4>Global Union</h4>
                   <p>International Delegate</p>
                 </div>
 
-                <!-- Additional "too many to list" items -->
+                <!-- Additional minor activities -->
                 <div class="item gravity-item minor-activity" 
                     data-color="#8b4513" 
                     data-image="../../assets/media/education/RIT-DTS.png"
@@ -299,7 +306,7 @@
         </div>
       </div>
     </div>
-  </main>
+  </div>
 
   <script src="../../assets/js/education.js"></script>
 </body>
