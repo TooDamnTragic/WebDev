@@ -21,6 +21,12 @@ body,html{
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'Savate';
+  src: url('../fonts/Savate-Medium.ttf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 body.index-page{
   overflow:hidden;
@@ -213,7 +219,7 @@ body.education-page{
 }
 
 .education-hero h1 {
-  font-family: 'DTGetai', 'Hackney', sans-serif;
+  font-family: 'Savate', sans-serif;
   font-size: clamp(3rem, 12vw, 8rem);
   color: #f0ead6;
   margin: 0;
