@@ -3,13 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Works</title>
+  <title>Works - Portfolio</title>
   <link rel="stylesheet" href="../../assets/css/main.css">
+  <link rel="stylesheet" href="works.css">
 </head>
-<body>  
-  <h1>Works</h1>
-  <p>Examples of works will go here.</p>
-  <p><a href="../index.html">Back to home</a></p>
+<body class="works-page">
+  <!-- Back to Home -->
+  <div class="back-home">
+    <a href="../index.html" class="back-link" aria-label="Back to Home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Back
+    </a>
+  </div>
+
+  <div class="works-container" style="opacity: 0; transform: translateY(20px); transition: all 0.8s ease;">
+    <header class="works-header">
+      <h1 class="works-title">Works</h1>
+      <p class="works-subtitle">Portfolio showcase coming soon</p>
+    </header>
+    
+    <main class="works-content">
+      <p>Examples of works will go here.</p>
+    </main>
+  </div>
+
+  <script src="works.js"></script>
   <script src="../../components/navigation/transition.js"></script>
 </body>
 </html>

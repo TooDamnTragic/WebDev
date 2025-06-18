@@ -1,0 +1,88 @@
+/* Works Page Styles */
+.works-page {
+  background: #212427;
+  min-height: 100vh;
+  color: #f0ead6;
+  padding: 2rem;
+}
+
+.works-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.works-header {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.works-title {
+  font-family: 'DTGetai', 'Hackney', sans-serif;
+  font-size: clamp(3rem, 8vw, 6rem);
+  margin: 0 0 1rem 0;
+  background: linear-gradient(135deg, #ffffff, #f0ead6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.works-subtitle {
+  font-size: 1.2rem;
+  opacity: 0.8;
+  margin: 0;
+}
+
+.back-home {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 100;
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+}
+
+.back-home:hover {
+  opacity: 1;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 0.9rem;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.back-link:hover {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.back-link svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .works-page {
+    padding: 1rem;
+  }
+  
+  .works-title {
+    font-size: 2.5rem;
+  }
+  
+  .works-subtitle {
+    font-size: 1rem;
+  }
+}

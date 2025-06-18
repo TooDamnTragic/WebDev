@@ -1,0 +1,94 @@
+/* Education Page Specific Styles */
+
+/* Additional education-specific styles can go here */
+/* Main styles are in main.css for better organization */
+
+/* Education page specific overrides */
+.education-page .items h2,
+.education-page .items h3,
+.education-page .items h4 {
+  font-family: 'Savate', sans-serif;
+  font-weight: normal;
+  font-size: clamp(1rem, 2vw, 1.8rem);
+  margin: 0 0 0.3rem;
+  word-wrap: break-word;
+  text-align: inherit;
+}
+
+/* Ensure proper font loading for education titles */
+.education-page h1 {
+  font-family: 'DTGetai', 'Hackney', sans-serif;
+  font-weight: normal;
+}
+
+.education-page h2,
+.education-page h3,
+.education-page h4,
+.education-page h5 {
+  font-family: 'Savate', sans-serif;
+  font-weight: normal;
+}
+
+/* Education specific animations */
+@keyframes educationFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.education-page .featured-item {
+  animation: educationFadeIn 0.8s ease-out forwards;
+}
+
+/* Provide breathing room on either side of the page */
+body.education-page {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  box-sizing: border-box;
+}
+
+/* Back button */
+.back-home {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 100;
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+}
+
+.back-home:hover {
+  opacity: 1;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 0.9rem;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.back-link:hover {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.back-link svg {
+  width: 16px;
+  height: 16px;
+}
