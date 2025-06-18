@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Elements
-  const emailCard = document.querySelector('.email-card');
+  const emailButton = document.querySelector('.email-button');
   const modal = document.getElementById('emailModal');
   const closeModal = document.getElementById('closeModal');
   const cancelBtn = document.getElementById('cancelBtn');
@@ -14,28 +14,39 @@ document.addEventListener('DOMContentLoaded', () => {
   // File handling
   let selectedFiles = [];
 
-  // 3D Tilt Effect for Cards
-  const initTiltEffect = () => {
-    const cards = document.querySelectorAll('[data-tilt]');
+  // Random text generation (from miseducation page)
+  const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  
+  function generateRandomText(length = 800) {
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      result += CHARS[Math.floor(Math.random() * CHARS.length)];
+    }
+    return result;
+  }
+
+  // Initialize animated backgrounds for all buttons
+  const initializeAnimatedBackgrounds = () => {
+    const buttons = document.querySelectorAll('.contact-button');
     
-    cards.forEach(card => {
-      card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+    buttons.forEach(button => {
+      const bgText = button.querySelector('.button-bg-text');
+      if (bgText) {
+        // Set initial random text
+        bgText.textContent = generateRandomText();
         
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
+        // Update text on mouse movement
+        button.addEventListener('mousemove', () => {
+          bgText.textContent = generateRandomText();
+        });
         
-        const rotateX = (y - centerY) / 10;
-        const rotateY = (centerX - x) / 10;
-        
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(10px)`;
-      });
-      
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateZ(0)';
-      });
+        // Periodic updates for subtle animation
+        setInterval(() => {
+          if (button.matches(':hover')) {
+            bgText.textContent = generateRandomText();
+          }
+        }, 100);
+      }
     });
   };
 
@@ -212,112 +223,89 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Event Listeners
-  emailCard.addEventListener('click', openModal);
-  closeModal.addEventListener('click', closeModalFunc);
-  cancelBtn.addEventListener('click', closeModalFunc);
+  if (emailButton) {
+    emailButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal();
+    });
+  }
+  
+  if (closeModal) {
+    closeModal.addEventListener('click', closeModalFunc);
+  }
+  
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', closeModalFunc);
+  }
 
   // Close modal on outside click
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      closeModalFunc();
-    }
-  });
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModalFunc();
+      }
+    });
+  }
 
   // Close modal on Escape key
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal.classList.contains('active')) {
+    if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
       closeModalFunc();
     }
   });
 
   // File input change
-  fileInput.addEventListener('change', (e) => {
-    handleFileSelect(e.target.files);
-  });
+  if (fileInput) {
+    fileInput.addEventListener('change', (e) => {
+      handleFileSelect(e.target.files);
+    });
+  }
 
   // Form submission
-  emailForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const formData = {
-      senderEmail: document.getElementById('senderEmail').value,
-      subject: document.getElementById('subject').value,
-      message: document.getElementById('message').value
-    };
-    
-    const errors = validateForm(formData);
-    
-    if (errors.length > 0) {
-      showNotification(errors[0], 'error');
-      return;
-    }
-    
-    // Show loading state
-    sendBtn.classList.add('loading');
-    sendBtn.disabled = true;
-    
-    try {
-      await sendEmail(formData);
-    } catch (error) {
-      showNotification('Failed to send message. Please try again.', 'error');
-      sendBtn.classList.remove('loading');
-      sendBtn.disabled = false;
-    }
-  });
-
-  // Enhanced card interactions
-  const cards = document.querySelectorAll('.contact-card');
-  cards.forEach(card => {
-    card.addEventListener('mouseenter', () => {
-      // Add subtle animation to other cards
-      cards.forEach(otherCard => {
-        if (otherCard !== card) {
-          otherCard.style.transform = 'scale(0.95)';
-          otherCard.style.opacity = '0.7';
-        }
-      });
-    });
-    
-    card.addEventListener('mouseleave', () => {
-      // Reset all cards
-      cards.forEach(otherCard => {
-        otherCard.style.transform = '';
-        otherCard.style.opacity = '';
-      });
-    });
-  });
-
-  // Smooth scrolling for any internal links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
+  if (emailForm) {
+    emailForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const target = document.querySelector(this.getAttribute('href'));
-      if (target) {
-        target.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
+      
+      const formData = {
+        senderEmail: document.getElementById('senderEmail').value,
+        subject: document.getElementById('subject').value,
+        message: document.getElementById('message').value
+      };
+      
+      const errors = validateForm(formData);
+      
+      if (errors.length > 0) {
+        showNotification(errors[0], 'error');
+        return;
+      }
+      
+      // Show loading state
+      sendBtn.classList.add('loading');
+      sendBtn.disabled = true;
+      
+      try {
+        await sendEmail(formData);
+      } catch (error) {
+        showNotification('Failed to send message. Please try again.', 'error');
+        sendBtn.classList.remove('loading');
+        sendBtn.disabled = false;
       }
     });
-  });
+  }
 
   // Initialize everything
-  initTiltEffect();
+  initializeAnimatedBackgrounds();
   setupDragAndDrop();
 
-  // Add some interactive particles on mouse move
-  let mouseX = 0;
-  let mouseY = 0;
-  
-  document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    
-    // Create subtle particle effect
-    if (Math.random() > 0.98) {
-      createParticle(mouseX, mouseY);
-    }
-  });
+  // Add some interactive particles on mouse move over the hub
+  const hub = document.querySelector('.contact-hub');
+  if (hub) {
+    hub.addEventListener('mousemove', (e) => {
+      if (Math.random() > 0.95) {
+        createParticle(e.clientX, e.clientY);
+      }
+    });
+  }
 
   const createParticle = (x, y) => {
     const particle = document.createElement('div');
@@ -325,20 +313,20 @@ document.addEventListener('DOMContentLoaded', () => {
       position: fixed;
       left: ${x}px;
       top: ${y}px;
-      width: 4px;
-      height: 4px;
-      background: rgba(255,255,255,0.6);
+      width: 3px;
+      height: 3px;
+      background: rgba(255,255,255,0.8);
       border-radius: 50%;
       pointer-events: none;
       z-index: 1000;
-      animation: particleFade 2s ease-out forwards;
+      animation: particleFade 1.5s ease-out forwards;
     `;
     
     document.body.appendChild(particle);
     
     setTimeout(() => {
       particle.remove();
-    }, 2000);
+    }, 1500);
   };
 
   // Add particle animation CSS
@@ -351,14 +339,9 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       100% {
         opacity: 0;
-        transform: scale(0) translateY(-50px);
+        transform: scale(0) translateY(-30px);
       }
     }
   `;
   document.head.appendChild(style);
-
-  // Add loading animation to page
-  setTimeout(() => {
-    document.body.classList.add('loaded');
-  }, 100);
 });
