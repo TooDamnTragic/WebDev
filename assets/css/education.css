@@ -7,7 +7,8 @@
 .education-page .items h2,
 .education-page .items h3,
 .education-page .items h4 {
-  font-family: 'DTGetai', 'Hackney', sans-serif;
+  font-family: 'Savate', sans-serif;
+  font-weight: normal;
   font-size: clamp(1rem, 2vw, 1.8rem);
   margin: 0 0 0.3rem;
   word-wrap: break-word;
@@ -15,12 +16,16 @@
 }
 
 /* Ensure proper font loading for education titles */
-.education-page h1,
+.education-page h1 {
+  font-family: 'DTGetai', 'Hackney', sans-serif;
+  font-weight: normal;
+}
+
 .education-page h2,
 .education-page h3,
 .education-page h4,
 .education-page h5 {
-  font-family: 'DTGetai', 'Hackney', sans-serif;
+  font-family: 'Savate', sans-serif;
   font-weight: normal;
 }
 

@@ -22,11 +22,19 @@ body,html{
   font-style: normal;
 }
 @font-face {
-  font-family: 'Savate';
-  src: url('../fonts/Savate-Medium.ttf') format('opentype');
+  font-family: 'Asember';
+  src: url('../fonts/AsemberModernDemoRegular-EaVJW.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: 'Savate';
+  src: url('../fonts/Savate-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 
 body.index-page{
   overflow:hidden;
@@ -219,7 +227,7 @@ body.education-page{
 }
 
 .education-hero h1 {
-  font-family: 'Savate', sans-serif;
+  font-family: 'Savate', 'DTGetai', 'Hackney', sans-serif;
   font-size: clamp(3rem, 12vw, 8rem);
   color: #f0ead6;
   margin: 0;
