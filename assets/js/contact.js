@@ -14,37 +14,58 @@ document.addEventListener('DOMContentLoaded', () => {
   // File handling
   let selectedFiles = [];
 
-  // Random text generation (from miseducation page)
+  // Miseducation Background Effect - Exact Implementation
   const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   
-  function generateRandomText(length = 2000) {
-    let result = "";
-    for (let i = 0; i < length; i++) {
-      result += CHARS[Math.floor(Math.random() * CHARS.length)];
+  function longRandomString() {
+    let out = "";
+    for (let i = 0; i < 3000; i++) { // Increased for full screen coverage
+      out += CHARS[Math.floor(Math.random() * CHARS.length)];
     }
-    return result;
+    return out;
   }
 
-  // Initialize full-screen background text
+  // Initialize background elements
   const backgroundText = document.querySelector('.background-text');
+  const backgroundGlow = document.createElement('div');
+  const backgroundBackdrop = document.createElement('div');
+  
+  backgroundGlow.className = 'background-glow glow-mask';
+  backgroundBackdrop.className = 'background-backdrop';
+  
+  document.body.appendChild(backgroundGlow);
+  document.body.appendChild(backgroundBackdrop);
+
+  // Seed initial text
   if (backgroundText) {
-    backgroundText.textContent = generateRandomText();
-    
-    // Update background text periodically
-    setInterval(() => {
-      backgroundText.textContent = generateRandomText();
-    }, 150);
+    backgroundText.textContent = longRandomString();
   }
 
-  // Torch Light Effect
-  const torchLight = document.createElement('div');
-  torchLight.className = 'torch-light';
-  document.body.appendChild(torchLight);
-
-  // Track mouse movement for torch effect
+  // Mouse movement handler - exact from miseducation
   document.addEventListener('mousemove', (e) => {
-    torchLight.style.left = e.clientX + 'px';
-    torchLight.style.top = e.clientY + 'px';
+    const x = e.clientX;
+    const y = e.clientY;
+
+    // Update glow effect
+    backgroundGlow.style.background = 
+      `radial-gradient(250px at ${x}px ${y}px, rgba(255,255,255,0.35), transparent 70%)`;
+
+    // Regenerate text on mouse movement
+    if (backgroundText) {
+      backgroundText.textContent = longRandomString();
+    }
+  });
+
+  // Mouse enter/leave handlers for backdrop
+  document.addEventListener('mouseenter', () => {
+    backgroundGlow.classList.add('active');
+    backgroundBackdrop.classList.add('active');
+  });
+
+  document.addEventListener('mouseleave', () => {
+    backgroundGlow.style.background = "none";
+    backgroundGlow.classList.remove('active');
+    backgroundBackdrop.classList.remove('active');
   });
 
   // Contact Buttons Physics
@@ -93,7 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
       draggedButton = index;
       buttonPhysics[index].isDragging = true;
       button.classList.add('dragging');
-      document.body.style.cursor = 'grabbing';
       
       // Calculate offset from button center
       const rect = button.getBoundingClientRect();
@@ -120,7 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
       buttonPhysics[draggedButton].isDragging = false;
       buttonPhysics[draggedButton].element.classList.remove('dragging');
       draggedButton = null;
-      document.body.style.cursor = 'none';
     }
   });
 
@@ -247,7 +266,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const openModal = () => {
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
-    document.body.style.cursor = 'auto'; // Restore cursor in modal
     
     // Focus first input
     setTimeout(() => {
@@ -258,7 +276,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeModalFunc = () => {
     modal.classList.remove('active');
     document.body.style.overflow = '';
-    document.body.style.cursor = 'none'; // Return to torch mode
     resetForm();
   };
 
