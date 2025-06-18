@@ -392,8 +392,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     // Activate extracurricular overlay when scrolled to bottom of curricular
-    const curricularRect = curricularSection.getBoundingClientRect();
-    if (curricularRect.bottom <= windowHeight * 0.3 && !extracurricularActivated) {
+    const curricularBottom = curricularSection.offsetTop + curricularSection.offsetHeight;
+    if (scrollY + windowHeight >= curricularBottom - windowHeight * 0.3 && !extracurricularActivated) {
       extracurricularSection.classList.add('active');
       extracurricularActivated = true;
       
@@ -447,18 +447,6 @@ document.addEventListener('DOMContentLoaded', () => {
             hideInfo(isExtracurricular, true); // Immediate hiding on escape
           }
           break;
-      }
-    });
-
-    item.addEventListener('blur', () => {
-      if (!isMobile()) {
-        const currentInfo = isExtracurricular ? infoExtra : info;
-        // Delay hiding to allow for focus to move to close button
-        setTimeout(() => {
-          if (!currentInfo.contains(document.activeElement)) {
-            hideInfo(isExtracurricular, false);
-          }
-        }, 100);
       }
     });
   };
