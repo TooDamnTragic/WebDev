@@ -25,6 +25,165 @@ document.addEventListener('DOMContentLoaded', () => {
     return result;
   }
 
+  // Torch Light Effect
+  const torchLight = document.createElement('div');
+  torchLight.className = 'torch-light';
+  document.body.appendChild(torchLight);
+
+  // Track mouse movement for torch effect
+  document.addEventListener('mousemove', (e) => {
+    torchLight.style.left = e.clientX + 'px';
+    torchLight.style.top = e.clientY + 'px';
+  });
+
+  // Floating Orbs Physics
+  const orbs = document.querySelectorAll('.floating-orb');
+  const orbPhysics = [];
+
+  // Initialize orb physics
+  orbs.forEach((orb, index) => {
+    const rect = orb.getBoundingClientRect();
+    orbPhysics[index] = {
+      element: orb,
+      x: rect.left + rect.width / 2,
+      y: rect.top + rect.height / 2,
+      vx: 0,
+      vy: 0,
+      originalX: rect.left + rect.width / 2,
+      originalY: rect.top + rect.height / 2,
+      isDragging: false,
+      mass: rect.width / 10, // Mass based on size
+      radius: rect.width / 2
+    };
+  });
+
+  // Orb dragging functionality
+  let draggedOrb = null;
+  let mouseX = 0;
+  let mouseY = 0;
+
+  orbs.forEach((orb, index) => {
+    orb.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      draggedOrb = index;
+      orbPhysics[index].isDragging = true;
+      orb.classList.add('dragging');
+      document.body.style.cursor = 'grabbing';
+    });
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
+    if (draggedOrb !== null) {
+      const physics = orbPhysics[draggedOrb];
+      physics.x = mouseX;
+      physics.y = mouseY;
+      physics.element.style.left = (physics.x - physics.radius) + 'px';
+      physics.element.style.top = (physics.y - physics.radius) + 'px';
+    }
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (draggedOrb !== null) {
+      orbPhysics[draggedOrb].isDragging = false;
+      orbPhysics[draggedOrb].element.classList.remove('dragging');
+      draggedOrb = null;
+      document.body.style.cursor = 'none';
+    }
+  });
+
+  // Physics simulation
+  function updatePhysics() {
+    orbPhysics.forEach((physics, index) => {
+      if (!physics.isDragging) {
+        // Gravity towards original position
+        const dx = physics.originalX - physics.x;
+        const dy = physics.originalY - physics.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance > 1) {
+          const force = distance * 0.02; // Gravity strength
+          physics.vx += (dx / distance) * force;
+          physics.vy += (dy / distance) * force;
+        }
+
+        // Apply velocity
+        physics.x += physics.vx;
+        physics.y += physics.vy;
+
+        // Damping
+        physics.vx *= 0.95;
+        physics.vy *= 0.95;
+
+        // Collision with other orbs
+        orbPhysics.forEach((otherPhysics, otherIndex) => {
+          if (index !== otherIndex && !otherPhysics.isDragging) {
+            const dx = otherPhysics.x - physics.x;
+            const dy = otherPhysics.y - physics.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const minDistance = physics.radius + otherPhysics.radius;
+
+            if (distance < minDistance && distance > 0) {
+              const overlap = minDistance - distance;
+              const separationX = (dx / distance) * overlap * 0.5;
+              const separationY = (dy / distance) * overlap * 0.5;
+
+              physics.x -= separationX;
+              physics.y -= separationY;
+              otherPhysics.x += separationX;
+              otherPhysics.y += separationY;
+
+              // Bounce
+              const relativeVx = otherPhysics.vx - physics.vx;
+              const relativeVy = otherPhysics.vy - physics.vy;
+              const speed = relativeVx * (dx / distance) + relativeVy * (dy / distance);
+
+              if (speed > 0) {
+                const impulse = 2 * speed / (physics.mass + otherPhysics.mass);
+                physics.vx += impulse * otherPhysics.mass * (dx / distance);
+                physics.vy += impulse * otherPhysics.mass * (dy / distance);
+                otherPhysics.vx -= impulse * physics.mass * (dx / distance);
+                otherPhysics.vy -= impulse * physics.mass * (dy / distance);
+              }
+            }
+          }
+        });
+
+        // Boundary collision
+        const windowWidth = window.innerWidth;
+        const windowHeight = window.innerHeight;
+
+        if (physics.x - physics.radius < 0) {
+          physics.x = physics.radius;
+          physics.vx *= -0.8;
+        }
+        if (physics.x + physics.radius > windowWidth) {
+          physics.x = windowWidth - physics.radius;
+          physics.vx *= -0.8;
+        }
+        if (physics.y - physics.radius < 0) {
+          physics.y = physics.radius;
+          physics.vy *= -0.8;
+        }
+        if (physics.y + physics.radius > windowHeight) {
+          physics.y = windowHeight - physics.radius;
+          physics.vy *= -0.8;
+        }
+
+        // Update DOM position
+        physics.element.style.left = (physics.x - physics.radius) + 'px';
+        physics.element.style.top = (physics.y - physics.radius) + 'px';
+      }
+    });
+
+    requestAnimationFrame(updatePhysics);
+  }
+
+  // Start physics simulation
+  updatePhysics();
+
   // Initialize animated backgrounds for all buttons
   const initializeAnimatedBackgrounds = () => {
     const buttons = document.querySelectorAll('.contact-button');
@@ -54,6 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const openModal = () => {
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+    document.body.style.cursor = 'auto'; // Restore cursor in modal
     
     // Focus first input
     setTimeout(() => {
@@ -64,6 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeModalFunc = () => {
     modal.classList.remove('active');
     document.body.style.overflow = '';
+    document.body.style.cursor = 'none'; // Return to torch mode
     resetForm();
   };
 
@@ -115,6 +276,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Drag and Drop
   const setupDragAndDrop = () => {
+    if (!fileUploadArea) return;
+
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
       fileUploadArea.addEventListener(eventName, preventDefaults, false);
     });

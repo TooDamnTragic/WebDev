@@ -7,6 +7,85 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: none; /* Hide default cursor for torch effect */
+}
+
+/* Torch Light Effect */
+.torch-light {
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.05) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 5;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+}
+
+/* Floating Orbs - Dark by default */
+.floating-orb {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(50,50,50,0.8), rgba(30,30,30,0.9));
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  cursor: grab;
+  user-select: none;
+  border: 1px solid rgba(100,100,100,0.3);
+  will-change: transform;
+}
+
+.floating-orb:active {
+  cursor: grabbing;
+}
+
+.floating-orb.dragging {
+  z-index: 1000;
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(255,255,255,0.3);
+}
+
+.orb-1 {
+  width: 60px;
+  height: 60px;
+  top: 20%;
+  left: 15%;
+}
+
+.orb-2 {
+  width: 80px;
+  height: 80px;
+  top: 70%;
+  right: 20%;
+}
+
+.orb-3 {
+  width: 45px;
+  height: 45px;
+  top: 40%;
+  left: 10%;
+}
+
+.orb-4 {
+  width: 70px;
+  height: 70px;
+  top: 15%;
+  right: 15%;
+}
+
+.orb-5 {
+  width: 55px;
+  height: 55px;
+  top: 80%;
+  left: 25%;
+}
+
+.orb-6 {
+  width: 65px;
+  height: 65px;
+  top: 60%;
+  right: 10%;
 }
 
 /* Central Hub */
@@ -23,6 +102,7 @@
     0 0 50px rgba(102, 126, 234, 0.4),
     inset 0 0 30px rgba(255, 255, 255, 0.1);
   animation: hubPulse 4s ease-in-out infinite alternate;
+  z-index: 10;
 }
 
 .hub-content {
@@ -84,7 +164,7 @@
   left: 0;
   width: 2px;
   height: 140px;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.2);
   transform-origin: top;
   opacity: 0.6;
 }
@@ -277,27 +357,35 @@
 .resume-button .button-glow {
   background: radial-gradient(circle, rgba(76, 175, 80, 0.4), transparent 70%);
 }
-/* Back Button */
+
+/* Back Button - Top Left with Low Opacity */
 .back-home {
   position: fixed;
   top: 1.5rem;
-  right: 1.5rem;
+  left: 1.5rem;
   z-index: 100;
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+}
+
+.back-home:hover {
+  opacity: 1;
 }
 
 .back-link {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.5rem;
   color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
-  width: 40px;
-  height: 40px;
+  font-size: 0.9rem;
+  padding: 0.8rem 1.2rem;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
+  border-radius: 25px;
   backdrop-filter: blur(10px);
   background: rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .back-link:hover {
@@ -308,8 +396,8 @@
 }
 
 .back-link svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
 
 /* Modal Styles (keeping existing modal functionality) */
