@@ -41,31 +41,38 @@ document.addEventListener('DOMContentLoaded', () => {
     backgroundText.textContent = longRandomString();
   }
 
-  // Mouse movement handler - exact from miseducation
+  // Activate backdrop on first interaction
+  let glowActive = false;
+
+  const activateGlow = () => {
+    if (!glowActive) {
+      backgroundGlow.classList.add('active');
+      backgroundBackdrop.classList.add('active');
+      glowActive = true;
+    }
+  };
+
+  // Mouse movement handler - derived from miseducation effect
   document.addEventListener('mousemove', (e) => {
+    activateGlow();
+
     const x = e.clientX;
     const y = e.clientY;
 
-    // Update glow effect
-    backgroundGlow.style.background = 
+    backgroundGlow.style.background =
       `radial-gradient(250px at ${x}px ${y}px, rgba(255,255,255,0.35), transparent 70%)`;
 
-    // Regenerate text on mouse movement
     if (backgroundText) {
       backgroundText.textContent = longRandomString();
     }
   });
 
-  // Mouse enter/leave handlers for backdrop
-  document.addEventListener('mouseenter', () => {
-    backgroundGlow.classList.add('active');
-    backgroundBackdrop.classList.add('active');
-  });
-
+  // Fade out glow when leaving the page
   document.addEventListener('mouseleave', () => {
-    backgroundGlow.style.background = "none";
+    backgroundGlow.style.background = 'none';
     backgroundGlow.classList.remove('active');
     backgroundBackdrop.classList.remove('active');
+    glowActive = false;
   });
 
   // Contact Buttons Physics

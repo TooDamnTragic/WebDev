@@ -20,11 +20,11 @@
   word-wrap: break-word;
   line-height: 1.2;
   font-family: 'Courier New', monospace;
-  font-size: 14px; /* Larger font size as requested */
+  font-size: 10px; /* Larger font size as requested */
   font-weight: bold;
   color: white;
   pointer-events: none;
-  z-index: 1;
+  z-index: 3;
 }
 
 /* Miseducation Glow Effect - Exact implementation */
@@ -37,15 +37,14 @@
   position: fixed;
   inset: 0;
   border-radius: 0;
-  glow-mask: true;
   opacity: 0.5;
   transition: opacity 0.5s;
   pointer-events: none;
-  z-index: 2;
+  z-index: 4;
 }
 
 .background-glow.active {
-  opacity: 1;
+  opacity: 5;
 }
 
 /* Color backdrop - exact from miseducation */
@@ -58,7 +57,7 @@
   backdrop-filter: blur(40px);
   transition: opacity 0.5s;
   pointer-events: none;
-  z-index: 3;
+  z-index: 1;
 }
 
 .background-backdrop.active {
