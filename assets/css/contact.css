@@ -10,6 +10,23 @@
   cursor: none; /* Hide default cursor for torch effect */
 }
 
+/* Full Screen Random Text Background (from miseducation) */
+.background-text {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  padding: 2rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  line-height: 1.2;
+  font-family: 'Courier New', monospace;
+  font-size: 8px;
+  font-weight: bold;
+  color: rgba(255, 255, 255, 0.05);
+  pointer-events: none;
+  z-index: 1;
+}
+
 /* Torch Light Effect */
 .torch-light {
   position: fixed;
@@ -21,71 +38,6 @@
   z-index: 5;
   transform: translate(-50%, -50%);
   transition: opacity 0.3s ease;
-}
-
-/* Floating Orbs - Dark by default */
-.floating-orb {
-  position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(50,50,50,0.8), rgba(30,30,30,0.9));
-  backdrop-filter: blur(5px);
-  transition: all 0.3s ease;
-  cursor: grab;
-  user-select: none;
-  border: 1px solid rgba(100,100,100,0.3);
-  will-change: transform;
-}
-
-.floating-orb:active {
-  cursor: grabbing;
-}
-
-.floating-orb.dragging {
-  z-index: 1000;
-  transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(255,255,255,0.3);
-}
-
-.orb-1 {
-  width: 60px;
-  height: 60px;
-  top: 20%;
-  left: 15%;
-}
-
-.orb-2 {
-  width: 80px;
-  height: 80px;
-  top: 70%;
-  right: 20%;
-}
-
-.orb-3 {
-  width: 45px;
-  height: 45px;
-  top: 40%;
-  left: 10%;
-}
-
-.orb-4 {
-  width: 70px;
-  height: 70px;
-  top: 15%;
-  right: 15%;
-}
-
-.orb-5 {
-  width: 55px;
-  height: 55px;
-  top: 80%;
-  left: 25%;
-}
-
-.orb-6 {
-  width: 65px;
-  height: 65px;
-  top: 60%;
-  right: 10%;
 }
 
 /* Central Hub */
@@ -137,63 +89,18 @@
   }
 }
 
-/* Orbital Container */
-.orbital-container {
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: orbitRotate 40s linear infinite;
-}
-
-/* Connector Lines */
-.connectors {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.connector {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 2px;
-  height: 140px;
-  background: rgba(255, 255, 255, 0.2);
-  transform-origin: top;
-  opacity: 0.6;
-}
-
-.connector:nth-child(1) { transform: rotate(0deg) translateY(-100px); }
-.connector:nth-child(2) { transform: rotate(60deg) translateY(-100px); }
-.connector:nth-child(3) { transform: rotate(120deg) translateY(-100px); }
-.connector:nth-child(4) { transform: rotate(180deg) translateY(-100px); }
-.connector:nth-child(5) { transform: rotate(240deg) translateY(-100px); }
-.connector:nth-child(6) { transform: rotate(300deg) translateY(-100px); }
-
-@keyframes orbitRotate {
-  from { transform: translate(-50%, -50%) rotate(0deg); }
-  to { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-/* Contact Buttons */
+/* Contact Buttons - Now draggable with physics */
 .contact-button {
   position: absolute;
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: grab;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   overflow: hidden;
   border: 2px solid rgba(255, 255, 255, 0.2);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  z-index: 1;
-  animation: counterRotate 40s linear infinite reverse;
+  z-index: 6;
   text-decoration: none;
   color: white;
   display: flex;
@@ -203,39 +110,18 @@
   text-align: center;
   font-size: 0.8rem;
   font-weight: 500;
+  user-select: none;
+  will-change: transform;
 }
 
-@keyframes counterRotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.contact-button:active {
+  cursor: grabbing;
 }
 
-/* Animated Text Background (from miseducation) */
-.button-bg-text {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  padding: 4px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  line-height: 1;
-  font-family: 'Courier New', monospace;
-  font-size: 6px;
-  font-weight: bold;
-  color: rgba(255, 255, 255, 0.1);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* Glow Effect */
-.button-glow {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-  z-index: 2;
+.contact-button.dragging {
+  z-index: 1000;
+  transform: scale(1.1);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
 }
 
 /* Button Content */
@@ -261,46 +147,20 @@
   letter-spacing: 0.5px;
 }
 
-/* Button Positions */
-.contact-button:nth-child(1) {
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.contact-button:nth-child(2) {
-  top: 25%;
-  right: 0;
-  transform: translateY(-50%);
-}
-
-.contact-button:nth-child(3) {
-  bottom: 25%;
-  right: 0;
-  transform: translateY(50%);
-}
-
-.contact-button:nth-child(4) {
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.contact-button:nth-child(5) {
-  bottom: 25%;
-  left: 0;
-  transform: translateY(50%);
-}
-
-.contact-button:nth-child(6) {
-  top: 25%;
-  left: 0;
-  transform: translateY(-50%);
+/* Glow Effect */
+.button-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 2;
 }
 
 /* Hover Effects */
-.contact-button:hover {
-  transform: scale(1.2);
+.contact-button:hover:not(.dragging) {
+  transform: scale(1.1);
   border-color: rgba(255, 255, 255, 0.6);
   box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
 }
@@ -309,7 +169,7 @@
   opacity: 1;
 }
 
-/* Specific Button Colors */
+/* Specific Button Colors - Normal gradients */
 .email-button {
   background: linear-gradient(135deg, #ea4335, #d33b2c);
 }
@@ -744,11 +604,6 @@
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
-  .orbital-container {
-    width: 400px;
-    height: 400px;
-  }
-  
   .contact-button {
     width: 80px;
     height: 80px;
@@ -799,11 +654,6 @@
 }
 
 @media (max-width: 480px) {
-  .orbital-container {
-    width: 320px;
-    height: 320px;
-  }
-  
   .contact-button {
     width: 60px;
     height: 60px;

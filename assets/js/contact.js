@@ -17,12 +17,23 @@ document.addEventListener('DOMContentLoaded', () => {
   // Random text generation (from miseducation page)
   const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   
-  function generateRandomText(length = 800) {
+  function generateRandomText(length = 2000) {
     let result = "";
     for (let i = 0; i < length; i++) {
       result += CHARS[Math.floor(Math.random() * CHARS.length)];
     }
     return result;
+  }
+
+  // Initialize full-screen background text
+  const backgroundText = document.querySelector('.background-text');
+  if (backgroundText) {
+    backgroundText.textContent = generateRandomText();
+    
+    // Update background text periodically
+    setInterval(() => {
+      backgroundText.textContent = generateRandomText();
+    }, 150);
   }
 
   // Torch Light Effect
@@ -36,39 +47,58 @@ document.addEventListener('DOMContentLoaded', () => {
     torchLight.style.top = e.clientY + 'px';
   });
 
-  // Floating Orbs Physics
-  const orbs = document.querySelectorAll('.floating-orb');
-  const orbPhysics = [];
+  // Contact Buttons Physics
+  const buttons = document.querySelectorAll('.contact-button');
+  const buttonPhysics = [];
 
-  // Initialize orb physics
-  orbs.forEach((orb, index) => {
-    const rect = orb.getBoundingClientRect();
-    orbPhysics[index] = {
-      element: orb,
-      x: rect.left + rect.width / 2,
-      y: rect.top + rect.height / 2,
+  // Initialize button physics with orbital positions
+  const centerX = window.innerWidth / 2;
+  const centerY = window.innerHeight / 2;
+  const orbitRadius = 250;
+
+  buttons.forEach((button, index) => {
+    const angle = (index / buttons.length) * 2 * Math.PI;
+    const x = centerX + Math.cos(angle) * orbitRadius;
+    const y = centerY + Math.sin(angle) * orbitRadius;
+
+    buttonPhysics[index] = {
+      element: button,
+      x: x,
+      y: y,
       vx: 0,
       vy: 0,
-      originalX: rect.left + rect.width / 2,
-      originalY: rect.top + rect.height / 2,
+      originalX: x,
+      originalY: y,
       isDragging: false,
-      mass: rect.width / 10, // Mass based on size
-      radius: rect.width / 2
+      mass: 10,
+      radius: 60, // Half of button width
+      angle: angle,
+      orbitSpeed: 0.002 // Slow orbital rotation
     };
+
+    // Set initial position
+    button.style.left = (x - buttonPhysics[index].radius) + 'px';
+    button.style.top = (y - buttonPhysics[index].radius) + 'px';
   });
 
-  // Orb dragging functionality
-  let draggedOrb = null;
+  // Button dragging functionality
+  let draggedButton = null;
   let mouseX = 0;
   let mouseY = 0;
+  let dragOffset = { x: 0, y: 0 };
 
-  orbs.forEach((orb, index) => {
-    orb.addEventListener('mousedown', (e) => {
+  buttons.forEach((button, index) => {
+    button.addEventListener('mousedown', (e) => {
       e.preventDefault();
-      draggedOrb = index;
-      orbPhysics[index].isDragging = true;
-      orb.classList.add('dragging');
+      draggedButton = index;
+      buttonPhysics[index].isDragging = true;
+      button.classList.add('dragging');
       document.body.style.cursor = 'grabbing';
+      
+      // Calculate offset from button center
+      const rect = button.getBoundingClientRect();
+      dragOffset.x = e.clientX - (rect.left + rect.width / 2);
+      dragOffset.y = e.clientY - (rect.top + rect.height / 2);
     });
   });
 
@@ -76,35 +106,49 @@ document.addEventListener('DOMContentLoaded', () => {
     mouseX = e.clientX;
     mouseY = e.clientY;
 
-    if (draggedOrb !== null) {
-      const physics = orbPhysics[draggedOrb];
-      physics.x = mouseX;
-      physics.y = mouseY;
+    if (draggedButton !== null) {
+      const physics = buttonPhysics[draggedButton];
+      physics.x = mouseX - dragOffset.x;
+      physics.y = mouseY - dragOffset.y;
       physics.element.style.left = (physics.x - physics.radius) + 'px';
       physics.element.style.top = (physics.y - physics.radius) + 'px';
     }
   });
 
   document.addEventListener('mouseup', () => {
-    if (draggedOrb !== null) {
-      orbPhysics[draggedOrb].isDragging = false;
-      orbPhysics[draggedOrb].element.classList.remove('dragging');
-      draggedOrb = null;
+    if (draggedButton !== null) {
+      buttonPhysics[draggedButton].isDragging = false;
+      buttonPhysics[draggedButton].element.classList.remove('dragging');
+      draggedButton = null;
       document.body.style.cursor = 'none';
     }
   });
 
   // Physics simulation
   function updatePhysics() {
-    orbPhysics.forEach((physics, index) => {
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+
+    buttonPhysics.forEach((physics, index) => {
       if (!physics.isDragging) {
-        // Gravity towards original position
+        // Update orbital angle for natural rotation
+        physics.angle += physics.orbitSpeed;
+        
+        // Calculate new orbital position
+        const newOrbitX = centerX + Math.cos(physics.angle) * orbitRadius;
+        const newOrbitY = centerY + Math.sin(physics.angle) * orbitRadius;
+        
+        // Update original position to new orbital position
+        physics.originalX = newOrbitX;
+        physics.originalY = newOrbitY;
+
+        // Gravity towards orbital position
         const dx = physics.originalX - physics.x;
         const dy = physics.originalY - physics.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
         if (distance > 1) {
-          const force = distance * 0.02; // Gravity strength
+          const force = distance * 0.015; // Gravity strength
           physics.vx += (dx / distance) * force;
           physics.vy += (dy / distance) * force;
         }
@@ -114,11 +158,11 @@ document.addEventListener('DOMContentLoaded', () => {
         physics.y += physics.vy;
 
         // Damping
-        physics.vx *= 0.95;
-        physics.vy *= 0.95;
+        physics.vx *= 0.92;
+        physics.vy *= 0.92;
 
-        // Collision with other orbs
-        orbPhysics.forEach((otherPhysics, otherIndex) => {
+        // Collision with other buttons
+        buttonPhysics.forEach((otherPhysics, otherIndex) => {
           if (index !== otherIndex && !otherPhysics.isDragging) {
             const dx = otherPhysics.x - physics.x;
             const dy = otherPhysics.y - physics.y;
@@ -135,17 +179,17 @@ document.addEventListener('DOMContentLoaded', () => {
               otherPhysics.x += separationX;
               otherPhysics.y += separationY;
 
-              // Bounce
+              // Bounce with momentum transfer
               const relativeVx = otherPhysics.vx - physics.vx;
               const relativeVy = otherPhysics.vy - physics.vy;
               const speed = relativeVx * (dx / distance) + relativeVy * (dy / distance);
 
               if (speed > 0) {
                 const impulse = 2 * speed / (physics.mass + otherPhysics.mass);
-                physics.vx += impulse * otherPhysics.mass * (dx / distance);
-                physics.vy += impulse * otherPhysics.mass * (dy / distance);
-                otherPhysics.vx -= impulse * physics.mass * (dx / distance);
-                otherPhysics.vy -= impulse * physics.mass * (dy / distance);
+                physics.vx += impulse * otherPhysics.mass * (dx / distance) * 0.8;
+                physics.vy += impulse * otherPhysics.mass * (dy / distance) * 0.8;
+                otherPhysics.vx -= impulse * physics.mass * (dx / distance) * 0.8;
+                otherPhysics.vy -= impulse * physics.mass * (dy / distance) * 0.8;
               }
             }
           }
@@ -157,19 +201,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (physics.x - physics.radius < 0) {
           physics.x = physics.radius;
-          physics.vx *= -0.8;
+          physics.vx *= -0.7;
         }
         if (physics.x + physics.radius > windowWidth) {
           physics.x = windowWidth - physics.radius;
-          physics.vx *= -0.8;
+          physics.vx *= -0.7;
         }
         if (physics.y - physics.radius < 0) {
           physics.y = physics.radius;
-          physics.vy *= -0.8;
+          physics.vy *= -0.7;
         }
         if (physics.y + physics.radius > windowHeight) {
           physics.y = windowHeight - physics.radius;
-          physics.vy *= -0.8;
+          physics.vy *= -0.7;
         }
 
         // Update DOM position
@@ -184,30 +228,20 @@ document.addEventListener('DOMContentLoaded', () => {
   // Start physics simulation
   updatePhysics();
 
-  // Initialize animated backgrounds for all buttons
-  const initializeAnimatedBackgrounds = () => {
-    const buttons = document.querySelectorAll('.contact-button');
+  // Handle window resize
+  window.addEventListener('resize', () => {
+    const newCenterX = window.innerWidth / 2;
+    const newCenterY = window.innerHeight / 2;
     
-    buttons.forEach(button => {
-      const bgText = button.querySelector('.button-bg-text');
-      if (bgText) {
-        // Set initial random text
-        bgText.textContent = generateRandomText();
-        
-        // Update text on mouse movement
-        button.addEventListener('mousemove', () => {
-          bgText.textContent = generateRandomText();
-        });
-        
-        // Periodic updates for subtle animation
-        setInterval(() => {
-          if (button.matches(':hover')) {
-            bgText.textContent = generateRandomText();
-          }
-        }, 100);
-      }
+    buttonPhysics.forEach((physics, index) => {
+      // Recalculate orbital positions
+      const newOrbitX = newCenterX + Math.cos(physics.angle) * orbitRadius;
+      const newOrbitY = newCenterY + Math.sin(physics.angle) * orbitRadius;
+      
+      physics.originalX = newOrbitX;
+      physics.originalY = newOrbitY;
     });
-  };
+  });
 
   // Modal Functions
   const openModal = () => {
@@ -389,7 +423,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (emailButton) {
     emailButton.addEventListener('click', (e) => {
       e.preventDefault();
-      openModal();
+      if (!buttonPhysics[0]?.isDragging) { // Only open modal if not dragging
+        openModal();
+      }
     });
   }
   
@@ -457,7 +493,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Initialize everything
-  initializeAnimatedBackgrounds();
   setupDragAndDrop();
 
   // Add some interactive particles on mouse move over the hub
