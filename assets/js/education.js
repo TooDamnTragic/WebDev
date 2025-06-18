@@ -24,8 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const activePopups = new Set();
   const popupTimeouts = new Map();
   
-  // Scroll-based section visibility
-  let extracurricularActivated = false;
+  // Google Gravity Physics System
+  let gravityActive = false;
+  let gravityButton = null;
+  const gravityPhysics = [];
+  let mouseX = 0;
+  let mouseY = 0;
+  let draggedItem = null;
+  let dragOffset = { x: 0, y: 0 };
   
   // Debounce function for performance
   const debounce = (func, wait) => {
@@ -215,170 +221,260 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Enhanced gravity physics simulation
-  const initializeGravity = () => {
+  // Google Gravity Physics Implementation
+  const initializeGoogleGravity = () => {
     if (isMobile()) return; // Skip gravity on mobile for performance
 
     const gravityContainer = document.querySelector('.gravity-container');
     if (!gravityContainer) return;
 
+    // Create gravity toggle button
+    gravityButton = document.createElement('button');
+    gravityButton.className = 'gravity-toggle';
+    gravityButton.innerHTML = '🌍';
+    gravityButton.title = 'Toggle Gravity';
+    document.body.appendChild(gravityButton);
+
+    const containerRect = gravityContainer.getBoundingClientRect();
     const containerHeight = gravityContainer.offsetHeight;
     const containerWidth = gravityContainer.offsetWidth;
 
-    // Priority-based z-index assignment
-    const priorities = [
-      'Wordsmiths Writing Club',
-      'Phi Sigma Pi Frat',
-      'Global Union',
-      'Campus Volunteers',
-      'Tech Support Club',
-      'Gaming Society',
-      'Green Initiative',
-      'Photo Club',
-      'Event Planning'
-    ];
-
-    const activeItems = [];
-
+    // Initialize physics for each gravity item
     gravityItems.forEach((item, index) => {
-      // Assign z-index based on priority
-      const itemTitle = item.querySelector('h4, h5')?.textContent || '';
-      const priorityIndex = priorities.findIndex(p => itemTitle.includes(p.split(' ')[0]));
-      const zIndex = priorityIndex !== -1 ? (priorities.length - priorityIndex) * 10 : 5;
-      item.style.zIndex = zIndex;
-
-      // Set initial random positions at the top
-      const initialX = Math.random() * (containerWidth - 280); // Account for item width
-      const initialY = -100 - Math.random() * 200; // Start above container
-
-      // Physics properties with improved values
-      const physicsData = {
-        x: initialX,
-        y: initialY,
-        vx: (Math.random() - 0.5) * 6, // Reduced horizontal velocity
-        vy: Math.random() * 2 + 1, // Consistent downward velocity
-        rotation: Math.random() * 360,
-        rotationSpeed: (Math.random() - 0.5) * 4, // Reduced rotation speed
-        gravity: 0.4, // Reduced gravity for smoother fall
-        bounce: 0.6, // Reduced bounce for more realistic physics
-        friction: 0.96, // Increased friction for stability
-        groundY: containerHeight - 120, // Account for item height
-        width: 280,
-        height: 120,
+      const rect = item.getBoundingClientRect();
+      const physics = {
+        element: item,
+        x: rect.left - containerRect.left + rect.width / 2,
+        y: rect.top - containerRect.top + rect.height / 2,
+        vx: 0,
+        vy: 0,
+        width: rect.width,
+        height: rect.height,
+        mass: 1,
+        originalX: rect.left - containerRect.left,
+        originalY: rect.top - containerRect.top,
+        isDragging: false,
         settled: false
       };
-
-      item.physicsData = physicsData;
-
+      
+      gravityPhysics[index] = physics;
+      
+      // Set initial position
       item.style.position = 'absolute';
-      item.style.left = physicsData.x + 'px';
-      item.style.top = physicsData.y + 'px';
-      item.style.transform = `rotate(${physicsData.rotation}deg)`;
-
-      activeItems.push(item);
+      item.style.left = physics.originalX + 'px';
+      item.style.top = physics.originalY + 'px';
     });
 
-    const resolveCollisions = () => {
-      for (let i = 0; i < activeItems.length; i++) {
-        const a = activeItems[i].physicsData;
-        if (a.settled) continue;
-        
-        for (let j = i + 1; j < activeItems.length; j++) {
-          const b = activeItems[j].physicsData;
-          if (b.settled) continue;
-          
-          const dx = (a.x + a.width / 2) - (b.x + b.width / 2);
-          const dy = (a.y + a.height / 2) - (b.y + b.height / 2);
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          const minDistance = (a.width + b.width) / 3; // Overlap threshold
-          
-          if (distance < minDistance) {
-            const overlap = minDistance - distance;
-            const pushX = (dx / distance) * overlap * 0.5;
-            const pushY = (dy / distance) * overlap * 0.5;
-            
-            a.x += pushX;
-            a.y += pushY;
-            b.x -= pushX;
-            b.y -= pushY;
-            
-            // Exchange some velocity
-            const tempVx = a.vx * 0.8;
-            const tempVy = a.vy * 0.8;
-            a.vx = b.vx * 0.8;
-            a.vy = b.vy * 0.8;
-            b.vx = tempVx;
-            b.vy = tempVy;
-          }
-        }
+    // Gravity toggle functionality
+    gravityButton.addEventListener('click', () => {
+      gravityActive = !gravityActive;
+      gravityButton.classList.toggle('active', gravityActive);
+      
+      if (gravityActive) {
+        gravityButton.innerHTML = '🔴';
+        gravityButton.title = 'Stop Gravity';
+        startGravityPhysics();
+      } else {
+        gravityButton.innerHTML = '🌍';
+        gravityButton.title = 'Start Gravity';
+        resetGravityItems();
       }
-    };
+    });
 
-    const animateAll = () => {
-      activeItems.forEach(item => {
-        const physicsData = item.physicsData;
-        if (physicsData.settled) return;
+    // Mouse/touch event handlers for dragging
+    gravityItems.forEach((item, index) => {
+      item.addEventListener('mousedown', (e) => {
+        if (!gravityActive) return;
+        e.preventDefault();
+        startDragging(index, e.clientX, e.clientY);
+      });
 
+      item.addEventListener('touchstart', (e) => {
+        if (!gravityActive) return;
+        e.preventDefault();
+        const touch = e.touches[0];
+        startDragging(index, touch.clientX, touch.clientY);
+      });
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      if (draggedItem !== null) {
+        updateDraggedItem(e.clientX, e.clientY);
+      }
+    });
+
+    document.addEventListener('touchmove', (e) => {
+      if (draggedItem !== null) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        updateDraggedItem(touch.clientX, touch.clientY);
+      }
+    });
+
+    document.addEventListener('mouseup', () => {
+      if (draggedItem !== null) {
+        stopDragging();
+      }
+    });
+
+    document.addEventListener('touchend', () => {
+      if (draggedItem !== null) {
+        stopDragging();
+      }
+    });
+  };
+
+  const startDragging = (index, clientX, clientY) => {
+    draggedItem = index;
+    const physics = gravityPhysics[index];
+    const containerRect = document.querySelector('.gravity-container').getBoundingClientRect();
+    
+    physics.isDragging = true;
+    physics.element.classList.add('dragging');
+    
+    // Calculate offset from element center
+    dragOffset.x = clientX - (containerRect.left + physics.x);
+    dragOffset.y = clientY - (containerRect.top + physics.y);
+  };
+
+  const updateDraggedItem = (clientX, clientY) => {
+    if (draggedItem === null) return;
+    
+    const physics = gravityPhysics[draggedItem];
+    const containerRect = document.querySelector('.gravity-container').getBoundingClientRect();
+    
+    physics.x = clientX - containerRect.left - dragOffset.x;
+    physics.y = clientY - containerRect.top - dragOffset.y;
+    
+    // Update DOM position
+    physics.element.style.left = (physics.x - physics.width / 2) + 'px';
+    physics.element.style.top = (physics.y - physics.height / 2) + 'px';
+  };
+
+  const stopDragging = () => {
+    if (draggedItem === null) return;
+    
+    const physics = gravityPhysics[draggedItem];
+    physics.isDragging = false;
+    physics.element.classList.remove('dragging');
+    
+    // Add some velocity based on drag movement
+    physics.vx = (mouseX - physics.x) * 0.1;
+    physics.vy = (mouseY - physics.y) * 0.1;
+    
+    draggedItem = null;
+  };
+
+  const startGravityPhysics = () => {
+    const animateGravity = () => {
+      if (!gravityActive) return;
+      
+      const containerRect = document.querySelector('.gravity-container').getBoundingClientRect();
+      const containerHeight = containerRect.height;
+      const containerWidth = containerRect.width;
+      
+      gravityPhysics.forEach((physics, index) => {
+        if (physics.isDragging) return;
+        
         // Apply gravity
-        physicsData.vy += physicsData.gravity;
-
+        physics.vy += 0.5; // Gravity strength
+        
         // Update position
-        physicsData.x += physicsData.vx;
-        physicsData.y += physicsData.vy;
-        physicsData.rotation += physicsData.rotationSpeed;
-
-        // Boundary checks
-        if (physicsData.x <= 0) {
-          physicsData.x = 0;
-          physicsData.vx *= -physicsData.bounce;
-        } else if (physicsData.x >= containerWidth - physicsData.width) {
-          physicsData.x = containerWidth - physicsData.width;
-          physicsData.vx *= -physicsData.bounce;
+        physics.x += physics.vx;
+        physics.y += physics.vy;
+        
+        // Boundary collisions
+        const halfWidth = physics.width / 2;
+        const halfHeight = physics.height / 2;
+        
+        // Left/right boundaries
+        if (physics.x - halfWidth <= 0) {
+          physics.x = halfWidth;
+          physics.vx *= -0.7; // Bounce with energy loss
+        } else if (physics.x + halfWidth >= containerWidth) {
+          physics.x = containerWidth - halfWidth;
+          physics.vx *= -0.7;
         }
-
-        // Ground collision
-        if (physicsData.y >= physicsData.groundY) {
-          physicsData.y = physicsData.groundY;
-          physicsData.vy *= -physicsData.bounce;
-          physicsData.vx *= physicsData.friction;
-          physicsData.rotationSpeed *= physicsData.friction;
-
+        
+        // Top/bottom boundaries
+        if (physics.y - halfHeight <= 0) {
+          physics.y = halfHeight;
+          physics.vy *= -0.7;
+        } else if (physics.y + halfHeight >= containerHeight) {
+          physics.y = containerHeight - halfHeight;
+          physics.vy *= -0.7;
+          physics.vx *= 0.9; // Friction on ground
+          
           // Settle if moving slowly
-          if (Math.abs(physicsData.vy) < 1 && Math.abs(physicsData.vx) < 1) {
-            physicsData.vy = 0;
-            physicsData.vx = 0;
-            physicsData.rotationSpeed *= 0.9;
-            
-            if (Math.abs(physicsData.rotationSpeed) < 0.5) {
-              physicsData.settled = true;
-            }
+          if (Math.abs(physics.vy) < 1 && Math.abs(physics.vx) < 1) {
+            physics.vy = 0;
+            physics.vx *= 0.95;
+            physics.settled = Math.abs(physics.vx) < 0.1;
           }
         }
-
-        // Apply air resistance
-        physicsData.vx *= 0.999;
-        physicsData.rotationSpeed *= 0.999;
+        
+        // Inter-object collisions
+        gravityPhysics.forEach((otherPhysics, otherIndex) => {
+          if (index === otherIndex || otherPhysics.isDragging) return;
+          
+          const dx = otherPhysics.x - physics.x;
+          const dy = otherPhysics.y - physics.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          const minDistance = (physics.width + otherPhysics.width) / 3;
+          
+          if (distance < minDistance && distance > 0) {
+            // Separate objects
+            const overlap = minDistance - distance;
+            const separationX = (dx / distance) * overlap * 0.5;
+            const separationY = (dy / distance) * overlap * 0.5;
+            
+            physics.x -= separationX;
+            physics.y -= separationY;
+            otherPhysics.x += separationX;
+            otherPhysics.y += separationY;
+            
+            // Exchange velocities (simplified collision)
+            const tempVx = physics.vx * 0.8;
+            const tempVy = physics.vy * 0.8;
+            physics.vx = otherPhysics.vx * 0.8;
+            physics.vy = otherPhysics.vy * 0.8;
+            otherPhysics.vx = tempVx;
+            otherPhysics.vy = tempVy;
+          }
+        });
+        
+        // Update DOM position
+        physics.element.style.left = (physics.x - halfWidth) + 'px';
+        physics.element.style.top = (physics.y - halfHeight) + 'px';
       });
-
-      resolveCollisions();
-
-      // Update DOM positions for non-hovered items
-      activeItems.forEach(item => {
-        const physicsData = item.physicsData;
-        if (!item.matches(':hover')) {
-          item.style.left = physicsData.x + 'px';
-          item.style.top = physicsData.y + 'px';
-          item.style.transform = `rotate(${physicsData.rotation}deg)`;
-        }
-      });
-
-      requestAnimationFrame(animateAll);
+      
+      requestAnimationFrame(animateGravity);
     };
+    
+    requestAnimationFrame(animateGravity);
+  };
 
-    // Start animation after a delay
-    setTimeout(() => {
-      requestAnimationFrame(animateAll);
-    }, 1000);
+  const resetGravityItems = () => {
+    gravityPhysics.forEach((physics) => {
+      physics.x = physics.originalX + physics.width / 2;
+      physics.y = physics.originalY + physics.height / 2;
+      physics.vx = 0;
+      physics.vy = 0;
+      physics.settled = false;
+      physics.isDragging = false;
+      physics.element.classList.remove('dragging');
+      
+      // Animate back to original position
+      physics.element.style.transition = 'all 0.5s ease';
+      physics.element.style.left = physics.originalX + 'px';
+      physics.element.style.top = physics.originalY + 'px';
+      
+      setTimeout(() => {
+        physics.element.style.transition = '';
+      }, 500);
+    });
   };
 
   // Scroll-based section management
@@ -391,16 +487,15 @@ document.addEventListener('DOMContentLoaded', () => {
       curricularSection.classList.add('visible');
     }
     
-    // Activate extracurricular overlay when scrolled to bottom of curricular
-    const curricularBottom = curricularSection.offsetTop + curricularSection.offsetHeight;
-    if (scrollY + windowHeight >= curricularBottom - windowHeight * 0.3 && !extracurricularActivated) {
-      extracurricularSection.classList.add('active');
-      extracurricularActivated = true;
+    // Show extracurricular section when scrolled to it
+    const extracurricularTop = extracurricularSection.offsetTop;
+    if (scrollY + windowHeight >= extracurricularTop - windowHeight * 0.3) {
+      extracurricularSection.classList.add('visible');
       
-      // Initialize gravity after extracurricular section is visible
-      setTimeout(() => {
-        initializeGravity();
-      }, 800);
+      // Show gravity button when extracurricular section is visible
+      if (gravityButton && !isMobile()) {
+        gravityButton.classList.add('visible');
+      }
     }
     
     updateDividerProgress();
@@ -558,6 +653,11 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeImages();
   adjustInfoLayout();
   updateDividerProgress();
+  
+  // Initialize Google Gravity after a delay to ensure DOM is ready
+  setTimeout(() => {
+    initializeGoogleGravity();
+  }, 1000);
 
   // Handle escape key globally
   document.addEventListener('keydown', (e) => {
