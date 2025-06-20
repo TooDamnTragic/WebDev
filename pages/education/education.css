@@ -45,10 +45,10 @@
   animation: educationFadeIn 0.8s ease-out forwards;
 }
 
-/* Provide breathing room on either side of the page */
+/* Remove body padding for education page */
 body.education-page {
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding-left: 0;
+  padding-right: 0;
   box-sizing: border-box;
 }
 
