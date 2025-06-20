@@ -509,7 +509,7 @@ body.education-page{
   }
 }
 
-/* Google Gravity Container */
+/* Enhanced Google Gravity Container */
 .gravity-container {
   position: relative;
   height: 100vh;
@@ -519,6 +519,7 @@ body.education-page{
   border-radius: 20px;
   background: rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
+  border: 2px solid rgba(240, 234, 214, 0.1);
 }
 
 .gravity-items {
@@ -527,6 +528,7 @@ body.education-page{
   height: 100%;
 }
 
+/* Enhanced Gravity Items - Google Gravity Style */
 .gravity-item {
   position: absolute;
   width: 280px;
@@ -536,10 +538,11 @@ body.education-page{
   border: 2px solid rgba(240, 234, 214, 0.3);
   backdrop-filter: blur(15px);
   cursor: grab;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, z-index 0.1s ease;
+  transition: transform 0.1s ease, box-shadow 0.2s ease, z-index 0.1s ease;
   user-select: none;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   will-change: transform;
+  transform-origin: center center;
 }
 
 .gravity-item:active {
@@ -549,14 +552,16 @@ body.education-page{
 .gravity-item:hover {
   transform: scale(1.05) !important;
   box-shadow: 0 12px 40px rgba(240, 234, 214, 0.4);
-  z-index: 1000 !important;
+  z-index: 100 !important;
   border-color: rgba(240, 234, 214, 0.6);
 }
 
 .gravity-item.dragging {
-  z-index: 1001 !important;
+  z-index: 1000 !important;
   transform: scale(1.1) !important;
   box-shadow: 0 20px 60px rgba(240, 234, 214, 0.6) !important;
+  border-color: rgba(240, 234, 214, 0.8) !important;
+  background: rgba(0, 0, 0, 0.8) !important;
 }
 
 .gravity-item.minor-activity {
@@ -584,6 +589,30 @@ body.education-page{
   font-size: 0.85rem;
   opacity: 0.9;
   line-height: 1.4;
+}
+
+/* Gravity Reset Button */
+.gravity-reset-button {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem;
+  padding: 0.8rem 1.2rem;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  opacity: 0;
+  transform: scale(0);
+  transition: all 0.3s ease;
+}
+
+.gravity-reset-button:hover {
+  background: rgba(0, 0, 0, 0.9);
+  transform: scale(1.05);
 }
 
 /* Gravity Toggle Button */
@@ -859,7 +888,8 @@ body.education-page{
     cursor: default !important;
   }
   
-  .gravity-toggle {
+  .gravity-toggle,
+  .gravity-reset-button {
     display: none;
   }
 }
