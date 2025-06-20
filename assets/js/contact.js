@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     glowActive = false;
   });
 
-  // Contact Buttons Physics
+  // Contact Buttons Physics with Cursor Attraction
   const buttons = document.querySelectorAll('.contact-button');
   const buttonPhysics = [];
 
@@ -101,7 +101,9 @@ document.addEventListener('DOMContentLoaded', () => {
       mass: 10,
       radius: 60, // Half of button width
       angle: angle,
-      orbitSpeed: 0.002 // Slow orbital rotation
+      orbitSpeed: 0.0005, // Much slower orbital rotation
+      cursorAttraction: 0.002, // Light cursor attraction strength
+      returnForce: 0.008 // Force to return to original position
     };
 
     // Set initial position
@@ -127,6 +129,34 @@ document.addEventListener('DOMContentLoaded', () => {
       dragOffset.x = e.clientX - (rect.left + rect.width / 2);
       dragOffset.y = e.clientY - (rect.top + rect.height / 2);
     });
+
+    // Double-click handler for interactions
+    let clickCount = 0;
+    let clickTimer = null;
+
+    button.addEventListener('click', (e) => {
+      e.preventDefault();
+      clickCount++;
+      
+      if (clickCount === 1) {
+        clickTimer = setTimeout(() => {
+          clickCount = 0;
+        }, 300); // Reset after 300ms
+      } else if (clickCount === 2) {
+        clearTimeout(clickTimer);
+        clickCount = 0;
+        
+        // Handle double-click action
+        if (button.classList.contains('email-button')) {
+          if (!buttonPhysics[index]?.isDragging) {
+            openModal();
+          }
+        } else if (button.href) {
+          // For other buttons with links, open them
+          window.open(button.href, '_blank');
+        }
+      }
+    });
   });
 
   document.addEventListener('mousemove', (e) => {
@@ -150,14 +180,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Physics simulation
+  // Physics simulation with cursor attraction
   function updatePhysics() {
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 2;
 
     buttonPhysics.forEach((physics, index) => {
       if (!physics.isDragging) {
-        // Update orbital angle for natural rotation
+        // Update orbital angle for natural rotation (much slower)
         physics.angle += physics.orbitSpeed;
         
         // Calculate new orbital position
@@ -168,24 +198,36 @@ document.addEventListener('DOMContentLoaded', () => {
         physics.originalX = newOrbitX;
         physics.originalY = newOrbitY;
 
-        // Gravity towards orbital position
+        // Cursor attraction (light effect)
+        const cursorDx = mouseX - physics.x;
+        const cursorDy = mouseY - physics.y;
+        const cursorDistance = Math.sqrt(cursorDx * cursorDx + cursorDy * cursorDy);
+        
+        // Only apply cursor attraction within a reasonable range
+        if (cursorDistance < 200 && cursorDistance > 0) {
+          const cursorForce = physics.cursorAttraction * (200 - cursorDistance) / 200;
+          physics.vx += (cursorDx / cursorDistance) * cursorForce;
+          physics.vy += (cursorDy / cursorDistance) * cursorForce;
+        }
+
+        // Return force to orbital position (stronger when far away)
         const dx = physics.originalX - physics.x;
         const dy = physics.originalY - physics.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
         if (distance > 1) {
-          const force = distance * 0.015; // Gravity strength
-          physics.vx += (dx / distance) * force;
-          physics.vy += (dy / distance) * force;
+          const returnForce = physics.returnForce * Math.min(distance / 100, 1); // Scale with distance
+          physics.vx += (dx / distance) * returnForce;
+          physics.vy += (dy / distance) * returnForce;
         }
 
         // Apply velocity
         physics.x += physics.vx;
         physics.y += physics.vy;
 
-        // Damping
-        physics.vx *= 0.92;
-        physics.vy *= 0.92;
+        // Damping (higher damping for smoother movement)
+        physics.vx *= 0.95;
+        physics.vy *= 0.95;
 
         // Collision with other buttons
         buttonPhysics.forEach((otherPhysics, otherIndex) => {
@@ -205,17 +247,17 @@ document.addEventListener('DOMContentLoaded', () => {
               otherPhysics.x += separationX;
               otherPhysics.y += separationY;
 
-              // Bounce with momentum transfer
+              // Bounce with momentum transfer (reduced for smoother feel)
               const relativeVx = otherPhysics.vx - physics.vx;
               const relativeVy = otherPhysics.vy - physics.vy;
               const speed = relativeVx * (dx / distance) + relativeVy * (dy / distance);
 
               if (speed > 0) {
                 const impulse = 2 * speed / (physics.mass + otherPhysics.mass);
-                physics.vx += impulse * otherPhysics.mass * (dx / distance) * 0.8;
-                physics.vy += impulse * otherPhysics.mass * (dy / distance) * 0.8;
-                otherPhysics.vx -= impulse * physics.mass * (dx / distance) * 0.8;
-                otherPhysics.vy -= impulse * physics.mass * (dy / distance) * 0.8;
+                physics.vx += impulse * otherPhysics.mass * (dx / distance) * 0.6;
+                physics.vy += impulse * otherPhysics.mass * (dy / distance) * 0.6;
+                otherPhysics.vx -= impulse * physics.mass * (dx / distance) * 0.6;
+                otherPhysics.vy -= impulse * physics.mass * (dy / distance) * 0.6;
               }
             }
           }
@@ -444,15 +486,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Event Listeners
-  if (emailButton) {
-    emailButton.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (!buttonPhysics[0]?.isDragging) { // Only open modal if not dragging
-        openModal();
-      }
-    });
-  }
-  
   if (closeModal) {
     closeModal.addEventListener('click', closeModalFunc);
   }
