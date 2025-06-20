@@ -11,8 +11,16 @@
     <div class="initials">TOO DAMN TRAGIC</div>
   </div>
 
-  <!-- Unicorn Studio scene - Full viewport -->
-  <div data-us-project="5sDatTn9CTTI9BI4n19Q" style="width:100vw; height: 100vh; position: fixed; top: 0; left: 0; z-index: -1;"></div>
+  <!-- Unicorn Studio scene - Full viewport background -->
+  <div id="unicorn-scene" 
+       data-us-project="5sDatTn9CTTI9BI4n19Q" 
+       data-us-scale="1"
+       data-us-dpi="1.5"
+       data-us-fps="60"
+       data-us-alttext="Interactive background scene"
+       data-us-arialabel="Animated background canvas"
+       style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1;">
+  </div>
 
   <div class="glue"></div>
 
@@ -26,7 +34,42 @@
 
   <script src="assets/js/main.js"></script>
   
-  <!-- Unicorn Studio script -->
-  <script type="text/javascript">!function(){if(!window.UnicornStudio){window.UnicornStudio={isInitialized:!1};var i=document.createElement("script");i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.25/dist/unicornStudio.umd.js",i.onload=function(){window.UnicornStudio.isInitialized||(UnicornStudio.init(),window.UnicornStudio.isInitialized=!0)},(document.head || document.body).appendChild(i)}}();</script>
+  <!-- Unicorn Studio script with proper initialization -->
+  <script src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.25/dist/unicornStudio.umd.js"></script>
+  <script>
+    // Debug and initialize Unicorn Studio
+    console.log('Starting Unicorn Studio initialization...');
+    
+    function initUnicornStudio() {
+      if (typeof UnicornStudio !== 'undefined') {
+        console.log('UnicornStudio loaded successfully:', UnicornStudio);
+        
+        UnicornStudio.init()
+          .then((scenes) => {
+            console.log('Unicorn Studio scenes initialized:', scenes);
+            if (scenes && scenes.length > 0) {
+              console.log('Scene loaded successfully!');
+            } else {
+              console.warn('No scenes were created');
+            }
+          })
+          .catch((err) => {
+            console.error('Error initializing Unicorn Studio:', err);
+          });
+      } else {
+        console.error('UnicornStudio is not defined');
+      }
+    }
+
+    // Wait for script to load
+    if (typeof UnicornStudio !== 'undefined') {
+      initUnicornStudio();
+    } else {
+      // Wait a bit for the script to load
+      setTimeout(() => {
+        initUnicornStudio();
+      }, 1000);
+    }
+  </script>
 </body>
 </html>

@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const nav = document.querySelector('.nav');
   const loader = document.getElementById('loader');
   
+  console.log('Main.js loaded');
+  
   // Show loader initially, then hide it
   setTimeout(() => {
     if(loader){
@@ -20,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
+        console.log('Navigation trigger hit, showing nav');
         nav.classList.add('show');
         observer.unobserve(entry.target); // Only trigger once
       }
@@ -33,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
   navTrigger.style.height = '1px';
   navTrigger.style.width = '1px';
   navTrigger.style.pointerEvents = 'none';
+  navTrigger.style.background = 'red'; // Debug visibility
   document.body.appendChild(navTrigger);
 
   // Start observing the trigger
@@ -71,4 +75,17 @@ document.addEventListener('DOMContentLoaded', () => {
       section.style.setProperty('--intensity', intensity.toFixed(3));
     });
   });
+
+  // Debug: Check if Unicorn Studio scene is working
+  setTimeout(() => {
+    const unicornScene = document.getElementById('unicorn-scene');
+    if (unicornScene) {
+      const canvas = unicornScene.querySelector('canvas');
+      if (canvas) {
+        console.log('Unicorn Studio canvas found:', canvas);
+      } else {
+        console.warn('No canvas found in Unicorn Studio scene element');
+      }
+    }
+  }, 3000);
 });
