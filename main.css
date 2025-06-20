@@ -4,7 +4,7 @@ body,html{
   width:100%;
   min-height:100%;
   font-family:"Century Gothic", fantasy;
-  background:#000000; /* Pitch black background */
+  background:#212427;
   color:#f0ead6;
 }
 
@@ -37,7 +37,6 @@ body,html{
 
 body.index-page{
   overflow:hidden;
-  background:#000000; /* Ensure pitch black */
 }
 
 body.education-page{
@@ -65,13 +64,12 @@ body.education-page{
   top:50vmin;
   left:50%;
   transform:translate(-50%,-50%);
-  width:20vmin; /* Reduced from 40vmin for tighter flashlight */
-  height:20vmin; /* Reduced from 40vmin for tighter flashlight */
+  width:40vmin;
+  height:40vmin;
   border-radius:50%;
-  background:radial-gradient(circle, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.3) 40%, rgba(255,255,255,0) 70%); /* More focused glow */
+  background:radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
   pointer-events:none;
   z-index:1;
-  opacity:0.8; /* Slightly more visible for flashlight effect */
 }
 
 @keyframes fadeIn{
@@ -104,29 +102,41 @@ body.education-page{
   justify-content:center;
   text-decoration:none;
   color:var(--textColor,#111);
-  opacity:1; /* Always visible but very dark */
+  opacity:0;
   transform:translate(-50%,-50%) scale(var(--scale));
   transition:opacity .5s, transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .3s, filter .3s;
   font-size:calc(var(--size)*0.1);
   pointer-events:auto;
-  /* Unified background - no separate glow effects */
-  background:radial-gradient(circle at 50% 50%, var(--light), var(--dark) 70%);
-  /* Removed inset shadows that were causing unwanted glow */
-  box-shadow:none;
+  background:radial-gradient(circle at var(--mx,50%) var(--my,50%), var(--light,#eee), var(--dark,#666) 70%, #444);
+  box-shadow:inset -5px -5px 10px rgba(255,255,255,0.4),
+             inset 5px 5px 15px rgba(0,0,0,0.7);
   transform-style:preserve-3d;
 }
 
-/* Remove the ::before pseudo-element that was creating extra glow */
 .section::before{
-  display:none;
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  opacity:0;
+  transition:opacity .7s;
+  pointer-events:none;
+  z-index:0;
+}
+
+.section:hover::before{
+  opacity:0.9;
 }
 
 .education{
   --dx:-18vmin + -2vmax;
   --dy:-10vmin + -2vmax;
-  --light:#1a0a0a; /* Very dark red, barely visible */
-  --dark:#0f0505; /* Even darker red */
-  --textColor:#2a1a1a; /* Dark text, barely visible */
+  --light:#ff0000;
+  --dark:#503b3b;
+  --textColor:#f0ead6;
   --size:40vmin;
   z-index:9;
   font-size:calc(var(--size)*0.15);
@@ -135,9 +145,9 @@ body.education-page{
 .works{
   --dx:11vmin + 2vmax;
   --dy:-7vmin + -2vmax;
-  --light:#0a0f1a; /* Very dark blue, barely visible */
-  --dark:#050a0f; /* Even darker blue */
-  --textColor:#1a1f2a; /* Dark text, barely visible */
+  --light:#2aa1e0;
+  --dark:#3a3a49;
+  --textColor:#f0ead6;
   --size:35vmin;
   z-index:8;
   font-size:calc(var(--size)*0.15);
@@ -146,9 +156,9 @@ body.education-page{
 .contact{
   --dx:-6vmin + -2vmax;
   --dy:10vmin + 2vmax;
-  --light:#0f1a0a; /* Very dark green, barely visible */
-  --dark:#080f05; /* Even darker green */
-  --textColor:#1f2a1a; /* Dark text, barely visible */
+  --light:#8dec34;
+  --dark:#58634e;
+  --textColor:#f0ead6;
   --size:30vmin;
   z-index:7;
   font-size:calc(var(--size)*0.15);
@@ -157,18 +167,19 @@ body.education-page{
 .miseducation{
   --dx:12vmin + 2vmax;
   --dy:13vmin + 2vmax;
-  --light:#0a0a0a; /* Very dark, barely visible */
-  --dark:#050505; /* Even darker */
-  --textColor:#1a1a1a; /* Dark text, barely visible */
+  --light:#111010;
+  --dark:#4e3f3f;
+  --textColor:#f0ead6;
   --size:18vmin;
   z-index:6;
 }
 
 .section:hover{
   --scale:1.0;
-  /* Removed all hover effects that were interfering with flashlight */
-  box-shadow:none;
-  filter:none;
+  box-shadow:inset -2px -2px 5px rgba(255,255,255,0.6),
+             inset 2px 2px 8px rgba(0,0,0,0.6),
+             0 0 20px rgba(255, 255, 255, 0.3);
+  filter:brightness(calc(1 + var(--intensity,0) * 0.8));
 }
 
 .section span{
@@ -1001,7 +1012,7 @@ body.transitioning {
   display:flex;
   justify-content:center;
   align-items:center;
-  background:#000000; /* Pitch black loader background */
+  background:#212427;
   z-index:1000;
   transition:opacity .6s ease;
 }
