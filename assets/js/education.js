@@ -489,9 +489,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         
         // Update DOM position and rotation
-        const halfWidth = physics.width / 2;
-        const halfHeight = physics.height / 2;
-        
         physics.element.style.left = (physics.x - halfWidth) + 'px';
         physics.element.style.top = (physics.y - halfHeight) + 'px';
         physics.element.style.transform = `rotate(${physics.rotation}deg)`;
