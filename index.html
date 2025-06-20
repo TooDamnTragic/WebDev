@@ -5,24 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portfolio - Home</title>
   <link rel="stylesheet" href="./main.css">
-  <script src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.25/dist/unicornStudio.umd.js"></script>
 </head>
 <body class="index-page">
   <div id="loader">
     <div class="initials">TOO DAMN TRAGIC</div>
   </div>
 
-  <!-- Unicorn Studio scene container -->
-  <div id="unicorn-scene-container"
-    class="unicorn-embed"
-    data-us-project-src="./Glow.json"
-    data-us-scale="1"
-    data-us-dpi="1.5"
-    data-us-lazyload="false"
-    data-us-disablemobile="true"
-    data-us-alttext="Welcome to Portfolio"
-    data-us-arialabel="Interactive background scene">
-  </div>
+  <!-- Unicorn Studio scene - Full viewport -->
+  <div data-us-project="5sDatTn9CTTI9BI4n19Q" style="width:100vw; height: 100vh; position: fixed; top: 0; left: 0; z-index: -1;"></div>
 
   <div class="glue"></div>
 
@@ -35,5 +25,8 @@
   </nav>
 
   <script src="assets/js/main.js"></script>
+  
+  <!-- Unicorn Studio script -->
+  <script type="text/javascript">!function(){if(!window.UnicornStudio){window.UnicornStudio={isInitialized:!1};var i=document.createElement("script");i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.25/dist/unicornStudio.umd.js",i.onload=function(){window.UnicornStudio.isInitialized||(UnicornStudio.init(),window.UnicornStudio.isInitialized=!0)},(document.head || document.body).appendChild(i)}}();</script>
 </body>
 </html>
