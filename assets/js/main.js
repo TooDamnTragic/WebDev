@@ -2,15 +2,63 @@ document.addEventListener('DOMContentLoaded', () => {
   const nav = document.querySelector('.nav');
   const loader = document.getElementById('loader');
   
-  // Initialize Unicorn Studio
+  // Initialize Unicorn Studio with better error handling
   if (window.UnicornStudio) {
+    console.log('UnicornStudio found, initializing...');
     UnicornStudio.init()
-      .then(() => {
-        console.log('Unicorn Studio scene initialized');
+      .then((scenes) => {
+        console.log('Unicorn Studio scenes initialized:', scenes);
+        if (scenes.length === 0) {
+          console.warn('No scenes were initialized. Check if Glow.json exists and is valid.');
+        }
       })
       .catch((err) => {
         console.error('Unicorn Studio initialization error:', err);
+        // Fallback: try dynamic scene creation
+        console.log('Trying dynamic scene creation...');
+        const container = document.getElementById('unicorn-scene-container');
+        if (container) {
+          UnicornStudio.addScene({
+            element: container,
+            filePath: './Glow.json',
+            scale: 1,
+            dpi: 1.5,
+            fps: 60,
+            lazyLoad: false,
+            altText: "Welcome to Portfolio",
+            ariaLabel: "Interactive background scene",
+            interactivity: {
+              mouse: {
+                disableMobile: true
+              }
+            }
+          })
+          .then((scene) => {
+            console.log('Dynamic scene created successfully:', scene);
+          })
+          .catch((dynamicErr) => {
+            console.error('Dynamic scene creation failed:', dynamicErr);
+            console.log('Unicorn Studio scene failed to load. Continuing without background animation.');
+          });
+        }
       });
+  } else {
+    console.warn('UnicornStudio not found on window object');
+    // Wait a bit for the script to load
+    setTimeout(() => {
+      if (window.UnicornStudio) {
+        console.log('UnicornStudio loaded after delay, initializing...');
+        UnicornStudio.init()
+          .then((scenes) => {
+            console.log('Delayed Unicorn Studio scenes initialized:', scenes);
+          })
+          .catch((err) => {
+            console.error('Delayed Unicorn Studio initialization error:', err);
+          });
+      } else {
+        console.error('UnicornStudio script failed to load completely');
+      }
+    }, 1000);
   }
 
   // Show loader initially, then hide it
