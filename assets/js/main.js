@@ -2,14 +2,54 @@ document.addEventListener('DOMContentLoaded', () => {
   const nav = document.querySelector('.nav');
   const loader = document.getElementById('loader');
   
+  // Initialize Unicorn Studio
+  if (window.UnicornStudio) {
+    UnicornStudio.init()
+      .then(() => {
+        console.log('Unicorn Studio scene initialized');
+      })
+      .catch((err) => {
+        console.error('Unicorn Studio initialization error:', err);
+      });
+  }
+
+  // Show loader initially, then hide it
   setTimeout(() => {
-    nav.classList.add('show');
     if(loader){
       loader.classList.add('hide');
       setTimeout(() => loader.remove(), 6000);
     }
   }, 3200);
 
+  // Set up intersection observer for navigation
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.1
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        nav.classList.add('show');
+        observer.unobserve(entry.target); // Only trigger once
+      }
+    });
+  }, observerOptions);
+
+  // Create a trigger element at the scroll position where nav should appear
+  const navTrigger = document.createElement('div');
+  navTrigger.style.position = 'absolute';
+  navTrigger.style.top = '120vh'; // Trigger slightly before nav position
+  navTrigger.style.height = '1px';
+  navTrigger.style.width = '1px';
+  navTrigger.style.pointerEvents = 'none';
+  document.body.appendChild(navTrigger);
+
+  // Start observing the trigger
+  observer.observe(navTrigger);
+
+  // Section click handlers
   document.querySelectorAll('.section').forEach(link => {
     const text = link.textContent.trim().split('');
     link.innerHTML = text.map(ch => `<span>${ch}</span>`).join('');
@@ -24,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Mouse movement effects for sections
   document.addEventListener('mousemove', e => {
     document.querySelectorAll('.section').forEach(section => {
       const rect = section.getBoundingClientRect();

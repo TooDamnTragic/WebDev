@@ -12,33 +12,26 @@
     <div class="initials">TOO DAMN TRAGIC</div>
   </div>
 
-  <!-- Unicorn Studio scene -->
-  <div
+  <!-- Unicorn Studio scene container -->
+  <div id="unicorn-scene-container"
     class="unicorn-embed"
     data-us-project-src="Glow.json"
     data-us-scale="1"
     data-us-dpi="1.5"
-    data-us-lazyload="true"
+    data-us-lazyload="false"
     data-us-disablemobile="true"
-    data-us-alttext="Welcome to Unicorn Studio"
-    data-us-arialabel="This is a canvas scene"
-  ></div>
-  <script>
-    UnicornStudio.init()
-      .then(() => {
-        // Scenes are ready
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  </script>
+    data-us-alttext="Welcome to Portfolio"
+    data-us-arialabel="Interactive background scene">
+  </div>
 
+  <div class="glue"></div>
+
+  <!-- Navigation will appear on scroll -->
   <nav class="nav">
     <a href="pages/education/education.html" class="section education">Education</a>
     <a href="pages/works/works.html" class="section works">Works</a>
     <a href="pages/contact/contact.html" class="section contact">Contact</a>
     <a href="pages/miseducation/miseducation.html" class="section miseducation">Miseducation</a>
-
   </nav>
 
   <script src="assets/js/main.js"></script>
