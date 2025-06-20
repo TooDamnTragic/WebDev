@@ -6,6 +6,8 @@
   <title>Works - Portfolio</title>
   <link rel="stylesheet" href="../../main.css">
   <link rel="stylesheet" href="works.css">
+  <!-- Unicorn Studio SDK -->
+  <script src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.25/dist/unicornStudio.umd.js"></script>
 </head>
 <body class="works-page">
   <!-- Back to Home -->
@@ -18,14 +20,33 @@
     </a>
   </div>
 
-  <div class="works-container" style="opacity: 0; transform: translateY(20px); transition: all 0.8s ease;">
+  <div class="works-container">
     <header class="works-header">
       <h1 class="works-title">Works</h1>
-      <p class="works-subtitle">Portfolio showcase coming soon</p>
+      <p class="works-subtitle">Interactive portfolio showcase</p>
     </header>
     
     <main class="works-content">
-      <p>Examples of works will go here.</p>
+      <!-- Unicorn Studio Scene Container -->
+      <div class="unicorn-scene-container">
+        <div 
+          id="unicorn-scene"
+          class="unicorn-embed"
+          data-us-project="5sDatTn9CTTI9BI4n19Q"
+          data-us-scale="1"
+          data-us-dpi="1.5"
+          data-us-lazyload="true"
+          data-us-production="true"
+          data-us-alttext="Interactive portfolio showcase"
+          data-us-arialabel="Interactive 3D portfolio scene"
+        ></div>
+      </div>
+      
+      <!-- Loading indicator -->
+      <div id="scene-loader" class="scene-loader">
+        <div class="loader-spinner"></div>
+        <p>Loading interactive scene...</p>
+      </div>
     </main>
   </div>
 
