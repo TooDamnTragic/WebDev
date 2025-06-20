@@ -12,7 +12,26 @@
     <div class="initials">TOO DAMN TRAGIC</div>
   </div>
 
-  <div class="glue"></div>
+  <!-- Unicorn Studio scene -->
+  <div
+    class="unicorn-embed"
+    data-us-project-src="Glow.json"
+    data-us-scale="1"
+    data-us-dpi="1.5"
+    data-us-lazyload="true"
+    data-us-disablemobile="true"
+    data-us-alttext="Welcome to Unicorn Studio"
+    data-us-arialabel="This is a canvas scene"
+  ></div>
+  <script>
+    UnicornStudio.init()
+      .then(() => {
+        // Scenes are ready
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  </script>
 
   <nav class="nav">
     <a href="pages/education/education.html" class="section education">Education</a>
