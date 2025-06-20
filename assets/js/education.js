@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const gravityItems = document.querySelectorAll('.gravity-item');
   const curricularSection = document.getElementById('curricular-section');
   const extracurricularSection = document.getElementById('extracurricular-section');
+  const gravityContainer = document.querySelector('.gravity-container');
   
   // Mobile detection
   const isMobile = () => window.innerWidth <= 768;
@@ -26,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Google Gravity Physics System
   let gravityActive = false;
-  let gravityButton = null;
+  let gravityTriggered = false;
   const gravityPhysics = [];
   let mouseX = 0;
   let mouseY = 0;
@@ -228,13 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const gravityContainer = document.querySelector('.gravity-container');
     if (!gravityContainer) return;
 
-    // Create gravity toggle button
-    gravityButton = document.createElement('button');
-    gravityButton.className = 'gravity-toggle';
-    gravityButton.innerHTML = '🌍';
-    gravityButton.title = 'Toggle Gravity';
-    document.body.appendChild(gravityButton);
-
     const containerRect = gravityContainer.getBoundingClientRect();
     const containerHeight = gravityContainer.offsetHeight;
     const containerWidth = gravityContainer.offsetWidth;
@@ -265,21 +259,10 @@ document.addEventListener('DOMContentLoaded', () => {
       item.style.top = physics.originalY + 'px';
     });
 
-    // Gravity toggle functionality
-    gravityButton.addEventListener('click', () => {
-      gravityActive = !gravityActive;
-      gravityButton.classList.toggle('active', gravityActive);
-      
-      if (gravityActive) {
-        gravityButton.innerHTML = '🔴';
-        gravityButton.title = 'Stop Gravity';
-        startGravityPhysics();
-      } else {
-        gravityButton.innerHTML = '🌍';
-        gravityButton.title = 'Start Gravity';
-        resetGravityItems();
-      }
-    });
+    // Start physics immediately if gravity has been triggered
+    if (gravityTriggered) {
+      startGravityPhysics();
+    }
 
     // Mouse/touch event handlers for dragging
     gravityItems.forEach((item, index) => {
@@ -491,10 +474,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const extracurricularTop = extracurricularSection.offsetTop;
     if (scrollY + windowHeight >= extracurricularTop - windowHeight * 0.3) {
       extracurricularSection.classList.add('visible');
-      
-      // Show gravity button when extracurricular section is visible
-      if (gravityButton && !isMobile()) {
-        gravityButton.classList.add('visible');
+      }
+
+    // Trigger gravity when the gravity container enters the viewport
+    if (!gravityTriggered && gravityContainer) {
+      const gravityTop = gravityContainer.offsetTop;
+      if (scrollY + windowHeight >= gravityTop) {
+        gravityActive = true;
+        gravityTriggered = true;
+        startGravityPhysics();
+
       }
     }
     
