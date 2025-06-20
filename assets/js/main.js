@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
   navTrigger.style.height = '1px';
   navTrigger.style.width = '1px';
   navTrigger.style.pointerEvents = 'none';
-  navTrigger.style.background = 'red'; // Debug visibility
   document.body.appendChild(navTrigger);
 
   // Start observing the trigger
@@ -76,16 +75,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Debug: Check if Unicorn Studio scene is working
+  // Debug: Check for Unicorn Studio after some time
   setTimeout(() => {
-    const unicornScene = document.getElementById('unicorn-scene');
-    if (unicornScene) {
-      const canvas = unicornScene.querySelector('canvas');
+    const unicornDiv = document.querySelector('[data-us-project]');
+    if (unicornDiv) {
+      const canvas = unicornDiv.querySelector('canvas');
       if (canvas) {
-        console.log('Unicorn Studio canvas found:', canvas);
+        console.log('✅ Unicorn Studio canvas found and loaded successfully!');
       } else {
-        console.warn('No canvas found in Unicorn Studio scene element');
+        console.warn('⚠️ Unicorn Studio div found but no canvas yet. Still loading...');
+        
+        // Check again after more time
+        setTimeout(() => {
+          const canvas2 = unicornDiv.querySelector('canvas');
+          if (canvas2) {
+            console.log('✅ Unicorn Studio canvas loaded after delay!');
+          } else {
+            console.error('❌ Unicorn Studio failed to create canvas');
+          }
+        }, 3000);
       }
+    } else {
+      console.error('❌ Unicorn Studio div not found');
     }
-  }, 3000);
+  }, 2000);
 });
