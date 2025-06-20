@@ -104,33 +104,21 @@ body.education-page{
   justify-content:center;
   text-decoration:none;
   color:var(--textColor,#111);
-  opacity:0;
+  opacity:1; /* Always visible but very dark */
   transform:translate(-50%,-50%) scale(var(--scale));
   transition:opacity .5s, transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .3s, filter .3s;
   font-size:calc(var(--size)*0.1);
   pointer-events:auto;
-  background:radial-gradient(circle at var(--mx,50%) var(--my,50%), var(--light,#eee), var(--dark,#666) 70%, #444);
-  box-shadow:inset -5px -5px 10px rgba(255,255,255,0.4),
-             inset 5px 5px 15px rgba(0,0,0,0.7);
+  /* Unified background - no separate glow effects */
+  background:radial-gradient(circle at 50% 50%, var(--light), var(--dark) 70%);
+  /* Removed inset shadows that were causing unwanted glow */
+  box-shadow:none;
   transform-style:preserve-3d;
 }
 
+/* Remove the ::before pseudo-element that was creating extra glow */
 .section::before{
-  content:"";
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  border-radius:50%;
-  opacity:0;
-  transition:opacity .7s;
-  pointer-events:none;
-  z-index:0;
-}
-
-.section:hover::before{
-  opacity:0.9;
+  display:none;
 }
 
 .education{
@@ -178,10 +166,9 @@ body.education-page{
 
 .section:hover{
   --scale:1.0;
-  box-shadow:inset -2px -2px 5px rgba(255,255,255,0.6),
-             inset 2px 2px 8px rgba(0,0,0,0.6),
-             0 0 20px rgba(255, 255, 255, 0.3);
-  filter:brightness(calc(1 + var(--intensity,0) * 0.8));
+  /* Removed all hover effects that were interfering with flashlight */
+  box-shadow:none;
+  filter:none;
 }
 
 .section span{
