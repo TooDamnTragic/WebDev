@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const activePopups = new Set();
   const popupTimeouts = new Map();
   
-  // Google Gravity Physics System - Enhanced Implementation
+  // Enhanced Google Gravity Physics System
   let gravityActive = false;
   let gravityTriggered = false;
   const gravityPhysics = [];
@@ -542,7 +542,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const extracurricularTop = extracurricularSection.offsetTop;
     if (scrollY + windowHeight >= extracurricularTop - windowHeight * 0.3) {
       extracurricularSection.classList.add('visible');
-      }
+    }
 
     // Trigger gravity when the gravity container enters the viewport
     if (!gravityTriggered && gravityContainer) {
@@ -551,7 +551,6 @@ document.addEventListener('DOMContentLoaded', () => {
         gravityActive = true;
         gravityTriggered = true;
         startGravityPhysics();
-
       }
     }
     
@@ -706,6 +705,51 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  // Add gravity reset button (optional - like Google Gravity)
+  const createGravityResetButton = () => {
+    const resetButton = document.createElement('button');
+    resetButton.innerHTML = '🔄 Reset Gravity';
+    resetButton.className = 'gravity-reset-button';
+    resetButton.style.cssText = `
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      padding: 0.8rem 1.2rem;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      backdrop-filter: blur(10px);
+      z-index: 1000;
+      opacity: 0;
+      transform: scale(0);
+      transition: all 0.3s ease;
+    `;
+    
+    resetButton.addEventListener('click', () => {
+      gravityActive = false;
+      resetGravityItems();
+      setTimeout(() => {
+        gravityActive = true;
+        startGravityPhysics();
+      }, 600);
+    });
+    
+    document.body.appendChild(resetButton);
+    
+    // Show reset button when gravity is active
+    const showResetButton = () => {
+      if (gravityActive && gravityTriggered) {
+        resetButton.style.opacity = '1';
+        resetButton.style.transform = 'scale(1)';
+      }
+    };
+    
+    setTimeout(showResetButton, 3000);
+  };
+
   // Initialize everything
   initializeImages();
   adjustInfoLayout();
@@ -715,6 +759,9 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     initializeGoogleGravity();
   }, 1000);
+
+  // Create reset button
+  createGravityResetButton();
 
   // Handle escape key globally
   document.addEventListener('keydown', (e) => {
@@ -750,52 +797,4 @@ document.addEventListener('DOMContentLoaded', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
-
-  // Add gravity reset button (optional - like Google Gravity)
-  const createGravityResetButton = () => {
-    const resetButton = document.createElement('button');
-    resetButton.innerHTML = '🔄 Reset';
-    resetButton.className = 'gravity-reset-button';
-    resetButton.style.cssText = `
-      position: fixed;
-      bottom: 2rem;
-      left: 2rem;
-      padding: 0.8rem 1.2rem;
-      background: rgba(0, 0, 0, 0.8);
-      color: white;
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      backdrop-filter: blur(10px);
-      z-index: 1000;
-      opacity: 0;
-      transform: scale(0);
-      transition: all 0.3s ease;
-    `;
-    
-    resetButton.addEventListener('click', () => {
-      gravityActive = false;
-      resetGravityItems();
-      setTimeout(() => {
-        gravityActive = true;
-        startGravityPhysics();
-      }, 600);
-    });
-    
-    document.body.appendChild(resetButton);
-    
-    // Show reset button when gravity is active
-    const showResetButton = () => {
-      if (gravityActive) {
-        resetButton.style.opacity = '1';
-        resetButton.style.transform = 'scale(1)';
-      }
-    };
-    
-    setTimeout(showResetButton, 2000);
-  };
-  
-  // Create reset button
-  createGravityResetButton();
 });
