@@ -14,12 +14,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // File handling
   let selectedFiles = [];
 
-  // Miseducation Background Effect - Exact Implementation
+  // Miseducation Background Effect - Exact Implementation with TRIPLED text amount
   const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   
   function longRandomString() {
     let out = "";
-    for (let i = 0; i < 3000; i++) { // Increased for full screen coverage
+    for (let i = 0; i < 9000; i++) { // TRIPLED from 3000 to 9000
       out += CHARS[Math.floor(Math.random() * CHARS.length)];
     }
     return out;
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.body.appendChild(backgroundGlow);
   document.body.appendChild(backgroundBackdrop);
 
-  // Seed initial text
+  // Seed initial text with tripled amount
   if (backgroundText) {
     backgroundText.textContent = longRandomString();
   }
