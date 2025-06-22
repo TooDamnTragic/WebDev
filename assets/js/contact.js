@@ -147,9 +147,9 @@ document.addEventListener('DOMContentLoaded', () => {
       mass: 10,
       radius: 60, // Half of button width
       angle: angle,
-      orbitSpeed: 0.0005, // Much slower orbital rotation
+      orbitSpeed: 0.001, // DOUBLED from 0.0005 to 0.001 for twice as fast rotation
       cursorAttraction: 0.002, // Light cursor attraction strength
-      returnForce: 0.008 // Force to return to original position
+      returnForce: 0.008 // Base return force
     };
 
     // Set initial position
@@ -226,14 +226,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Physics simulation with cursor attraction
+  // Physics simulation with cursor attraction and elastic return
   function updatePhysics() {
     const centerX = window.innerWidth / 2;
     const centerY = window.innerHeight / 2;
 
     buttonPhysics.forEach((physics, index) => {
       if (!physics.isDragging) {
-        // Update orbital angle for natural rotation (much slower)
+        // Update orbital angle for natural rotation (twice as fast)
         physics.angle += physics.orbitSpeed;
         
         // Calculate new orbital position
@@ -256,24 +256,28 @@ document.addEventListener('DOMContentLoaded', () => {
           physics.vy += (cursorDy / cursorDistance) * cursorForce;
         }
 
-        // Return force to orbital position (stronger when far away)
+        // Elastic return force to orbital position (proportional to distance)
         const dx = physics.originalX - physics.x;
         const dy = physics.originalY - physics.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         
         if (distance > 1) {
-          const returnForce = physics.returnForce * Math.min(distance / 100, 1); // Scale with distance
-          physics.vx += (dx / distance) * returnForce;
-          physics.vy += (dy / distance) * returnForce;
+          // Elastic force: stronger when farther away (quadratic relationship for more elastic feel)
+          const elasticForce = physics.returnForce * (distance / 50) * (distance / 50);
+          const maxForce = 0.5; // Cap the maximum force to prevent overshooting
+          const clampedForce = Math.min(elasticForce, maxForce);
+          
+          physics.vx += (dx / distance) * clampedForce;
+          physics.vy += (dy / distance) * clampedForce;
         }
 
         // Apply velocity
         physics.x += physics.vx;
         physics.y += physics.vy;
 
-        // Damping (higher damping for smoother movement)
-        physics.vx *= 0.95;
-        physics.vy *= 0.95;
+        // Enhanced damping for smoother elastic motion
+        physics.vx *= 0.92; // Slightly less damping for more elastic feel
+        physics.vy *= 0.92;
 
         // Collision with other buttons
         buttonPhysics.forEach((otherPhysics, otherIndex) => {
