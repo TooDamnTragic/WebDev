@@ -15,7 +15,7 @@
   -webkit-mask-image: linear-gradient(white, transparent);
 }
 
-/* Full Screen Random Text Background - Extended to edges */
+/* Full Screen Random Text Background - Extended to edges with dynamic opacity */
 .background-text {
   position: absolute;
   inset: -2rem; /* Changed from inset: 5 to negative inset to reach edges */
@@ -31,12 +31,22 @@
   pointer-events: none;
   background: transparent;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, opacity 0.3s ease;
   z-index: 3;
+  opacity: 0.1; /* Base opacity 10% */
 }
 
 .background-text:hover{
   transform: scale(1.5);
+}
+
+/* Enhanced background text with cursor circle effect */
+.background-text.cursor-active {
+  opacity: 0.6; /* 60% opacity in cursor circle */
+}
+
+.background-text.movement-active {
+  opacity: 0.9; /* 90% opacity during blue-green phase */
 }
 
 .background-glow {
@@ -65,6 +75,25 @@
 }
 
 .background-backdrop.active {
+  opacity: 1;
+}
+
+/* Cursor circle effect overlay */
+.cursor-circle {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 4;
+  background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.3) 30%, transparent 70%);
+  mix-blend-mode: overlay;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  transform: translate(-50%, -50%);
+}
+
+.cursor-circle.active {
   opacity: 1;
 }
 
@@ -642,6 +671,11 @@
     inset: -1rem; /* Match background-text on mobile */
   }
   
+  .cursor-circle {
+    width: 200px;
+    height: 200px;
+  }
+  
   .contact-button {
     width: 80px;
     height: 80px;
@@ -700,6 +734,11 @@
   .background-glow,
   .background-backdrop {
     inset: -0.5rem; /* Match background-text on very small screens */
+  }
+  
+  .cursor-circle {
+    width: 150px;
+    height: 150px;
   }
   
   .contact-button {

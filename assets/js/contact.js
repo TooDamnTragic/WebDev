@@ -29,12 +29,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const backgroundText = document.querySelector('.background-text');
   const backgroundGlow = document.createElement('div');
   const backgroundBackdrop = document.createElement('div');
+  const cursorCircle = document.createElement('div');
   
   backgroundGlow.className = 'background-glow glow-mask';
   backgroundBackdrop.className = 'background-backdrop';
+  cursorCircle.className = 'cursor-circle';
   
   document.body.appendChild(backgroundGlow);
   document.body.appendChild(backgroundBackdrop);
+  document.body.appendChild(cursorCircle);
 
   // Seed initial text with tripled amount
   if (backgroundText) {
@@ -47,12 +50,17 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastMouseX = 0;
   let lastMouseY = 0;
   let glowActive = false;
+  let cursorCircleActive = false;
 
   // Smooth activation/deactivation functions
   const activateGlow = () => {
     if (!glowActive) {
       backgroundGlow.classList.add('active');
       backgroundBackdrop.classList.add('active');
+      if (backgroundText) {
+        backgroundText.classList.add('movement-active');
+        backgroundText.classList.remove('cursor-active');
+      }
       glowActive = true;
     }
   };
@@ -61,7 +69,39 @@ document.addEventListener('DOMContentLoaded', () => {
     if (glowActive) {
       backgroundGlow.classList.remove('active');
       backgroundBackdrop.classList.remove('active');
+      if (backgroundText) {
+        backgroundText.classList.remove('movement-active');
+      }
       glowActive = false;
+    }
+  };
+
+  const activateCursorCircle = (x, y) => {
+    if (!cursorCircleActive && !glowActive) {
+      cursorCircle.style.left = x + 'px';
+      cursorCircle.style.top = y + 'px';
+      cursorCircle.classList.add('active');
+      if (backgroundText) {
+        backgroundText.classList.add('cursor-active');
+      }
+      cursorCircleActive = true;
+    }
+  };
+
+  const deactivateCursorCircle = () => {
+    if (cursorCircleActive) {
+      cursorCircle.classList.remove('active');
+      if (backgroundText) {
+        backgroundText.classList.remove('cursor-active');
+      }
+      cursorCircleActive = false;
+    }
+  };
+
+  const updateCursorCircle = (x, y) => {
+    if (cursorCircleActive && !glowActive) {
+      cursorCircle.style.left = x + 'px';
+      cursorCircle.style.top = y + 'px';
     }
   };
 
@@ -77,6 +117,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (deltaX > movementThreshold || deltaY > movementThreshold) {
       isMouseMoving = true;
+      
+      // Deactivate cursor circle when moving
+      deactivateCursorCircle();
+      
+      // Activate movement glow
       activateGlow();
       
       // Update glow position
@@ -99,10 +144,21 @@ document.addEventListener('DOMContentLoaded', () => {
         deactivateGlow();
         // Clear the glow background smoothly
         backgroundGlow.style.background = 'none';
+        
+        // Activate cursor circle after movement stops
+        activateCursorCircle(currentX, currentY);
       }, 150); // 150ms delay after mouse stops moving
       
       lastMouseX = currentX;
       lastMouseY = currentY;
+    } else {
+      // Mouse is hovering (not moving significantly)
+      if (!isMouseMoving && !glowActive) {
+        updateCursorCircle(currentX, currentY);
+        if (!cursorCircleActive) {
+          activateCursorCircle(currentX, currentY);
+        }
+      }
     }
   });
 
@@ -113,12 +169,16 @@ document.addEventListener('DOMContentLoaded', () => {
       clearTimeout(mouseStopTimeout);
     }
     deactivateGlow();
+    deactivateCursorCircle();
     backgroundGlow.style.background = 'none';
   });
 
   // Handle mouse entering the page
-  document.addEventListener('mouseenter', () => {
-    // Don't auto-activate, wait for actual movement
+  document.addEventListener('mouseenter', (e) => {
+    // Activate cursor circle on enter if not moving
+    if (!isMouseMoving) {
+      activateCursorCircle(e.clientX, e.clientY);
+    }
   });
 
   // Contact Buttons Physics with Cursor Attraction
