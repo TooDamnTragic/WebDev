@@ -1,6 +1,6 @@
 /* Works Page Styles - Full Page Embed */
 .works-page {
-  background: #0d0d0d;
+  background: #000000;
   min-height: 100vh;
   color: #f0ead6;
   padding: 0;
@@ -58,7 +58,7 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: #0d0d0d;
+  background: #000000;
 }
 
 .unicorn-embed {
@@ -84,7 +84,7 @@
   color: #f0ead6;
   z-index: 100;
   transition: opacity 0.5s ease;
-  background: rgba(0, 0, 0, 0.8);
+  background: #0d0d0d;
   padding: 2rem;
   border-radius: 15px;
   backdrop-filter: blur(10px);
@@ -124,7 +124,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(33, 36, 39, 0.95));
+  background: linear-gradient(135deg,#000000, #000000);
   backdrop-filter: blur(20px);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   transform: translateY(100%);
@@ -166,8 +166,7 @@
   align-items: center;
   gap: 0.8rem;
   padding: 2rem 1.5rem;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
-  border: 2px solid rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 20px;
   text-decoration: none;
   color: #f0ead6;
@@ -187,7 +186,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.1), transparent);
   opacity: 0;
   transition: opacity 0.3s ease;
   border-radius: 18px;
@@ -233,7 +232,7 @@
 }
 
 .footer-link:hover span {
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 /* Special styling for main website button */
@@ -281,7 +280,7 @@
 }
 
 @keyframes fadeInOut {
-  0%, 100% { opacity: 0.8; }
+  0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
 }
 
@@ -290,7 +289,7 @@
   position: absolute;
   bottom: 2rem;
   right: 2rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 0, 0, 0.6);
   font-size: 0.8rem;
   z-index: 200;
   opacity: 0;
