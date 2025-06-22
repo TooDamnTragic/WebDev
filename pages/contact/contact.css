@@ -7,24 +7,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: none; /* Hide default cursor for miseducation effect */
-}
-
-/* Full Screen Random Text Background - Exact from miseducation */
-.background-text {
-  position: fixed;
-  inset: 0;
-  overflow: hidden;
-  padding: 2rem;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  line-height: 1.2;
-  font-family: 'Courier New', monospace;
-  font-size: 10px; /* Larger font size as requested */
-  font-weight: bold;
-  color: white;
-  pointer-events: none;
-  z-index: 3;
 }
 
 /* Miseducation Glow Effect - Exact implementation */
@@ -33,14 +15,37 @@
   -webkit-mask-image: linear-gradient(white, transparent);
 }
 
+/* Full Screen Random Text Background - Exact from miseducation */
+.background-text {
+  position: relative;
+  inset: 5;
+  overflow: hidden;
+  padding: 8rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  line-height: 1.2;
+  font-family: 'Courier New', monospace;
+  font-size: 10px; /* Larger font size as requested */
+  font-weight: bold;
+  color: white;
+  pointer-events: none;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  z-index: 3;
+}
+
+.background-text:hover{
+  transform: scale(1.5);
+}
+
 .background-glow {
-  position: fixed;
+  position: absolute;
   inset: 0;
-  border-radius: 0;
+  border-radius: 16px;
   opacity: 0.5;
   transition: opacity 0.5s;
   pointer-events: none;
-  z-index: 4;
 }
 
 .background-glow.active {
@@ -49,15 +54,14 @@
 
 /* Color backdrop - exact from miseducation */
 .background-backdrop {
-  position: fixed;
+  position: absolute;
   inset: 0;
-  border-radius: 0;
-  background: linear-gradient(to right, #22c55e, #3b82f6); /* green-500 to blue-700 */
+  border-radius: 16px;
+  background: linear-gradient(to right, #22c55e, #3b82f6);
   opacity: 0;
   backdrop-filter: blur(40px);
   transition: opacity 0.5s;
   pointer-events: none;
-  z-index: 1;
 }
 
 .background-backdrop.active {
@@ -66,7 +70,7 @@
 
 /* Central Hub */
 .contact-hub {
-  position: relative;
+  position: fixed;
   width: 200px;
   height: 200px;
   border-radius: 50%;
