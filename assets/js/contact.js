@@ -19,9 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
   
   function longRandomString() {
     let out = "";
-    for (let i = 0; i < 20000; i++) { // TRIPLED from 3000 to 9000
+    for (let i = 0; i < 50000; i++) { // TRIPLED from 3000 to 9000
       out += CHARS[Math.floor(Math.random() * CHARS.length)];
     }
+    out += "  you have a big ass monitor ";
     return out;
   }
 
