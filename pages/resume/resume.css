@@ -410,10 +410,48 @@
   font-style: italic;
 }
 
+/* PDF Download Button */
+.pdf-download {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 100;
+}
+
+.pdf-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgb(255, 79, 15);
+  color: white;
+  border: none;
+  padding: 1rem 1.5rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 79, 15, 0.3);
+  text-decoration: none;
+}
+
+.pdf-btn:hover {
+  background: rgb(230, 70, 10);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 79, 15, 0.4);
+  color: white;
+}
+
+.pdf-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
 /* Print Styles */
 @media print {
   .back-home,
-  .print-button {
+  .print-button,
+  .pdf-download {
     display: none !important;
   }
   
@@ -515,11 +553,13 @@
   }
   
   .back-home,
-  .print-button {
+  .print-button,
+  .pdf-download {
     position: relative;
     top: auto;
     left: auto;
     right: auto;
+    bottom: auto;
     margin: 1rem;
   }
 }
