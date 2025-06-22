@@ -28,16 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize background elements
   const backgroundText = document.querySelector('.background-text');
-  const backgroundGlow = document.createElement('div');
-  const backgroundBackdrop = document.createElement('div');
+  const cursorGlow = document.createElement('div');
   const cursorCircle = document.createElement('div');
   
-  backgroundGlow.className = 'background-glow glow-mask';
-  backgroundBackdrop.className = 'background-backdrop';
+  cursorGlow.className = 'cursor-glow';
   cursorCircle.className = 'cursor-circle';
   
-  document.body.appendChild(backgroundGlow);
-  document.body.appendChild(backgroundBackdrop);
+  document.body.appendChild(cursorGlow);
   document.body.appendChild(cursorCircle);
 
   // Seed initial text with tripled amount
@@ -54,22 +51,26 @@ document.addEventListener('DOMContentLoaded', () => {
   let cursorCircleActive = false;
 
   // Smooth activation/deactivation functions
-  const activateGlow = () => {
+  const activateGlow = (x, y) => {
     if (!glowActive) {
-      backgroundGlow.classList.add('active');
-      backgroundBackdrop.classList.add('active');
+      cursorGlow.style.left = x + 'px';
+      cursorGlow.style.top = y + 'px';
+      cursorGlow.classList.add('active');
       if (backgroundText) {
         backgroundText.classList.add('movement-active');
         backgroundText.classList.remove('cursor-active');
       }
       glowActive = true;
+    } else {
+      // Update position if already active
+      cursorGlow.style.left = x + 'px';
+      cursorGlow.style.top = y + 'px';
     }
   };
 
   const deactivateGlow = () => {
     if (glowActive) {
-      backgroundGlow.classList.remove('active');
-      backgroundBackdrop.classList.remove('active');
+      cursorGlow.classList.remove('active');
       if (backgroundText) {
         backgroundText.classList.remove('movement-active');
       }
@@ -122,13 +123,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // Deactivate cursor circle when moving
       deactivateCursorCircle();
       
-      // Activate movement glow
-      activateGlow();
+      // Activate movement glow at cursor position
+      activateGlow(currentX, currentY);
       
-      // Update glow position
-      backgroundGlow.style.background =
-        `radial-gradient(250px at ${currentX}px ${currentY}px, rgba(255,255,255,0.35), transparent 70%)`;
-
       // Update text
       if (backgroundText) {
         backgroundText.textContent = longRandomString();
@@ -143,8 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
       mouseStopTimeout = setTimeout(() => {
         isMouseMoving = false;
         deactivateGlow();
-        // Clear the glow background smoothly
-        backgroundGlow.style.background = 'none';
         
         // Activate cursor circle after movement stops
         activateCursorCircle(currentX, currentY);
@@ -171,7 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     deactivateGlow();
     deactivateCursorCircle();
-    backgroundGlow.style.background = 'none';
   });
 
   // Handle mouse entering the page
