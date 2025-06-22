@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // File handling
   let selectedFiles = [];
 
-  // Miseducation Background Effect - Exact Implementation with TRIPLED text amount
+  // Miseducation Background Effect - Enhanced with smooth mouse movement detection
   const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   
   function longRandomString() {
@@ -41,9 +41,14 @@ document.addEventListener('DOMContentLoaded', () => {
     backgroundText.textContent = longRandomString();
   }
 
-  // Activate backdrop on first interaction
+  // Mouse movement tracking variables
+  let isMouseMoving = false;
+  let mouseStopTimeout = null;
+  let lastMouseX = 0;
+  let lastMouseY = 0;
   let glowActive = false;
 
+  // Smooth activation/deactivation functions
   const activateGlow = () => {
     if (!glowActive) {
       backgroundGlow.classList.add('active');
@@ -52,27 +57,68 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Mouse movement handler - derived from miseducation effect
+  const deactivateGlow = () => {
+    if (glowActive) {
+      backgroundGlow.classList.remove('active');
+      backgroundBackdrop.classList.remove('active');
+      glowActive = false;
+    }
+  };
+
+  // Enhanced mouse movement handler with movement detection
   document.addEventListener('mousemove', (e) => {
-    activateGlow();
+    const currentX = e.clientX;
+    const currentY = e.clientY;
+    
+    // Check if mouse actually moved (not just a tiny jitter)
+    const movementThreshold = 2; // pixels
+    const deltaX = Math.abs(currentX - lastMouseX);
+    const deltaY = Math.abs(currentY - lastMouseY);
+    
+    if (deltaX > movementThreshold || deltaY > movementThreshold) {
+      isMouseMoving = true;
+      activateGlow();
+      
+      // Update glow position
+      backgroundGlow.style.background =
+        `radial-gradient(250px at ${currentX}px ${currentY}px, rgba(255,255,255,0.35), transparent 70%)`;
 
-    const x = e.clientX;
-    const y = e.clientY;
-
-    backgroundGlow.style.background =
-      `radial-gradient(250px at ${x}px ${y}px, rgba(255,255,255,0.35), transparent 70%)`;
-
-    if (backgroundText) {
-      backgroundText.textContent = longRandomString();
+      // Update text
+      if (backgroundText) {
+        backgroundText.textContent = longRandomString();
+      }
+      
+      // Clear existing timeout
+      if (mouseStopTimeout) {
+        clearTimeout(mouseStopTimeout);
+      }
+      
+      // Set new timeout to detect when mouse stops
+      mouseStopTimeout = setTimeout(() => {
+        isMouseMoving = false;
+        deactivateGlow();
+        // Clear the glow background smoothly
+        backgroundGlow.style.background = 'none';
+      }, 150); // 150ms delay after mouse stops moving
+      
+      lastMouseX = currentX;
+      lastMouseY = currentY;
     }
   });
 
-  // Fade out glow when leaving the page
+  // Handle mouse leaving the page
   document.addEventListener('mouseleave', () => {
+    isMouseMoving = false;
+    if (mouseStopTimeout) {
+      clearTimeout(mouseStopTimeout);
+    }
+    deactivateGlow();
     backgroundGlow.style.background = 'none';
-    backgroundGlow.classList.remove('active');
-    backgroundBackdrop.classList.remove('active');
-    glowActive = false;
+  });
+
+  // Handle mouse entering the page
+  document.addEventListener('mouseenter', () => {
+    // Don't auto-activate, wait for actual movement
   });
 
   // Contact Buttons Physics with Cursor Attraction
