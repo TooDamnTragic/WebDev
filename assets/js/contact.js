@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   function longRandomString() {
     let out = "";
-    for (let i = 0; i < 20000; i++) { // TRIPLED from 3000 to 9000
+    for (let i = 0; i < 60000; i++) { // TRIPLED from 3000 to 9000
       out += CHARS[Math.floor(Math.random() * CHARS.length)];
     }
     return out;
