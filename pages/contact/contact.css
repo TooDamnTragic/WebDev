@@ -68,6 +68,31 @@
   opacity: 1;
 }
 
+/* NEW: Torch-Light Overlay Effect */
+.torch-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  z-index: 5; /* Above background elements but below contact buttons and hub */
+  transition: opacity 0.3s ease;
+}
+
+.torch-overlay.active {
+  background: radial-gradient(
+    circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+    transparent 0%,
+    transparent 30%,
+    rgba(0, 0, 0, 0.1) 40%,
+    rgba(0, 0, 0, 0.4) 60%,
+    rgba(0, 0, 0, 0.7) 80%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+}
+
 /* Central Hub */
 .contact-hub {
   position: fixed;
@@ -642,6 +667,18 @@
     inset: -1rem; /* Match background-text on mobile */
   }
   
+  .torch-overlay.active {
+    background: radial-gradient(
+      circle 150px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      transparent 0%,
+      transparent 25%,
+      rgba(0, 0, 0, 0.1) 35%,
+      rgba(0, 0, 0, 0.4) 55%,
+      rgba(0, 0, 0, 0.7) 75%,
+      rgba(0, 0, 0, 0.8) 100%
+    );
+  }
+  
   .contact-button {
     width: 80px;
     height: 80px;
@@ -700,6 +737,18 @@
   .background-glow,
   .background-backdrop {
     inset: -0.5rem; /* Match background-text on very small screens */
+  }
+  
+  .torch-overlay.active {
+    background: radial-gradient(
+      circle 100px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+      transparent 0%,
+      transparent 20%,
+      rgba(0, 0, 0, 0.1) 30%,
+      rgba(0, 0, 0, 0.4) 50%,
+      rgba(0, 0, 0, 0.7) 70%,
+      rgba(0, 0, 0, 0.8) 100%
+    );
   }
   
   .contact-button {

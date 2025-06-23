@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const fileInput = document.getElementById('attachments');
   const fileList = document.getElementById('fileList');
   const notification = document.getElementById('notification');
+  const torchOverlay = document.getElementById('torchOverlay');
 
   // File handling
   let selectedFiles = [];
@@ -65,10 +66,28 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Enhanced mouse movement handler with movement detection
+  // NEW: Torch overlay effect
+  const updateTorchOverlay = (x, y) => {
+    if (torchOverlay) {
+      const xPercent = (x / window.innerWidth) * 100;
+      const yPercent = (y / window.innerHeight) * 100;
+      
+      torchOverlay.style.setProperty('--mouse-x', `${xPercent}%`);
+      torchOverlay.style.setProperty('--mouse-y', `${yPercent}%`);
+      
+      if (!torchOverlay.classList.contains('active')) {
+        torchOverlay.classList.add('active');
+      }
+    }
+  };
+
+  // Enhanced mouse movement handler with movement detection and torch effect
   document.addEventListener('mousemove', (e) => {
     const currentX = e.clientX;
     const currentY = e.clientY;
+    
+    // Update torch overlay
+    updateTorchOverlay(currentX, currentY);
     
     // Check if mouse actually moved (not just a tiny jitter)
     const movementThreshold = 2; // pixels
@@ -114,11 +133,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     deactivateGlow();
     backgroundGlow.style.background = 'none';
+    
+    // Deactivate torch overlay
+    if (torchOverlay) {
+      torchOverlay.classList.remove('active');
+    }
   });
 
   // Handle mouse entering the page
-  document.addEventListener('mouseenter', () => {
-    // Don't auto-activate, wait for actual movement
+  document.addEventListener('mouseenter', (e) => {
+    // Update torch overlay position immediately
+    updateTorchOverlay(e.clientX, e.clientY);
   });
 
   // Contact Buttons Physics with Cursor Attraction
