@@ -35,92 +35,33 @@ body,html{
   font-style: normal;
 }
 
-@font-face {
-  font-family: 'ArchesDemoRegular-XG5Ea';
-  src: url('assets/fonts/ArchesDemoRegular-XG5Ea.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'ArchesDemoRegular-gwJB5';
-  src: url('assets/fonts/ArchesDemoRegular-gwJB5.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'AsemberModernDemoRegular-EaVJW';
-  src: url('assets/fonts/AsemberModernDemoRegular-EaVJW.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'DTGetaiGroteskDisplay-Black';
-  src: url('assets/fonts/DTGetaiGroteskDisplay-Black.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'DTGetaiGroteskDisplay-Black';
-  src: url('assets/fonts/DTGetaiGroteskDisplay-Black.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'HackneyPersonalUseOnly';
-  src: url('assets/fonts/HackneyPersonalUseOnly.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'ArshineExtruderight';
-  src: url('assets/fonts/ArshineExtruderight-4nZ99.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Beautyful';
-  src: url('assets/fonts/Beautyful-2vlYd.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Catrose';
-  src: url('assets/fonts/Catrose-6RBMD.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'CrackchakingtrialRegular';
-  src: url('assets/fonts/CrackchakingtrialRegular-7O8KP.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Iconic';
-  src: url('assets/fonts/Iconic-drG8K.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'RuntimeRegular';
-  src: url('assets/fonts/RuntimeRegular-m2Odx.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'SophiamelanieRegular';
-  src: url('assets/fonts/SophiamelanieRegular-E4gee.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-}
-
 body.index-page{
   overflow:hidden;
+  /* Enhanced background with subtle blue glow and pixel effect */
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(118, 75, 162, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 40% 80%, rgba(0, 123, 255, 0.08) 0%, transparent 40%),
+    linear-gradient(45deg, #212427 0%, #1a1d20 50%, #212427 100%);
+  background-size: 100% 100%, 100% 100%, 100% 100%, 2px 2px;
+  animation: subtleGlow 8s ease-in-out infinite alternate;
+}
+
+@keyframes subtleGlow {
+  0% {
+    background: 
+      radial-gradient(circle at 20% 30%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(118, 75, 162, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 40% 80%, rgba(0, 123, 255, 0.08) 0%, transparent 40%),
+      linear-gradient(45deg, #212427 0%, #1a1d20 50%, #212427 100%);
+  }
+  100% {
+    background: 
+      radial-gradient(circle at 25% 35%, rgba(102, 126, 234, 0.18) 0%, transparent 55%),
+      radial-gradient(circle at 75% 65%, rgba(118, 75, 162, 0.15) 0%, transparent 55%),
+      radial-gradient(circle at 45% 75%, rgba(0, 123, 255, 0.10) 0%, transparent 45%),
+      linear-gradient(45deg, #212427 0%, #1a1d20 50%, #212427 100%);
+  }
 }
 
 body.education-page{
@@ -154,15 +95,6 @@ body.education-page{
   background:radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
   pointer-events:none;
   z-index:1;
-}
-
-/* Metaballs Container */
-.metaballs-container {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.3;
 }
 
 @keyframes fadeIn{
