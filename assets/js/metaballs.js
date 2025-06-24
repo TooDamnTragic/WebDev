@@ -1,281 +1,216 @@
-import {
-  Renderer,
-  Program,
-  Mesh,
-  Triangle,
-  Transform,
-  Vec3,
-  Camera,
-} from 'https://cdn.jsdelivr.net/npm/ogl@1.0.11/dist/ogl.mjs';
-
-function parseHexColor(hex) {
-  const c = hex.replace('#', '');
-  const r = parseInt(c.substring(0, 2), 16) / 255;
-  const g = parseInt(c.substring(2, 4), 16) / 255;
-  const b = parseInt(c.substring(4, 6), 16) / 255;
-  return [r, g, b];
-}
-
-function hslToRgb(h, s, l) {
-  let r, g, b;
-  if (s === 0) {
-    r = g = b = l;
-  } else {
-    const hue2rgb = (p, q, t) => {
-      if (t < 0) t += 1;
-      if (t > 1) t -= 1;
-      if (t < 1 / 6) return p + (q - p) * 6 * t;
-      if (t < 1 / 2) return q;
-      if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-      return p;
+// Simplified metaballs implementation using Canvas 2D instead of WebGL for better compatibility
+class MetaBalls {
+  constructor(container, options = {}) {
+    this.container = container;
+    this.options = {
+      ballCount: 8,
+      ballSize: 60,
+      speed: 0.002,
+      color: '#667eea',
+      mouseSize: 80,
+      threshold: 0.6,
+      ...options
     };
-    const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-    const p = 2 * l - q;
-    r = hue2rgb(p, q, h + 1 / 3);
-    g = hue2rgb(p, q, h);
-    b = hue2rgb(p, q, h - 1 / 3);
+    
+    this.canvas = null;
+    this.ctx = null;
+    this.balls = [];
+    this.mouse = { x: 0, y: 0, active: false };
+    this.animationId = null;
+    
+    this.init();
   }
-  return [r, g, b];
-}
-
-function fract(x) {
-  return x - Math.floor(x);
-}
-
-function hash31(p) {
-  let r = [p * 0.1031, p * 0.1030, p * 0.0973].map(fract);
-  const r_yzx = [r[1], r[2], r[0]];
-  const dotVal = r[0] * (r_yzx[0] + 33.33) +
-    r[1] * (r_yzx[1] + 33.33) +
-    r[2] * (r_yzx[2] + 33.33);
-  for (let i = 0; i < 3; i++) {
-    r[i] = fract(r[i] + dotVal);
+  
+  init() {
+    // Create canvas
+    this.canvas = document.createElement('canvas');
+    this.canvas.style.cssText = `
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    `;
+    this.container.appendChild(this.canvas);
+    this.ctx = this.canvas.getContext('2d');
+    
+    // Initialize balls
+    this.createBalls();
+    
+    // Setup mouse tracking
+    this.setupMouseTracking();
+    
+    // Setup resize handler
+    this.resize();
+    window.addEventListener('resize', () => this.resize());
+    
+    // Start animation
+    this.animate();
   }
-  return r;
-}
-
-function hash33(v) {
-  let p = [v[0] * 0.1031, v[1] * 0.1030, v[2] * 0.0973].map(fract);
-  const p_yxz = [p[1], p[0], p[2]];
-  const dotVal = p[0] * (p_yxz[0] + 33.33) +
-    p[1] * (p_yxz[1] + 33.33) +
-    p[2] * (p_yxz[2] + 33.33);
-  for (let i = 0; i < 3; i++) {
-    p[i] = fract(p[i] + dotVal);
-  }
-  const p_xxy = [p[0], p[0], p[1]];
-  const p_yxx = [p[1], p[0], p[0]];
-  const p_zyx = [p[2], p[1], p[0]];
-  const result = [];
-  for (let i = 0; i < 3; i++) {
-    result[i] = fract((p_xxy[i] + p_yxx[i]) * p_zyx[i]);
-  }
-  return result;
-}
-
-const vertex = `#version 300 es
-precision highp float;
-layout(location = 0) in vec2 position;
-void main() {
-  gl_Position = vec4(position, 0.0, 1.0);
-}
-`;
-
-const fragment = `#version 300 es
-precision highp float;
-uniform vec3 iResolution;
-uniform float iTime;
-uniform vec3 iMouse;
-uniform vec3 iColor;
-uniform vec3 iCursorColor;
-uniform float iAnimationSize;
-uniform int iBallCount;
-uniform float iCursorBallSize;
-uniform vec3 iMetaBalls[50];
-uniform float iClumpFactor;
-uniform bool enableTransparency;
-out vec4 outColor;
-const float PI = 3.14159265359;
-
-float getMetaBallValue(vec2 c, float r, vec2 p) {
-  vec2 d = p - c;
-  float dist2 = dot(d, d);
-  return (r * r) / dist2;
-}
-
-void main() {
-  vec2 fc = gl_FragCoord.xy;
-  float scale = iAnimationSize / iResolution.y;
-  vec2 coord = (fc - iResolution.xy * 0.5) * scale;
-  vec2 mouseW = (iMouse.xy - iResolution.xy * 0.5) * scale;
-  float m1 = 0.0;
-  for (int i = 0; i < 50; i++) {
-    if (i >= iBallCount) break;
-    m1 += getMetaBallValue(iMetaBalls[i].xy, iMetaBalls[i].z, coord);
-  }
-  float m2 = getMetaBallValue(mouseW, iCursorBallSize, coord);
-  float total = m1 + m2;
-  float f = smoothstep(-1.0, 1.0, (total - 1.3) / min(1.0, fwidth(total)));
-  vec3 cFinal = vec3(0.0);
-  if (total > 0.0) {
-    float alpha1 = m1 / total;
-    float alpha2 = m2 / total;
-    cFinal = iColor * alpha1 + iCursorColor * alpha2;
-  }
-  outColor = vec4(cFinal * f, enableTransparency ? f : 1.0);
-}
-`;
-
-function initMetaBalls(container, options) {
-  const {
-    color = '#ffffff',
-    speed = 0.3,
-    enableMouseInteraction = true,
-    hoverSmoothness = 0.05,
-    animationSize = 30,
-    ballCount = 15,
-    clumpFactor = 1,
-    cursorBallSize = 3,
-    cursorBallColor = '#ffffff',
-    enableTransparency = true,
-  } = options || {};
-
-  const dpr = 1;
-  const renderer = new Renderer({ dpr, alpha: true, premultipliedAlpha: false });
-  const gl = renderer.gl;
-  gl.clearColor(0, 0, 0, enableTransparency ? 0 : 1);
-  container.appendChild(gl.canvas);
-
-  const camera = new Camera(gl, {
-    left: -1, right: 1, top: 1, bottom: -1, near: 0.1, far: 10,
-  });
-  camera.position.z = 1;
-
-  const geometry = new Triangle(gl);
-  const metaBallsUniform = [];
-  for (let i = 0; i < 50; i++) {
-    metaBallsUniform.push(new Vec3(0, 0, 0));
-  }
-
-  const [cr, cg, cb] = parseHexColor(color);
-  const [rr, rg, rb] = parseHexColor(cursorBallColor);
-
-  const program = new Program(gl, {
-    vertex,
-    fragment,
-    uniforms: {
-      iTime: { value: 0 },
-      iResolution: { value: new Vec3(0, 0, 0) },
-      iMouse: { value: new Vec3(0, 0, 0) },
-      iColor: { value: new Vec3(cr, cg, cb) },
-      iCursorColor: { value: new Vec3(rr, rg, rb) },
-      iAnimationSize: { value: animationSize },
-      iBallCount: { value: ballCount },
-      iCursorBallSize: { value: cursorBallSize },
-      iMetaBalls: { value: metaBallsUniform },
-      iClumpFactor: { value: clumpFactor },
-      enableTransparency: { value: enableTransparency },
-    },
-  });
-
-  const mesh = new Mesh(gl, { geometry, program });
-  const scene = new Transform();
-  mesh.setParent(scene);
-
-  const maxBalls = 50;
-  const effectiveBallCount = Math.min(ballCount, maxBalls);
-  const ballParams = [];
-  for (let i = 0; i < effectiveBallCount; i++) {
-    const idx = i + 1;
-    const h1 = hash31(idx);
-    const st = h1[0] * (2 * Math.PI);
-    const dtFactor = 0.1 * Math.PI + h1[1] * (0.4 * Math.PI - 0.1 * Math.PI);
-    const baseScale = 5.0 + h1[1] * (10.0 - 5.0);
-    const h2 = hash33(h1);
-    const toggle = Math.floor(h2[0] * 2.0);
-    const radiusVal = 0.5 + h2[2] * (2.0 - 0.5);
-    ballParams.push({ st, dtFactor, baseScale, toggle, radius: radiusVal });
-  }
-
-  const mouseBallPos = { x: 0, y: 0 };
-  let pointerInside = false;
-  let pointerX = 0;
-  let pointerY = 0;
-
-  function resize() {
-    const width = container.clientWidth;
-    const height = container.clientHeight;
-    renderer.setSize(width * dpr, height * dpr);
-    gl.canvas.style.width = width + 'px';
-    gl.canvas.style.height = height + 'px';
-    program.uniforms.iResolution.value.set(gl.canvas.width, gl.canvas.height, 0);
-  }
-  window.addEventListener('resize', resize);
-  resize();
-
-  function onPointerMove(e) {
-    if (!enableMouseInteraction) return;
-    const rect = container.getBoundingClientRect();
-    const px = e.clientX - rect.left;
-    const py = e.clientY - rect.top;
-    pointerX = (px / rect.width) * gl.canvas.width;
-    pointerY = (1 - py / rect.height) * gl.canvas.height;
-  }
-  function onPointerEnter() { if (enableMouseInteraction) pointerInside = true; }
-  function onPointerLeave() { if (enableMouseInteraction) pointerInside = false; }
-  container.addEventListener('pointermove', onPointerMove);
-  container.addEventListener('pointerenter', onPointerEnter);
-  container.addEventListener('pointerleave', onPointerLeave);
-
-  const startTime = performance.now();
-  const COLOR_SPEED = 0.02; // cycles slowly
-  function update(t) {
-    requestAnimationFrame(update);
-    const elapsed = (t - startTime) * 0.001;
-    program.uniforms.iTime.value = elapsed;
-
-    const hue = (elapsed * COLOR_SPEED) % 1;
-    const [r, g, b] = hslToRgb(hue, 1, 0.5);
-    program.uniforms.iColor.value.set(r, g, b);
-    program.uniforms.iCursorColor.value.set(r, g, b);
-
-    for (let i = 0; i < effectiveBallCount; i++) {
-      const p = ballParams[i];
-      const dt = elapsed * speed * p.dtFactor;
-      const th = p.st + dt;
-      const x = Math.cos(th);
-      const y = Math.sin(th + dt * p.toggle);
-      const posX = x * p.baseScale * clumpFactor;
-      const posY = y * p.baseScale * clumpFactor;
-      metaBallsUniform[i].set(posX, posY, p.radius);
+  
+  createBalls() {
+    this.balls = [];
+    for (let i = 0; i < this.options.ballCount; i++) {
+      this.balls.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: (Math.random() - 0.5) * 2,
+        vy: (Math.random() - 0.5) * 2,
+        size: this.options.ballSize + Math.random() * 20,
+        phase: Math.random() * Math.PI * 2
+      });
     }
-
-    let targetX, targetY;
-    if (pointerInside) {
-      targetX = pointerX;
-      targetY = pointerY;
-    } else {
-      const cx = gl.canvas.width * 0.5;
-      const cy = gl.canvas.height * 0.5;
-      const rx = gl.canvas.width * 0.15;
-      const ry = gl.canvas.height * 0.15;
-      targetX = cx + Math.cos(elapsed * speed) * rx;
-      targetY = cy + Math.sin(elapsed * speed) * ry;
+  }
+  
+  setupMouseTracking() {
+    const updateMouse = (e) => {
+      const rect = this.container.getBoundingClientRect();
+      this.mouse.x = e.clientX - rect.left;
+      this.mouse.y = e.clientY - rect.top;
+      this.mouse.active = true;
+    };
+    
+    this.container.addEventListener('mousemove', updateMouse);
+    this.container.addEventListener('mouseenter', () => {
+      this.mouse.active = true;
+    });
+    this.container.addEventListener('mouseleave', () => {
+      this.mouse.active = false;
+    });
+  }
+  
+  resize() {
+    const rect = this.container.getBoundingClientRect();
+    this.canvas.width = rect.width;
+    this.canvas.height = rect.height;
+  }
+  
+  updateBalls(time) {
+    this.balls.forEach((ball, index) => {
+      // Smooth orbital motion
+      const angle = time * this.options.speed + ball.phase;
+      const radius = 100 + Math.sin(time * 0.001 + index) * 50;
+      
+      ball.x = this.canvas.width / 2 + Math.cos(angle) * radius;
+      ball.y = this.canvas.height / 2 + Math.sin(angle * 0.7) * radius * 0.6;
+      
+      // Keep balls in bounds
+      if (ball.x < 0 || ball.x > this.canvas.width) ball.vx *= -1;
+      if (ball.y < 0 || ball.y > this.canvas.height) ball.vy *= -1;
+    });
+  }
+  
+  drawMetaBalls() {
+    const imageData = this.ctx.createImageData(this.canvas.width, this.canvas.height);
+    const data = imageData.data;
+    
+    // Parse color
+    const color = this.hexToRgb(this.options.color);
+    
+    for (let x = 0; x < this.canvas.width; x += 2) {
+      for (let y = 0; y < this.canvas.height; y += 2) {
+        let sum = 0;
+        
+        // Calculate influence from all balls
+        this.balls.forEach(ball => {
+          const dx = x - ball.x;
+          const dy = y - ball.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance > 0) {
+            sum += ball.size / distance;
+          }
+        });
+        
+        // Add mouse influence
+        if (this.mouse.active) {
+          const dx = x - this.mouse.x;
+          const dy = y - this.mouse.y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance > 0) {
+            sum += this.options.mouseSize / distance;
+          }
+        }
+        
+        // Apply threshold and draw
+        if (sum > this.options.threshold) {
+          const alpha = Math.min(1, (sum - this.options.threshold) * 2);
+          const index = (y * this.canvas.width + x) * 4;
+          
+          if (index < data.length) {
+            data[index] = color.r;     // Red
+            data[index + 1] = color.g; // Green
+            data[index + 2] = color.b; // Blue
+            data[index + 3] = alpha * 255; // Alpha
+            
+            // Fill adjacent pixels for smoother appearance
+            if (x + 1 < this.canvas.width) {
+              const nextIndex = (y * this.canvas.width + (x + 1)) * 4;
+              data[nextIndex] = color.r;
+              data[nextIndex + 1] = color.g;
+              data[nextIndex + 2] = color.b;
+              data[nextIndex + 3] = alpha * 255;
+            }
+            if (y + 1 < this.canvas.height) {
+              const belowIndex = ((y + 1) * this.canvas.width + x) * 4;
+              data[belowIndex] = color.r;
+              data[belowIndex + 1] = color.g;
+              data[belowIndex + 2] = color.b;
+              data[belowIndex + 3] = alpha * 255;
+            }
+          }
+        }
+      }
     }
-    mouseBallPos.x += (targetX - mouseBallPos.x) * hoverSmoothness;
-    mouseBallPos.y += (targetY - mouseBallPos.y) * hoverSmoothness;
-    program.uniforms.iMouse.value.set(mouseBallPos.x, mouseBallPos.y, 0);
-
-    renderer.render({ scene, camera });
+    
+    this.ctx.putImageData(imageData, 0, 0);
   }
-  requestAnimationFrame(update);
+  
+  hexToRgb(hex) {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : { r: 102, g: 126, b: 234 };
+  }
+  
+  animate() {
+    const time = performance.now();
+    
+    // Clear canvas
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    
+    // Update and draw
+    this.updateBalls(time);
+    this.drawMetaBalls();
+    
+    this.animationId = requestAnimationFrame(() => this.animate());
+  }
+  
+  destroy() {
+    if (this.animationId) {
+      cancelAnimationFrame(this.animationId);
+    }
+    if (this.canvas && this.canvas.parentNode) {
+      this.canvas.parentNode.removeChild(this.canvas);
+    }
+    window.removeEventListener('resize', () => this.resize());
+  }
 }
 
-const container = document.getElementById('metaballs');
-if (container) {
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => initMetaBalls(container, {}));
-  } else {
-    initMetaBalls(container, {});
+// Initialize metaballs
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('metaballs');
+  if (container) {
+    new MetaBalls(container, {
+      ballCount: 6,
+      ballSize: 80,
+      speed: 0.001,
+      color: '#667eea',
+      mouseSize: 120,
+      threshold: 0.8
+    });
   }
-}
+});

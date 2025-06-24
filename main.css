@@ -17,7 +17,7 @@ body,html{
 
 @font-face {
   font-family: 'DTGetai';
-  src: url('assets/fonts/DTGetaiGroteskDisplay-Black.otf') format('opentype');
+  src: url('assets/fonts/DTGetaiGroteskDisplay-Black.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -118,6 +118,7 @@ body,html{
   font-weight: normal;
   font-style: normal;
 }
+
 body.index-page{
   overflow:hidden;
 }
@@ -153,6 +154,15 @@ body.education-page{
   background:radial-gradient(circle, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 70%);
   pointer-events:none;
   z-index:1;
+}
+
+/* Metaballs Container */
+.metaballs-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.3;
 }
 
 @keyframes fadeIn{
@@ -1012,6 +1022,3 @@ body.transitioning {
 .back-to-top.show {
   display: flex;
 }
-
-
-.metaballs-container { position:absolute; inset:0; pointer-events:none; z-index:0; }
