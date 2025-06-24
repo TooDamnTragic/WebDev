@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
       fontInterval = setInterval(() => {
         heroTitle.style.fontFamily = `'${heroFonts[index]}', sans-serif`;
         index = (index + 1) % heroFonts.length;
-      }, 100);
+      }, 120);
     };
 
     if (heroTitle) {

@@ -34,6 +34,7 @@ body,html{
   font-weight: normal;
   font-style: normal;
 }
+
 @font-face {
   font-family: 'ArchesDemoRegular-XG5Ea';
   src: url('assets/fonts/ArchesDemoRegular-XG5Ea.ttf') format('truetype');
@@ -75,115 +76,45 @@ body,html{
   font-weight: normal;
   font-style: normal;
 }
-
 @font-face {
-  font-family: 'Savate-Black';
-  src: url('assets/fonts/Savate-Black.ttf') format('truetype');
+  font-family: 'ArshineExtruderight';
+  src: url('assets/fonts/ArshineExtruderight-4nZ99.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
-
 @font-face {
-  font-family: 'Savate-BlackItalic';
-  src: url('assets/fonts/Savate-BlackItalic.ttf') format('truetype');
+  font-family: 'Beautyful';
+  src: url('assets/fonts/Beautyful-2vlYd.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
-
 @font-face {
-  font-family: 'Savate-Bold';
-  src: url('assets/fonts/Savate-Bold.ttf') format('truetype');
+  font-family: 'Catrose';
+  src: url('assets/fonts/Catrose-6RBMD.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
-
 @font-face {
-  font-family: 'Savate-BoldItalic';
-  src: url('assets/fonts/Savate-BoldItalic.ttf') format('truetype');
+  font-family: 'CrackchakingtrialRegular';
+  src: url('assets/fonts/CrackchakingtrialRegular-7O8KP.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
-
 @font-face {
-  font-family: 'Savate-ExtraBold';
-  src: url('assets/fonts/Savate-ExtraBold.ttf') format('truetype');
+  font-family: 'Iconic';
+  src: url('assets/fonts/Iconic-drG8K.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
-
 @font-face {
-  font-family: 'Savate-ExtraBoldItalic';
-  src: url('assets/fonts/Savate-ExtraBoldItalic.ttf') format('truetype');
+  font-family: 'RuntimeRegular';
+  src: url('assets/fonts/RuntimeRegular-m2Odx.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
-
 @font-face {
-  font-family: 'Savate-ExtraLight';
-  src: url('assets/fonts/Savate-ExtraLight.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Savate-ExtraLightItalic';
-  src: url('assets/fonts/Savate-ExtraLightItalic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Savate-Italic';
-  src: url('assets/fonts/Savate-Italic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Savate-Light';
-  src: url('assets/fonts/Savate-Light.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Savate-LightItalic';
-  src: url('assets/fonts/Savate-LightItalic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Savate-Medium';
-  src: url('assets/fonts/Savate-Medium.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Savate-MediumItalic';
-  src: url('assets/fonts/Savate-MediumItalic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Savate-Regular';
-  src: url('assets/fonts/Savate-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Savate-SemiBold';
-  src: url('assets/fonts/Savate-SemiBold.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Savate-SemiBoldItalic';
-  src: url('assets/fonts/Savate-SemiBoldItalic.ttf') format('truetype');
+  font-family: 'SophiamelanieRegular';
+  src: url('assets/fonts/SophiamelanieRegular-E4gee.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
