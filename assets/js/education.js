@@ -25,25 +25,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const activePopups = new Set();
   const popupTimeouts = new Map();
   
-  // Enhanced Google Gravity Physics System
+  // Matter.js Physics System
+  let matterEngine = null;
+  let matterRender = null;
+  let matterRunner = null;
+  let matterMouseConstraint = null;
   let gravityActive = false;
   let gravityTriggered = false;
-  const gravityPhysics = [];
-  let mouseX = 0;
-  let mouseY = 0;
-  let draggedItem = null;
-  let dragOffset = { x: 0, y: 0 };
-  let lastMouseX = 0;
-  let lastMouseY = 0;
-  let mouseVelocityX = 0;
-  let mouseVelocityY = 0;
-  
-  // Physics constants - matching Google Gravity behavior
-  const GRAVITY = 0.8;
-  const FRICTION = 0.98;
-  const BOUNCE_DAMPING = 0.7;
-  const DRAG_DAMPING = 0.95;
-  const MIN_VELOCITY = 0.1;
+  let gravityBodies = [];
+  let gravityElements = [];
   
   // Debounce function for performance
   const debounce = (func, wait) => {
@@ -233,296 +223,197 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Enhanced Google Gravity Physics Implementation
-  const initializeGoogleGravity = () => {
+  // Matter.js Falling Text Physics Implementation
+  const initializeMatterJSGravity = () => {
     if (isMobile()) return; // Skip gravity on mobile for performance
+    if (!gravityContainer || !window.Matter) return;
 
-    const gravityContainer = document.querySelector('.gravity-container');
-    if (!gravityContainer) return;
+    const { Engine, Render, World, Bodies, Runner, Mouse, MouseConstraint, Body } = Matter;
 
+    // Get container dimensions
     const containerRect = gravityContainer.getBoundingClientRect();
-    const containerHeight = gravityContainer.offsetHeight;
     const containerWidth = gravityContainer.offsetWidth;
+    const containerHeight = gravityContainer.offsetHeight;
 
-    // Initialize physics for each gravity item
+    // Create engine
+    matterEngine = Engine.create();
+    matterEngine.world.gravity.y = 0.56; // Match the component's gravity
+
+    // Create renderer (invisible for our custom rendering)
+    matterRender = Render.create({
+      element: gravityContainer,
+      engine: matterEngine,
+      options: {
+        width: containerWidth,
+        height: containerHeight,
+        background: 'transparent',
+        wireframes: false,
+        showVelocity: false,
+        showAngleIndicator: false,
+        showDebug: false,
+        visible: false
+      }
+    });
+
+    // Hide the Matter.js canvas
+    if (matterRender.canvas) {
+      matterRender.canvas.style.display = 'none';
+    }
+
+    // Create boundaries
+    const boundaryOptions = {
+      isStatic: true,
+      render: { fillStyle: 'transparent' }
+    };
+
+    const floor = Bodies.rectangle(containerWidth / 2, containerHeight + 25, containerWidth, 50, boundaryOptions);
+    const leftWall = Bodies.rectangle(-25, containerHeight / 2, 50, containerHeight, boundaryOptions);
+    const rightWall = Bodies.rectangle(containerWidth + 25, containerHeight / 2, 50, containerHeight, boundaryOptions);
+    const ceiling = Bodies.rectangle(containerWidth / 2, -25, containerWidth, 50, boundaryOptions);
+
+    // Create physics bodies for gravity items
+    gravityBodies = [];
+    gravityElements = [];
+
     gravityItems.forEach((item, index) => {
       const rect = item.getBoundingClientRect();
-      const physics = {
+      const containerRect = gravityContainer.getBoundingClientRect();
+      
+      // Calculate position relative to container
+      const x = rect.left - containerRect.left + rect.width / 2;
+      const y = rect.top - containerRect.top + rect.height / 2;
+
+      // Create physics body
+      const body = Bodies.rectangle(x, y, rect.width, rect.height, {
+        render: { fillStyle: 'transparent' },
+        restitution: 0.8,
+        frictionAir: 0.01,
+        friction: 0.2,
+        density: 0.001
+      });
+
+      // Add initial random velocity
+      Body.setVelocity(body, {
+        x: (Math.random() - 0.5) * 5,
+        y: 0
+      });
+      Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.05);
+
+      gravityBodies.push(body);
+      gravityElements.push({
         element: item,
-        x: rect.left - containerRect.left + rect.width / 2,
-        y: rect.top - containerRect.top + rect.height / 2,
-        vx: 0,
-        vy: 0,
-        width: rect.width,
-        height: rect.height,
-        mass: 1 + Math.random() * 0.5, // Slight mass variation
+        body: body,
         originalX: rect.left - containerRect.left,
-        originalY: rect.top - containerRect.top,
-        isDragging: false,
-        settled: false,
-        rotation: 0,
-        rotationVelocity: 0
-      };
-      
-      gravityPhysics[index] = physics;
-      
-      // Set initial position
+        originalY: rect.top - containerRect.top
+      });
+
+      // Set initial positioning
       item.style.position = 'absolute';
-      item.style.left = physics.originalX + 'px';
-      item.style.top = physics.originalY + 'px';
+      item.style.left = `${x - rect.width / 2}px`;
+      item.style.top = `${y - rect.height / 2}px`;
       item.style.transformOrigin = 'center center';
     });
 
-    // Start physics immediately if gravity has been triggered
-    if (gravityTriggered) {
-      startGravityPhysics();
-    }
-
-    // Mouse/touch event handlers for dragging - Enhanced like Google Gravity
-    gravityItems.forEach((item, index) => {
-      item.addEventListener('mousedown', (e) => {
-        if (!gravityActive) return;
-        e.preventDefault();
-        startDragging(index, e.clientX, e.clientY);
-      });
-
-      item.addEventListener('touchstart', (e) => {
-        if (!gravityActive) return;
-        e.preventDefault();
-        const touch = e.touches[0];
-        startDragging(index, touch.clientX, touch.clientY);
-      });
-    });
-
-    // Track mouse velocity for throwing effect
-    document.addEventListener('mousemove', (e) => {
-      mouseVelocityX = e.clientX - lastMouseX;
-      mouseVelocityY = e.clientY - lastMouseY;
-      lastMouseX = e.clientX;
-      lastMouseY = e.clientY;
-      
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      
-      if (draggedItem !== null) {
-        updateDraggedItem(e.clientX, e.clientY);
+    // Create mouse constraint
+    const mouse = Mouse.create(gravityContainer);
+    matterMouseConstraint = MouseConstraint.create(matterEngine, {
+      mouse: mouse,
+      constraint: {
+        stiffness: 0.9, // Match mouseConstraintStiffness
+        render: { visible: false }
       }
     });
 
-    document.addEventListener('touchmove', (e) => {
-      if (draggedItem !== null) {
-        e.preventDefault();
-        const touch = e.touches[0];
-        updateDraggedItem(touch.clientX, touch.clientY);
-      }
-    });
+    // Add all bodies to world
+    World.add(matterEngine.world, [
+      floor,
+      leftWall,
+      rightWall,
+      ceiling,
+      matterMouseConstraint,
+      ...gravityBodies
+    ]);
 
-    document.addEventListener('mouseup', () => {
-      if (draggedItem !== null) {
-        stopDragging();
-      }
-    });
+    // Create runner
+    matterRunner = Runner.create();
+    Runner.run(matterRunner, matterEngine);
+    Render.run(matterRender);
 
-    document.addEventListener('touchend', () => {
-      if (draggedItem !== null) {
-        stopDragging();
-      }
-    });
-  };
-
-  const startDragging = (index, clientX, clientY) => {
-    draggedItem = index;
-    const physics = gravityPhysics[index];
-    const containerRect = document.querySelector('.gravity-container').getBoundingClientRect();
-    
-    physics.isDragging = true;
-    physics.element.classList.add('dragging');
-    physics.element.style.zIndex = '1000';
-    
-    // Calculate offset from element center
-    dragOffset.x = clientX - (containerRect.left + physics.x);
-    dragOffset.y = clientY - (containerRect.top + physics.y);
-    
-    // Stop current velocities
-    physics.vx = 0;
-    physics.vy = 0;
-    physics.rotationVelocity = 0;
-  };
-
-  const updateDraggedItem = (clientX, clientY) => {
-    if (draggedItem === null) return;
-    
-    const physics = gravityPhysics[draggedItem];
-    const containerRect = document.querySelector('.gravity-container').getBoundingClientRect();
-    
-    physics.x = clientX - containerRect.left - dragOffset.x;
-    physics.y = clientY - containerRect.top - dragOffset.y;
-    
-    // Update DOM position
-    physics.element.style.left = (physics.x - physics.width / 2) + 'px';
-    physics.element.style.top = (physics.y - physics.height / 2) + 'px';
-  };
-
-  const stopDragging = () => {
-    if (draggedItem === null) return;
-    
-    const physics = gravityPhysics[draggedItem];
-    physics.isDragging = false;
-    physics.element.classList.remove('dragging');
-    physics.element.style.zIndex = '';
-    
-    // Add throwing velocity based on mouse movement (Google Gravity style)
-    const throwMultiplier = 0.3;
-    physics.vx = mouseVelocityX * throwMultiplier;
-    physics.vy = mouseVelocityY * throwMultiplier;
-    
-    // Add slight rotation based on throw direction
-    physics.rotationVelocity = (mouseVelocityX * 0.1) + (Math.random() - 0.5) * 2;
-    
-    draggedItem = null;
-  };
-
-  const startGravityPhysics = () => {
-    const animateGravity = () => {
+    // Update loop to sync DOM elements with physics bodies
+    const updateLoop = () => {
       if (!gravityActive) return;
-      
-      const containerRect = document.querySelector('.gravity-container').getBoundingClientRect();
-      const containerHeight = containerRect.height;
-      const containerWidth = containerRect.width;
-      
-      gravityPhysics.forEach((physics, index) => {
-        if (physics.isDragging) return;
-        
-        // Apply gravity - stronger than before
-        physics.vy += GRAVITY;
-        
-        // Apply friction to horizontal movement
-        physics.vx *= FRICTION;
-        
-        // Update rotation
-        physics.rotation += physics.rotationVelocity;
-        physics.rotationVelocity *= 0.99; // Rotation damping
-        
-        // Update position
-        physics.x += physics.vx;
-        physics.y += physics.vy;
-        
-        // Boundary collisions with enhanced bounce
-        const halfWidth = physics.width / 2;
-        const halfHeight = physics.height / 2;
-        
-        // Left/right boundaries
-        if (physics.x - halfWidth <= 0) {
-          physics.x = halfWidth;
-          physics.vx *= -BOUNCE_DAMPING;
-          physics.rotationVelocity += physics.vy * 0.1; // Add spin on bounce
-        } else if (physics.x + halfWidth >= containerWidth) {
-          physics.x = containerWidth - halfWidth;
-          physics.vx *= -BOUNCE_DAMPING;
-          physics.rotationVelocity -= physics.vy * 0.1;
-        }
-        
-        // Top/bottom boundaries
-        if (physics.y - halfHeight <= 0) {
-          physics.y = halfHeight;
-          physics.vy *= -BOUNCE_DAMPING;
-          physics.rotationVelocity += physics.vx * 0.1;
-        } else if (physics.y + halfHeight >= containerHeight) {
-          physics.y = containerHeight - halfHeight;
-          physics.vy *= -BOUNCE_DAMPING;
-          physics.vx *= 0.85; // Ground friction
-          physics.rotationVelocity *= 0.9; // Ground rotation damping
-          
-          // Settle if moving slowly (like Google Gravity)
-          if (Math.abs(physics.vy) < MIN_VELOCITY && Math.abs(physics.vx) < MIN_VELOCITY) {
-            physics.vy = 0;
-            physics.vx *= 0.95;
-            physics.settled = Math.abs(physics.vx) < 0.1;
-            if (physics.settled) {
-              physics.rotationVelocity *= 0.95;
-            }
-          }
-        }
-        
-        // Enhanced inter-object collisions
-        gravityPhysics.forEach((otherPhysics, otherIndex) => {
-          if (index === otherIndex || otherPhysics.isDragging) return;
-          
-          const dx = otherPhysics.x - physics.x;
-          const dy = otherPhysics.y - physics.y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-          const minDistance = (physics.width + otherPhysics.width) / 2.5;
-          
-          if (distance < minDistance && distance > 0) {
-            // Separate objects
-            const overlap = minDistance - distance;
-            const separationX = (dx / distance) * overlap * 0.5;
-            const separationY = (dy / distance) * overlap * 0.5;
-            
-            physics.x -= separationX;
-            physics.y -= separationY;
-            otherPhysics.x += separationX;
-            otherPhysics.y += separationY;
-            
-            // Enhanced collision response with mass consideration
-            const totalMass = physics.mass + otherPhysics.mass;
-            const relativeVx = otherPhysics.vx - physics.vx;
-            const relativeVy = otherPhysics.vy - physics.vy;
-            
-            const speed = relativeVx * (dx / distance) + relativeVy * (dy / distance);
-            
-            if (speed > 0) {
-              const impulse = 2 * speed / totalMass;
-              const impulseX = impulse * (dx / distance);
-              const impulseY = impulse * (dy / distance);
-              
-              physics.vx += impulseX * otherPhysics.mass * BOUNCE_DAMPING;
-              physics.vy += impulseY * otherPhysics.mass * BOUNCE_DAMPING;
-              otherPhysics.vx -= impulseX * physics.mass * BOUNCE_DAMPING;
-              otherPhysics.vy -= impulseY * physics.mass * BOUNCE_DAMPING;
-              
-              // Add rotational effects from collision
-              physics.rotationVelocity += impulseX * 0.2;
-              otherPhysics.rotationVelocity -= impulseX * 0.2;
-            }
-          }
-        });
-        
-        // Update DOM position and rotation
-        physics.element.style.left = (physics.x - halfWidth) + 'px';
-        physics.element.style.top = (physics.y - halfHeight) + 'px';
-        physics.element.style.transform = `rotate(${physics.rotation}deg)`;
+
+      gravityElements.forEach(({ element, body }) => {
+        const { x, y } = body.position;
+        element.style.left = `${x}px`;
+        element.style.top = `${y}px`;
+        element.style.transform = `translate(-50%, -50%) rotate(${body.angle}rad)`;
       });
-      
-      requestAnimationFrame(animateGravity);
+
+      requestAnimationFrame(updateLoop);
     };
-    
-    requestAnimationFrame(animateGravity);
+
+    updateLoop();
   };
 
-  const resetGravityItems = () => {
-    gravityPhysics.forEach((physics) => {
-      physics.x = physics.originalX + physics.width / 2;
-      physics.y = physics.originalY + physics.height / 2;
-      physics.vx = 0;
-      physics.vy = 0;
-      physics.rotation = 0;
-      physics.rotationVelocity = 0;
-      physics.settled = false;
-      physics.isDragging = false;
-      physics.element.classList.remove('dragging');
-      physics.element.style.zIndex = '';
-      
-      // Animate back to original position
-      physics.element.style.transition = 'all 0.5s ease';
-      physics.element.style.left = physics.originalX + 'px';
-      physics.element.style.top = physics.originalY + 'px';
-      physics.element.style.transform = 'rotate(0deg)';
+  const startMatterJSGravity = () => {
+    if (!matterEngine) {
+      initializeMatterJSGravity();
+    }
+    gravityActive = true;
+  };
+
+  const resetMatterJSGravity = () => {
+    if (!matterEngine) return;
+
+    gravityElements.forEach(({ element, body, originalX, originalY }) => {
+      // Reset physics body
+      Body.setPosition(body, { x: originalX + element.offsetWidth / 2, y: originalY + element.offsetHeight / 2 });
+      Body.setVelocity(body, { x: 0, y: 0 });
+      Body.setAngularVelocity(body, 0);
+      Body.setAngle(body, 0);
+
+      // Add small random initial velocity
+      Body.setVelocity(body, {
+        x: (Math.random() - 0.5) * 3,
+        y: 0
+      });
+      Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.03);
+
+      // Reset DOM element with animation
+      element.style.transition = 'all 0.5s ease';
+      element.style.left = `${originalX}px`;
+      element.style.top = `${originalY}px`;
+      element.style.transform = 'rotate(0deg)';
       
       setTimeout(() => {
-        physics.element.style.transition = '';
+        element.style.transition = '';
       }, 500);
     });
+  };
+
+  const destroyMatterJSGravity = () => {
+    if (matterRender) {
+      Render.stop(matterRender);
+      if (matterRender.canvas && matterRender.canvas.parentNode) {
+        matterRender.canvas.parentNode.removeChild(matterRender.canvas);
+      }
+    }
+    if (matterRunner) {
+      Runner.stop(matterRunner);
+    }
+    if (matterEngine) {
+      World.clear(matterEngine.world);
+      Engine.clear(matterEngine);
+    }
+    
+    matterEngine = null;
+    matterRender = null;
+    matterRunner = null;
+    matterMouseConstraint = null;
+    gravityBodies = [];
+    gravityElements = [];
+    gravityActive = false;
   };
 
   // Scroll-based section management
@@ -545,14 +436,42 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!gravityTriggered && gravityContainer) {
       const gravityTop = gravityContainer.offsetTop;
       if (scrollY + windowHeight >= gravityTop) {
-        gravityActive = true;
         gravityTriggered = true;
-        startGravityPhysics();
+        // Load Matter.js if not already loaded
+        if (!window.Matter) {
+          loadMatterJS().then(() => {
+            startMatterJSGravity();
+          });
+        } else {
+          startMatterJSGravity();
+        }
       }
     }
     
     updateDividerProgress();
   }, 16);
+
+  // Load Matter.js dynamically
+  const loadMatterJS = () => {
+    return new Promise((resolve, reject) => {
+      if (window.Matter) {
+        resolve();
+        return;
+      }
+
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js';
+      script.onload = () => {
+        console.log('Matter.js loaded successfully');
+        resolve();
+      };
+      script.onerror = () => {
+        console.error('Failed to load Matter.js');
+        reject();
+      };
+      document.head.appendChild(script);
+    });
+  };
 
   // Setup item event listeners
   const setupItemListeners = (item, isExtracurricular = false) => {
@@ -647,6 +566,14 @@ document.addEventListener('DOMContentLoaded', () => {
       hideInfo(false, true);
       hideInfo(true, true);
     }
+
+    // Reinitialize Matter.js on resize if active
+    if (gravityActive && !isMobile()) {
+      destroyMatterJSGravity();
+      setTimeout(() => {
+        initializeMatterJSGravity();
+      }, 100);
+    }
   }, 250);
 
   const dividers = document.querySelectorAll('.divider');
@@ -702,7 +629,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  // Add gravity reset button (optional - like Google Gravity)
+  // Create gravity reset button
   const createGravityResetButton = () => {
     const resetButton = document.createElement('button');
     resetButton.innerHTML = '🔄 Reset Gravity';
@@ -726,12 +653,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     
     resetButton.addEventListener('click', () => {
-      gravityActive = false;
-      resetGravityItems();
-      setTimeout(() => {
-        gravityActive = true;
-        startGravityPhysics();
-      }, 600);
+      resetMatterJSGravity();
     });
     
     document.body.appendChild(resetButton);
@@ -751,11 +673,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initializeImages();
   adjustInfoLayout();
   updateDividerProgress();
-  
-  // Initialize Google Gravity after a delay to ensure DOM is ready
-  setTimeout(() => {
-    initializeGoogleGravity();
-  }, 1000);
 
   // Create reset button
   createGravityResetButton();
@@ -794,4 +711,9 @@ document.addEventListener('DOMContentLoaded', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
+
+  // Cleanup on page unload
+  window.addEventListener('beforeunload', () => {
+    destroyMatterJSGravity();
+  });
 });
