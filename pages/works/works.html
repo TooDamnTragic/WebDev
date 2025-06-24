@@ -6,8 +6,8 @@
   <title>Works - Portfolio</title>
   <link rel="stylesheet" href="../../main.css">
   <link rel="stylesheet" href="works.css">
-  <!-- Force fresh load of Unicorn Studio SDK with cache busting -->
-  <script src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.25/dist/unicornStudio.umd.js?nocache=true"></script>
+  <!-- Framer UnicornStudio Embed Component -->
+  <script type="module" src="https://framer.com/m/UnicornStudioEmbed-wWy9.js"></script>
 </head>
 <body class="works-page">
   <!-- Back Button - Overlaid on top -->
@@ -20,20 +20,19 @@
     </a>
   </div>
 
-  <!-- Full-page Unicorn Studio Scene -->
+  <!-- Full-page Framer UnicornStudio Scene -->
   <div class="unicorn-scene-container">
-    <div 
-      id="unicorn-scene"
+    <unicorn-studio-embed
+      id="framer-scene"
       class="unicorn-embed"
-      data-us-project="5sDatTn9CTTI9BI4n19Q"
-      data-us-scale="1"
-      data-us-dpi="1.5"
-      data-us-lazyload="false"
-      data-us-production="true"
-      data-us-fps="60"
-      data-us-alttext="Interactive portfolio showcase"
-      data-us-arialabel="Interactive 3D portfolio scene"
-    ></div>
+      project-id="5sDatTn9CTTI9BI4n19Q"
+      scale="1"
+      dpi="1.5"
+      fps="60"
+      alt-text="Interactive portfolio showcase"
+      aria-label="Interactive 3D portfolio scene"
+      style="width: 100%; height: 100%; display: block;"
+    ></unicorn-studio-embed>
     
     <!-- Loading indicator -->
     <div id="scene-loader" class="scene-loader">
@@ -73,24 +72,6 @@
     </div>
   </footer>
 
-  <script>
-    // Clear any cached UnicornStudio data before loading
-    if ('localStorage' in window) {
-      Object.keys(localStorage).forEach(key => {
-        if (key.includes('unicorn') || key.includes('5sDatTn9CTTI9BI4n19Q')) {
-          localStorage.removeItem(key);
-        }
-      });
-    }
-    
-    if ('sessionStorage' in window) {
-      Object.keys(sessionStorage).forEach(key => {
-        if (key.includes('unicorn') || key.includes('5sDatTn9CTTI9BI4n19Q')) {
-          sessionStorage.removeItem(key);
-        }
-      });
-    }
-  </script>
   <script src="works.js"></script>
   <script src="../../transition.js"></script>
 </body>
