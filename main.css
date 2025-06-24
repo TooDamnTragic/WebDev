@@ -1012,3 +1012,6 @@ body.transitioning {
 .back-to-top.show {
   display: flex;
 }
+
+
+.metaballs-container { position:absolute; inset:0; pointer-events:none; z-index:0; }
