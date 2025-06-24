@@ -18,44 +18,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Font cycling effect for hero title
     const heroTitle = document.querySelector('.education-hero h1');
-    const heroFonts = [
-      'ArchesDemoRegular-XG5Ea',
-      'ArchesDemoRegular-gwJB5',
-      'AsemberModernDemoRegular-EaVJW',
-      'DTGetaiGroteskDisplay-Black',
-      'HackneyPersonalUseOnly',
-      'Savate-Black',
-      'Savate-BlackItalic',
-      'Savate-Bold',
-      'Savate-BoldItalic',
-      'Savate-ExtraBold',
-      'Savate-ExtraBoldItalic',
-      'Savate-ExtraLight',
-      'Savate-ExtraLightItalic',
-      'Savate-Italic',
-      'Savate-Light',
-      'Savate-LightItalic',
-      'Savate-Medium',
-      'Savate-MediumItalic',
-      'Savate-Regular',
-      'Savate-SemiBold',
-      'Savate-SemiBoldItalic'
-    ];
+    const getHeroFonts = () => {
+      const fonts = new Set();
+      for (const sheet of document.styleSheets) {
+        let rules;
+        try {
+          rules = sheet.cssRules;
+        } catch {
+          continue; // Skip cross-origin stylesheets
+        }
+        if (!rules) continue;
+        for (const rule of rules) {
+          if (rule.type === CSSRule.FONT_FACE_RULE) {
+            const src = rule.style.getPropertyValue('src');
+            if (src && src.includes('assets/fonts')) {
+              const family = rule.style
+                .getPropertyValue('font-family')
+                .replace(/['"]/g, '')
+                .trim();
+              if (family) fonts.add(family);
+            }
+          }
+        }
+      }
+      return Array.from(fonts);
+    };
+
+    const heroFonts = getHeroFonts();
 
     let fontInterval;
+    let originalFont;
     const cycleFonts = () => {
       if (!heroTitle || heroTitle.dataset.animating === 'true') return;
       heroTitle.dataset.animating = 'true';
-      const originalFont = getComputedStyle(heroTitle).fontFamily;
+      originalFont = getComputedStyle(heroTitle).fontFamily;
       let index = 0;
       fontInterval = setInterval(() => {
-        heroTitle.style.fontFamily = `'${heroFonts[index % heroFonts.length]}', sans-serif`;
-        index++;
-        if (index >= heroFonts.length) {
-          clearInterval(fontInterval);
-          heroTitle.style.fontFamily = originalFont;
-          heroTitle.dataset.animating = 'false';
-        }
+        heroTitle.style.fontFamily = `'${heroFonts[index]}', sans-serif`;
+        index = (index + 1) % heroFonts.length;
       }, 100);
     };
 
@@ -64,9 +64,10 @@ document.addEventListener('DOMContentLoaded', () => {
       heroTitle.addEventListener('mouseleave', () => {
         if (fontInterval) clearInterval(fontInterval);
         heroTitle.dataset.animating = 'false';
-        heroTitle.style.fontFamily = '';
+        heroTitle.style.fontFamily = originalFont;
       });
     }
+  
   
   // Mobile detection
   const isMobile = () => window.innerWidth <= 768;
