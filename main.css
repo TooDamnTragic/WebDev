@@ -35,6 +35,48 @@ body,html{
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'ArchesDemoRegular-XG5Ea';
+  src: url('assets/fonts/ArchesDemoRegular-XG5Ea.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ArchesDemoRegular-gwJB5';
+  src: url('assets/fonts/ArchesDemoRegular-gwJB5.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'AsemberModernDemoRegular-EaVJW';
+  src: url('assets/fonts/AsemberModernDemoRegular-EaVJW.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'DTGetaiGroteskDisplay-Black';
+  src: url('assets/fonts/DTGetaiGroteskDisplay-Black.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'DTGetaiGroteskDisplay-Black';
+  src: url('assets/fonts/DTGetaiGroteskDisplay-Black.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'HackneyPersonalUseOnly';
+  src: url('assets/fonts/HackneyPersonalUseOnly.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body.index-page{
   overflow:hidden;
 }

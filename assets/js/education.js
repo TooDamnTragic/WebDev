@@ -11,10 +11,62 @@ document.addEventListener('DOMContentLoaded', () => {
   const infoClose = document.getElementById('info-close');
   const infoExtraClose = document.getElementById('info-extra-close');
   const body = document.body;
-  const defaultBg = getComputedStyle(body).background;
-  
-  const curricularSection = document.getElementById('curricular-section');
-  const extracurricularSection = document.getElementById('extracurricular-section');
+      const defaultBg = getComputedStyle(body).background;
+
+    const curricularSection = document.getElementById('curricular-section');
+    const extracurricularSection = document.getElementById('extracurricular-section');
+
+    // Font cycling effect for hero title
+    const heroTitle = document.querySelector('.education-hero h1');
+    const heroFonts = [
+      'ArchesDemoRegular-XG5Ea',
+      'ArchesDemoRegular-gwJB5',
+      'AsemberModernDemoRegular-EaVJW',
+      'DTGetaiGroteskDisplay-Black',
+      'HackneyPersonalUseOnly',
+      'Savate-Black',
+      'Savate-BlackItalic',
+      'Savate-Bold',
+      'Savate-BoldItalic',
+      'Savate-ExtraBold',
+      'Savate-ExtraBoldItalic',
+      'Savate-ExtraLight',
+      'Savate-ExtraLightItalic',
+      'Savate-Italic',
+      'Savate-Light',
+      'Savate-LightItalic',
+      'Savate-Medium',
+      'Savate-MediumItalic',
+      'Savate-Regular',
+      'Savate-SemiBold',
+      'Savate-SemiBoldItalic'
+    ];
+
+    let fontInterval;
+    const cycleFonts = () => {
+      if (!heroTitle || heroTitle.dataset.animating === 'true') return;
+      heroTitle.dataset.animating = 'true';
+      const originalFont = getComputedStyle(heroTitle).fontFamily;
+      let index = 0;
+      fontInterval = setInterval(() => {
+        heroTitle.style.fontFamily = `'${heroFonts[index % heroFonts.length]}', sans-serif`;
+        index++;
+        if (index >= heroFonts.length) {
+          clearInterval(fontInterval);
+          heroTitle.style.fontFamily = originalFont;
+          heroTitle.dataset.animating = 'false';
+        }
+      }, 100);
+    };
+
+    if (heroTitle) {
+      heroTitle.addEventListener('mouseenter', cycleFonts);
+      heroTitle.addEventListener('mouseleave', () => {
+        if (fontInterval) clearInterval(fontInterval);
+        heroTitle.dataset.animating = 'false';
+        heroTitle.style.fontFamily = '';
+      });
+    }
   
   // Mobile detection
   const isMobile = () => window.innerWidth <= 768;
