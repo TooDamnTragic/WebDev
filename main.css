@@ -97,7 +97,15 @@ body.education-page{
   z-index:1;
 }
 
-@keyframes fadeIn{
+.metaballs-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.3;
+}
+
+fadeIn{
   from{opacity:0;}
   to{opacity:1;}
 }
@@ -155,6 +163,7 @@ body.education-page{
 .section:hover::before{
   opacity:0.9;
 }
+
 
 .education{
   --dx:-18vmin + -2vmax;
@@ -954,5 +963,3 @@ body.transitioning {
 .back-to-top.show {
   display: flex;
 }
-
-.metaballs-container { position:absolute; inset:0; pointer-events:none; z-index:0; }
