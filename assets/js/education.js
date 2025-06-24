@@ -46,24 +46,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const heroFonts = getHeroFonts();
 
-    let fontInterval;
     let originalFont;
-    const cycleFonts = () => {
-      if (!heroTitle || heroTitle.dataset.animating === 'true') return;
-      heroTitle.dataset.animating = 'true';
-      originalFont = getComputedStyle(heroTitle).fontFamily;
-      let index = 0;
-      fontInterval = setInterval(() => {
-        heroTitle.style.fontFamily = `'${heroFonts[index]}', sans-serif`;
-        index = (index + 1) % heroFonts.length;
-      }, 120);
+    let fontIndex = 0;
+    let lastMove = 0;
+
+    const handleMouseMove = () => {
+      const now = Date.now();
+      if (now - lastMove > 100) {
+        heroTitle.style.fontFamily = `'${heroFonts[fontIndex]}', sans-serif`;
+        fontIndex = (fontIndex + 1) % heroFonts.length;
+        lastMove = now;
+      }
     };
 
     if (heroTitle) {
-      heroTitle.addEventListener('mouseenter', cycleFonts);
+      heroTitle.addEventListener('mouseenter', () => {
+        originalFont = getComputedStyle(heroTitle).fontFamily;
+        fontIndex = 0;
+        lastMove = 0;
+        heroTitle.addEventListener('mousemove', handleMouseMove);
+      });
       heroTitle.addEventListener('mouseleave', () => {
-        if (fontInterval) clearInterval(fontInterval);
-        heroTitle.dataset.animating = 'false';
+        heroTitle.removeEventListener('mousemove', handleMouseMove);
         heroTitle.style.fontFamily = originalFont;
       });
     }
