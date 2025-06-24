@@ -1,7 +1,7 @@
 {
   "name": "portfolio-website",
   "version": "1.0.0",
-  "description": "Personal portfolio website with fluid physics and interactive elements",
+  "description": "Personal portfolio website with interactive elements",
   "main": "index.html",
   "scripts": {
     "dev": "vite",
@@ -14,7 +14,6 @@
   "keywords": [
     "portfolio",
     "website",
-    "physics",
     "interactive"
   ],
   "author": "Your Name",
