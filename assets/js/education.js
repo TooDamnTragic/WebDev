@@ -19,24 +19,35 @@ document.addEventListener('DOMContentLoaded', () => {
   // Enhanced font cycling effect for hero title - All fonts from assets/fonts/
   const heroTitle = document.querySelector('.education-hero h1');
   
-  // Complete list of all fonts from the fonts folder
-  const allFonts = [
-    'Hackney',
-    'DTGetai', 
-    'Asember',
-    'Savate',
-    'Iconic',
-    'Catrose',
-    'Beautyful',
-    'Runtime',
-    'Arshine',
-    'Sophiamelanieregular',
-    'Crackchakingtrialregular',
-    'Johnfoster',
-    'Motterdam',
-    'Sacloud',
-    'Tfwanderclouddemo'
-  ];
+    // Font cycling effect for hero title
+    const heroTitle = document.querySelector('.education-hero h1');
+    const getHeroFonts = () => {
+      const fonts = new Set();
+      for (const sheet of document.styleSheets) {
+        let rules;
+        try {
+          rules = sheet.cssRules;
+        } catch {
+          continue; // Skip cross-origin stylesheets
+        }
+        if (!rules) continue;
+        for (const rule of rules) {
+          if (rule.type === CSSRule.FONT_FACE_RULE) {
+            const src = rule.style.getPropertyValue('src');
+            if (src && src.includes('assets/fonts')) {
+              const family = rule.style
+                .getPropertyValue('font-family')
+                .replace(/['"]/g, '')
+                .trim();
+              if (family) fonts.add(family);
+            }
+          }
+        }
+      }
+      return Array.from(fonts);
+    };
+
+    const heroFonts = getHeroFonts();
 
   let originalFont;
   let fontIndex = 0;
@@ -45,8 +56,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const handleMouseMove = () => {
     const now = Date.now();
     if (now - lastMove > 100) {
-      heroTitle.style.fontFamily = `'${allFonts[fontIndex]}', sans-serif`;
-      fontIndex = (fontIndex + 1) % allFonts.length;
+      heroTitle.style.fontFamily = `'${heroFonts[fontIndex]}', sans-serif`;
+      fontIndex = (fontIndex + 1) % heroFonts.length;
       lastMove = now;
     }
   };

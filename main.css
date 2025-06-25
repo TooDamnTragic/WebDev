@@ -346,8 +346,6 @@ fadeIn{
   opacity: 0;
   transform: translateY(50px);
   animation: heroFadeIn 1.5s ease-out forwards;
-  cursor: pointer;
-  transition: font-family 0.1s ease;
 }
 
 @keyframes heroFadeIn {
