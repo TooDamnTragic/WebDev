@@ -26,17 +26,17 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: 'DTGetai', scale: 0.95 }, 
     { name: 'Asember', scale: 0.9 },
     { name: 'Savate', scale: 1 },
-    { name: 'Iconic', scale: 1 }, // Reduced from 1.15
+    { name: 'Iconic', scale: 1 },
     { name: 'Catrose', scale: 0.95 },
-    { name: 'Beautyful', scale: 1 }, // Reduced from 1.1
+    { name: 'Beautyful', scale: 1 },
     { name: 'Runtime', scale: 1 },
-    { name: 'Arshine', scale: 1 }, // Significantly reduced from 1.25
+    { name: 'Arshine', scale: 1 },
     { name: 'Sophiamelanieregular', scale: 0.85 },
-    { name: 'Crackchakingtrialregular', scale: 0.95 }, // Reduced from 1.05
+    { name: 'Crackchakingtrialregular', scale: 0.95 },
     { name: 'Johnfoster', scale: 1 },
-    { name: 'Motterdam', scale: 1 }, // Reduced from 1.1
+    { name: 'Motterdam', scale: 1 },
     { name: 'Sacloud', scale: 0.95 },
-    { name: 'Tfwanderclouddemo', scale: 1 } // Reduced from 1.15
+    { name: 'Tfwanderclouddemo', scale: 1 }
   ];
 
   let isRandomizing = false;
@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastMouseX = 0;
   let lastMouseY = 0;
   let isMouseMoving = false;
+  let isHovering = false;
 
   // Function to shuffle array (Fisher-Yates algorithm)
   const shuffleArray = (array) => {
@@ -122,23 +123,19 @@ document.addEventListener('DOMContentLoaded', () => {
         letterElements[letterIndex].classList.add('appear');
       }, sequenceIndex * 150); // 150ms delay between each letter
     });
-
-    // Start continuous randomization after all letters have appeared
-    setTimeout(() => {
-      startContinuousRandomization();
-    }, appearanceOrder.length * 150 + 500);
   };
 
-  // Function to start continuous randomization based on mouse movement
-  const startContinuousRandomization = () => {
-    if (isRandomizing) return;
-    isRandomizing = true;
+  // Function to start mouse movement-based randomization
+  const startMouseRandomization = () => {
+    if (randomizeInterval) {
+      clearInterval(randomizeInterval);
+    }
     
     randomizeInterval = setInterval(() => {
-      // Only randomize if mouse is actively moving
-      if (isMouseMoving) {
-        // Randomize 2-3 random letters each cycle for smoother effect
-        const numLettersToRandomize = Math.floor(Math.random() * 2) + 2;
+      // Only randomize if mouse is actively moving and hovering
+      if (isMouseMoving && isHovering) {
+        // Randomize 2-4 random letters each cycle
+        const numLettersToRandomize = Math.floor(Math.random() * 3) + 2;
         const lettersToRandomize = [];
         
         for (let i = 0; i < numLettersToRandomize && i < letterElements.length; i++) {
@@ -152,35 +149,28 @@ document.addEventListener('DOMContentLoaded', () => {
           randomizeLetter(letterElements[index], index);
         });
       }
-    }, 200); // Check every 200ms
+    }, 150); // Check every 150ms for smooth randomization
   };
 
-  // Function to stop randomizing (but keep current fonts)
+  // Function to stop randomizing
   const stopRandomizing = () => {
-    if (!isRandomizing) return;
-    isRandomizing = false;
-    
     if (randomizeInterval) {
       clearInterval(randomizeInterval);
       randomizeInterval = null;
     }
-    // Note: We DON'T reset fonts - they stay as they are
-  };
-
-  // Function to resume randomizing from current state
-  const resumeRandomizing = () => {
-    if (isRandomizing) return;
-    startContinuousRandomization();
   };
 
   // Mouse movement detection with speed-based randomization
   const handleMouseMovement = (e) => {
-    const currentX = e.clientX;
-    const currentY = e.clientY;
+    if (!isHovering) return;
+    
+    const rect = heroTitle.getBoundingClientRect();
+    const currentX = e.clientX - rect.left;
+    const currentY = e.clientY - rect.top;
     const speed = calculateMouseSpeed(currentX, currentY);
     
     // Set mouse as moving if speed is above threshold
-    if (speed > 2) { // Minimum movement threshold
+    if (speed > 1) { // Lower threshold for more sensitivity
       isMouseMoving = true;
       
       // Clear existing timeout
@@ -192,36 +182,6 @@ document.addEventListener('DOMContentLoaded', () => {
       mouseMovementTimeout = setTimeout(() => {
         isMouseMoving = false;
       }, 100); // Mouse considered stopped after 100ms of no movement
-      
-      // Adjust randomization speed based on mouse speed
-      if (randomizeInterval && isRandomizing) {
-        clearInterval(randomizeInterval);
-        
-        // Faster mouse movement = faster randomization
-        const randomizationSpeed = Math.max(50, 300 - (speed * 10)); // 50ms to 300ms
-        
-        randomizeInterval = setInterval(() => {
-          if (isMouseMoving) {
-            // More letters randomize with faster movement
-            const numLettersToRandomize = Math.min(
-              Math.floor(speed / 5) + 1, 
-              Math.floor(letterElements.length / 2)
-            );
-            const lettersToRandomize = [];
-            
-            for (let i = 0; i < numLettersToRandomize && i < letterElements.length; i++) {
-              const randomIndex = Math.floor(Math.random() * letterElements.length);
-              if (!lettersToRandomize.includes(randomIndex)) {
-                lettersToRandomize.push(randomIndex);
-              }
-            }
-            
-            lettersToRandomize.forEach(index => {
-              randomizeLetter(letterElements[index], index);
-            });
-          }
-        }, randomizationSpeed);
-      }
     }
   };
 
@@ -235,40 +195,54 @@ document.addEventListener('DOMContentLoaded', () => {
       startRandomAppearance();
     }, 1000); // Start after 1 second
 
-    // Add mouse movement tracking for speed-based randomization
-    heroTitle.addEventListener('mousemove', handleMouseMovement);
-    
-    heroTitle.addEventListener('mouseenter', () => {
+    // Add mouse event listeners
+    heroTitle.addEventListener('mouseenter', (e) => {
+      isHovering = true;
       // Initialize mouse tracking
-      isMouseMoving = false;
-      lastMouseX = 0;
-      lastMouseY = 0;
+      const rect = heroTitle.getBoundingClientRect();
+      lastMouseX = e.clientX - rect.left;
+      lastMouseY = e.clientY - rect.top;
+      
+      // Start mouse-based randomization
+      startMouseRandomization();
     });
     
+    heroTitle.addEventListener('mousemove', handleMouseMovement);
+    
     heroTitle.addEventListener('mouseleave', () => {
-      // Stop mouse movement detection
+      isHovering = false;
       isMouseMoving = false;
+      
+      // Clear movement timeout
       if (mouseMovementTimeout) {
         clearTimeout(mouseMovementTimeout);
       }
       
-      // Return to slow background randomization
-      if (randomizeInterval) {
-        clearInterval(randomizeInterval);
-      }
-      startContinuousRandomization();
+      // Stop randomization completely when not hovering
+      stopRandomizing();
     });
     
     // Optional: Add click effect for mobile
     heroTitle.addEventListener('click', () => {
-      if (isRandomizing) {
-        stopRandomizing();
-        // Resume after 2 seconds
-        setTimeout(() => {
-          resumeRandomizing();
-        }, 2000);
-      } else {
-        resumeRandomizing();
+      if (!isHovering) {
+        // Trigger a quick randomization burst on mobile
+        for (let i = 0; i < 3; i++) {
+          setTimeout(() => {
+            const numLettersToRandomize = Math.floor(Math.random() * 4) + 2;
+            const lettersToRandomize = [];
+            
+            for (let j = 0; j < numLettersToRandomize && j < letterElements.length; j++) {
+              const randomIndex = Math.floor(Math.random() * letterElements.length);
+              if (!lettersToRandomize.includes(randomIndex)) {
+                lettersToRandomize.push(randomIndex);
+              }
+            }
+            
+            lettersToRandomize.forEach(index => {
+              randomizeLetter(letterElements[index], index);
+            });
+          }, i * 200);
+        }
       }
     });
   }
