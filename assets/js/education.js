@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Elements
   const items = document.querySelectorAll('.item');
   const info = document.getElementById('info');
   const infoExtra = document.getElementById('info-extra');
@@ -16,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const curricularSection = document.getElementById('curricular-section');
   const extracurricularSection = document.getElementById('extracurricular-section');
 
-  // Enhanced font cycling effect for hero title - Individual letter randomization with size normalization
+  // Enhanced font cycling effect for hero title - Random letter appearance with persistent randomization
   const heroTitle = document.querySelector('.education-hero h1');
   
   // All available fonts from the fonts folder with size adjustments
@@ -38,10 +39,20 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: 'Tfwanderclouddemo', scale: 1.15 }
   ];
 
-  let originalFont;
   let isRandomizing = false;
   let randomizeInterval;
   let letterElements = [];
+  let currentFonts = []; // Track current font for each letter
+
+  // Function to shuffle array (Fisher-Yates algorithm)
+  const shuffleArray = (array) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
 
   // Function to wrap each letter in a span with consistent sizing
   const wrapLettersInSpans = (element) => {
@@ -56,30 +67,54 @@ document.addEventListener('DOMContentLoaded', () => {
     return element.querySelectorAll('.letter');
   };
 
-  // Function to randomize a single letter's font with size normalization
-  const randomizeLetter = (letterElement) => {
-    const randomFontConfig = fontConfig[Math.floor(Math.random() * fontConfig.length)];
-    const fontName = randomFontConfig.name;
-    const scale = randomFontConfig.scale;
+  // Function to apply font to a letter with size normalization
+  const applyFontToLetter = (letterElement, fontConfig) => {
+    const fontName = fontConfig.name;
+    const scale = fontConfig.scale;
     
     // Apply font and size normalization
     letterElement.style.fontFamily = `'${fontName}', sans-serif`;
     letterElement.style.setProperty('--letter-scale', scale);
     letterElement.setAttribute('data-font', fontName);
-    letterElement.style.transition = 'font-family 0.15s ease, transform 0.15s ease';
+    letterElement.style.transition = 'all 0.3s ease';
   };
 
-  // Function to reset all letters to original font
-  const resetAllLetters = () => {
-    letterElements.forEach(letter => {
-      letter.style.fontFamily = originalFont;
-      letter.style.setProperty('--letter-scale', 1);
-      letter.removeAttribute('data-font');
+  // Function to randomize a single letter's font with size normalization
+  const randomizeLetter = (letterElement, letterIndex) => {
+    const randomFontConfig = fontConfig[Math.floor(Math.random() * fontConfig.length)];
+    applyFontToLetter(letterElement, randomFontConfig);
+    currentFonts[letterIndex] = randomFontConfig;
+  };
+
+  // Function to start the initial random appearance animation
+  const startRandomAppearance = () => {
+    if (!letterElements.length) return;
+
+    // Create a shuffled order for letter appearance
+    const appearanceOrder = shuffleArray([...Array(letterElements.length).keys()]);
+    
+    // Initialize each letter with a random font but keep it invisible
+    letterElements.forEach((letter, index) => {
+      const randomFontConfig = fontConfig[Math.floor(Math.random() * fontConfig.length)];
+      applyFontToLetter(letter, randomFontConfig);
+      currentFonts[index] = randomFontConfig;
     });
+
+    // Animate letters appearing in random order
+    appearanceOrder.forEach((letterIndex, sequenceIndex) => {
+      setTimeout(() => {
+        letterElements[letterIndex].classList.add('appear');
+      }, sequenceIndex * 150); // 150ms delay between each letter
+    });
+
+    // Start continuous randomization after all letters have appeared
+    setTimeout(() => {
+      startContinuousRandomization();
+    }, appearanceOrder.length * 150 + 500);
   };
 
-  // Function to start randomizing letters
-  const startRandomizing = () => {
+  // Function to start continuous randomization
+  const startContinuousRandomization = () => {
     if (isRandomizing) return;
     isRandomizing = true;
     
@@ -96,12 +131,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       lettersToRandomize.forEach(index => {
-        randomizeLetter(letterElements[index]);
+        randomizeLetter(letterElements[index], index);
       });
-    }, 120); // Slower change rate for less jittery effect
+    }, 200); // Continuous randomization every 200ms
   };
 
-  // Function to stop randomizing
+  // Function to stop randomizing (but keep current fonts)
   const stopRandomizing = () => {
     if (!isRandomizing) return;
     isRandomizing = false;
@@ -110,43 +145,68 @@ document.addEventListener('DOMContentLoaded', () => {
       clearInterval(randomizeInterval);
       randomizeInterval = null;
     }
-    
-    // Gradually reset letters back to original font
-    letterElements.forEach((letter, index) => {
-      setTimeout(() => {
-        letter.style.fontFamily = originalFont;
-        letter.style.setProperty('--letter-scale', 1);
-        letter.removeAttribute('data-font');
-      }, index * 40); // Slightly slower stagger for smoother reset
-    });
+    // Note: We DON'T reset fonts - they stay as they are
+  };
+
+  // Function to resume randomizing from current state
+  const resumeRandomizing = () => {
+    if (isRandomizing) return;
+    startContinuousRandomization();
   };
 
   if (heroTitle) {
-    // Store original font and wrap letters
-    originalFont = getComputedStyle(heroTitle).fontFamily;
+    // Wrap letters and initialize
     letterElements = wrapLettersInSpans(heroTitle);
+    currentFonts = new Array(letterElements.length);
     
-    // Add hover effects
+    // Start the random appearance animation immediately
+    setTimeout(() => {
+      startRandomAppearance();
+    }, 1000); // Start after 1 second
+
+    // Add hover effects for enhanced randomization
     heroTitle.addEventListener('mouseenter', () => {
-      startRandomizing();
+      // Speed up randomization on hover
+      if (randomizeInterval) {
+        clearInterval(randomizeInterval);
+      }
+      
+      randomizeInterval = setInterval(() => {
+        // More aggressive randomization on hover
+        const numLettersToRandomize = Math.floor(Math.random() * 3) + 3;
+        const lettersToRandomize = [];
+        
+        for (let i = 0; i < numLettersToRandomize && i < letterElements.length; i++) {
+          const randomIndex = Math.floor(Math.random() * letterElements.length);
+          if (!lettersToRandomize.includes(randomIndex)) {
+            lettersToRandomize.push(randomIndex);
+          }
+        }
+        
+        lettersToRandomize.forEach(index => {
+          randomizeLetter(letterElements[index], index);
+        });
+      }, 80); // Faster randomization on hover
     });
     
     heroTitle.addEventListener('mouseleave', () => {
-      stopRandomizing();
+      // Return to normal randomization speed (but don't reset fonts)
+      if (randomizeInterval) {
+        clearInterval(randomizeInterval);
+      }
+      startContinuousRandomization();
     });
     
     // Optional: Add click effect for mobile
     heroTitle.addEventListener('click', () => {
       if (isRandomizing) {
         stopRandomizing();
-      } else {
-        startRandomizing();
-        // Auto-stop after 3 seconds on mobile
+        // Resume after 2 seconds
         setTimeout(() => {
-          if (isRandomizing) {
-            stopRandomizing();
-          }
-        }, 3000);
+          resumeRandomizing();
+        }, 2000);
+      } else {
+        resumeRandomizing();
       }
     });
   }

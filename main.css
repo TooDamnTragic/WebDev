@@ -338,7 +338,6 @@ fadeIn{
 }
 
 .education-hero h1 {
-  font-family: 'Savate', 'DTGetai', 'Hackney', sans-serif;
   font-size: clamp(3rem, 12vw, 8rem);
   color: #f0ead6;
   margin: 0;
@@ -351,12 +350,14 @@ fadeIn{
   /* Prevent layout shifts during font changes */
   line-height: 1.2;
   letter-spacing: 0.02em;
+  /* NO DEFAULT FONT - will be set by JavaScript */
+  font-family: inherit;
 }
 
 /* Letter randomization styles with consistent sizing */
 .education-hero h1 .letter {
   display: inline-block;
-  transition: font-family 0.15s ease, transform 0.15s ease;
+  transition: all 0.3s ease;
   /* Fixed dimensions to prevent jittering */
   width: 0.8em;
   height: 1.2em;
@@ -368,84 +369,94 @@ fadeIn{
   /* Prevent text from shifting */
   overflow: hidden;
   position: relative;
+  /* Start invisible for appearance animation */
+  opacity: 0;
+  transform: translateY(20px) scale(0.8);
+}
+
+/* Letter appearance animation */
+.education-hero h1 .letter.appear {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 /* Specific font size adjustments to normalize visual width */
 .education-hero h1 .letter[data-font="Hackney"] {
-  font-size: 1em;
+  font-family: 'Hackney', sans-serif;
   transform: scale(1);
 }
 
 .education-hero h1 .letter[data-font="DTGetai"] {
-  font-size: 0.95em;
+  font-family: 'DTGetai', sans-serif;
   transform: scale(1.05);
 }
 
 .education-hero h1 .letter[data-font="Asember"] {
-  font-size: 1.1em;
+  font-family: 'Asember', sans-serif;
   transform: scale(0.9);
 }
 
 .education-hero h1 .letter[data-font="Savate"] {
-  font-size: 1em;
+  font-family: 'Savate', sans-serif;
   transform: scale(1);
 }
 
 .education-hero h1 .letter[data-font="Iconic"] {
-  font-size: 0.85em;
+  font-family: 'Iconic', sans-serif;
   transform: scale(1.15);
 }
 
 .education-hero h1 .letter[data-font="Catrose"] {
-  font-size: 1.05em;
+  font-family: 'Catrose', sans-serif;
   transform: scale(0.95);
 }
 
 .education-hero h1 .letter[data-font="Beautyful"] {
-  font-size: 0.9em;
+  font-family: 'Beautyful', sans-serif;
   transform: scale(1.1);
 }
 
 .education-hero h1 .letter[data-font="Runtime"] {
-  font-size: 1em;
+  font-family: 'Runtime', sans-serif;
   transform: scale(1);
 }
 
 .education-hero h1 .letter[data-font="Arshine"] {
-  font-size: 0.8em;
+  font-family: 'Arshine', sans-serif;
   transform: scale(1.25);
 }
 
 .education-hero h1 .letter[data-font="Sophiamelanieregular"] {
-  font-size: 1.15em;
+  font-family: 'Sophiamelanieregular', sans-serif;
   transform: scale(0.85);
 }
 
 .education-hero h1 .letter[data-font="Crackchakingtrialregular"] {
-  font-size: 0.95em;
+  font-family: 'Crackchakingtrialregular', sans-serif;
   transform: scale(1.05);
 }
 
 .education-hero h1 .letter[data-font="Johnfoster"] {
-  font-size: 1em;
+  font-family: 'Johnfoster', sans-serif;
   transform: scale(1);
 }
 
 .education-hero h1 .letter[data-font="Motterdam"] {
-  font-size: 0.9em;
+  font-family: 'Motterdam', sans-serif;
   transform: scale(1.1);
 }
 
 .education-hero h1 .letter[data-font="Sacloud"] {
-  font-size: 1.05em;
+  font-family: 'Sacloud', sans-serif;
   transform: scale(0.95);
 }
 
 .education-hero h1 .letter[data-font="Tfwanderclouddemo"] {
-  font-size: 0.85em;
+  font-family: 'Tfwanderclouddemo', sans-serif;
   transform: scale(1.15);
 }
 
+/* Hover effect for continuous randomization */
 .education-hero h1:hover .letter {
   animation: letterFloat 0.4s ease-in-out infinite alternate;
 }
