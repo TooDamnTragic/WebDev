@@ -335,6 +335,9 @@ fadeIn{
   justify-content: center;
   position: relative;
   background: #212427;
+  /* Add extra padding to prevent clipping */
+  padding: 2rem;
+  box-sizing: border-box;
 }
 
 .education-hero h1 {
@@ -348,30 +351,44 @@ fadeIn{
   cursor: pointer;
   user-select: none;
   /* Prevent layout shifts during font changes */
-  line-height: 1.2;
+  line-height: 1.4; /* Increased for better spacing */
   letter-spacing: 0.02em;
   /* NO DEFAULT FONT - will be set by JavaScript */
   font-family: inherit;
+  /* Add extra space to prevent clipping */
+  padding: 1rem 0;
+  /* Ensure enough height for tall fonts */
+  min-height: 1.6em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-/* Letter randomization styles with consistent sizing */
+/* Letter randomization styles with consistent sizing and no clipping */
 .education-hero h1 .letter {
   display: inline-block;
   transition: all 0.3s ease;
-  /* Fixed dimensions to prevent jittering */
-  width: 0.8em;
-  height: 1.2em;
+  /* Increased dimensions to prevent clipping */
+  width: 1em;
+  height: 1.6em; /* Increased height for tall fonts */
   text-align: center;
-  vertical-align: baseline;
+  vertical-align: middle;
   /* Normalize all fonts to same visual size */
   font-size: inherit;
-  line-height: 1;
-  /* Prevent text from shifting */
-  overflow: hidden;
+  line-height: 1.2;
+  /* Prevent text from being clipped */
+  overflow: visible; /* Changed from hidden to visible */
   position: relative;
   /* Start invisible for appearance animation */
   opacity: 0;
   transform: translateY(20px) scale(0.8);
+  /* Add padding to prevent clipping */
+  padding: 0.1em 0;
+  /* Ensure proper alignment */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Letter appearance animation */
@@ -380,7 +397,7 @@ fadeIn{
   transform: translateY(0) scale(1);
 }
 
-/* Specific font size adjustments to normalize visual width */
+/* Specific font size adjustments to normalize visual width and prevent clipping */
 .education-hero h1 .letter[data-font="Hackney"] {
   font-family: 'Hackney', sans-serif;
   transform: scale(1);
@@ -388,7 +405,7 @@ fadeIn{
 
 .education-hero h1 .letter[data-font="DTGetai"] {
   font-family: 'DTGetai', sans-serif;
-  transform: scale(1.05);
+  transform: scale(0.95); /* Reduced to prevent clipping */
 }
 
 .education-hero h1 .letter[data-font="Asember"] {
@@ -403,7 +420,7 @@ fadeIn{
 
 .education-hero h1 .letter[data-font="Iconic"] {
   font-family: 'Iconic', sans-serif;
-  transform: scale(1.15);
+  transform: scale(1); /* Reduced to prevent clipping */
 }
 
 .education-hero h1 .letter[data-font="Catrose"] {
@@ -413,7 +430,7 @@ fadeIn{
 
 .education-hero h1 .letter[data-font="Beautyful"] {
   font-family: 'Beautyful', sans-serif;
-  transform: scale(1.1);
+  transform: scale(1); /* Reduced to prevent clipping */
 }
 
 .education-hero h1 .letter[data-font="Runtime"] {
@@ -423,7 +440,7 @@ fadeIn{
 
 .education-hero h1 .letter[data-font="Arshine"] {
   font-family: 'Arshine', sans-serif;
-  transform: scale(1.25);
+  transform: scale(1); /* Significantly reduced to prevent clipping */
 }
 
 .education-hero h1 .letter[data-font="Sophiamelanieregular"] {
@@ -433,7 +450,7 @@ fadeIn{
 
 .education-hero h1 .letter[data-font="Crackchakingtrialregular"] {
   font-family: 'Crackchakingtrialregular', sans-serif;
-  transform: scale(1.05);
+  transform: scale(0.95); /* Reduced to prevent clipping */
 }
 
 .education-hero h1 .letter[data-font="Johnfoster"] {
@@ -443,7 +460,7 @@ fadeIn{
 
 .education-hero h1 .letter[data-font="Motterdam"] {
   font-family: 'Motterdam', sans-serif;
-  transform: scale(1.1);
+  transform: scale(1); /* Reduced to prevent clipping */
 }
 
 .education-hero h1 .letter[data-font="Sacloud"] {
@@ -453,7 +470,7 @@ fadeIn{
 
 .education-hero h1 .letter[data-font="Tfwanderclouddemo"] {
   font-family: 'Tfwanderclouddemo', sans-serif;
-  transform: scale(1.15);
+  transform: scale(1); /* Reduced to prevent clipping */
 }
 
 /* Hover effect for continuous randomization */

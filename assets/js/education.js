@@ -17,32 +17,36 @@ document.addEventListener('DOMContentLoaded', () => {
   const curricularSection = document.getElementById('curricular-section');
   const extracurricularSection = document.getElementById('extracurricular-section');
 
-  // Enhanced font cycling effect for hero title - Random letter appearance with persistent randomization
+  // Enhanced font cycling effect for hero title - Mouse movement-based randomization
   const heroTitle = document.querySelector('.education-hero h1');
   
-  // All available fonts from the fonts folder with size adjustments
+  // All available fonts from the fonts folder with adjusted scale values to prevent clipping
   const fontConfig = [
     { name: 'Hackney', scale: 1 },
-    { name: 'DTGetai', scale: 1.05 }, 
+    { name: 'DTGetai', scale: 0.95 }, 
     { name: 'Asember', scale: 0.9 },
     { name: 'Savate', scale: 1 },
-    { name: 'Iconic', scale: 1.15 },
+    { name: 'Iconic', scale: 1 }, // Reduced from 1.15
     { name: 'Catrose', scale: 0.95 },
-    { name: 'Beautyful', scale: 1.1 },
+    { name: 'Beautyful', scale: 1 }, // Reduced from 1.1
     { name: 'Runtime', scale: 1 },
-    { name: 'Arshine', scale: 1.25 },
+    { name: 'Arshine', scale: 1 }, // Significantly reduced from 1.25
     { name: 'Sophiamelanieregular', scale: 0.85 },
-    { name: 'Crackchakingtrialregular', scale: 1.05 },
+    { name: 'Crackchakingtrialregular', scale: 0.95 }, // Reduced from 1.05
     { name: 'Johnfoster', scale: 1 },
-    { name: 'Motterdam', scale: 1.1 },
+    { name: 'Motterdam', scale: 1 }, // Reduced from 1.1
     { name: 'Sacloud', scale: 0.95 },
-    { name: 'Tfwanderclouddemo', scale: 1.15 }
+    { name: 'Tfwanderclouddemo', scale: 1 } // Reduced from 1.15
   ];
 
   let isRandomizing = false;
   let randomizeInterval;
   let letterElements = [];
   let currentFonts = []; // Track current font for each letter
+  let mouseMovementTimeout;
+  let lastMouseX = 0;
+  let lastMouseY = 0;
+  let isMouseMoving = false;
 
   // Function to shuffle array (Fisher-Yates algorithm)
   const shuffleArray = (array) => {
@@ -86,6 +90,18 @@ document.addEventListener('DOMContentLoaded', () => {
     currentFonts[letterIndex] = randomFontConfig;
   };
 
+  // Function to calculate mouse movement speed
+  const calculateMouseSpeed = (currentX, currentY) => {
+    const deltaX = Math.abs(currentX - lastMouseX);
+    const deltaY = Math.abs(currentY - lastMouseY);
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    
+    lastMouseX = currentX;
+    lastMouseY = currentY;
+    
+    return distance;
+  };
+
   // Function to start the initial random appearance animation
   const startRandomAppearance = () => {
     if (!letterElements.length) return;
@@ -113,27 +129,30 @@ document.addEventListener('DOMContentLoaded', () => {
     }, appearanceOrder.length * 150 + 500);
   };
 
-  // Function to start continuous randomization
+  // Function to start continuous randomization based on mouse movement
   const startContinuousRandomization = () => {
     if (isRandomizing) return;
     isRandomizing = true;
     
     randomizeInterval = setInterval(() => {
-      // Randomize 2-3 random letters each cycle for smoother effect
-      const numLettersToRandomize = Math.floor(Math.random() * 2) + 2;
-      const lettersToRandomize = [];
-      
-      for (let i = 0; i < numLettersToRandomize && i < letterElements.length; i++) {
-        const randomIndex = Math.floor(Math.random() * letterElements.length);
-        if (!lettersToRandomize.includes(randomIndex)) {
-          lettersToRandomize.push(randomIndex);
+      // Only randomize if mouse is actively moving
+      if (isMouseMoving) {
+        // Randomize 2-3 random letters each cycle for smoother effect
+        const numLettersToRandomize = Math.floor(Math.random() * 2) + 2;
+        const lettersToRandomize = [];
+        
+        for (let i = 0; i < numLettersToRandomize && i < letterElements.length; i++) {
+          const randomIndex = Math.floor(Math.random() * letterElements.length);
+          if (!lettersToRandomize.includes(randomIndex)) {
+            lettersToRandomize.push(randomIndex);
+          }
         }
+        
+        lettersToRandomize.forEach(index => {
+          randomizeLetter(letterElements[index], index);
+        });
       }
-      
-      lettersToRandomize.forEach(index => {
-        randomizeLetter(letterElements[index], index);
-      });
-    }, 200); // Continuous randomization every 200ms
+    }, 200); // Check every 200ms
   };
 
   // Function to stop randomizing (but keep current fonts)
@@ -154,6 +173,58 @@ document.addEventListener('DOMContentLoaded', () => {
     startContinuousRandomization();
   };
 
+  // Mouse movement detection with speed-based randomization
+  const handleMouseMovement = (e) => {
+    const currentX = e.clientX;
+    const currentY = e.clientY;
+    const speed = calculateMouseSpeed(currentX, currentY);
+    
+    // Set mouse as moving if speed is above threshold
+    if (speed > 2) { // Minimum movement threshold
+      isMouseMoving = true;
+      
+      // Clear existing timeout
+      if (mouseMovementTimeout) {
+        clearTimeout(mouseMovementTimeout);
+      }
+      
+      // Set timeout to detect when mouse stops moving
+      mouseMovementTimeout = setTimeout(() => {
+        isMouseMoving = false;
+      }, 100); // Mouse considered stopped after 100ms of no movement
+      
+      // Adjust randomization speed based on mouse speed
+      if (randomizeInterval && isRandomizing) {
+        clearInterval(randomizeInterval);
+        
+        // Faster mouse movement = faster randomization
+        const randomizationSpeed = Math.max(50, 300 - (speed * 10)); // 50ms to 300ms
+        
+        randomizeInterval = setInterval(() => {
+          if (isMouseMoving) {
+            // More letters randomize with faster movement
+            const numLettersToRandomize = Math.min(
+              Math.floor(speed / 5) + 1, 
+              Math.floor(letterElements.length / 2)
+            );
+            const lettersToRandomize = [];
+            
+            for (let i = 0; i < numLettersToRandomize && i < letterElements.length; i++) {
+              const randomIndex = Math.floor(Math.random() * letterElements.length);
+              if (!lettersToRandomize.includes(randomIndex)) {
+                lettersToRandomize.push(randomIndex);
+              }
+            }
+            
+            lettersToRandomize.forEach(index => {
+              randomizeLetter(letterElements[index], index);
+            });
+          }
+        }, randomizationSpeed);
+      }
+    }
+  };
+
   if (heroTitle) {
     // Wrap letters and initialize
     letterElements = wrapLettersInSpans(heroTitle);
@@ -164,33 +235,24 @@ document.addEventListener('DOMContentLoaded', () => {
       startRandomAppearance();
     }, 1000); // Start after 1 second
 
-    // Add hover effects for enhanced randomization
+    // Add mouse movement tracking for speed-based randomization
+    heroTitle.addEventListener('mousemove', handleMouseMovement);
+    
     heroTitle.addEventListener('mouseenter', () => {
-      // Speed up randomization on hover
-      if (randomizeInterval) {
-        clearInterval(randomizeInterval);
-      }
-      
-      randomizeInterval = setInterval(() => {
-        // More aggressive randomization on hover
-        const numLettersToRandomize = Math.floor(Math.random() * 3) + 3;
-        const lettersToRandomize = [];
-        
-        for (let i = 0; i < numLettersToRandomize && i < letterElements.length; i++) {
-          const randomIndex = Math.floor(Math.random() * letterElements.length);
-          if (!lettersToRandomize.includes(randomIndex)) {
-            lettersToRandomize.push(randomIndex);
-          }
-        }
-        
-        lettersToRandomize.forEach(index => {
-          randomizeLetter(letterElements[index], index);
-        });
-      }, 80); // Faster randomization on hover
+      // Initialize mouse tracking
+      isMouseMoving = false;
+      lastMouseX = 0;
+      lastMouseY = 0;
     });
     
     heroTitle.addEventListener('mouseleave', () => {
-      // Return to normal randomization speed (but don't reset fonts)
+      // Stop mouse movement detection
+      isMouseMoving = false;
+      if (mouseMovementTimeout) {
+        clearTimeout(mouseMovementTimeout);
+      }
+      
+      // Return to slow background randomization
       if (randomizeInterval) {
         clearInterval(randomizeInterval);
       }
