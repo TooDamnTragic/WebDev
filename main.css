@@ -348,23 +348,114 @@ fadeIn{
   animation: heroFadeIn 1.5s ease-out forwards;
   cursor: pointer;
   user-select: none;
+  /* Prevent layout shifts during font changes */
+  line-height: 1.2;
+  letter-spacing: 0.02em;
 }
 
-/* Letter randomization styles */
+/* Letter randomization styles with consistent sizing */
 .education-hero h1 .letter {
-  transition: font-family 0.1s ease, transform 0.1s ease;
+  display: inline-block;
+  transition: font-family 0.15s ease, transform 0.15s ease;
+  /* Fixed dimensions to prevent jittering */
+  width: 0.8em;
+  height: 1.2em;
+  text-align: center;
+  vertical-align: baseline;
+  /* Normalize all fonts to same visual size */
+  font-size: inherit;
+  line-height: 1;
+  /* Prevent text from shifting */
+  overflow: hidden;
+  position: relative;
+}
+
+/* Specific font size adjustments to normalize visual width */
+.education-hero h1 .letter[data-font="Hackney"] {
+  font-size: 1em;
+  transform: scale(1);
+}
+
+.education-hero h1 .letter[data-font="DTGetai"] {
+  font-size: 0.95em;
+  transform: scale(1.05);
+}
+
+.education-hero h1 .letter[data-font="Asember"] {
+  font-size: 1.1em;
+  transform: scale(0.9);
+}
+
+.education-hero h1 .letter[data-font="Savate"] {
+  font-size: 1em;
+  transform: scale(1);
+}
+
+.education-hero h1 .letter[data-font="Iconic"] {
+  font-size: 0.85em;
+  transform: scale(1.15);
+}
+
+.education-hero h1 .letter[data-font="Catrose"] {
+  font-size: 1.05em;
+  transform: scale(0.95);
+}
+
+.education-hero h1 .letter[data-font="Beautyful"] {
+  font-size: 0.9em;
+  transform: scale(1.1);
+}
+
+.education-hero h1 .letter[data-font="Runtime"] {
+  font-size: 1em;
+  transform: scale(1);
+}
+
+.education-hero h1 .letter[data-font="Arshine"] {
+  font-size: 0.8em;
+  transform: scale(1.25);
+}
+
+.education-hero h1 .letter[data-font="Sophiamelanieregular"] {
+  font-size: 1.15em;
+  transform: scale(0.85);
+}
+
+.education-hero h1 .letter[data-font="Crackchakingtrialregular"] {
+  font-size: 0.95em;
+  transform: scale(1.05);
+}
+
+.education-hero h1 .letter[data-font="Johnfoster"] {
+  font-size: 1em;
+  transform: scale(1);
+}
+
+.education-hero h1 .letter[data-font="Motterdam"] {
+  font-size: 0.9em;
+  transform: scale(1.1);
+}
+
+.education-hero h1 .letter[data-font="Sacloud"] {
+  font-size: 1.05em;
+  transform: scale(0.95);
+}
+
+.education-hero h1 .letter[data-font="Tfwanderclouddemo"] {
+  font-size: 0.85em;
+  transform: scale(1.15);
 }
 
 .education-hero h1:hover .letter {
-  animation: letterFloat 0.3s ease-in-out infinite alternate;
+  animation: letterFloat 0.4s ease-in-out infinite alternate;
 }
 
 @keyframes letterFloat {
   0% {
-    transform: translateY(0px);
+    transform: translateY(0px) scale(var(--letter-scale, 1));
   }
   100% {
-    transform: translateY(-2px);
+    transform: translateY(-3px) scale(var(--letter-scale, 1));
   }
 }
 

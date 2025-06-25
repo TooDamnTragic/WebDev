@@ -16,26 +16,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const curricularSection = document.getElementById('curricular-section');
   const extracurricularSection = document.getElementById('extracurricular-section');
 
-  // Enhanced font cycling effect for hero title - Individual letter randomization
+  // Enhanced font cycling effect for hero title - Individual letter randomization with size normalization
   const heroTitle = document.querySelector('.education-hero h1');
   
-  // All available fonts from the fonts folder
-  const allFonts = [
-    'Hackney',
-    'DTGetai', 
-    'Asember',
-    'Savate',
-    'Iconic',
-    'Catrose',
-    'Beautyful',
-    'Runtime',
-    'Arshine',
-    'Sophiamelanieregular',
-    'Crackchakingtrialregular',
-    'Johnfoster',
-    'Motterdam',
-    'Sacloud',
-    'Tfwanderclouddemo'
+  // All available fonts from the fonts folder with size adjustments
+  const fontConfig = [
+    { name: 'Hackney', scale: 1 },
+    { name: 'DTGetai', scale: 1.05 }, 
+    { name: 'Asember', scale: 0.9 },
+    { name: 'Savate', scale: 1 },
+    { name: 'Iconic', scale: 1.15 },
+    { name: 'Catrose', scale: 0.95 },
+    { name: 'Beautyful', scale: 1.1 },
+    { name: 'Runtime', scale: 1 },
+    { name: 'Arshine', scale: 1.25 },
+    { name: 'Sophiamelanieregular', scale: 0.85 },
+    { name: 'Crackchakingtrialregular', scale: 1.05 },
+    { name: 'Johnfoster', scale: 1 },
+    { name: 'Motterdam', scale: 1.1 },
+    { name: 'Sacloud', scale: 0.95 },
+    { name: 'Tfwanderclouddemo', scale: 1.15 }
   ];
 
   let originalFont;
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let randomizeInterval;
   let letterElements = [];
 
-  // Function to wrap each letter in a span
+  // Function to wrap each letter in a span with consistent sizing
   const wrapLettersInSpans = (element) => {
     const text = element.textContent;
     const wrappedText = text.split('').map(char => {
@@ -56,17 +56,25 @@ document.addEventListener('DOMContentLoaded', () => {
     return element.querySelectorAll('.letter');
   };
 
-  // Function to randomize a single letter's font
+  // Function to randomize a single letter's font with size normalization
   const randomizeLetter = (letterElement) => {
-    const randomFont = allFonts[Math.floor(Math.random() * allFonts.length)];
-    letterElement.style.fontFamily = `'${randomFont}', sans-serif`;
-    letterElement.style.transition = 'font-family 0.1s ease';
+    const randomFontConfig = fontConfig[Math.floor(Math.random() * fontConfig.length)];
+    const fontName = randomFontConfig.name;
+    const scale = randomFontConfig.scale;
+    
+    // Apply font and size normalization
+    letterElement.style.fontFamily = `'${fontName}', sans-serif`;
+    letterElement.style.setProperty('--letter-scale', scale);
+    letterElement.setAttribute('data-font', fontName);
+    letterElement.style.transition = 'font-family 0.15s ease, transform 0.15s ease';
   };
 
   // Function to reset all letters to original font
   const resetAllLetters = () => {
     letterElements.forEach(letter => {
       letter.style.fontFamily = originalFont;
+      letter.style.setProperty('--letter-scale', 1);
+      letter.removeAttribute('data-font');
     });
   };
 
@@ -76,8 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
     isRandomizing = true;
     
     randomizeInterval = setInterval(() => {
-      // Randomize 2-4 random letters each cycle for dynamic effect
-      const numLettersToRandomize = Math.floor(Math.random() * 3) + 2;
+      // Randomize 2-3 random letters each cycle for smoother effect
+      const numLettersToRandomize = Math.floor(Math.random() * 2) + 2;
       const lettersToRandomize = [];
       
       for (let i = 0; i < numLettersToRandomize && i < letterElements.length; i++) {
@@ -90,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
       lettersToRandomize.forEach(index => {
         randomizeLetter(letterElements[index]);
       });
-    }, 80); // Change letters every 80ms for smooth effect
+    }, 120); // Slower change rate for less jittery effect
   };
 
   // Function to stop randomizing
@@ -107,7 +115,9 @@ document.addEventListener('DOMContentLoaded', () => {
     letterElements.forEach((letter, index) => {
       setTimeout(() => {
         letter.style.fontFamily = originalFont;
-      }, index * 30); // Stagger the reset for a wave effect
+        letter.style.setProperty('--letter-scale', 1);
+        letter.removeAttribute('data-font');
+      }, index * 40); // Slightly slower stagger for smoother reset
     });
   };
 
