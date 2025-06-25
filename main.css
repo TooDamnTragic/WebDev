@@ -532,6 +532,8 @@ fadeIn{
   transform: translateY(100px);
   transition: opacity 1s ease, transform 1s ease;
   width: 100%;
+  /* Increased padding for better spacing */
+  padding: 6rem 0;
 }
 
 .curricular-section.visible {
@@ -548,6 +550,8 @@ fadeIn{
   transform: translateY(50px);
   transition: opacity 1s ease, transform 1s ease;
   width: 100%;
+  /* Increased padding for better spacing */
+  padding: 6rem 0;
 }
 
 .extracurricular-section.visible {
@@ -582,7 +586,7 @@ fadeIn{
   position: relative;
   margin: 0;
   padding: 0 2rem;
-  max-width: 1200px;
+  max-width: 1400px; /* Increased max-width for better spacing */
   margin: 0 auto;
   width: 100%;
 }
@@ -763,36 +767,36 @@ fadeIn{
   }
 }
 
-/* Consistent title styling */
-.items h2,
-.items h3,
-.items h4 {
-  font-family: 'DTGetai', 'Hackney', sans-serif;
-  font-size: clamp(1rem, 2vw, 1.8rem);
-  margin: 0 0 0.3rem;
-  word-wrap: break-word;
-  text-align: inherit;
-  text-decoration: none;
-  border-bottom: none;
+/* Enhanced ProfileCard-style Items with Tilt Effect */
+:root {
+  --pointer-x: 50%;
+  --pointer-y: 50%;
+  --pointer-from-center: 0;
+  --pointer-from-top: 0.5;
+  --pointer-from-left: 0.5;
+  --card-opacity: 0;
+  --rotate-x: 0deg;
+  --rotate-y: 0deg;
+  --background-x: 50%;
+  --background-y: 50%;
+  --card-radius: 20px;
 }
 
-.items h2:hover,
-.items h3:hover,
-.items h4:hover {
-  color: #ffffff;
-  text-decoration: underline;
-}
-
-/* Columns + exact centre dots */
-.items li{
-  position:relative;
-  width:45%;
-  margin:1rem 0;
-  float:left;
-  clear:both;
-  cursor:pointer;
-  z-index:6;
+/* Enhanced Items with ProfileCard Effects */
+.items li {
+  position: relative;
+  width: 45%;
+  margin: 4rem 0; /* Significantly increased spacing */
+  float: left;
+  clear: both;
+  cursor: pointer;
+  z-index: 6;
   transition: transform 0.2s ease;
+  
+  /* ProfileCard wrapper styles */
+  perspective: 500px;
+  transform: translate3d(0, 0, 0.1px);
+  touch-action: none;
 }
 
 .items li:focus {
@@ -801,13 +805,143 @@ fadeIn{
   border-radius: 4px;
 }
 
-.items li:hover {
-  transform: translateY(-2px);
+/* ProfileCard-style card container */
+.items li .card-container {
+  position: relative;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--card-radius);
+  padding: 2.5rem; /* Increased padding */
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(240, 234, 214, 0.2);
+  transition: transform 1s ease;
+  transform: translate3d(0, 0, 0.1px) rotateX(0deg) rotateY(0deg);
+  box-shadow: rgba(0, 0, 0, 0.8) calc((var(--pointer-from-left) * 10px) - 3px) calc((var(--pointer-from-top) * 20px) - 6px) 20px -5px;
+  
+  /* Enhanced gradient background */
+  background-image: 
+    radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y), 
+      hsla(266, 100%, 90%, var(--card-opacity)) 4%, 
+      hsla(266, 50%, 80%, calc(var(--card-opacity) * 0.75)) 10%, 
+      hsla(266, 25%, 70%, calc(var(--card-opacity) * 0.5)) 50%, 
+      hsla(266, 0%, 60%, 0) 100%),
+    radial-gradient(35% 52% at 55% 20%, #00ffaac4 0%, #073aff00 100%),
+    radial-gradient(100% 100% at 50% 50%, #00c1ffff 1%, #073aff00 76%),
+    conic-gradient(from 124deg at 50% 50%, #c137ffff 0%, #07c6ffff 40%, #07c6ffff 60%, #c137ffff 100%);
+  background-size: 100% 100%;
+  background-position: 0 0, 0 0, 50% 50%, 0 0;
+  overflow: hidden;
 }
 
-/* left / right halves */
-.items li.left  { margin-right:50%; text-align:right; padding-right:1.5rem; }
-.items li.right { margin-left :50%; text-align:left; float:right; padding-left:1.5rem; }
+.items li:hover .card-container,
+.items li.active .card-container {
+  --card-opacity: 1;
+  transition: none;
+  transform: translate3d(0, 0, 0.1px) rotateX(var(--rotate-y)) rotateY(var(--rotate-x));
+}
+
+/* Enhanced shine effect */
+.items li .card-container::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  background: rgba(0, 0, 0, 0.9);
+  border-radius: calc(var(--card-radius) - 1px);
+  z-index: 1;
+}
+
+.items li .card-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--card-radius);
+  background-image: 
+    repeating-linear-gradient(0deg, 
+      hsl(2, 100%, 73%) 5%, 
+      hsl(53, 100%, 69%) 10%, 
+      hsl(93, 100%, 69%) 15%, 
+      hsl(176, 100%, 76%) 20%, 
+      hsl(228, 100%, 74%) 25%, 
+      hsl(283, 100%, 73%) 30%),
+    radial-gradient(farthest-corner circle at var(--pointer-x) var(--pointer-y), 
+      hsla(0, 0%, 0%, 0.1) 12%, 
+      hsla(0, 0%, 0%, 0.15) 20%, 
+      hsla(0, 0%, 0%, 0.25) 120%);
+  background-position: var(--background-x) var(--background-y), center;
+  background-size: 300% 300%, 200% 200%;
+  mix-blend-mode: color-dodge;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  z-index: 2;
+}
+
+.items li:hover .card-container::after,
+.items li.active .card-container::after {
+  opacity: 0.3;
+}
+
+/* Content styling with enhanced typography */
+.items li .card-content {
+  position: relative;
+  z-index: 3;
+  transform: translate3d(calc(var(--pointer-from-left) * -6px + 3px), calc(var(--pointer-from-top) * -6px + 3px), 0.1px);
+}
+
+/* Significantly increased font sizes */
+.items h2,
+.items h3,
+.items h4 {
+  font-family: 'DTGetai', 'Hackney', sans-serif;
+  font-size: clamp(2.5rem, 4vw, 3.5rem); /* Significantly increased */
+  margin: 0 0 1rem;
+  word-wrap: break-word;
+  text-align: inherit;
+  text-decoration: none;
+  border-bottom: none;
+  background-image: linear-gradient(to bottom, #fff, #6f6fbe);
+  background-size: 1em 1.5em;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  line-height: 1.2;
+}
+
+.items h2:hover,
+.items h3:hover,
+.items h4:hover {
+  color: #ffffff;
+  text-decoration: underline;
+  -webkit-text-fill-color: #ffffff;
+}
+
+/* Enhanced description text */
+.desc { 
+  font-size: 1.2rem; /* Increased from 0.9rem */
+  margin-top: 1rem; 
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Years/dates styling */
+.years {
+  font-size: 1.1rem; /* Increased */
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+  margin: 0.5rem 0;
+}
+
+/* left / right halves with increased spacing */
+.items li.left  { 
+  margin-right: 52%; /* Increased spacing */
+  text-align: right; 
+  padding-right: 2rem; /* Increased padding */
+}
+
+.items li.right { 
+  margin-left: 52%; /* Increased spacing */
+  text-align: left; 
+  float: right; 
+  padding-left: 2rem; /* Increased padding */
+}
 
 /* dots on the divider */
 .items li::before{
@@ -815,15 +949,16 @@ fadeIn{
   position:absolute;
   top:50%;
   transform:translateY(-50%);
-  width:10px;
-  height:10px;
+  width:12px; /* Slightly larger dots */
+  height:12px;
   border-radius:50%;
   background:#f0ead6;
   pointer-events:none;
+  box-shadow: 0 0 10px rgba(240, 234, 214, 0.5);
 }
 
-.items li.left::before  { right: -11.0111111111111%; transform: translateX(-408%); }
-.items li.right::before { left : -11.0111111111111%; transform: translateX(20%); }
+.items li.left::before  { right: -10.5%; transform: translateX(-50%); }
+.items li.right::before { left : -10.5%; transform: translateX(50%); }
 
 /* Typography + hover colour */
 .items a{ color:inherit; text-decoration:none; }
@@ -847,9 +982,8 @@ fadeIn{
 .items li:hover h4{ 
   color:#ffffff; 
   text-decoration: underline;
+  -webkit-text-fill-color: #ffffff;
 }
-
-.desc{ font-size:0.9rem; margin-top:0.5rem; }
 
 /* Mobile info panels */
 .mobile-info {
@@ -881,7 +1015,7 @@ fadeIn{
 }
 
 .mobile-text {
-  font-size: 0.9rem;
+  font-size: 1rem; /* Increased from 0.9rem */
   line-height: 1.5;
   margin: 0;
 }
@@ -965,13 +1099,28 @@ fadeIn{
   .items li{
     float:none;
     width:100%;
-    margin:1rem 0;
+    margin: 3rem 0; /* Increased mobile spacing */
     text-align:left;
-    padding: 1rem;
+    padding: 2rem; /* Increased mobile padding */
     background: rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     border: 1px solid rgba(240, 234, 214, 0.1);
   }
+  
+  .items h2,
+  .items h3,
+  .items h4 {
+    font-size: clamp(2rem, 6vw, 2.8rem); /* Increased mobile font sizes */
+  }
+  
+  .desc {
+    font-size: 1.1rem; /* Increased mobile description size */
+  }
+  
+  .years {
+    font-size: 1rem; /* Increased mobile years size */
+  }
+  
   .items li::before{ display:none; }
   
   .divider {
@@ -987,6 +1136,16 @@ fadeIn{
   
   .education-hero h1 {
     font-size: 2.5rem;
+  }
+  
+  .items h2,
+  .items h3,
+  .items h4 {
+    font-size: clamp(1.8rem, 5vw, 2.4rem); /* Increased small mobile font sizes */
+  }
+  
+  .desc {
+    font-size: 1rem; /* Increased small mobile description size */
   }
 }
 

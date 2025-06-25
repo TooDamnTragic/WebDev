@@ -246,6 +246,140 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // ProfileCard-style tilt effect for education items
+  const initializeProfileCardEffects = () => {
+    const ANIMATION_CONFIG = {
+      SMOOTH_DURATION: 600,
+      INITIAL_DURATION: 1500,
+      INITIAL_X_OFFSET: 70,
+      INITIAL_Y_OFFSET: 60,
+    };
+
+    const clamp = (value, min = 0, max = 100) =>
+      Math.min(Math.max(value, min), max);
+
+    const round = (value, precision = 3) =>
+      parseFloat(value.toFixed(precision));
+
+    const adjust = (value, fromMin, fromMax, toMin, toMax) =>
+      round(toMin + ((toMax - toMin) * (value - fromMin)) / (fromMax - fromMin));
+
+    const easeInOutCubic = (x) =>
+      x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+
+    items.forEach((item) => {
+      // Wrap content in card container
+      const content = item.innerHTML;
+      item.innerHTML = `<div class="card-container"><div class="card-content">${content}</div></div>`;
+      
+      const cardContainer = item.querySelector('.card-container');
+      let rafId = null;
+
+      const updateCardTransform = (offsetX, offsetY) => {
+        const width = cardContainer.clientWidth;
+        const height = cardContainer.clientHeight;
+
+        const percentX = clamp((100 / width) * offsetX);
+        const percentY = clamp((100 / height) * offsetY);
+
+        const centerX = percentX - 50;
+        const centerY = percentY - 50;
+
+        const properties = {
+          "--pointer-x": `${percentX}%`,
+          "--pointer-y": `${percentY}%`,
+          "--background-x": `${adjust(percentX, 0, 100, 35, 65)}%`,
+          "--background-y": `${adjust(percentY, 0, 100, 35, 65)}%`,
+          "--pointer-from-center": `${clamp(Math.hypot(percentY - 50, percentX - 50) / 50, 0, 1)}`,
+          "--pointer-from-top": `${percentY / 100}`,
+          "--pointer-from-left": `${percentX / 100}`,
+          "--rotate-x": `${round(-(centerX / 5))}deg`,
+          "--rotate-y": `${round(centerY / 4)}deg`,
+        };
+
+        Object.entries(properties).forEach(([property, value]) => {
+          item.style.setProperty(property, value);
+        });
+      };
+
+      const createSmoothAnimation = (duration, startX, startY) => {
+        const startTime = performance.now();
+        const targetX = item.clientWidth / 2;
+        const targetY = item.clientHeight / 2;
+
+        const animationLoop = (currentTime) => {
+          const elapsed = currentTime - startTime;
+          const progress = clamp(elapsed / duration);
+          const easedProgress = easeInOutCubic(progress);
+
+          const currentX = adjust(easedProgress, 0, 1, startX, targetX);
+          const currentY = adjust(easedProgress, 0, 1, startY, targetY);
+
+          updateCardTransform(currentX, currentY);
+
+          if (progress < 1) {
+            rafId = requestAnimationFrame(animationLoop);
+          }
+        };
+
+        rafId = requestAnimationFrame(animationLoop);
+      };
+
+      const cancelAnimation = () => {
+        if (rafId) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+      };
+
+      const handlePointerMove = (event) => {
+        const rect = cardContainer.getBoundingClientRect();
+        updateCardTransform(
+          event.clientX - rect.left,
+          event.clientY - rect.top
+        );
+      };
+
+      const handlePointerEnter = () => {
+        cancelAnimation();
+        item.classList.add('active');
+        cardContainer.classList.add('active');
+      };
+
+      const handlePointerLeave = (event) => {
+        const rect = cardContainer.getBoundingClientRect();
+        createSmoothAnimation(
+          ANIMATION_CONFIG.SMOOTH_DURATION,
+          event.clientX - rect.left,
+          event.clientY - rect.top
+        );
+        item.classList.remove('active');
+        cardContainer.classList.remove('active');
+      };
+
+      // Add event listeners
+      cardContainer.addEventListener('pointerenter', handlePointerEnter);
+      cardContainer.addEventListener('pointermove', handlePointerMove);
+      cardContainer.addEventListener('pointerleave', handlePointerLeave);
+
+      // Initial animation
+      const initialX = item.clientWidth - ANIMATION_CONFIG.INITIAL_X_OFFSET;
+      const initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET;
+
+      updateCardTransform(initialX, initialY);
+      createSmoothAnimation(
+        ANIMATION_CONFIG.INITIAL_DURATION,
+        initialX,
+        initialY
+      );
+    });
+  };
+
+  // Initialize ProfileCard effects
+  setTimeout(() => {
+    initializeProfileCardEffects();
+  }, 500);
   
   // Mobile detection
   const isMobile = () => window.innerWidth <= 768;
