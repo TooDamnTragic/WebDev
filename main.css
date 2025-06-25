@@ -523,10 +523,10 @@ fadeIn{
   z-index: 2;
 }
 
-/* Curricular Section */
+/* Curricular Section - Match education title color */
 .curricular-section {
   min-height: 100vh;
-  background: linear-gradient(to bottom, #756e6e, #e02b2b);
+  background: #212427; /* Match education title background */
   position: relative;
   opacity: 0;
   transform: translateY(100px);
@@ -541,10 +541,10 @@ fadeIn{
   transform: translateY(0);
 }
 
-/* Extracurricular Section - Natural flow */
+/* Extracurricular Section - Match education title color */
 .extracurricular-section {
   min-height: 100vh;
-  background: linear-gradient(135deg, #2c1810, #4a2c1a, #1a2c3a);
+  background: #212427; /* Match education title background */
   position: relative;
   opacity: 0;
   transform: translateY(50px);
@@ -744,11 +744,6 @@ fadeIn{
   position: relative;
   animation: slideInFromSide 0.8s ease-out forwards;
   opacity: 0;
-  padding: 1.5rem;
-  background: rgba(0, 0, 0, 0.3);
-  border-radius: 12px;
-  border: 2px solid rgba(240, 234, 214, 0.3);
-  backdrop-filter: blur(10px);
   margin: 1.5rem 0;
 }
 
@@ -782,10 +777,10 @@ fadeIn{
   --card-radius: 20px;
 }
 
-/* Enhanced Items with ProfileCard Effects */
+/* Enhanced Items with ProfileCard Effects - 30% larger */
 .items li {
   position: relative;
-  width: 45%;
+  width: 58.5%; /* Increased from 45% by 30% */
   margin: 4rem 0; /* Significantly increased spacing */
   float: left;
   clear: both;
@@ -805,50 +800,45 @@ fadeIn{
   border-radius: 4px;
 }
 
-/* ProfileCard-style card container */
+/* Clean ProfileCard-style card container - NO brownish inset boxes */
 .items li .card-container {
   position: relative;
-  background: rgba(0, 0, 0, 0.3);
+  background: transparent; /* Removed brownish background */
   border-radius: var(--card-radius);
-  padding: 2.5rem; /* Increased padding */
+  padding: 3.25rem; /* Increased padding by 30% (2.5rem * 1.3) */
   backdrop-filter: blur(15px);
-  border: 2px solid rgba(240, 234, 214, 0.2);
+  border: none; /* Removed border */
   transition: transform 1s ease;
   transform: translate3d(0, 0, 0.1px) rotateX(0deg) rotateY(0deg);
   box-shadow: rgba(0, 0, 0, 0.8) calc((var(--pointer-from-left) * 10px) - 3px) calc((var(--pointer-from-top) * 20px) - 6px) 20px -5px;
   
-  /* Enhanced gradient background */
+  /* Clean gradient background matching education title colors */
   background-image: 
     radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y), 
-      hsla(266, 100%, 90%, var(--card-opacity)) 4%, 
-      hsla(266, 50%, 80%, calc(var(--card-opacity) * 0.75)) 10%, 
-      hsla(266, 25%, 70%, calc(var(--card-opacity) * 0.5)) 50%, 
-      hsla(266, 0%, 60%, 0) 100%),
-    radial-gradient(35% 52% at 55% 20%, #00ffaac4 0%, #073aff00 100%),
-    radial-gradient(100% 100% at 50% 50%, #00c1ffff 1%, #073aff00 76%),
-    conic-gradient(from 124deg at 50% 50%, #c137ffff 0%, #07c6ffff 40%, #07c6ffff 60%, #c137ffff 100%);
+      rgba(240, 234, 214, var(--card-opacity)) 4%, 
+      rgba(240, 234, 214, calc(var(--card-opacity) * 0.75)) 10%, 
+      rgba(240, 234, 214, calc(var(--card-opacity) * 0.5)) 50%, 
+      rgba(240, 234, 214, 0) 100%),
+    radial-gradient(35% 52% at 55% 20%, rgba(240, 234, 214, 0.1) 0%, transparent 100%),
+    radial-gradient(100% 100% at 50% 50%, rgba(240, 234, 214, 0.05) 1%, transparent 76%);
   background-size: 100% 100%;
-  background-position: 0 0, 0 0, 50% 50%, 0 0;
+  background-position: 0 0, 0 0, 50% 50%;
   overflow: hidden;
 }
 
 .items li:hover .card-container,
 .items li.active .card-container {
-  --card-opacity: 1;
+  --card-opacity: 0.15; /* Subtle opacity for clean look */
   transition: none;
   transform: translate3d(0, 0, 0.1px) rotateX(var(--rotate-y)) rotateY(var(--rotate-x));
 }
 
-/* Enhanced shine effect */
+/* Removed brownish inset background */
 .items li .card-container::before {
-  content: '';
-  position: absolute;
-  inset: 1px;
-  background: rgba(0, 0, 0, 0.9);
-  border-radius: calc(var(--card-radius) - 1px);
-  z-index: 1;
+  display: none; /* Completely removed */
 }
 
+/* Clean shine effect with education title colors */
 .items li .card-container::after {
   content: '';
   position: absolute;
@@ -856,19 +846,17 @@ fadeIn{
   border-radius: var(--card-radius);
   background-image: 
     repeating-linear-gradient(0deg, 
-      hsl(2, 100%, 73%) 5%, 
-      hsl(53, 100%, 69%) 10%, 
-      hsl(93, 100%, 69%) 15%, 
-      hsl(176, 100%, 76%) 20%, 
-      hsl(228, 100%, 74%) 25%, 
-      hsl(283, 100%, 73%) 30%),
+      rgba(240, 234, 214, 0.1) 5%, 
+      rgba(240, 234, 214, 0.05) 10%, 
+      rgba(240, 234, 214, 0.08) 15%, 
+      rgba(240, 234, 214, 0.03) 20%),
     radial-gradient(farthest-corner circle at var(--pointer-x) var(--pointer-y), 
-      hsla(0, 0%, 0%, 0.1) 12%, 
-      hsla(0, 0%, 0%, 0.15) 20%, 
-      hsla(0, 0%, 0%, 0.25) 120%);
+      rgba(240, 234, 214, 0.1) 12%, 
+      rgba(240, 234, 214, 0.05) 20%, 
+      transparent 120%);
   background-position: var(--background-x) var(--background-y), center;
   background-size: 300% 300%, 200% 200%;
-  mix-blend-mode: color-dodge;
+  mix-blend-mode: overlay;
   opacity: 0;
   transition: opacity 0.6s ease;
   z-index: 2;
@@ -897,7 +885,7 @@ fadeIn{
   text-align: inherit;
   text-decoration: none;
   border-bottom: none;
-  background-image: linear-gradient(to bottom, #fff, #6f6fbe);
+  background-image: linear-gradient(to bottom, #f0ead6, #f0ead6);
   background-size: 1em 1.5em;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -929,18 +917,18 @@ fadeIn{
   margin: 0.5rem 0;
 }
 
-/* left / right halves with increased spacing */
+/* left / right halves with increased spacing for larger cards */
 .items li.left  { 
-  margin-right: 52%; /* Increased spacing */
+  margin-right: 41.5%; /* Adjusted for 30% larger cards */
   text-align: right; 
-  padding-right: 2rem; /* Increased padding */
+  padding-right: 2.6rem; /* Increased padding by 30% */
 }
 
 .items li.right { 
-  margin-left: 52%; /* Increased spacing */
+  margin-left: 41.5%; /* Adjusted for 30% larger cards */
   text-align: left; 
   float: right; 
-  padding-left: 2rem; /* Increased padding */
+  padding-left: 2.6rem; /* Increased padding by 30% */
 }
 
 /* dots on the divider */
@@ -957,8 +945,8 @@ fadeIn{
   box-shadow: 0 0 10px rgba(240, 234, 214, 0.5);
 }
 
-.items li.left::before  { right: -10.5%; transform: translateX(-50%); }
-.items li.right::before { left : -10.5%; transform: translateX(50%); }
+.items li.left::before  { right: -8.5%; transform: translateX(-50%); } /* Adjusted for larger cards */
+.items li.right::before { left : -8.5%; transform: translateX(50%); } /* Adjusted for larger cards */
 
 /* Typography + hover colour */
 .items a{ color:inherit; text-decoration:none; }
