@@ -346,6 +346,26 @@ fadeIn{
   opacity: 0;
   transform: translateY(50px);
   animation: heroFadeIn 1.5s ease-out forwards;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Letter randomization styles */
+.education-hero h1 .letter {
+  transition: font-family 0.1s ease, transform 0.1s ease;
+}
+
+.education-hero h1:hover .letter {
+  animation: letterFloat 0.3s ease-in-out infinite alternate;
+}
+
+@keyframes letterFloat {
+  0% {
+    transform: translateY(0px);
+  }
+  100% {
+    transform: translateY(-2px);
+  }
 }
 
 @keyframes heroFadeIn {

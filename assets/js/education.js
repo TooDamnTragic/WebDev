@@ -16,62 +16,128 @@ document.addEventListener('DOMContentLoaded', () => {
   const curricularSection = document.getElementById('curricular-section');
   const extracurricularSection = document.getElementById('extracurricular-section');
 
-  // Enhanced font cycling effect for hero title - All fonts from assets/fonts/
+  // Enhanced font cycling effect for hero title - Individual letter randomization
   const heroTitle = document.querySelector('.education-hero h1');
   
-    // Font cycling effect for hero title
-    const heroTitle = document.querySelector('.education-hero h1');
-    const getHeroFonts = () => {
-      const fonts = new Set();
-      for (const sheet of document.styleSheets) {
-        let rules;
-        try {
-          rules = sheet.cssRules;
-        } catch {
-          continue; // Skip cross-origin stylesheets
-        }
-        if (!rules) continue;
-        for (const rule of rules) {
-          if (rule.type === CSSRule.FONT_FACE_RULE) {
-            const src = rule.style.getPropertyValue('src');
-            if (src && src.includes('assets/fonts')) {
-              const family = rule.style
-                .getPropertyValue('font-family')
-                .replace(/['"]/g, '')
-                .trim();
-              if (family) fonts.add(family);
-            }
-          }
-        }
-      }
-      return Array.from(fonts);
-    };
-
-    const heroFonts = getHeroFonts();
+  // All available fonts from the fonts folder
+  const allFonts = [
+    'Hackney',
+    'DTGetai', 
+    'Asember',
+    'Savate',
+    'Iconic',
+    'Catrose',
+    'Beautyful',
+    'Runtime',
+    'Arshine',
+    'Sophiamelanieregular',
+    'Crackchakingtrialregular',
+    'Johnfoster',
+    'Motterdam',
+    'Sacloud',
+    'Tfwanderclouddemo'
+  ];
 
   let originalFont;
-  let fontIndex = 0;
-  let lastMove = 0;
+  let isRandomizing = false;
+  let randomizeInterval;
+  let letterElements = [];
 
-  const handleMouseMove = () => {
-    const now = Date.now();
-    if (now - lastMove > 100) {
-      heroTitle.style.fontFamily = `'${heroFonts[fontIndex]}', sans-serif`;
-      fontIndex = (fontIndex + 1) % heroFonts.length;
-      lastMove = now;
+  // Function to wrap each letter in a span
+  const wrapLettersInSpans = (element) => {
+    const text = element.textContent;
+    const wrappedText = text.split('').map(char => {
+      if (char === ' ') {
+        return ' '; // Keep spaces as is
+      }
+      return `<span class="letter" style="display: inline-block;">${char}</span>`;
+    }).join('');
+    element.innerHTML = wrappedText;
+    return element.querySelectorAll('.letter');
+  };
+
+  // Function to randomize a single letter's font
+  const randomizeLetter = (letterElement) => {
+    const randomFont = allFonts[Math.floor(Math.random() * allFonts.length)];
+    letterElement.style.fontFamily = `'${randomFont}', sans-serif`;
+    letterElement.style.transition = 'font-family 0.1s ease';
+  };
+
+  // Function to reset all letters to original font
+  const resetAllLetters = () => {
+    letterElements.forEach(letter => {
+      letter.style.fontFamily = originalFont;
+    });
+  };
+
+  // Function to start randomizing letters
+  const startRandomizing = () => {
+    if (isRandomizing) return;
+    isRandomizing = true;
+    
+    randomizeInterval = setInterval(() => {
+      // Randomize 2-4 random letters each cycle for dynamic effect
+      const numLettersToRandomize = Math.floor(Math.random() * 3) + 2;
+      const lettersToRandomize = [];
+      
+      for (let i = 0; i < numLettersToRandomize && i < letterElements.length; i++) {
+        const randomIndex = Math.floor(Math.random() * letterElements.length);
+        if (!lettersToRandomize.includes(randomIndex)) {
+          lettersToRandomize.push(randomIndex);
+        }
+      }
+      
+      lettersToRandomize.forEach(index => {
+        randomizeLetter(letterElements[index]);
+      });
+    }, 80); // Change letters every 80ms for smooth effect
+  };
+
+  // Function to stop randomizing
+  const stopRandomizing = () => {
+    if (!isRandomizing) return;
+    isRandomizing = false;
+    
+    if (randomizeInterval) {
+      clearInterval(randomizeInterval);
+      randomizeInterval = null;
     }
+    
+    // Gradually reset letters back to original font
+    letterElements.forEach((letter, index) => {
+      setTimeout(() => {
+        letter.style.fontFamily = originalFont;
+      }, index * 30); // Stagger the reset for a wave effect
+    });
   };
 
   if (heroTitle) {
+    // Store original font and wrap letters
+    originalFont = getComputedStyle(heroTitle).fontFamily;
+    letterElements = wrapLettersInSpans(heroTitle);
+    
+    // Add hover effects
     heroTitle.addEventListener('mouseenter', () => {
-      originalFont = getComputedStyle(heroTitle).fontFamily;
-      fontIndex = 0;
-      lastMove = 0;
-      heroTitle.addEventListener('mousemove', handleMouseMove);
+      startRandomizing();
     });
+    
     heroTitle.addEventListener('mouseleave', () => {
-      heroTitle.removeEventListener('mousemove', handleMouseMove);
-      heroTitle.style.fontFamily = originalFont;
+      stopRandomizing();
+    });
+    
+    // Optional: Add click effect for mobile
+    heroTitle.addEventListener('click', () => {
+      if (isRandomizing) {
+        stopRandomizing();
+      } else {
+        startRandomizing();
+        // Auto-stop after 3 seconds on mobile
+        setTimeout(() => {
+          if (isRandomizing) {
+            stopRandomizing();
+          }
+        }, 3000);
+      }
     });
   }
   
