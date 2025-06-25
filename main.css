@@ -21,6 +21,7 @@ body,html{
   font-weight: normal;
   font-style: normal;
 }
+
 @font-face {
   font-family: 'Asember';
   src: url('assets/fonts/AsemberModernDemoRegular-EaVJW.otf') format('opentype');
@@ -31,6 +32,83 @@ body,html{
 @font-face {
   font-family: 'Savate';
   src: url('assets/fonts/Savate-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Iconic';
+  src: url('assets/fonts/Iconic-drG8K.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Catrose';
+  src: url('assets/fonts/Catrose-6RBMD.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Beautyful';
+  src: url('assets/fonts/Beautyful-2vlYd.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Runtime';
+  src: url('assets/fonts/RuntimeRegular-m2Odx.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Arshine';
+  src: url('assets/fonts/ArshineExtruderight-4nZ99.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Sophiamelanieregular';
+  src: url('assets/fonts/SophiamelanieRegular-E4gee.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Crackchakingtrialregular';
+  src: url('assets/fonts/CrackchakingtrialRegular-7O8KP.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Johnfoster';
+  src: url('assets/fonts/Johnfoster-qZjj6.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Motterdam';
+  src: url('assets/fonts/Motterdam-MVanr.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Sacloud';
+  src: url('assets/fonts/Sacloud-R9g4M.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Tfwanderclouddemo';
+  src: url('assets/fonts/TfwanderclouddemoRegular-VG6ll.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
@@ -268,6 +346,8 @@ fadeIn{
   opacity: 0;
   transform: translateY(50px);
   animation: heroFadeIn 1.5s ease-out forwards;
+  cursor: pointer;
+  transition: font-family 0.1s ease;
 }
 
 @keyframes heroFadeIn {
