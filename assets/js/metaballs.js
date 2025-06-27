@@ -1,5 +1,4 @@
-
-    class MetaBalls {
+class MetaBalls {
         constructor(container, options = {}) {
             this.container = container;
             this.options = {
@@ -38,20 +37,21 @@
         // Initialize balls
         this.createBalls();
         
-        // Setup resize handler
-        this.resize();
-        window.addEventListener('resize', () => this.resize());
-        
-        // Start animation
-        this.animate();
+        // Setup resize handler with delay to ensure container is sized
+        setTimeout(() => {
+            this.resize();
+            window.addEventListener('resize', () => this.resize());
+            // Start animation only after resize
+            this.animate();
+        }, 100);
     }
     
     createBalls() {
         this.balls = [];
         for (let i = 0; i < this.options.ballCount; i++) {
         this.balls.push({
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
+            x: Math.random() * (window.innerWidth || 800),
+            y: Math.random() * (window.innerHeight || 600),
             vx: (Math.random() - 0.5) * 2,
             vy: (Math.random() - 0.5) * 2,
             size: this.options.ballSize + Math.random() * 20,
@@ -62,8 +62,21 @@
     
     resize() {
         const rect = this.container.getBoundingClientRect();
-        this.canvas.width = rect.width;
-        this.canvas.height = rect.height;
+        let width = rect.width;
+        let height = rect.height;
+        
+        // Fallback to window dimensions if container has no size
+        if (width <= 0 || height <= 0) {
+            width = window.innerWidth || 800;
+            height = window.innerHeight || 600;
+        }
+        
+        // Ensure minimum dimensions
+        width = Math.max(width, 100);
+        height = Math.max(height, 100);
+        
+        this.canvas.width = width;
+        this.canvas.height = height;
     }
 
     updateBalls(time) {
@@ -82,6 +95,11 @@
     }
     
     drawMetaBalls() {
+        // Validate canvas dimensions before creating ImageData
+        if (this.canvas.width <= 0 || this.canvas.height <= 0) {
+            return; // Skip drawing if canvas has invalid dimensions
+        }
+        
         const imageData = this.ctx.createImageData(this.canvas.width, this.canvas.height);
         const data = imageData.data;
         
@@ -147,6 +165,13 @@
     }
     
     animate() {
+        // Only animate if canvas has valid dimensions
+        if (this.canvas.width <= 0 || this.canvas.height <= 0) {
+            // Retry after a short delay
+            setTimeout(() => this.animate(), 100);
+            return;
+        }
+        
         const time = performance.now();
         // Clear canvas
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -161,17 +186,17 @@
 
     }
 
-    // Initialize metaballs
+    // Initialize metaballs with proper configuration
     document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('metaballs');
     if (container) {
         new MetaBalls(container, {
-        ballCount: 0,
-        ballSize: 0,
-        speed: 0,
+        ballCount: 6,
+        ballSize: 40,
+        speed: 0.001,
         color: '#667eea',
         mouseSize: 120,
-        threshold: 0.8
+        threshold: 0.6
         });
     }
     });
