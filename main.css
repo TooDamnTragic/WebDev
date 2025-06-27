@@ -14,7 +14,9 @@ body,html{
   font-weight: normal;
   font-style: normal;
 }
-
+/*
+cwap
+*/
 @font-face {
   font-family: 'DTGetai';
   src: url('assets/fonts/DTGetaiGroteskDisplay-Black.ttf') format('truetype');
