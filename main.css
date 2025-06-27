@@ -762,7 +762,7 @@ fadeIn{
   }
 }
 
-/* Enhanced ProfileCard-style Items with Tilt Effect and SVG Icon Patterns */
+/* Enhanced ProfileCard-style Items with Tilt Effect and Colored Background Gradients */
 :root {
   --pointer-x: 50%;
   --pointer-y: 50%;
@@ -776,6 +776,8 @@ fadeIn{
   --background-y: 50%;
   --card-radius: 20px;
   --icon: none;
+  --card-gradient: none;
+  --glare-color: rgba(240, 234, 214, 0.3);
 }
 
 /* Enhanced Items with ProfileCard Effects - 30% larger */
@@ -801,7 +803,7 @@ fadeIn{
   border-radius: 4px;
 }
 
-/* Clean ProfileCard-style card container with SVG icon patterns */
+/* Clean ProfileCard-style card container with colored background gradients */
 .items li .card-container {
   position: relative;
   background: transparent;
@@ -814,15 +816,14 @@ fadeIn{
   box-shadow: rgba(0, 0, 0, 0.8) calc((var(--pointer-from-left) * 10px) - 3px) calc((var(--pointer-from-top) * 20px) - 6px) 20px -5px;
   overflow: hidden;
   
-  /* Clean gradient background matching education title colors */
+  /* Base gradient background - subtle and clean */
   background-image: 
     radial-gradient(farthest-side circle at var(--pointer-x) var(--pointer-y), 
       rgba(240, 234, 214, var(--card-opacity)) 4%, 
       rgba(240, 234, 214, calc(var(--card-opacity) * 0.75)) 10%, 
       rgba(240, 234, 214, calc(var(--card-opacity) * 0.5)) 50%, 
       rgba(240, 234, 214, 0) 100%),
-    radial-gradient(35% 52% at 55% 20%, rgba(240, 234, 214, 0.1) 0%, transparent 100%),
-    radial-gradient(100% 100% at 50% 50%, rgba(240, 234, 214, 0.05) 1%, transparent 76%);
+    var(--card-gradient);
   background-size: 100% 100%;
   background-position: 0 0, 0 0, 50% 50%;
 }
@@ -834,31 +835,31 @@ fadeIn{
   transform: translate3d(0, 0, 0.1px) rotateX(var(--rotate-y)) rotateY(var(--rotate-x));
 }
 
-/* SVG Icon Pattern Shine Effect */
+/* White SVG Icon Pattern Shine Effect with Colored Glare */
 .items li .card-container::after {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: var(--card-radius);
   
-  /* SVG icon pattern mask */
+  /* SVG icon pattern mask - WHITE ICONS */
   mask-image: var(--icon);
   -webkit-mask-image: var(--icon);
   mask-mode: luminance;
   mask-repeat: repeat;
-  mask-size: 120px 120px; /* Increased from 80px to 120px for better spacing */
+  mask-size: 160px 160px; /* Increased from 120px for better spacing */
   mask-position: var(--background-x) var(--background-y);
   
-  /* Shine gradient with education title colors */
+  /* White shine with colored glare overlay */
   background-image: 
     repeating-linear-gradient(0deg, 
-      rgba(240, 234, 214, 0.15) 5%, 
-      rgba(240, 234, 214, 0.08) 10%, 
-      rgba(240, 234, 214, 0.12) 15%, 
-      rgba(240, 234, 214, 0.05) 20%),
+      rgba(255, 255, 255, 0.15) 5%, 
+      rgba(255, 255, 255, 0.08) 10%, 
+      rgba(255, 255, 255, 0.12) 15%, 
+      rgba(255, 255, 255, 0.05) 20%),
     radial-gradient(farthest-corner circle at var(--pointer-x) var(--pointer-y), 
-      rgba(240, 234, 214, 0.2) 12%, 
-      rgba(240, 234, 214, 0.1) 20%, 
+      var(--glare-color) 12%, 
+      rgba(255, 255, 255, 0.1) 20%, 
       transparent 120%);
   background-position: var(--background-x) var(--background-y), center;
   background-size: 300% 300%, 200% 200%;
@@ -871,35 +872,50 @@ fadeIn{
 
 .items li:hover .card-container::after,
 .items li.active .card-container::after {
-  opacity: 0.6; /* More visible on hover */
+  opacity: 0.8; /* More visible on hover to reveal colored glare */
   mask-position: calc(var(--background-x) + 20px) calc(var(--background-y) + 20px);
 }
 
-/* Specific SVG icon patterns for each card with proper color encoding */
+/* Specific colored gradients and glare for each card */
 
-/* RIT Card - University/Education Icon - Orange */
+/* RIT Card - Orange gradients and glare */
 .items li[data-card="rit"] .card-container {
-  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' fill='%23ff8c00' viewBox='0 0 256 256'%3E%3Cpath d='M224,64,128,96,32,64l96-32Z' opacity='0.2'%3E%3C/path%3E%3Cpath d='M226.53,56.41l-96-32a8,8,0,0,0-5.06,0l-96,32a8,8,0,0,0-5.4,6.75A5,5,0,0,0,24,64v80a8,8,0,0,0,16,0V75.1L73.59,86.29a64,64,0,0,0,20.65,88.05c-18,7.06-33.56,19.83-44.94,37.29a8,8,0,1,0,13.4,8.74C77.77,197.25,101.57,184,128,184s50.23,13.25,65.3,36.37a8,8,0,0,0,13.4-8.74c-11.38-17.46-27-30.23-44.94-37.29a64,64,0,0,0,20.65-88l44.12-14.7a8,8,0,0,0,0-15.18ZM176,120A48,48,0,1,1,89.35,91.55l36.12,12a8,8,0,0,0,5.06,0l36.12-12A47.89,47.89,0,0,1,176,120ZM128,87.57,57.3,64,128,40.43,198.7,64Z'%3E%3C/path%3E%3C/svg%3E");
+  --card-gradient: radial-gradient(35% 52% at 55% 20%, rgba(255, 140, 0, 0.1) 0%, transparent 100%),
+                   radial-gradient(100% 100% at 50% 50%, rgba(255, 140, 0, 0.05) 1%, transparent 76%);
+  --glare-color: rgba(255, 140, 0, 0.4);
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' fill='%23ffffff' viewBox='0 0 256 256'%3E%3Cpath d='M224,64,128,96,32,64l96-32Z' opacity='0.2'%3E%3C/path%3E%3Cpath d='M226.53,56.41l-96-32a8,8,0,0,0-5.06,0l-96,32a8,8,0,0,0-5.4,6.75A5,5,0,0,0,24,64v80a8,8,0,0,0,16,0V75.1L73.59,86.29a64,64,0,0,0,20.65,88.05c-18,7.06-33.56,19.83-44.94,37.29a8,8,0,1,0,13.4,8.74C77.77,197.25,101.57,184,128,184s50.23,13.25,65.3,36.37a8,8,0,0,0,13.4-8.74c-11.38-17.46-27-30.23-44.94-37.29a64,64,0,0,0,20.65-88l44.12-14.7a8,8,0,0,0,0-15.18ZM176,120A48,48,0,1,1,89.35,91.55l36.12,12a8,8,0,0,0,5.06,0l36.12-12A47.89,47.89,0,0,1,176,120ZM128,87.57,57.3,64,128,40.43,198.7,64Z'%3E%3C/path%3E%3C/svg%3E");
 }
 
-/* Honors Card - Certificate/Award Icon - Gold */
+/* Honors Card - Gold gradients and glare */
 .items li[data-card="honors"] .card-container {
-  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' fill='%23ffd700' viewBox='0 0 256 256'%3E%3Cpath d='M224,56V216l-32-16-32,16-32-16L96,216,64,200,32,216V56a8,8,0,0,1,8-8H216A8,8,0,0,1,224,56Z' opacity='0.2'%3E%3C/path%3E%3Cpath d='M216,40H40A16,16,0,0,0,24,56V216a8,8,0,0,0,11.58,7.16L64,208.94l28.42,14.22a8,8,0,0,0,7.16,0L128,208.94l28.42,14.22a8,8,0,0,0,7.16,0L192,208.94l28.42,14.22A8,8,0,0,0,232,216V56A16,16,0,0,0,216,40Zm0,163.06-20.42-10.22a8,8,0,0,0-7.16,0L160,207.06l-28.42-14.22a8,8,0,0,0-7.16,0L96,207.06,67.58,192.84a8,8,0,0,0-7.16,0L40,203.06V56H216ZM60.42,167.16a8,8,0,0,0,10.74-3.58L76.94,152h38.12l5.78,11.58a8,8,0,1,0,14.32-7.16l-32-64a8,8,0,0,0-14.32,0l-32,64A8,8,0,0,0,60.42,167.16ZM96,113.89,107.06,136H84.94ZM136,128a8,8,0,0,1,8-8h16V104a8,8,0,0,1,16,0v16h16a8,8,0,0,1,0,16H176v16a8,8,0,0,1-16,0V136H144A8,8,0,0,1,136,128Z'%3E%3C/path%3E%3C/svg%3E");
+  --card-gradient: radial-gradient(35% 52% at 55% 20%, rgba(255, 215, 0, 0.1) 0%, transparent 100%),
+                   radial-gradient(100% 100% at 50% 50%, rgba(255, 215, 0, 0.05) 1%, transparent 76%);
+  --glare-color: rgba(255, 215, 0, 0.4);
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' fill='%23ffffff' viewBox='0 0 256 256'%3E%3Cpath d='M224,56V216l-32-16-32,16-32-16L96,216,64,200,32,216V56a8,8,0,0,1,8-8H216A8,8,0,0,1,224,56Z' opacity='0.2'%3E%3C/path%3E%3Cpath d='M216,40H40A16,16,0,0,0,24,56V216a8,8,0,0,0,11.58,7.16L64,208.94l28.42,14.22a8,8,0,0,0,7.16,0L128,208.94l28.42,14.22a8,8,0,0,0,7.16,0L192,208.94l28.42,14.22A8,8,0,0,0,232,216V56A16,16,0,0,0,216,40Zm0,163.06-20.42-10.22a8,8,0,0,0-7.16,0L160,207.06l-28.42-14.22a8,8,0,0,0-7.16,0L96,207.06,67.58,192.84a8,8,0,0,0-7.16,0L40,203.06V56H216ZM60.42,167.16a8,8,0,0,0,10.74-3.58L76.94,152h38.12l5.78,11.58a8,8,0,1,0,14.32-7.16l-32-64a8,8,0,0,0-14.32,0l-32,64A8,8,0,0,0,60.42,167.16ZM96,113.89,107.06,136H84.94ZM136,128a8,8,0,0,1,8-8h16V104a8,8,0,0,1,16,0v16h16a8,8,0,0,1,0,16H176v16a8,8,0,0,1-16,0V136H144A8,8,0,0,1,136,128Z'%3E%3C/path%3E%3C/svg%3E");
 }
 
-/* Cybersecurity Card - Circuit/Tech Icon - Silver */
+/* Cybersecurity Card - Silver gradients and glare */
 .items li[data-card="cybersecurity"] .card-container {
-  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' fill='%23c0c0c0' viewBox='0 0 256 256'%3E%3Cpath d='M208,40H48a8,8,0,0,0-8,8V208a8,8,0,0,0,8,8H208a8,8,0,0,0,8-8V48A8,8,0,0,0,208,40ZM88,184a16,16,0,1,1,16-16A16,16,0,0,1,88,184Zm80-64a16,16,0,1,1,16-16A16,16,0,0,1,168,120Z' opacity='0.2'%3E%3C/path%3E%3Cpath d='M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM88,160a8,8,0,1,1-8,8A8,8,0,0,1,88,160ZM48,48H80v97.38a24,24,0,1,0,16,0V115.31l48,48V208H48ZM208,208H160V160a8,8,0,0,0-2.34-5.66L96,92.69V48h32V72a8,8,0,0,0,2.34,5.66l16,16A23.74,23.74,0,0,0,144,104a24,24,0,1,0,24-24,23.74,23.74,0,0,0-10.34,2.35L144,68.69V48h64V208ZM168,96a8,8,0,1,1-8,8A8,8,0,0,1,168,96Z'%3E%3C/path%3E%3C/svg%3E");
+  --card-gradient: radial-gradient(35% 52% at 55% 20%, rgba(192, 192, 192, 0.1) 0%, transparent 100%),
+                   radial-gradient(100% 100% at 50% 50%, rgba(192, 192, 192, 0.05) 1%, transparent 76%);
+  --glare-color: rgba(192, 192, 192, 0.4);
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' fill='%23ffffff' viewBox='0 0 256 256'%3E%3Cpath d='M208,40H48a8,8,0,0,0-8,8V208a8,8,0,0,0,8,8H208a8,8,0,0,0,8-8V48A8,8,0,0,0,208,40ZM88,184a16,16,0,1,1,16-16A16,16,0,0,1,88,184Zm80-64a16,16,0,1,1,16-16A16,16,0,0,1,168,120Z' opacity='0.2'%3E%3C/path%3E%3Cpath d='M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM88,160a8,8,0,1,1-8,8A8,8,0,0,1,88,160ZM48,48H80v97.38a24,24,0,1,0,16,0V115.31l48,48V208H48ZM208,208H160V160a8,8,0,0,0-2.34-5.66L96,92.69V48h32V72a8,8,0,0,0,2.34,5.66l16,16A23.74,23.74,0,0,0,144,104a24,24,0,1,0,24-24,23.74,23.74,0,0,0-10.34,2.35L144,68.69V48h64V208ZM168,96a8,8,0,1,1-8,8A8,8,0,0,1,168,96Z'%3E%3C/path%3E%3C/svg%3E");
 }
 
-/* Math Minor Card - Calculator/Math Icon - Red */
+/* Math Minor Card - Red gradients and glare - NO ICON */
 .items li[data-card="math"] .card-container {
-  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' fill='%23ff0000' viewBox='0 0 256 256'%3E%3Cpath d='M216,56V200a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V56A16,16,0,0,1,56,40H200A16,16,0,0,1,216,56Z' opacity='0.2'%3E%3C/path%3E%3Cpath d='M112,72a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16h64A8,8,0,0,1,112,72Zm-8,104H80V152a8,8,0,0,0-16,0v24H40a8,8,0,0,0,0,16H64v24a8,8,0,0,0,16,0V192h24a8,8,0,0,0,0-16Zm48,0h64a8,8,0,0,0,0-16H152a8,8,0,0,0,0,16Zm64,16H152a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16Zm-61.66-90.34a8,8,0,0,0,11.32,0L184,83.31l18.34,18.35a8,8,0,0,0,11.32-11.32L195.31,72l18.35-18.34a8,8,0,0,0-11.32-11.32L184,60.69,165.66,42.34a8,8,0,0,0-11.32,11.32L172.69,72,154.34,90.34A8,8,0,0,0,154.34,101.66Z'%3E%3C/path%3E%3C/svg%3E");
+  --card-gradient: radial-gradient(35% 52% at 55% 20%, rgba(255, 0, 0, 0.1) 0%, transparent 100%),
+                   radial-gradient(100% 100% at 50% 50%, rgba(255, 0, 0, 0.05) 1%, transparent 76%);
+  --glare-color: rgba(255, 0, 0, 0.4);
+  /* NO ICON for math card */
 }
 
-/* System Admin Minor Card - Server/Network Icon - Cool Sky Blue */
+/* System Admin Minor Card - Cool Sky Blue gradients and glare */
 .items li[data-card="sysadmin"] .card-container {
-  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' fill='%2387ceeb' viewBox='0 0 256 256'%3E%3Cpath d='M240,48V208a8,8,0,0,1-8,8H152a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8h80A8,8,0,0,1,240,48Z' opacity='0.2'%3E%3C/path%3E%3Cpath d='M216,72a8,8,0,0,1-8,8H176a8,8,0,0,1,0-16h32A8,8,0,0,1,216,72Zm-8,24H176a8,8,0,0,0,0,16h32a8,8,0,0,0,0-16Zm40-48V208a16,16,0,0,1-16,16H152a16,16,0,0,1-16-16V192H96v16h16a8,8,0,0,1,0,16H64a8,8,0,0,1,0-16H80V192H32A24,24,0,0,1,8,168V96A24,24,0,0,1,32,72H136V48a16,16,0,0,1,16-16h80A16,16,0,0,1,248,48ZM136,176V88H32a8,8,0,0,0-8,8v72a8,8,0,0,0,8,8Zm96,32V48H152V208h80Zm-40-40a12,12,0,1,0,12,12A12,12,0,0,0,192,168Z'%3E%3C/path%3E%3C/svg%3E");
+  --card-gradient: radial-gradient(35% 52% at 55% 20%, rgba(135, 206, 235, 0.1) 0%, transparent 100%),
+                   radial-gradient(100% 100% at 50% 50%, rgba(135, 206, 235, 0.05) 1%, transparent 76%);
+  --glare-color: rgba(135, 206, 235, 0.4);
+  --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' fill='%23ffffff' viewBox='0 0 256 256'%3E%3Cpath d='M240,48V208a8,8,0,0,1-8,8H152a8,8,0,0,1-8-8V48a8,8,0,0,1,8-8h80A8,8,0,0,1,240,48Z' opacity='0.2'%3E%3C/path%3E%3Cpath d='M216,72a8,8,0,0,1-8,8H176a8,8,0,0,1,0-16h32A8,8,0,0,1,216,72Zm-8,24H176a8,8,0,0,0,0,16h32a8,8,0,0,0,0-16Zm40-48V208a16,16,0,0,1-16,16H152a16,16,0,0,1-16-16V192H96v16h16a8,8,0,0,1,0,16H64a8,8,0,0,1,0-16H80V192H32A24,24,0,0,1,8,168V96A24,24,0,0,1,32,72H136V48a16,16,0,0,1,16-16h80A16,16,0,0,1,248,48ZM136,176V88H32a8,8,0,0,0-8,8v72a8,8,0,0,0,8,8Zm96,32V48H152V208h80Zm-40-40a12,12,0,1,0,12,12A12,12,0,0,0,192,168Z'%3E%3C/path%3E%3C/svg%3E");
 }
 
 /* Content styling with enhanced typography */
