@@ -81,6 +81,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  // Update backdrop position for cursor-following effect
+  const updateBackdropPosition = (x, y) => {
+    const xPercent = (x / window.innerWidth) * 100;
+    const yPercent = (y / window.innerHeight) * 100;
+    
+    backgroundBackdrop.style.setProperty('--mouse-x', `${xPercent}%`);
+    backgroundBackdrop.style.setProperty('--mouse-y', `${yPercent}%`);
+  };
+
   // Enhanced mouse movement handler with movement detection and torch effect
   document.addEventListener('mousemove', (e) => {
     const currentX = e.clientX;
@@ -88,6 +97,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Update torch overlay
     updateTorchOverlay(currentX, currentY);
+    
+    // Update backdrop position for cursor-following effect
+    updateBackdropPosition(currentX, currentY);
     
     // Check if mouse actually moved (not just a tiny jitter)
     const movementThreshold = 2; // pixels
@@ -98,7 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
       isMouseMoving = true;
       activateGlow();
       
-      // Update glow position
+      // Update glow position (now only shows around cursor due to CSS mask)
       backgroundGlow.style.background =
         `radial-gradient(250px at ${currentX}px ${currentY}px, rgba(255,255,255,0.35), transparent 70%)`;
 
@@ -144,6 +156,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('mouseenter', (e) => {
     // Update torch overlay position immediately
     updateTorchOverlay(e.clientX, e.clientY);
+    // Update backdrop position immediately
+    updateBackdropPosition(e.clientX, e.clientY);
   });
 
   // Contact Buttons Physics with Cursor Attraction
