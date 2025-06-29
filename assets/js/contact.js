@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   // Elements
-  const emailButton = document.querySelector('.email-button');
+  const emailCard = document.querySelector('.email-card');
   const modal = document.getElementById('emailModal');
   const closeModal = document.getElementById('closeModal');
   const cancelBtn = document.getElementById('cancelBtn');
@@ -10,395 +10,64 @@ document.addEventListener('DOMContentLoaded', () => {
   const fileInput = document.getElementById('attachments');
   const fileList = document.getElementById('fileList');
   const notification = document.getElementById('notification');
-  const torchOverlay = document.getElementById('torchOverlay');
 
   // File handling
   let selectedFiles = [];
 
-  // Miseducation Background Effect - Enhanced with smooth mouse movement detection
+  // Miseducation text effect - exact same as miseducation page
   const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   
   function longRandomString() {
     let out = "";
-    for (let i = 0; i < 60000; i++) { // TRIPLED from 3000 to 9000
+    for (let i = 0; i < 1500; i++) {
       out += CHARS[Math.floor(Math.random() * CHARS.length)];
     }
     return out;
   }
 
-  // Initialize background elements
-  const backgroundText = document.querySelector('.background-text');
-  const backgroundGlow = document.createElement('div');
-  const backgroundBackdrop = document.createElement('div');
+  // Initialize all contact cards with text effect
+  const contactCards = document.querySelectorAll('.contact-card');
   
-  backgroundGlow.className = 'background-glow glow-mask';
-  backgroundBackdrop.className = 'background-backdrop';
-  
-  document.body.appendChild(backgroundGlow);
-  document.body.appendChild(backgroundBackdrop);
-
-  // Seed initial text with tripled amount
-  if (backgroundText) {
-    backgroundText.textContent = longRandomString();
-  }
-
-  // Mouse movement tracking variables
-  let isMouseMoving = false;
-  let mouseStopTimeout = null;
-  let lastMouseX = 0;
-  let lastMouseY = 0;
-  let glowActive = false;
-
-  // Smooth activation/deactivation functions
-  const activateGlow = () => {
-    if (!glowActive) {
-      backgroundGlow.classList.add('active');
-      backgroundBackdrop.classList.add('active');
-      glowActive = true;
+  contactCards.forEach(card => {
+    const cardText = card.querySelector('.card-text');
+    const cardGlow = card.querySelector('.card-glow');
+    
+    // Seed initial text
+    if (cardText) {
+      cardText.textContent = longRandomString();
     }
-  };
+    
+    // Add mouse move effect
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
 
-  const deactivateGlow = () => {
-    if (glowActive) {
-      backgroundGlow.classList.remove('active');
-      backgroundBackdrop.classList.remove('active');
-      glowActive = false;
-    }
-  };
-
-  // NEW: Torch overlay effect
-  const updateTorchOverlay = (x, y) => {
-    if (torchOverlay) {
-      const xPercent = (x / window.innerWidth) * 100;
-      const yPercent = (y / window.innerHeight) * 100;
-      
-      torchOverlay.style.setProperty('--mouse-x', `${xPercent}%`);
-      torchOverlay.style.setProperty('--mouse-y', `${yPercent}%`);
-      
-      if (!torchOverlay.classList.contains('active')) {
-        torchOverlay.classList.add('active');
+      if (cardGlow) {
+        cardGlow.style.background = 
+          `radial-gradient(250px at ${x}px ${y}px, rgba(255,255,255,0.35), transparent 70%)`;
       }
-    }
-  };
 
-  // Update backdrop position for cursor-following effect
-  const updateBackdropPosition = (x, y) => {
-    const xPercent = (x / window.innerWidth) * 100;
-    const yPercent = (y / window.innerHeight) * 100;
-    
-    backgroundBackdrop.style.setProperty('--mouse-x', `${xPercent}%`);
-    backgroundBackdrop.style.setProperty('--mouse-y', `${yPercent}%`);
-  };
-
-  // Enhanced mouse movement handler with movement detection and torch effect
-  document.addEventListener('mousemove', (e) => {
-    const currentX = e.clientX;
-    const currentY = e.clientY;
-    
-    // Update torch overlay
-    updateTorchOverlay(currentX, currentY);
-    
-    // Update backdrop position for cursor-following effect
-    updateBackdropPosition(currentX, currentY);
-    
-    // Check if mouse actually moved (not just a tiny jitter)
-    const movementThreshold = 2; // pixels
-    const deltaX = Math.abs(currentX - lastMouseX);
-    const deltaY = Math.abs(currentY - lastMouseY);
-    
-    if (deltaX > movementThreshold || deltaY > movementThreshold) {
-      isMouseMoving = true;
-      activateGlow();
-      
-      // Update glow position (now only shows around cursor due to CSS mask)
-      backgroundGlow.style.background =
-        `radial-gradient(250px at ${currentX}px ${currentY}px, rgba(255,255,255,0.35), transparent 70%)`;
-
-      // Update text
-      if (backgroundText) {
-        backgroundText.textContent = longRandomString();
+      if (cardText) {
+        cardText.textContent = longRandomString();
       }
-      
-      // Clear existing timeout
-      if (mouseStopTimeout) {
-        clearTimeout(mouseStopTimeout);
+    });
+
+    // Clear glow on mouse leave
+    card.addEventListener('mouseleave', () => {
+      if (cardGlow) {
+        cardGlow.style.background = 'none';
       }
-      
-      // Set new timeout to detect when mouse stops
-      mouseStopTimeout = setTimeout(() => {
-        isMouseMoving = false;
-        deactivateGlow();
-        // Clear the glow background smoothly
-        backgroundGlow.style.background = 'none';
-      }, 150); // 150ms delay after mouse stops moving
-      
-      lastMouseX = currentX;
-      lastMouseY = currentY;
-    }
+    });
   });
 
-  // Handle mouse leaving the page
-  document.addEventListener('mouseleave', () => {
-    isMouseMoving = false;
-    if (mouseStopTimeout) {
-      clearTimeout(mouseStopTimeout);
-    }
-    deactivateGlow();
-    backgroundGlow.style.background = 'none';
-    
-    // Deactivate torch overlay
-    if (torchOverlay) {
-      torchOverlay.classList.remove('active');
-    }
-  });
-
-  // Handle mouse entering the page
-  document.addEventListener('mouseenter', (e) => {
-    // Update torch overlay position immediately
-    updateTorchOverlay(e.clientX, e.clientY);
-    // Update backdrop position immediately
-    updateBackdropPosition(e.clientX, e.clientY);
-  });
-
-  // Contact Buttons Physics with Cursor Attraction
-  const buttons = document.querySelectorAll('.contact-button');
-  const buttonPhysics = [];
-
-  // Initialize button physics with orbital positions
-  const centerX = window.innerWidth / 2;
-  const centerY = window.innerHeight / 2;
-  const orbitRadius = 250;
-
-  buttons.forEach((button, index) => {
-    const angle = (index / buttons.length) * 2 * Math.PI;
-    const x = centerX + Math.cos(angle) * orbitRadius;
-    const y = centerY + Math.sin(angle) * orbitRadius;
-
-    buttonPhysics[index] = {
-      element: button,
-      x: x,
-      y: y,
-      vx: 0,
-      vy: 0,
-      originalX: x,
-      originalY: y,
-      isDragging: false,
-      mass: 10,
-      radius: 60, // Half of button width
-      angle: angle,
-      orbitSpeed: 0.001, // DOUBLED from 0.0005 to 0.001 for twice as fast rotation
-      cursorAttraction: 0.002, // Light cursor attraction strength
-      returnForce: 0.008 // Base return force
-    };
-
-    // Set initial position
-    button.style.left = (x - buttonPhysics[index].radius) + 'px';
-    button.style.top = (y - buttonPhysics[index].radius) + 'px';
-  });
-
-  // Button dragging functionality
-  let draggedButton = null;
-  let mouseX = 0;
-  let mouseY = 0;
-  let dragOffset = { x: 0, y: 0 };
-
-  buttons.forEach((button, index) => {
-    button.addEventListener('mousedown', (e) => {
+  // Email card click handler
+  if (emailCard) {
+    emailCard.addEventListener('click', (e) => {
       e.preventDefault();
-      draggedButton = index;
-      buttonPhysics[index].isDragging = true;
-      button.classList.add('dragging');
-      
-      // Calculate offset from button center
-      const rect = button.getBoundingClientRect();
-      dragOffset.x = e.clientX - (rect.left + rect.width / 2);
-      dragOffset.y = e.clientY - (rect.top + rect.height / 2);
+      openModal();
     });
-
-    // Double-click handler for interactions
-    let clickCount = 0;
-    let clickTimer = null;
-
-    button.addEventListener('click', (e) => {
-      e.preventDefault();
-      clickCount++;
-      
-      if (clickCount === 1) {
-        clickTimer = setTimeout(() => {
-          clickCount = 0;
-        }, 300); // Reset after 300ms
-      } else if (clickCount === 2) {
-        clearTimeout(clickTimer);
-        clickCount = 0;
-        
-        // Handle double-click action
-        if (button.classList.contains('email-button')) {
-          if (!buttonPhysics[index]?.isDragging) {
-            openModal();
-          }
-        } else if (button.href) {
-          // For other buttons with links, open them
-          window.open(button.href, '_blank');
-        }
-      }
-    });
-  });
-
-  document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-
-    if (draggedButton !== null) {
-      const physics = buttonPhysics[draggedButton];
-      physics.x = mouseX - dragOffset.x;
-      physics.y = mouseY - dragOffset.y;
-      physics.element.style.left = (physics.x - physics.radius) + 'px';
-      physics.element.style.top = (physics.y - physics.radius) + 'px';
-    }
-  });
-
-  document.addEventListener('mouseup', () => {
-    if (draggedButton !== null) {
-      buttonPhysics[draggedButton].isDragging = false;
-      buttonPhysics[draggedButton].element.classList.remove('dragging');
-      draggedButton = null;
-    }
-  });
-
-  // Physics simulation with cursor attraction and elastic return
-  function updatePhysics() {
-    const centerX = window.innerWidth / 2;
-    const centerY = window.innerHeight / 2;
-
-    buttonPhysics.forEach((physics, index) => {
-      if (!physics.isDragging) {
-        // Update orbital angle for natural rotation (twice as fast)
-        physics.angle += physics.orbitSpeed;
-        
-        // Calculate new orbital position
-        const newOrbitX = centerX + Math.cos(physics.angle) * orbitRadius;
-        const newOrbitY = centerY + Math.sin(physics.angle) * orbitRadius;
-        
-        // Update original position to new orbital position
-        physics.originalX = newOrbitX;
-        physics.originalY = newOrbitY;
-
-        // Cursor attraction (light effect)
-        const cursorDx = mouseX - physics.x;
-        const cursorDy = mouseY - physics.y;
-        const cursorDistance = Math.sqrt(cursorDx * cursorDx + cursorDy * cursorDy);
-        
-        // Only apply cursor attraction within a reasonable range
-        if (cursorDistance < 200 && cursorDistance > 0) {
-          const cursorForce = physics.cursorAttraction * (200 - cursorDistance) / 200;
-          physics.vx += (cursorDx / cursorDistance) * cursorForce;
-          physics.vy += (cursorDy / cursorDistance) * cursorForce;
-        }
-
-        // Elastic return force to orbital position (proportional to distance)
-        const dx = physics.originalX - physics.x;
-        const dy = physics.originalY - physics.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        
-        if (distance > 1) {
-          // Elastic force: stronger when farther away (quadratic relationship for more elastic feel)
-          const elasticForce = physics.returnForce * (distance / 50) * (distance / 50);
-          const maxForce = 0.5; // Cap the maximum force to prevent overshooting
-          const clampedForce = Math.min(elasticForce, maxForce);
-          
-          physics.vx += (dx / distance) * clampedForce;
-          physics.vy += (dy / distance) * clampedForce;
-        }
-
-        // Apply velocity
-        physics.x += physics.vx;
-        physics.y += physics.vy;
-
-        // Enhanced damping for smoother elastic motion
-        physics.vx *= 0.92; // Slightly less damping for more elastic feel
-        physics.vy *= 0.92;
-
-        // Collision with other buttons
-        buttonPhysics.forEach((otherPhysics, otherIndex) => {
-          if (index !== otherIndex && !otherPhysics.isDragging) {
-            const dx = otherPhysics.x - physics.x;
-            const dy = otherPhysics.y - physics.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            const minDistance = physics.radius + otherPhysics.radius;
-
-            if (distance < minDistance && distance > 0) {
-              const overlap = minDistance - distance;
-              const separationX = (dx / distance) * overlap * 0.5;
-              const separationY = (dy / distance) * overlap * 0.5;
-
-              physics.x -= separationX;
-              physics.y -= separationY;
-              otherPhysics.x += separationX;
-              otherPhysics.y += separationY;
-
-              // Bounce with momentum transfer (reduced for smoother feel)
-              const relativeVx = otherPhysics.vx - physics.vx;
-              const relativeVy = otherPhysics.vy - physics.vy;
-              const speed = relativeVx * (dx / distance) + relativeVy * (dy / distance);
-
-              if (speed > 0) {
-                const impulse = 2 * speed / (physics.mass + otherPhysics.mass);
-                physics.vx += impulse * otherPhysics.mass * (dx / distance) * 0.6;
-                physics.vy += impulse * otherPhysics.mass * (dy / distance) * 0.6;
-                otherPhysics.vx -= impulse * physics.mass * (dx / distance) * 0.6;
-                otherPhysics.vy -= impulse * physics.mass * (dy / distance) * 0.6;
-              }
-            }
-          }
-        });
-
-        // Boundary collision
-        const windowWidth = window.innerWidth;
-        const windowHeight = window.innerHeight;
-
-        if (physics.x - physics.radius < 0) {
-          physics.x = physics.radius;
-          physics.vx *= -0.7;
-        }
-        if (physics.x + physics.radius > windowWidth) {
-          physics.x = windowWidth - physics.radius;
-          physics.vx *= -0.7;
-        }
-        if (physics.y - physics.radius < 0) {
-          physics.y = physics.radius;
-          physics.vy *= -0.7;
-        }
-        if (physics.y + physics.radius > windowHeight) {
-          physics.y = windowHeight - physics.radius;
-          physics.vy *= -0.7;
-        }
-
-        // Update DOM position
-        physics.element.style.left = (physics.x - physics.radius) + 'px';
-        physics.element.style.top = (physics.y - physics.radius) + 'px';
-      }
-    });
-
-    requestAnimationFrame(updatePhysics);
   }
-
-  // Start physics simulation
-  updatePhysics();
-
-  // Handle window resize
-  window.addEventListener('resize', () => {
-    const newCenterX = window.innerWidth / 2;
-    const newCenterY = window.innerHeight / 2;
-    
-    buttonPhysics.forEach((physics, index) => {
-      // Recalculate orbital positions
-      const newOrbitX = newCenterX + Math.cos(physics.angle) * orbitRadius;
-      const newOrbitY = newCenterY + Math.sin(physics.angle) * orbitRadius;
-      
-      physics.originalX = newOrbitX;
-      physics.originalY = newOrbitY;
-    });
-  });
 
   // Modal Functions
   const openModal = () => {
@@ -640,52 +309,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize everything
   setupDragAndDrop();
-
-  // Add some interactive particles on mouse move over the hub
-  const hub = document.querySelector('.contact-hub');
-  if (hub) {
-    hub.addEventListener('mousemove', (e) => {
-      if (Math.random() > 0.95) {
-        createParticle(e.clientX, e.clientY);
-      }
-    });
-  }
-
-  const createParticle = (x, y) => {
-    const particle = document.createElement('div');
-    particle.style.cssText = `
-      position: fixed;
-      left: ${x}px;
-      top: ${y}px;
-      width: 3px;
-      height: 3px;
-      background: rgba(255,255,255,0.8);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 1000;
-      animation: particleFade 1.5s ease-out forwards;
-    `;
-    
-    document.body.appendChild(particle);
-    
-    setTimeout(() => {
-      particle.remove();
-    }, 1500);
-  };
-
-  // Add particle animation CSS
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes particleFade {
-      0% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
-      100% {
-        opacity: 0;
-        transform: scale(0) translateY(-30px);
-      }
-    }
-  `;
-  document.head.appendChild(style);
 });

@@ -1,287 +1,22 @@
-/* Contact Page Styles */
+/* Contact Page Styles - Redesigned with 6 Miseducation-Style Cards */
 .contact-page {
-  background: #0d0d0d;
+  background: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 50%, #ffa0b4 100%);
   min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 2rem;
 }
 
-/* Miseducation Glow Effect - Enhanced with smooth transitions */
-.glow-mask {
-  mask-image: linear-gradient(white, transparent);
-  -webkit-mask-image: linear-gradient(white, transparent);
-}
-
-/* Full Screen Random Text Background - Extended to edges */
-.background-text {
-  position: absolute;
-  inset: -2rem; /* Changed from inset: 5 to negative inset to reach edges */
-  overflow: hidden;
-  padding: 0; /* Removed padding to allow text to reach edges */
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  line-height: 1.2;
-  font-family: 'Courier New', monospace;
-  font-size: 10px; /* Larger font size as requested */
-  font-weight: bold;
-  color: white;
-  pointer-events: none;
-  background: transparent;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  z-index: 3;
-}
-
-.background-text:hover{
-  transform: scale(1.5);
-}
-
-.background-glow {
-  position: absolute;
-  inset: -2rem; /* Extended to match background-text */
-  border-radius: 16px;
-  opacity: 0;
-  transition: opacity 0.8s ease; /* Smoother, longer transition */
-  pointer-events: none;
-  /* Removed the global background - now only shows around cursor */
-}
-
-.background-glow.active {
-  opacity: 0.5;
-}
-
-/* Color backdrop - extended to edges with smooth transitions */
-.background-backdrop {
-  position: absolute;
-  inset: -2rem; /* Extended to match background-text */
-  border-radius: 16px;
-  background: linear-gradient(to right, #22c55e, #3b82f6);
-  opacity: 0;
-  backdrop-filter: blur(40px);
-  transition: opacity 0.8s ease; /* Smoother, longer transition */
-  pointer-events: none;
-  /* Create a radial mask that follows the cursor */
-  mask-image: radial-gradient(circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%), white 0%, white 40%, transparent 70%);
-  -webkit-mask-image: radial-gradient(circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%), white 0%, white 40%, transparent 70%);
-}
-
-.background-backdrop.active {
-  opacity: 1;
-}
-
-/* NEW: Torch-Light Overlay Effect */
-.torch-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.8);
-  pointer-events: none;
-  z-index: 5; /* Above background elements but below contact buttons and hub */
-  transition: opacity 0.3s ease;
-}
-
-.torch-overlay.active {
-  background: radial-gradient(
-    circle 200px at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    transparent 0%,
-    transparent 30%,
-    rgba(0, 0, 0, 0.1) 40%,
-    rgba(0, 0, 0, 0.4) 60%,
-    rgba(0, 0, 0, 0.7) 80%,
-    rgba(0, 0, 0, 0.8) 100%
-  );
-}
-
-/* Central Hub */
-.contact-hub {
-  position: fixed;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 
-    0 0 50px rgba(102, 126, 234, 0.4),
-    inset 0 0 30px rgba(255, 255, 255, 0.1);
-  animation: hubPulse 4s ease-in-out infinite alternate;
-  z-index: 10;
-}
-
-.hub-content {
-  text-align: center;
-  color: white;
-  z-index: 2;
-}
-
-.hub-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin: 0 0 0.5rem 0;
-  font-family: 'DTGetai', 'Hackney', sans-serif;
-}
-
-.hub-subtitle {
-  font-size: 0.9rem;
-  opacity: 0.8;
-  margin: 0;
-}
-
-@keyframes hubPulse {
-  from {
-    box-shadow: 
-      0 0 50px rgba(102, 126, 234, 0.4),
-      inset 0 0 30px rgba(255, 255, 255, 0.1);
-  }
-  to {
-    box-shadow: 
-      0 0 80px rgba(102, 126, 234, 0.6),
-      inset 0 0 40px rgba(255, 255, 255, 0.2);
-  }
-}
-
-/* Contact Buttons - Now draggable with physics */
-.contact-button {
-  position: absolute;
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  cursor: grab;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  z-index: 6;
-  text-decoration: none;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: 0.8rem;
-  font-weight: 500;
-  user-select: none;
-  will-change: transform;
-}
-
-.contact-button:active {
-  cursor: grabbing;
-}
-
-.contact-button.dragging {
-  z-index: 1000;
-  transform: scale(1.1);
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
-}
-
-/* Button Content */
-.button-content {
-  position: relative;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
-}
-
-.button-icon {
-  width: 24px;
-  height: 24px;
-  margin-bottom: 0.2rem;
-}
-
-.button-label {
-  font-size: 0.7rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* Glow Effect */
-.button-glow {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* Hover Effects */
-.contact-button:hover:not(.dragging) {
-  transform: scale(1.1);
-  border-color: rgba(255, 255, 255, 0.6);
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
-}
-
-.contact-button:hover .button-glow {
-  opacity: 1;
-}
-
-/* Specific Button Colors - Normal gradients */
-.email-button {
-  background: linear-gradient(135deg, #ea4335, #d33b2c);
-}
-
-.email-button .button-glow {
-  background: radial-gradient(circle, rgba(234, 67, 53, 0.4), transparent 70%);
-}
-
-.linkedin-button {
-  background: linear-gradient(135deg, #0077b5, #005885);
-}
-
-.linkedin-button .button-glow {
-  background: radial-gradient(circle, rgba(0, 119, 181, 0.4), transparent 70%);
-}
-
-.github-button {
-  background: linear-gradient(135deg, #333, #24292e);
-}
-
-.github-button .button-glow {
-  background: radial-gradient(circle, rgba(36, 41, 46, 0.4), transparent 70%);
-}
-
-.devpost-button {
-  background: linear-gradient(135deg, #003087, #002060);
-}
-
-.devpost-button .button-glow {
-  background: radial-gradient(circle, rgba(0, 48, 135, 0.4), transparent 70%);
-}
-
-.discord-button {
-  background: linear-gradient(135deg, #7289da, #5b6eae);
-}
-
-.discord-button .button-glow {
-  background: radial-gradient(circle, rgba(114, 137, 218, 0.4), transparent 70%);
-}
-
-.resume-button {
-  background: linear-gradient(135deg, #4caf50, #388e3c);
-}
-
-.resume-button .button-glow {
-  background: radial-gradient(circle, rgba(76, 175, 80, 0.4), transparent 70%);
-}
-
-/* Back Button - Top Left with Low Opacity */
+/* Back Button */
 .back-home {
   position: fixed;
   top: 1.5rem;
   left: 1.5rem;
   z-index: 100;
-  opacity: 0.3;
+  opacity: 0.7;
   transition: opacity 0.3s ease;
 }
 
@@ -293,22 +28,22 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(0, 0, 0, 0.8);
   text-decoration: none;
   font-size: 0.9rem;
   padding: 0.8rem 1.2rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 25px;
   backdrop-filter: blur(10px);
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.3);
   transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .back-link:hover {
-  color: white;
-  border-color: rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.1);
+  color: #000;
+  border-color: rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.5);
   transform: translateY(-2px);
 }
 
@@ -317,7 +52,142 @@
   height: 16px;
 }
 
-/* Modal Styles (keeping existing modal functionality) */
+/* Contact Grid */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* Contact Cards - Miseducation Style */
+.contact-card {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 24px;
+  background: transparent;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.contact-card:hover {
+  transform: scale(1.05);
+}
+
+/* Glow mask effect */
+.glow-mask {
+  mask-image: linear-gradient(white, transparent);
+  -webkit-mask-image: linear-gradient(white, transparent);
+}
+
+/* Cursor-driven glow */
+.card-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  opacity: 0.5;
+  transition: opacity 0.5s;
+  pointer-events: none;
+}
+
+.contact-card:hover .card-glow {
+  opacity: 1;
+}
+
+/* Color backdrop */
+.card-backdrop {
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  background: linear-gradient(to right, #22c55e, #3b82f6);
+  opacity: 0;
+  backdrop-filter: blur(40px);
+  transition: opacity 0.5s;
+  pointer-events: none;
+}
+
+.contact-card:hover .card-backdrop {
+  opacity: 1;
+}
+
+/* Random text background - exact from miseducation */
+.card-text {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  padding: 8px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  line-height: 1.1;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  font-weight: bold;
+  color: white;
+  pointer-events: none;
+}
+
+/* Card Content */
+.card-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+}
+
+.contact-icon {
+  width: 48px;
+  height: 48px;
+  color: white;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+.contact-label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Specific card colors for backdrop gradients */
+.email-card .card-backdrop {
+  background: linear-gradient(135deg, #ea4335, #d33b2c);
+}
+
+.linkedin-card .card-backdrop {
+  background: linear-gradient(135deg, #0077b5, #005885);
+}
+
+.github-card .card-backdrop {
+  background: linear-gradient(135deg, #333, #24292e);
+}
+
+.devpost-card .card-backdrop {
+  background: linear-gradient(135deg, #003087, #002060);
+}
+
+.discord-card .card-backdrop {
+  background: linear-gradient(135deg, #7289da, #5b6eae);
+}
+
+.resume-card .card-backdrop {
+  background: linear-gradient(135deg, #4caf50, #388e3c);
+}
+
+/* Modal Styles (keeping existing modal functionality for email) */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -660,60 +530,54 @@
 }
 
 /* Mobile Responsiveness */
+@media (max-width: 1024px) {
+  .contact-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  .contact-card {
+    width: 240px;
+    height: 240px;
+  }
+  
+  .contact-icon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .contact-label {
+    font-size: 1rem;
+  }
+}
+
 @media (max-width: 768px) {
-  .background-text {
-    font-size: 10px; /* Smaller on mobile but still larger than original */
-    inset: -1rem; /* Slightly less extension on mobile */
+  .contact-page {
+    padding: 1rem;
   }
   
-  .background-glow,
-  .background-backdrop {
-    inset: -1rem; /* Match background-text on mobile */
+  .contact-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
   
-  .torch-overlay.active {
-    background: radial-gradient(
-      circle 150px at var(--mouse-x, 50%) var(--mouse-y, 50%),
-      transparent 0%,
-      transparent 25%,
-      rgba(0, 0, 0, 0.1) 35%,
-      rgba(0, 0, 0, 0.4) 55%,
-      rgba(0, 0, 0, 0.7) 75%,
-      rgba(0, 0, 0, 0.8) 100%
-    );
+  .contact-card {
+    width: 180px;
+    height: 180px;
   }
   
-  .background-backdrop {
-    mask-image: radial-gradient(circle 150px at var(--mouse-x, 50%) var(--mouse-y, 50%), white 0%, white 40%, transparent 70%);
-    -webkit-mask-image: radial-gradient(circle 150px at var(--mouse-x, 50%) var(--mouse-y, 50%), white 0%, white 40%, transparent 70%);
+  .contact-icon {
+    width: 32px;
+    height: 32px;
   }
   
-  .contact-button {
-    width: 80px;
-    height: 80px;
-    font-size: 0.7rem;
+  .contact-label {
+    font-size: 0.9rem;
   }
   
-  .button-icon {
-    width: 18px;
-    height: 18px;
-  }
-  
-  .button-label {
-    font-size: 0.6rem;
-  }
-  
-  .contact-hub {
-    width: 150px;
-    height: 150px;
-  }
-  
-  .hub-title {
-    font-size: 1.2rem;
-  }
-  
-  .hub-subtitle {
-    font-size: 0.8rem;
+  .card-text {
+    font-size: 10px;
+    padding: 6px;
   }
   
   .modal-container {
@@ -738,58 +602,28 @@
 }
 
 @media (max-width: 480px) {
-  .background-text {
-    font-size: 8px;
-    inset: -0.5rem; /* Even less extension on very small screens */
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
   }
   
-  .background-glow,
-  .background-backdrop {
-    inset: -0.5rem; /* Match background-text on very small screens */
+  .contact-card {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
   }
   
-  .torch-overlay.active {
-    background: radial-gradient(
-      circle 100px at var(--mouse-x, 50%) var(--mouse-y, 50%),
-      transparent 0%,
-      transparent 20%,
-      rgba(0, 0, 0, 0.1) 30%,
-      rgba(0, 0, 0, 0.4) 50%,
-      rgba(0, 0, 0, 0.7) 70%,
-      rgba(0, 0, 0, 0.8) 100%
-    );
+  .contact-icon {
+    width: 36px;
+    height: 36px;
   }
   
-  .background-backdrop {
-    mask-image: radial-gradient(circle 100px at var(--mouse-x, 50%) var(--mouse-y, 50%), white 0%, white 40%, transparent 70%);
-    -webkit-mask-image: radial-gradient(circle 100px at var(--mouse-x, 50%) var(--mouse-y, 50%), white 0%, white 40%, transparent 70%);
-  }
-  
-  .contact-button {
-    width: 60px;
-    height: 60px;
-    font-size: 0.6rem;
-  }
-  
-  .button-icon {
-    width: 16px;
-    height: 16px;
-  }
-  
-  .button-label {
-    font-size: 0.5rem;
-  }
-  
-  .contact-hub {
-    width: 120px;
-    height: 120px;
-  }
-  
-  .hub-title {
+  .contact-label {
     font-size: 1rem;
   }
   
-  .hub-subtitle {
-    font-size: 0.7rem;
+  .card-text {
+    font-size: 8px;
+    padding: 4px;
   }
 }
