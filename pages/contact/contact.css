@@ -99,7 +99,7 @@
   width: 100%;
 }
 
-/* Contact Cards - Miseducation Style with Enhanced Styling */
+/* Contact Cards - Miseducation Style with Enhanced Styling and Magnetic Effect */
 .contact-card {
   position: relative;
   width: 280px;
@@ -118,6 +118,19 @@
   flex-direction: column;
   border: 3px solid transparent; /* Base for neon border */
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Subtle base shadow */
+}
+
+/* Magnetic Inner Wrapper */
+.magnetic-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  border-radius: inherit;
+  overflow: hidden;
 }
 
 /* Specific card hover effects with complementary edge colors */
