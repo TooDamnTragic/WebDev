@@ -1,4 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize Splash Cursor Effect
+  const splashCursor = new SplashCursor({
+    SIM_RESOLUTION: 128,
+    DYE_RESOLUTION: 1024,
+    DENSITY_DISSIPATION: 1.2,
+    VELOCITY_DISSIPATION: 0.8,
+    PRESSURE: 0.8,
+    CURL: 30,
+    SPLAT_RADIUS: 0.25,
+    SPLAT_FORCE: 6000,
+    SHADING: true,
+    COLOR_UPDATE_SPEED: 10,
+    TRANSPARENT: true
+  });
+
   // Elements
   const emailCard = document.querySelector('.email-card');
   const modal = document.getElementById('emailModal');
@@ -404,5 +419,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // Cleanup on page unload
   window.addEventListener('beforeunload', () => {
     magneticCards.forEach(card => card.destroy());
+    if (splashCursor) {
+      splashCursor.destroy();
+    }
   });
 });
