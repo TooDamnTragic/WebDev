@@ -25,19 +25,107 @@ document.addEventListener('DOMContentLoaded', () => {
     return out;
   }
 
-  // Initialize all contact cards with text effect
+  // Magnetic Effect Implementation
+  class MagneticCard {
+    constructor(element, options = {}) {
+      this.element = element;
+      this.padding = options.padding || 100;
+      this.magnetStrength = options.magnetStrength || 3;
+      this.activeTransition = options.activeTransition || "transform 0.3s ease-out";
+      this.inactiveTransition = options.inactiveTransition || "transform 0.5s ease-in-out";
+      
+      this.isActive = false;
+      this.position = { x: 0, y: 0 };
+      
+      this.init();
+    }
+    
+    init() {
+      // Create inner wrapper for magnetic effect
+      const content = this.element.innerHTML;
+      this.element.innerHTML = `<div class="magnetic-inner">${content}</div>`;
+      this.innerElement = this.element.querySelector('.magnetic-inner');
+      
+      // Set up styles
+      this.element.style.position = 'relative';
+      this.element.style.display = 'inline-block';
+      this.innerElement.style.willChange = 'transform';
+      
+      // Bind event handlers
+      this.handleMouseMove = this.handleMouseMove.bind(this);
+      this.handleMouseLeave = this.handleMouseLeave.bind(this);
+      
+      // Add event listeners
+      window.addEventListener('mousemove', this.handleMouseMove);
+      this.element.addEventListener('mouseleave', this.handleMouseLeave);
+    }
+    
+    handleMouseMove(e) {
+      const rect = this.element.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      
+      const distX = Math.abs(centerX - e.clientX);
+      const distY = Math.abs(centerY - e.clientY);
+      
+      if (distX < rect.width / 2 + this.padding && distY < rect.height / 2 + this.padding) {
+        this.isActive = true;
+        
+        const offsetX = (e.clientX - centerX) / this.magnetStrength;
+        const offsetY = (e.clientY - centerY) / this.magnetStrength;
+        this.position = { x: offsetX, y: offsetY };
+        
+        this.updateTransform();
+      } else {
+        this.deactivate();
+      }
+    }
+    
+    handleMouseLeave() {
+      this.deactivate();
+    }
+    
+    deactivate() {
+      this.isActive = false;
+      this.position = { x: 0, y: 0 };
+      this.updateTransform();
+    }
+    
+    updateTransform() {
+      const transition = this.isActive ? this.activeTransition : this.inactiveTransition;
+      this.innerElement.style.transition = transition;
+      this.innerElement.style.transform = `translate3d(${this.position.x}px, ${this.position.y}px, 0)`;
+    }
+    
+    destroy() {
+      window.removeEventListener('mousemove', this.handleMouseMove);
+      this.element.removeEventListener('mouseleave', this.handleMouseLeave);
+    }
+  }
+
+  // Initialize all contact cards with magnetic effect and text effect
   const contactCards = document.querySelectorAll('.contact-card');
+  const magneticCards = [];
   
   contactCards.forEach(card => {
     const cardText = card.querySelector('.card-text');
     const cardGlow = card.querySelector('.card-glow');
+    
+    // Initialize magnetic effect
+    const magneticCard = new MagneticCard(card, {
+      padding: 80,
+      magnetStrength: 4,
+      activeTransition: "transform 0.2s ease-out",
+      inactiveTransition: "transform 0.4s ease-in-out"
+    });
+    magneticCards.push(magneticCard);
     
     // Seed initial text
     if (cardText) {
       cardText.textContent = longRandomString();
     }
     
-    // Add mouse move effect
+    // Add mouse move effect for text randomization
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
@@ -309,4 +397,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize everything
   setupDragAndDrop();
+
+  // Cleanup on page unload
+  window.addEventListener('beforeunload', () => {
+    magneticCards.forEach(card => card.destroy());
+  });
 });
