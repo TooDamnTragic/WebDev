@@ -41,9 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     init() {
-      // Create inner wrapper for magnetic effect
-      const content = this.element.innerHTML;
-      this.element.innerHTML = `<div class="magnetic-inner">${content}</div>`;
+      // Create inner wrapper for magnetic effect - preserve existing content
+      const existingContent = this.element.innerHTML;
+      this.element.innerHTML = `<div class="magnetic-inner">${existingContent}</div>`;
       this.innerElement = this.element.querySelector('.magnetic-inner');
       
       // Set up styles
@@ -108,10 +108,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const magneticCards = [];
   
   contactCards.forEach(card => {
-    const cardText = card.querySelector('.card-text');
-    const cardGlow = card.querySelector('.card-glow');
-    
-    // Initialize magnetic effect
+    // Initialize magnetic effect first
     const magneticCard = new MagneticCard(card, {
       padding: 80,
       magnetStrength: 4,
@@ -120,22 +117,28 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     magneticCards.push(magneticCard);
     
+    // Now get the elements after magnetic wrapper is created
+    const cardText = card.querySelector('.card-text');
+    const cardGlow = card.querySelector('.card-glow');
+    
     // Seed initial text
     if (cardText) {
       cardText.textContent = longRandomString();
     }
     
-    // Add mouse move effect for text randomization
+    // Add mouse move effect for text randomization and glow
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
 
+      // Update glow effect
       if (cardGlow) {
         cardGlow.style.background = 
           `radial-gradient(250px at ${x}px ${y}px, rgba(255,255,255,0.35), transparent 70%)`;
       }
 
+      // Update text with new random string
       if (cardText) {
         cardText.textContent = longRandomString();
       }
