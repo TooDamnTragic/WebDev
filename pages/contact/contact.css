@@ -61,27 +61,34 @@
   width: 100%;
 }
 
-/* Contact Cards - Miseducation Style */
+/* Contact Cards - Miseducation Style with Enhanced Styling */
 .contact-card {
   position: relative;
   width: 280px;
   height: 280px;
   aspect-ratio: 1;
   overflow: hidden;
-  border-radius: 24px;
+  border-radius: 32px; /* More curved edges */
   background: transparent;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
   text-decoration: none;
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  border: 3px solid transparent; /* Base for neon border */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Subtle base shadow */
 }
 
 .contact-card:hover {
   transform: scale(1.05);
+  border: 3px solid #00ffcc; /* Blue-green neon border on hover */
+  box-shadow: 
+    0 0 20px rgba(0, 255, 204, 0.5),
+    0 0 40px rgba(0, 255, 204, 0.3),
+    0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
 /* Glow mask effect */
@@ -94,7 +101,7 @@
 .card-glow {
   position: absolute;
   inset: 0;
-  border-radius: 24px;
+  border-radius: 32px; /* Match card border radius */
   opacity: 0.5;
   transition: opacity 0.5s;
   pointer-events: none;
@@ -108,7 +115,7 @@
 .card-backdrop {
   position: absolute;
   inset: 0;
-  border-radius: 24px;
+  border-radius: 32px; /* Match card border radius */
   background: linear-gradient(to right, #22c55e, #3b82f6);
   opacity: 0;
   backdrop-filter: blur(40px);
@@ -147,19 +154,36 @@
   text-align: center;
 }
 
+/* Contact Icons with Heavy Dark Shadow on Hover */
 .contact-icon {
   width: 48px;
   height: 48px;
   color: white;
+  transition: all 0.3s ease;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
 }
 
+.contact-card:hover .contact-icon {
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.8)) 
+          drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6))
+          drop-shadow(0 2px 5px rgba(0, 0, 0, 0.4));
+  transform: scale(1.1);
+}
+
+/* Contact Labels with Enhanced Shadow on Hover */
 .contact-label {
   font-size: 1.2rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.contact-card:hover .contact-label {
+  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8),
+               0 2px 8px rgba(0, 0, 0, 0.6),
+               0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* Specific card colors for backdrop gradients */
@@ -539,6 +563,12 @@
   .contact-card {
     width: 240px;
     height: 240px;
+    border-radius: 28px; /* Slightly less curved on smaller screens */
+  }
+  
+  .card-glow,
+  .card-backdrop {
+    border-radius: 28px;
   }
   
   .contact-icon {
@@ -564,6 +594,12 @@
   .contact-card {
     width: 180px;
     height: 180px;
+    border-radius: 24px;
+  }
+  
+  .card-glow,
+  .card-backdrop {
+    border-radius: 24px;
   }
   
   .contact-icon {
@@ -611,6 +647,12 @@
     width: 200px;
     height: 200px;
     margin: 0 auto;
+    border-radius: 20px;
+  }
+  
+  .card-glow,
+  .card-backdrop {
+    border-radius: 20px;
   }
   
   .contact-icon {
