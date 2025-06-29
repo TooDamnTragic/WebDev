@@ -1,6 +1,23 @@
 /* Contact Page Styles - Redesigned with 6 Miseducation-Style Cards */
 .contact-page {
-  background: linear-gradient(135deg, #ffc0cb 0%, #ffb6c1 50%, #ffa0b4 100%);
+  /* Dynamic Pink-Blue Gradient Background */
+  background: linear-gradient(
+    45deg,
+    #ff6b9d,
+    #c44569,
+    #f8b500,
+    #3742fa,
+    #2f3542,
+    #ff3838,
+    #ff9ff3,
+    #54a0ff,
+    #5f27cd,
+    #00d2d3,
+    #ff9ff3,
+    #ff6b9d
+  );
+  background-size: 400% 400%;
+  animation: dynamicGradient 15s ease infinite;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -8,6 +25,25 @@
   overflow: hidden;
   position: relative;
   padding: 2rem;
+}
+
+/* Dynamic Gradient Animation */
+@keyframes dynamicGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  25% {
+    background-position: 100% 50%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  75% {
+    background-position: 50% 100%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* Back Button */
@@ -28,23 +64,25 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: rgba(0, 0, 0, 0.8);
+  color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
   font-size: 0.9rem;
   padding: 0.8rem 1.2rem;
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 25px;
-  backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(15px);
+  background: rgba(0, 0, 0, 0.3);
   transition: all 0.3s ease;
   cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .back-link:hover {
-  color: #000;
-  border-color: rgba(0, 0, 0, 0.5);
-  background: rgba(255, 255, 255, 0.5);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(0, 0, 0, 0.5);
   transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
 .back-link svg {
