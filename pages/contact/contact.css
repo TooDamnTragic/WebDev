@@ -120,7 +120,7 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Subtle base shadow */
 }
 
-/* Magnetic Inner Wrapper */
+/* Magnetic Inner Wrapper - Contains all moving elements */
 .magnetic-inner {
   width: 100%;
   height: 100%;
@@ -134,7 +134,7 @@
 }
 
 /* Specific card hover effects with complementary edge colors */
-.email-card:hover {
+.contact-card:hover {
   transform: scale(1.05);
   border: 3px solid #1abc5c; /* Complementary to red (#ea4335) */
   box-shadow: 
@@ -194,7 +194,7 @@
   -webkit-mask-image: linear-gradient(white, transparent);
 }
 
-/* Cursor-driven glow */
+/* Cursor-driven glow - MOVED INSIDE magnetic-inner */
 .card-glow {
   position: absolute;
   inset: 0;
@@ -202,13 +202,14 @@
   opacity: 0.5;
   transition: opacity 0.5s;
   pointer-events: none;
+  z-index: 1;
 }
 
 .contact-card:hover .card-glow {
   opacity: 1;
 }
 
-/* Color backdrop */
+/* Color backdrop - MOVED INSIDE magnetic-inner */
 .card-backdrop {
   position: absolute;
   inset: 0;
@@ -218,13 +219,14 @@
   backdrop-filter: blur(40px);
   transition: opacity 0.5s;
   pointer-events: none;
+  z-index: 2;
 }
 
 .contact-card:hover .card-backdrop {
   opacity: 1;
 }
 
-/* Random text background - exact from miseducation */
+/* Random text background - MOVED INSIDE magnetic-inner */
 .card-text {
   position: absolute;
   inset: 0;
@@ -238,9 +240,10 @@
   font-weight: bold;
   color: white;
   pointer-events: none;
+  z-index: 3;
 }
 
-/* Card Content */
+/* Card Content - MOVED INSIDE magnetic-inner */
 .card-content {
   position: relative;
   z-index: 10;
