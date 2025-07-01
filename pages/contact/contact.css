@@ -244,9 +244,9 @@
   inset: 0;
   border-radius: 32px;
   pointer-events: none;
-  mix-blend-mode: multiply;
-  opacity: 0.5;
-  z-index: 2;
+  background: rgba(0, 0, 0, 0.2);
+  mix-blend-mode: add;
+  z-index: 8;
 }
 
 /* Card Content - MOVED INSIDE magnetic-inner */

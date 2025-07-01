@@ -123,6 +123,11 @@ updateTransform() {
     const cardGlow = card.querySelector('.card-glow');
     const cardDarken = card.querySelector('.card-darken');
     
+        // Base dark overlay
+    if (cardDarken) {
+      cardDarken.style.background = 'rgba(0,0,0,0.2)';
+    }
+    
     // Seed initial text
     if (cardText) {
       cardText.textContent = longRandomString();
@@ -137,12 +142,12 @@ updateTransform() {
       // Update glow effect
       if (cardGlow) {
         cardGlow.style.background =
-          `radial-gradient(250px at ${x}px ${y}px, rgba(255,255,255,0.35), transparent 70%)`;
+          `radial-gradient(250px at ${x}px ${y}px, rgba(255, 255, 255, 0.5), transparent 70%)`;
       }
-      // Update darken effect
+      // Lighten area inside dark overlay
       if (cardDarken) {
         cardDarken.style.background =
-          `radial-gradient(200px at ${x}px ${y}px, rgba(0,0,0,0.4), transparent 70%)`;
+          `radial-gradient(200px at ${x}px ${y}px, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.2) 20%)`;
       }
 
       // Update text with new random string
@@ -156,8 +161,8 @@ updateTransform() {
       if (cardGlow) {
         cardGlow.style.background = 'none';
       }
-            if (cardDarken) {
-        cardDarken.style.background = 'none';
+      if (cardDarken) {
+        cardDarken.style.background = 'rgba(0,0,0,0.2)';
       }
     });
   });
