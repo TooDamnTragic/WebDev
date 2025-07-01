@@ -45,11 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const existingContent = this.element.innerHTML;
       this.element.innerHTML = `<div class="magnetic-inner">${existingContent}</div>`;
       this.innerElement = this.element.querySelector('.magnetic-inner');
-      
+
       // Set up styles
       this.element.style.position = 'relative';
       this.element.style.display = 'inline-block';
-      this.innerElement.style.willChange = 'transform';
+      this.element.style.willChange = 'transform';
       
       // Bind event handlers
       this.handleMouseMove = this.handleMouseMove.bind(this);
@@ -91,10 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
       this.updateTransform();
     }
     
-    updateTransform() {
+updateTransform() {
       const transition = this.isActive ? this.activeTransition : this.inactiveTransition;
-      this.innerElement.style.transition = transition;
-      this.innerElement.style.transform = `translate3d(${this.position.x}px, ${this.position.y}px, 0)`;
+      this.element.style.transition = transition;
+      this.element.style.setProperty('--mx', `${this.position.x}px`);
+      this.element.style.setProperty('--my', `${this.position.y}px`);
     }
     
     destroy() {

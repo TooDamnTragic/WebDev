@@ -3,18 +3,10 @@
   /* Low Saturation, Low Brightness Dynamic Gradient Background */
   background: linear-gradient(
     45deg,
-    #4a3c4a,
-    #3d3545,
-    #4a4235,
-    #2d3548,
-    #2f2f35,
-    #483535,
-    #4a3d4a,
-    #354048,
-    #3d2f48,
-    #354545,
-    #4a3d4a,
-    #4a3c4a
+    #3674B5,
+    #578FCA,
+    #F5F0CD,
+    #FADA7A
   );
   background-size: 400% 400%;
   animation: dynamicGradient 15s ease infinite;
@@ -135,7 +127,7 @@
 
 /* Specific card hover effects with complementary edge colors */
 .contact-card:hover {
-  transform: scale(1.05);
+  transform: translate3d(var(--mx), var(--my), 0) scale(1.05);
   border: 3px solid #1abc5c; /* Complementary to red (#ea4335) */
   box-shadow: 
     0 0 20px rgba(26, 188, 92, 0.5),
@@ -144,7 +136,7 @@
 }
 
 .linkedin-card:hover {
-  transform: scale(1.05);
+  transform: translate3d(var(--mx), var(--my), 0) scale(1.05);
   border: 3px solid #ff8800; /* Complementary to blue (#0077b5) */
   box-shadow: 
     0 0 20px rgba(255, 136, 0, 0.5),
@@ -153,7 +145,7 @@
 }
 
 .github-card:hover {
-  transform: scale(1.05);
+  transform: translate3d(var(--mx), var(--my), 0) scale(1.05);
   border: 3px solid #cccccc; /* Complementary to dark gray (#333) */
   box-shadow: 
     0 0 20px rgba(204, 204, 204, 0.5),
@@ -162,7 +154,7 @@
 }
 
 .devpost-card:hover {
-  transform: scale(1.05);
+  transform: translate3d(var(--mx), var(--my), 0) scale(1.05);
   border: 3px solid #ffcf78; /* Complementary to dark blue (#003087) */
   box-shadow: 
     0 0 20px rgba(255, 207, 120, 0.5),
@@ -171,7 +163,7 @@
 }
 
 .discord-card:hover {
-  transform: scale(1.05);
+  transform: translate3d(var(--mx), var(--my), 0) scale(1.05);
   border: 3px solid #8d7625; /* Complementary to Discord blue (#7289da) */
   box-shadow: 
     0 0 20px rgba(141, 118, 37, 0.5),
@@ -180,7 +172,7 @@
 }
 
 .resume-card:hover {
-  transform: scale(1.05);
+  transform: translate3d(var(--mx), var(--my), 0) scale(1.05);
   border: 3px solid #af4c50; /* Complementary to green (#4caf50) */
   box-shadow: 
     0 0 20px rgba(175, 76, 80, 0.5),
