@@ -221,18 +221,32 @@
 /* Random text background - MOVED INSIDE magnetic-inner */
 .card-text {
   position: absolute;
-  inset: 0;
+  top: -5px;
+  right: -5px;
+  bottom: -5px;
+  left: -5px;
   overflow: hidden;
-  padding: 8px;
+  padding: 0;
   white-space: pre-wrap;
   word-wrap: break-word;
   line-height: 1.1;
   font-family: 'Courier New', monospace;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
   color: white;
   pointer-events: none;
   z-index: 3;
+}
+
+/* Darken effect overlay */
+.card-darken {
+  position: absolute;
+  inset: 0;
+  border-radius: 32px;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+  z-index: 2;
 }
 
 /* Card Content - MOVED INSIDE magnetic-inner */

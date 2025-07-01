@@ -121,6 +121,7 @@ updateTransform() {
     // Now get the elements after magnetic wrapper is created
     const cardText = card.querySelector('.card-text');
     const cardGlow = card.querySelector('.card-glow');
+    const cardDarken = card.querySelector('.card-darken');
     
     // Seed initial text
     if (cardText) {
@@ -135,8 +136,13 @@ updateTransform() {
 
       // Update glow effect
       if (cardGlow) {
-        cardGlow.style.background = 
+        cardGlow.style.background =
           `radial-gradient(250px at ${x}px ${y}px, rgba(255,255,255,0.35), transparent 70%)`;
+      }
+      // Update darken effect
+      if (cardDarken) {
+        cardDarken.style.background =
+          `radial-gradient(200px at ${x}px ${y}px, rgba(0,0,0,0.4), transparent 70%)`;
       }
 
       // Update text with new random string
@@ -149,6 +155,9 @@ updateTransform() {
     card.addEventListener('mouseleave', () => {
       if (cardGlow) {
         cardGlow.style.background = 'none';
+      }
+            if (cardDarken) {
+        cardDarken.style.background = 'none';
       }
     });
   });
