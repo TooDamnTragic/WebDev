@@ -78,6 +78,7 @@ body.education-page {
   border-radius: 25px;
   backdrop-filter: blur(10px);
   background: rgba(0, 0, 0, 0.3);
+  overflow: hidden;
   transition: all 0.3s ease;
 }
 

@@ -270,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Create pixel effect with custom colors for each page
     const effect = new PixelEffect(button, {
       gap: 4,
-      speed: 25,
+      speed: 100,
       colors: "#ffffff,#f0ead6,#667eea"
     });
     

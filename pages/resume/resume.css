@@ -34,6 +34,7 @@
   border-radius: 25px;
   backdrop-filter: blur(10px);
   background: rgba(255, 255, 255, 0.3);
+  overflow: hidden;
   transition: all 0.3s ease;
   font-weight: 500;
 }
