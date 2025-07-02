@@ -24,14 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const ctx = canvas.getContext('2d');
   container.appendChild(canvas);
 
-  // Set canvas styles
+  // Set canvas styles - Bring to top
   canvas.style.position = 'absolute';
   canvas.style.top = '0';
   canvas.style.left = '0';
   canvas.style.width = '100%';
   canvas.style.height = '100%';
   canvas.style.pointerEvents = 'none';
-  canvas.style.zIndex = '0';
+  canvas.style.zIndex = '1000'; // Bring metaballs to the top
 
   // Metaball class
   class Metaball {
