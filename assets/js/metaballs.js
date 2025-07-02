@@ -3,19 +3,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('metaballs');
   if (!container) return;
 
-  // Configuration
+  // Configuration - Increased opacity and sharpness
   const config = {
     numBalls: 6,
-    minRadius: 40,
-    maxRadius: 80,
-    speed: 0.5,
+    minRadius: 50,
+    maxRadius: 100,
+    speed: 0.8,
     colors: [
-      'rgba(102, 126, 234, 0.3)',
-      'rgba(118, 75, 162, 0.3)',
-      'rgba(0, 123, 255, 0.3)',
-      'rgba(255, 255, 255, 0.1)',
-      'rgba(240, 234, 214, 0.2)',
-      'rgba(102, 126, 234, 0.2)'
+      'rgba(102, 126, 234, 0.8)',  // Much higher opacity
+      'rgba(118, 75, 162, 0.8)',
+      'rgba(0, 123, 255, 0.8)',
+      'rgba(255, 255, 255, 0.6)',
+      'rgba(240, 234, 214, 0.7)',
+      'rgba(102, 126, 234, 0.7)'
     ]
   };
 
@@ -24,14 +24,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const ctx = canvas.getContext('2d');
   container.appendChild(canvas);
 
-  // Set canvas styles - Bring to top
+  // Set canvas styles - Bring to top and remove any blur
   canvas.style.position = 'absolute';
   canvas.style.top = '0';
   canvas.style.left = '0';
   canvas.style.width = '100%';
   canvas.style.height = '100%';
   canvas.style.pointerEvents = 'none';
-  canvas.style.zIndex = '1000'; // Bring metaballs to the top
+  canvas.style.zIndex = '1000';
+  canvas.style.filter = 'none'; // Remove any blur
+  canvas.style.imageRendering = 'crisp-edges'; // Sharp rendering
 
   // Metaball class
   class Metaball {
@@ -62,16 +64,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     draw() {
+      // Create sharper gradient with more defined edges
       const gradient = ctx.createRadialGradient(
         this.x, this.y, 0,
-        this.x, this.y, this.radius
+        this.x, this.y, this.radius * 0.8 // Smaller gradient radius for sharper edges
       );
       gradient.addColorStop(0, this.color);
+      gradient.addColorStop(0.7, this.color.replace(/[\d\.]+\)$/g, '0.3)')); // Sharp falloff
       gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
       ctx.fillStyle = gradient;
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Add a solid inner circle for more definition
+      ctx.fillStyle = this.color;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius * 0.3, 0, Math.PI * 2);
       ctx.fill();
     }
   }
@@ -86,14 +96,16 @@ document.addEventListener('DOMContentLoaded', () => {
   function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    // Ensure crisp rendering after resize
+    ctx.imageSmoothingEnabled = false;
   }
 
   // Animation loop
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Set blend mode for metaball effect
-    ctx.globalCompositeOperation = 'screen';
+    // Set blend mode for metaball effect - use lighter for more vibrant colors
+    ctx.globalCompositeOperation = 'lighter';
 
     metaballs.forEach(ball => {
       ball.update();
@@ -125,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const distance = Math.sqrt(dx * dx + dy * dy);
       
       if (distance < 200) {
-        const force = (200 - distance) / 200 * 0.001;
+        const force = (200 - distance) / 200 * 0.002; // Slightly stronger interaction
         ball.vx += dx * force;
         ball.vy += dy * force;
         
