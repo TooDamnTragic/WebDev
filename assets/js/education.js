@@ -480,7 +480,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     if (text) currentInfoText.textContent = text;
-    
+        // Match popup background to item color
+    if (color) {
+      currentInfo.querySelectorAll('.popup').forEach(p => {
+        p.style.background = `linear-gradient(135deg, ${color}, #212427)`;
+      });
+    }
     // Only change background if no other popups are active or this is the first one
     if (color && (activePopups.size === 1 || !body.classList.contains('dimmed'))) {
       body.style.background = `linear-gradient(to bottom, ${color}, rgb(0, 255, 136))`;
@@ -600,6 +605,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set initial ARIA attributes
     item.setAttribute('aria-expanded', 'false');
     
+    // Hover interactions
+    item.addEventListener('mouseenter', () => {
+      if (!isMobile()) {
+        showInfo(item, isExtracurricular);
+      }
+    });
+    item.addEventListener('mouseleave', () => {
+      if (!isMobile()) {
+        hideInfo(isExtracurricular);
+      }
+    });
+
     // Click/touch events
     item.addEventListener('click', (e) => {
       // Prevent navigating via nested links
