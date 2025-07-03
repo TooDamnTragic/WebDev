@@ -640,6 +640,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+    const setupInfoHoverListeners = (infoElement, isExtracurricular = false) => {
+    if (!infoElement) return;
+    const popupId = isExtracurricular ? 'extra' : 'main';
+
+    infoElement.addEventListener('mouseenter', () => {
+      if (popupTimeouts.has(popupId)) {
+        clearTimeout(popupTimeouts.get(popupId));
+        popupTimeouts.delete(popupId);
+      }
+    });
+
+    infoElement.addEventListener('mouseleave', () => {
+      hideInfo(isExtracurricular);
+    });
+  };
   // Setup all item listeners
   document.querySelectorAll('.curricular-section .item').forEach(item => {
     setupItemListeners(item, false);
@@ -648,6 +663,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.extracurricular-section .item').forEach(item => {
     setupItemListeners(item, true);
   });
+
+  setupInfoHoverListeners(info, false);
+  setupInfoHoverListeners(infoExtra, true);
 
   // Close button functionality
   if (infoClose) {
