@@ -1,34 +1,24 @@
-// Metaballs animation for the index page background
+// Firefly animation for the index page background
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('metaballs');
   if (!container) return;
 
-  // Configuration - Tripled amount, random colors, increased glow, blur and opacity
+  // Configuration - Firefly-specific settings
   const config = {
-    numBalls: 18, // Tripled from 6 to 18
-    minRadius: 40,
-    maxRadius: 120,
-    speed: 0.6,
-    // Expanded color palette with higher opacity values
+    numFireflies: 25, // More fireflies for a magical effect
+    minRadius: 3,     // Much smaller - firefly size
+    maxRadius: 8,     // Small variation in firefly sizes
+    baseSpeed: 0.3,   // Slower base movement
+    // Firefly color palette - whites and warm yellows
     colorPalette: [
-      'rgba(102, 126, 234, 0.95)',  // Blue - increased opacity
-      'rgba(118, 75, 162, 0.95)',   // Purple - increased opacity
-      'rgba(0, 123, 255, 0.95)',    // Light blue - increased opacity
-      'rgba(255, 99, 132, 0.95)',   // Pink - increased opacity
-      'rgba(255, 206, 84, 0.95)',   // Yellow - increased opacity
-      'rgba(75, 192, 192, 0.95)',   // Teal - increased opacity
-      'rgba(153, 102, 255, 0.95)',  // Violet - increased opacity
-      'rgba(255, 159, 64, 0.95)',   // Orange - increased opacity
-      'rgba(199, 199, 199, 0.9)',   // Light gray - increased opacity
-      'rgba(83, 102, 255, 0.95)',   // Indigo - increased opacity
-      'rgba(255, 99, 255, 0.95)',   // Magenta - increased opacity
-      'rgba(99, 255, 132, 0.95)',   // Green - increased opacity
-      'rgba(255, 192, 203, 0.9)',   // Light pink - increased opacity
-      'rgba(173, 216, 230, 0.9)',   // Light blue - increased opacity
-      'rgba(240, 234, 214, 0.85)',  // Cream - increased opacity
-      'rgba(255, 215, 0, 0.9)',     // Gold - increased opacity
-      'rgba(50, 205, 50, 0.9)',     // Lime green - increased opacity
-      'rgba(255, 20, 147, 0.95)'    // Deep pink - increased opacity
+      'rgba(255, 255, 240, 0.9)',   // Ivory white
+      'rgba(255, 255, 224, 0.85)',  // Light yellow
+      'rgba(255, 250, 205, 0.8)',   // Lemon chiffon
+      'rgba(255, 248, 220, 0.9)',   // Cornsilk
+      'rgba(255, 255, 255, 0.7)',   // Pure white
+      'rgba(255, 253, 208, 0.85)',  // Cream
+      'rgba(255, 245, 238, 0.8)',   // Seashell
+      'rgba(255, 239, 213, 0.9)'    // Papaya whip
     ]
   };
 
@@ -37,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const ctx = canvas.getContext('2d');
   container.appendChild(canvas);
 
-  // Set canvas styles - Enhanced blur and opacity
+  // Set canvas styles - Subtle glow for fireflies
   canvas.style.position = 'absolute';
   canvas.style.top = '0';
   canvas.style.left = '0';
@@ -45,179 +35,208 @@ document.addEventListener('DOMContentLoaded', () => {
   canvas.style.height = '100%';
   canvas.style.pointerEvents = 'none';
   canvas.style.zIndex = '1000';
-  canvas.style.filter = 'blur(8px) brightness(1.2) saturate(1.3)'; // Increased blur and enhanced effects
-  canvas.style.opacity = '0.9'; // Increased overall opacity
-  canvas.style.imageRendering = 'auto'; // Allow smooth rendering for blur
+  canvas.style.filter = 'blur(1px)'; // Minimal blur for soft glow
+  canvas.style.opacity = '0.8';
 
-  // Metaball class
-  class Metaball {
+  // Firefly class with natural movement patterns
+  class Firefly {
     constructor() {
       this.x = Math.random() * window.innerWidth;
       this.y = Math.random() * window.innerHeight;
-      this.vx = (Math.random() - 0.5) * config.speed;
-      this.vy = (Math.random() - 0.5) * config.speed;
+      
+      // Natural firefly movement - slow, wandering, with pauses
+      this.baseVx = (Math.random() - 0.5) * config.baseSpeed;
+      this.baseVy = (Math.random() - 0.5) * config.baseSpeed;
+      this.vx = this.baseVx;
+      this.vy = this.baseVy;
+      
       this.radius = config.minRadius + Math.random() * (config.maxRadius - config.minRadius);
       
-      // Randomize color from expanded palette with higher opacity
+      // Firefly-specific colors (whites and warm yellows)
       this.color = config.colorPalette[Math.floor(Math.random() * config.colorPalette.length)];
       
-      // Enhanced randomization for glow and softness properties
-      this.hueShift = Math.random() * 60 - 30; // Random hue shift
-      this.glowIntensity = 0.6 + Math.random() * 0.4; // More varied glow intensity (0.6-1.0)
-      this.baseOpacity = 0.7 + Math.random() * 0.3; // More varied base opacity (0.7-1.0)
+      // Firefly behavior properties
+      this.brightness = 0.3 + Math.random() * 0.7; // Random initial brightness
+      this.flickerSpeed = 0.02 + Math.random() * 0.03; // How fast it flickers
+      this.flickerPhase = Math.random() * Math.PI * 2; // Random starting phase
       
-      // New randomized properties for glow and softness
-      this.glowRadius = 1.8 + Math.random() * 0.8; // Randomized glow radius multiplier (1.8-2.6)
-      this.softness = 0.5 + Math.random() * 1.0; // Randomized softness factor (0.5-1.5)
-      this.glowLayers = Math.floor(Math.random() * 3) + 2; // Random number of glow layers (2-4)
-      this.pulseSpeed = 0.01 + Math.random() * 0.03; // Random pulsing speed (0.01-0.04)
-      this.pulseAmplitude = 0.1 + Math.random() * 0.2; // Random pulse amplitude (0.1-0.3)
+      // Natural movement patterns
+      this.wanderAngle = Math.random() * Math.PI * 2; // Direction of wandering
+      this.wanderSpeed = 0.01 + Math.random() * 0.02; // How fast direction changes
+      this.pauseTimer = 0; // Timer for pausing movement
+      this.pauseDuration = Math.random() * 120 + 60; // How long to pause (1-3 seconds at 60fps)
+      this.isPaused = false;
       
-      // Animation properties for dynamic glow changes
-      this.glowPhase = Math.random() * Math.PI * 2; // Random starting phase for glow animation
-      this.softnessPhase = Math.random() * Math.PI * 2; // Random starting phase for softness animation
+      // Floating motion (up and down like real fireflies)
+      this.floatPhase = Math.random() * Math.PI * 2;
+      this.floatAmplitude = 0.5 + Math.random() * 1.0;
+      this.floatSpeed = 0.008 + Math.random() * 0.012;
+      
+      // Occasional burst of speed (like real fireflies)
+      this.burstTimer = 0;
+      this.burstDuration = 0;
+      this.inBurst = false;
     }
 
     update() {
+      // Update flicker phase for brightness animation
+      this.flickerPhase += this.flickerSpeed;
+      
+      // Update floating motion
+      this.floatPhase += this.floatSpeed;
+      
+      // Natural wandering behavior
+      if (!this.isPaused && !this.inBurst) {
+        // Gradually change direction (wandering)
+        this.wanderAngle += (Math.random() - 0.5) * this.wanderSpeed;
+        
+        // Update velocity based on wander angle
+        this.vx = Math.cos(this.wanderAngle) * config.baseSpeed * 0.7;
+        this.vy = Math.sin(this.wanderAngle) * config.baseSpeed * 0.7;
+        
+        // Add floating motion (vertical bobbing)
+        this.vy += Math.sin(this.floatPhase) * this.floatAmplitude * 0.1;
+      }
+      
+      // Handle pausing behavior (fireflies often pause)
+      this.pauseTimer++;
+      if (this.pauseTimer >= this.pauseDuration) {
+        this.isPaused = !this.isPaused;
+        this.pauseTimer = 0;
+        
+        if (this.isPaused) {
+          // Pause for a random duration
+          this.pauseDuration = Math.random() * 180 + 30; // 0.5-3 seconds
+          this.vx = 0;
+          this.vy = 0;
+        } else {
+          // Resume movement for a random duration
+          this.pauseDuration = Math.random() * 300 + 120; // 2-7 seconds
+          
+          // Occasionally do a quick burst of movement
+          if (Math.random() < 0.3) {
+            this.inBurst = true;
+            this.burstDuration = 30 + Math.random() * 30; // 0.5-1 second burst
+            this.burstTimer = 0;
+          }
+        }
+      }
+      
+      // Handle burst movement
+      if (this.inBurst) {
+        this.burstTimer++;
+        const burstMultiplier = 3 + Math.random() * 2; // 3-5x speed
+        this.vx = this.baseVx * burstMultiplier;
+        this.vy = this.baseVy * burstMultiplier;
+        
+        if (this.burstTimer >= this.burstDuration) {
+          this.inBurst = false;
+          this.burstTimer = 0;
+        }
+      }
+      
+      // Update position
       this.x += this.vx;
       this.y += this.vy;
 
-      // Bounce off edges
-      if (this.x <= this.radius || this.x >= canvas.width - this.radius) {
-        this.vx *= -1;
+      // Gentle edge behavior - fireflies tend to stay away from edges
+      const margin = 50;
+      if (this.x < margin) {
+        this.wanderAngle = Math.abs(this.wanderAngle); // Turn right
+        this.x = margin;
       }
-      if (this.y <= this.radius || this.y >= canvas.height - this.radius) {
-        this.vy *= -1;
+      if (this.x > canvas.width - margin) {
+        this.wanderAngle = Math.PI - Math.abs(this.wanderAngle); // Turn left
+        this.x = canvas.width - margin;
       }
-
-      // Keep within bounds
-      this.x = Math.max(this.radius, Math.min(canvas.width - this.radius, this.x));
-      this.y = Math.max(this.radius, Math.min(canvas.height - this.radius, this.y));
-      
-      // Update animation phases for dynamic glow and softness
-      this.glowPhase += this.pulseSpeed;
-      this.softnessPhase += this.pulseSpeed * 0.7; // Slightly different speed for variety
+      if (this.y < margin) {
+        this.wanderAngle = Math.PI / 2 + (this.wanderAngle % (Math.PI / 2)); // Turn down
+        this.y = margin;
+      }
+      if (this.y > canvas.height - margin) {
+        this.wanderAngle = -Math.PI / 2 + (this.wanderAngle % (Math.PI / 2)); // Turn up
+        this.y = canvas.height - margin;
+      }
     }
 
     draw() {
-      // Calculate dynamic glow and softness based on animation phases
-      const dynamicGlowIntensity = this.glowIntensity + Math.sin(this.glowPhase) * this.pulseAmplitude;
-      const dynamicSoftness = this.softness + Math.sin(this.softnessPhase) * 0.3;
-      const dynamicGlowRadius = this.glowRadius + Math.cos(this.glowPhase * 0.5) * 0.2;
+      // Calculate dynamic brightness (flickering like real fireflies)
+      const flicker = Math.sin(this.flickerPhase) * 0.3 + 0.7; // 0.4 to 1.0
+      const currentBrightness = this.brightness * flicker;
       
-      // Enhanced glow effect with randomized properties and multiple layers
-      const glowRadius = this.radius * dynamicGlowRadius;
+      // Firefly glow - small and soft
+      const glowRadius = this.radius * 4; // Small glow radius
       
-      // Draw multiple glow layers with randomized properties
-      for (let layer = 0; layer < this.glowLayers; layer++) {
-        const layerRadius = glowRadius * (1 + layer * 0.3);
-        const layerOpacity = dynamicGlowIntensity * (1 - layer * 0.2);
-        
-        const layerGlow = ctx.createRadialGradient(
-          this.x, this.y, 0,
-          this.x, this.y, layerRadius
-        );
-        
-        // Create gradient stops with randomized softness
-        const stops = Math.floor(4 + Math.random() * 3); // 4-6 gradient stops
-        for (let i = 0; i <= stops; i++) {
-          const stop = i / stops;
-          const adjustedStop = Math.pow(stop, dynamicSoftness); // Apply softness curve
-          const opacity = layerOpacity * (1 - adjustedStop);
-          layerGlow.addColorStop(adjustedStop, this.color.replace(/[\d\.]+\)$/g, `${Math.max(0, opacity)})`));
-        }
-        layerGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
-
-        // Draw glow layer
-        ctx.fillStyle = layerGlow;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, layerRadius, 0, Math.PI * 2);
-        ctx.fill();
-      }
-
-      // Main gradient with enhanced randomized properties
-      const mainRadius = this.radius * (1.2 + dynamicSoftness * 0.3);
-      const mainGradient = ctx.createRadialGradient(
+      // Outer soft glow
+      const outerGlow = ctx.createRadialGradient(
         this.x, this.y, 0,
-        this.x, this.y, mainRadius
+        this.x, this.y, glowRadius
       );
-      
-      // Create main gradient with randomized softness curve
-      const mainStops = Math.floor(3 + Math.random() * 2); // 3-4 stops for main gradient
-      for (let i = 0; i <= mainStops; i++) {
-        const stop = i / mainStops;
-        const adjustedStop = Math.pow(stop, dynamicSoftness * 0.8);
-        const opacity = this.baseOpacity * (1 - adjustedStop * 0.7);
-        mainGradient.addColorStop(adjustedStop, this.color.replace(/[\d\.]+\)$/g, `${Math.max(0, opacity)})`));
-      }
-      mainGradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      outerGlow.addColorStop(0, this.color.replace(/[\d\.]+\)$/g, `${currentBrightness * 0.8})`));
+      outerGlow.addColorStop(0.3, this.color.replace(/[\d\.]+\)$/g, `${currentBrightness * 0.4})`));
+      outerGlow.addColorStop(0.6, this.color.replace(/[\d\.]+\)$/g, `${currentBrightness * 0.2})`));
+      outerGlow.addColorStop(1, 'rgba(0, 0, 0, 0)');
 
-      ctx.fillStyle = mainGradient;
+      ctx.fillStyle = outerGlow;
       ctx.beginPath();
-      ctx.arc(this.x, this.y, mainRadius, 0, Math.PI * 2);
+      ctx.arc(this.x, this.y, glowRadius, 0, Math.PI * 2);
       ctx.fill();
 
-      // Bright inner core with randomized intensity and softness
-      const coreRadius = this.radius * (0.4 + dynamicSoftness * 0.3);
-      const coreGradient = ctx.createRadialGradient(
+      // Main firefly body
+      const bodyRadius = this.radius * 2;
+      const bodyGradient = ctx.createRadialGradient(
         this.x, this.y, 0,
-        this.x, this.y, coreRadius
+        this.x, this.y, bodyRadius
       );
-      
-      const coreIntensity = Math.min(1.0, dynamicGlowIntensity * 1.2);
-      coreGradient.addColorStop(0, this.color.replace(/[\d\.]+\)$/g, '1.0)'));
-      coreGradient.addColorStop(0.3, this.color.replace(/[\d\.]+\)$/g, `${coreIntensity * 0.95})`));
-      coreGradient.addColorStop(0.6, this.color.replace(/[\d\.]+\)$/g, `${coreIntensity * 0.8})`));
-      coreGradient.addColorStop(1, this.color.replace(/[\d\.]+\)$/g, `${coreIntensity * 0.4})`));
+      bodyGradient.addColorStop(0, this.color.replace(/[\d\.]+\)$/g, `${currentBrightness})`));
+      bodyGradient.addColorStop(0.5, this.color.replace(/[\d\.]+\)$/g, `${currentBrightness * 0.7})`));
+      bodyGradient.addColorStop(1, this.color.replace(/[\d\.]+\)$/g, `${currentBrightness * 0.3})`));
 
-      ctx.fillStyle = coreGradient;
+      ctx.fillStyle = bodyGradient;
       ctx.beginPath();
-      ctx.arc(this.x, this.y, coreRadius, 0, Math.PI * 2);
+      ctx.arc(this.x, this.y, bodyRadius, 0, Math.PI * 2);
       ctx.fill();
 
-      // Ultra-bright center point with randomized properties
-      const centerRadius = this.radius * (0.15 + dynamicSoftness * 0.1);
+      // Bright center (the firefly's light)
       const centerGradient = ctx.createRadialGradient(
         this.x, this.y, 0,
-        this.x, this.y, centerRadius
+        this.x, this.y, this.radius
       );
-      
-      const centerIntensity = Math.min(1.0, dynamicGlowIntensity * 1.5);
-      centerGradient.addColorStop(0, this.color.replace(/[\d\.]+\)$/g, '1.0)'));
-      centerGradient.addColorStop(0.5, this.color.replace(/[\d\.]+\)$/g, `${centerIntensity * 0.95})`));
-      centerGradient.addColorStop(1, this.color.replace(/[\d\.]+\)$/g, `${centerIntensity * 0.8})`));
+      centerGradient.addColorStop(0, this.color.replace(/[\d\.]+\)$/g, `${Math.min(1.0, currentBrightness * 1.2)})`));
+      centerGradient.addColorStop(0.7, this.color.replace(/[\d\.]+\)$/g, `${currentBrightness * 0.8})`));
+      centerGradient.addColorStop(1, this.color.replace(/[\d\.]+\)$/g, `${currentBrightness * 0.4})`));
 
       ctx.fillStyle = centerGradient;
       ctx.beginPath();
-      ctx.arc(this.x, this.y, centerRadius, 0, Math.PI * 2);
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
       ctx.fill();
     }
   }
 
-  // Create metaballs - now 18 instead of 6
-  const metaballs = [];
-  for (let i = 0; i < config.numBalls; i++) {
-    metaballs.push(new Metaball());
+  // Create fireflies
+  const fireflies = [];
+  for (let i = 0; i < config.numFireflies; i++) {
+    fireflies.push(new Firefly());
   }
 
   // Resize canvas
   function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    ctx.imageSmoothingEnabled = true; // Enable smoothing for better blur effect
+    ctx.imageSmoothingEnabled = true;
   }
 
   // Animation loop
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Enhanced blend mode for more vibrant glow with higher opacity
-    ctx.globalCompositeOperation = 'screen';
-    ctx.globalAlpha = 1.0; // Maximum alpha for full opacity
+    // Use 'lighter' blend mode for firefly glow effect
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = 1.0;
 
-    metaballs.forEach(ball => {
-      ball.update();
-      ball.draw();
+    fireflies.forEach(firefly => {
+      firefly.update();
+      firefly.draw();
     });
 
     requestAnimationFrame(animate);
@@ -230,36 +249,28 @@ document.addEventListener('DOMContentLoaded', () => {
   // Handle resize
   window.addEventListener('resize', resizeCanvas);
 
-  // Color and property randomization over time with enhanced variations
+  // Occasional firefly behavior changes
   setInterval(() => {
-    metaballs.forEach(ball => {
-      // Occasionally change color and properties for dynamic effect
-      if (Math.random() < 0.03) { // Slightly higher chance for more variation
-        ball.color = config.colorPalette[Math.floor(Math.random() * config.colorPalette.length)];
-        ball.glowIntensity = 0.6 + Math.random() * 0.4;
-        ball.baseOpacity = 0.7 + Math.random() * 0.3;
-        
-        // Randomize glow and softness properties
-        ball.glowRadius = 1.8 + Math.random() * 0.8;
-        ball.softness = 0.5 + Math.random() * 1.0;
-        ball.glowLayers = Math.floor(Math.random() * 3) + 2;
-        ball.pulseSpeed = 0.01 + Math.random() * 0.03;
-        ball.pulseAmplitude = 0.1 + Math.random() * 0.2;
+    fireflies.forEach(firefly => {
+      // Occasionally change brightness patterns
+      if (Math.random() < 0.02) {
+        firefly.brightness = 0.3 + Math.random() * 0.7;
+        firefly.flickerSpeed = 0.02 + Math.random() * 0.03;
       }
       
-      // Gradually evolve glow and softness properties over time
-      if (Math.random() < 0.1) {
-        ball.glowIntensity += (Math.random() - 0.5) * 0.02;
-        ball.glowIntensity = Math.max(0.6, Math.min(1.0, ball.glowIntensity));
-        
-        ball.softness += (Math.random() - 0.5) * 0.05;
-        ball.softness = Math.max(0.5, Math.min(1.5, ball.softness));
-        
-        ball.glowRadius += (Math.random() - 0.5) * 0.02;
-        ball.glowRadius = Math.max(1.8, Math.min(2.6, ball.glowRadius));
+      // Occasionally change movement patterns
+      if (Math.random() < 0.01) {
+        firefly.wanderSpeed = 0.01 + Math.random() * 0.02;
+        firefly.floatAmplitude = 0.5 + Math.random() * 1.0;
+        firefly.floatSpeed = 0.008 + Math.random() * 0.012;
+      }
+      
+      // Very rarely, change color slightly (different firefly species)
+      if (Math.random() < 0.005) {
+        firefly.color = config.colorPalette[Math.floor(Math.random() * config.colorPalette.length)];
       }
     });
-  }, 60); // Faster property changes for more dynamic effect
+  }, 100);
 
   // Cleanup function
   window.addEventListener('beforeunload', () => {
