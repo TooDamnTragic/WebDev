@@ -189,41 +189,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Handle resize
   window.addEventListener('resize', resizeCanvas);
 
-  // Enhanced mouse interaction with opacity changes
-  let mouseX = 0;
-  let mouseY = 0;
-
-  document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-
-    // Stronger attraction to mouse with enhanced opacity and glow
-    metaballs.forEach((ball, index) => {
-      const dx = mouseX - ball.x;
-      const dy = mouseY - ball.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      
-      if (distance < 300) { // Increased interaction radius
-        const force = (300 - distance) / 300 * 0.005;
-        ball.vx += dx * force;
-        ball.vy += dy * force;
-        
-        // Enhance glow and opacity when near mouse
-        ball.glowIntensity = Math.min(1.0, ball.glowIntensity + 0.02);
-        ball.baseOpacity = Math.min(1.0, ball.baseOpacity + 0.01);
-        
-        // Limit velocity
-        const maxVel = config.speed * 3;
-        ball.vx = Math.max(-maxVel, Math.min(maxVel, ball.vx));
-        ball.vy = Math.max(-maxVel, Math.min(maxVel, ball.vy));
-      } else {
-        // Gradually reduce glow when away from mouse but maintain high opacity
-        ball.glowIntensity = Math.max(0.85, ball.glowIntensity - 0.003);
-        ball.baseOpacity = Math.max(0.8, ball.baseOpacity - 0.002);
-      }
-    });
-  });
-
   // Color randomization over time with opacity variations
   setInterval(() => {
     metaballs.forEach(ball => {
