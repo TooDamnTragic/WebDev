@@ -363,9 +363,39 @@ document.addEventListener('DOMContentLoaded', () => {
       cardContainer.addEventListener('pointermove', handlePointerMove);
       cardContainer.addEventListener('pointerleave', handlePointerLeave);
 
-      // Initial animation
-      const initialX = item.clientWidth - ANIMATION_CONFIG.INITIAL_X_OFFSET;
-      const initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET;
+      // Initial animation with different positions for each card
+      let initialX, initialY;
+      
+      // Get the card's data attribute to identify it
+      const cardType = item.getAttribute('data-card');
+      
+      // Set different initial positions based on card type
+      switch(cardType) {
+        case 'rit':
+          initialX = item.clientWidth - 50;
+          initialY = 40;
+          break;
+        case 'honors':
+          initialX = 60;
+          initialY = item.clientHeight - 80;
+          break;
+        case 'cybersecurity':
+          initialX = item.clientWidth - 90;
+          initialY = item.clientHeight - 50;
+          break;
+        case 'math':
+          // Copy positioning from cybersecurity card for more randomness
+          initialX = item.clientWidth - 90;
+          initialY = item.clientHeight - 50;
+          break;
+        case 'sysadmin':
+          initialX = 80;
+          initialY = 60;
+          break;
+        default:
+          initialX = item.clientWidth - ANIMATION_CONFIG.INITIAL_X_OFFSET;
+          initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET;
+      }
 
       updateCardTransform(initialX, initialY);
       createSmoothAnimation(
