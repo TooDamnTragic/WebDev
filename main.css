@@ -300,63 +300,64 @@ body.education-page{
   --dy:13vmin + 2vmax;
   --light:#111010;
   --dark:#4e3f3f;
-  --textColor:#f0ead6;
+  --textColor:#000000; /* Changed to black for contrast */
   --size:25vmin;
   z-index:6;
   font-size:calc(var(--size)*0.15);
   
-  /* Firefly-like appearance */
+  /* Enhanced firefly-like appearance */
   background: radial-gradient(circle at var(--mx,50%) var(--my,50%), 
-    rgba(255, 255, 240, 0.9) 0%, 
-    rgba(255, 250, 205, 0.7) 30%, 
-    rgba(255, 248, 220, 0.5) 60%, 
+    rgba(255, 255, 240, 0.95) 0%, 
+    rgba(255, 250, 205, 0.8) 30%, 
+    rgba(255, 248, 220, 0.6) 60%, 
+    rgba(255, 235, 100, 0.4) 80%,
     rgba(17, 16, 16, 0.8) 100%);
   
-  /* Firefly glow effect */
+  /* Enhanced firefly glow effect */
   box-shadow: 
-    inset -2px -2px 5px rgba(255, 255, 255, 0.3),
-    inset 2px 2px 8px rgba(0, 0, 0, 0.4),
-    0 0 20px rgba(255, 255, 240, 0.6),
-    0 0 40px rgba(255, 250, 205, 0.4),
-    0 0 60px rgba(255, 248, 220, 0.2);
+    inset -2px -2px 5px rgba(255, 255, 255, 0.4),
+    inset 2px 2px 8px rgba(0, 0, 0, 0.3),
+    0 0 25px rgba(255, 255, 150, 0.8),
+    0 0 50px rgba(255, 245, 120, 0.6),
+    0 0 75px rgba(255, 235, 100, 0.4);
   
-  /* Subtle floating animation */
+  /* Enhanced floating animation */
   animation: fireflyFloat 4s ease-in-out infinite, fireflyGlow 3s ease-in-out infinite alternate;
 }
 
-/* Firefly floating animation */
+/* Enhanced firefly floating animation */
 @keyframes fireflyFloat {
   0%, 100% {
     transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(var(--scale,1)) translateY(0px);
   }
   25% {
-    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(var(--scale,1)) translateY(-3px) translateX(2px);
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(var(--scale,1)) translateY(-4px) translateX(3px);
   }
   50% {
-    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(var(--scale,1)) translateY(-1px) translateX(-1px);
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(var(--scale,1)) translateY(-2px) translateX(-2px);
   }
   75% {
-    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(var(--scale,1)) translateY(-4px) translateX(1px);
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(var(--scale,1)) translateY(-5px) translateX(2px);
   }
 }
 
-/* Firefly glow pulsing animation */
+/* Enhanced firefly glow pulsing animation */
 @keyframes fireflyGlow {
   0% {
     box-shadow: 
-      inset -2px -2px 5px rgba(255, 255, 255, 0.3),
-      inset 2px 2px 8px rgba(0, 0, 0, 0.4),
-      0 0 15px rgba(255, 255, 240, 0.5),
-      0 0 30px rgba(255, 250, 205, 0.3),
-      0 0 45px rgba(255, 248, 220, 0.15);
+      inset -2px -2px 5px rgba(255, 255, 255, 0.4),
+      inset 2px 2px 8px rgba(0, 0, 0, 0.3),
+      0 0 20px rgba(255, 255, 150, 0.6),
+      0 0 40px rgba(255, 245, 120, 0.4),
+      0 0 60px rgba(255, 235, 100, 0.2);
   }
   100% {
     box-shadow: 
-      inset -2px -2px 5px rgba(255, 255, 255, 0.4),
-      inset 2px 2px 8px rgba(0, 0, 0, 0.3),
-      0 0 25px rgba(255, 255, 240, 0.8),
-      0 0 50px rgba(255, 250, 205, 0.6),
-      0 0 75px rgba(255, 248, 220, 0.3);
+      inset -2px -2px 5px rgba(255, 255, 255, 0.5),
+      inset 2px 2px 8px rgba(0, 0, 0, 0.2),
+      0 0 30px rgba(255, 255, 150, 1.0),
+      0 0 60px rgba(255, 245, 120, 0.8),
+      0 0 90px rgba(255, 235, 100, 0.5);
   }
 }
 
@@ -365,19 +366,20 @@ body.education-page{
   --scale:1.05;
   background: radial-gradient(circle at var(--mx,50%) var(--my,50%), 
     rgba(255, 255, 255, 1) 0%, 
-    rgba(255, 255, 240, 0.9) 20%, 
-    rgba(255, 250, 205, 0.8) 40%, 
-    rgba(255, 248, 220, 0.6) 70%, 
+    rgba(255, 255, 240, 0.95) 20%, 
+    rgba(255, 250, 205, 0.9) 40%, 
+    rgba(255, 248, 220, 0.7) 70%, 
+    rgba(255, 235, 100, 0.5) 85%,
     rgba(17, 16, 16, 0.9) 100%);
   
   box-shadow: 
-    inset -1px -1px 3px rgba(255, 255, 255, 0.6),
-    inset 1px 1px 5px rgba(0, 0, 0, 0.2),
-    0 0 30px rgba(255, 255, 255, 0.9),
-    0 0 60px rgba(255, 255, 240, 0.7),
-    0 0 90px rgba(255, 250, 205, 0.5);
+    inset -1px -1px 3px rgba(255, 255, 255, 0.7),
+    inset 1px 1px 5px rgba(0, 0, 0, 0.1),
+    0 0 35px rgba(255, 255, 150, 1.0),
+    0 0 70px rgba(255, 255, 240, 0.9),
+    0 0 105px rgba(255, 250, 205, 0.7);
   
-  filter: brightness(1.3);
+  filter: brightness(1.4);
   animation: fireflyFloat 2s ease-in-out infinite, fireflyGlowHover 1.5s ease-in-out infinite alternate;
 }
 
@@ -385,19 +387,19 @@ body.education-page{
 @keyframes fireflyGlowHover {
   0% {
     box-shadow: 
-      inset -1px -1px 3px rgba(255, 255, 255, 0.6),
-      inset 1px 1px 5px rgba(0, 0, 0, 0.2),
-      0 0 25px rgba(255, 255, 255, 0.8),
-      0 0 50px rgba(255, 255, 240, 0.6),
-      0 0 75px rgba(255, 250, 205, 0.4);
+      inset -1px -1px 3px rgba(255, 255, 255, 0.7),
+      inset 1px 1px 5px rgba(0, 0, 0, 0.1),
+      0 0 30px rgba(255, 255, 150, 0.9),
+      0 0 60px rgba(255, 255, 240, 0.7),
+      0 0 90px rgba(255, 250, 205, 0.5);
   }
   100% {
     box-shadow: 
-      inset -1px -1px 3px rgba(255, 255, 255, 0.8),
-      inset 1px 1px 5px rgba(0, 0, 0, 0.1),
-      0 0 35px rgba(255, 255, 255, 1),
-      0 0 70px rgba(255, 255, 240, 0.8),
-      0 0 105px rgba(255, 250, 205, 0.6);
+      inset -1px -1px 3px rgba(255, 255, 255, 0.9),
+      inset 1px 1px 5px rgba(0, 0, 0, 0.05),
+      0 0 40px rgba(255, 255, 150, 1.0),
+      0 0 80px rgba(255, 255, 240, 0.9),
+      0 0 120px rgba(255, 250, 205, 0.7);
   }
 }
 
