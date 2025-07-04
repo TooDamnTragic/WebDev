@@ -9,16 +9,16 @@ document.addEventListener('DOMContentLoaded', () => {
     minRadius: 3,     // Much smaller - firefly size
     maxRadius: 8,     // Small variation in firefly sizes
     baseSpeed: 0.3,   // Slower base movement
-    // Enhanced firefly color palette - more yellow tints
+    // Much more yellow firefly color palette
     colorPalette: [
-      'rgba(255, 255, 150, 0.9)',   // Bright yellow
-      'rgba(255, 245, 120, 0.85)',  // Golden yellow
-      'rgba(255, 235, 100, 0.8)',   // Warm yellow
-      'rgba(255, 250, 180, 0.9)',   // Light yellow
-      'rgba(255, 255, 200, 0.7)',   // Pale yellow
-      'rgba(255, 240, 140, 0.85)',  // Amber yellow
-      'rgba(255, 220, 110, 0.8)',   // Deep yellow
-      'rgba(255, 255, 170, 0.9)'    // Soft yellow
+      'rgba(255, 255, 100, 0.95)',  // Bright golden yellow
+      'rgba(255, 240, 80, 0.9)',    // Deep golden yellow
+      'rgba(255, 235, 60, 0.85)',   // Rich yellow
+      'rgba(255, 250, 120, 0.9)',   // Warm golden yellow
+      'rgba(255, 220, 50, 0.8)',    // Deep amber yellow
+      'rgba(255, 245, 90, 0.85)',   // Bright amber
+      'rgba(255, 210, 40, 0.8)',    // Strong yellow
+      'rgba(255, 255, 130, 0.9)'    // Light golden yellow
     ]
   };
 
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       this.radius = config.minRadius + Math.random() * (config.maxRadius - config.minRadius);
       
-      // Enhanced firefly colors (more yellow tints)
+      // Much more yellow firefly colors
       this.color = config.colorPalette[Math.floor(Math.random() * config.colorPalette.length)];
       
       // Firefly behavior properties
@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Enhanced firefly glow - more pronounced
       const glowRadius = this.radius * 5; // Larger glow radius
       
-      // Outer soft glow (more yellow)
+      // Outer soft glow (much more yellow)
       const outerGlow = ctx.createRadialGradient(
         this.x, this.y, 0,
         this.x, this.y, glowRadius
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.arc(this.x, this.y, glowRadius, 0, Math.PI * 2);
       ctx.fill();
 
-      // Main firefly body (brighter)
+      // Main firefly body (brighter and more yellow)
       const bodyRadius = this.radius * 2.5;
       const bodyGradient = ctx.createRadialGradient(
         this.x, this.y, 0,
@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.arc(this.x, this.y, bodyRadius, 0, Math.PI * 2);
       ctx.fill();
 
-      // Bright center (the firefly's light) - more intense
+      // Bright center (the firefly's light) - more intense and yellow
       const centerGradient = ctx.createRadialGradient(
         this.x, this.y, 0,
         this.x, this.y, this.radius

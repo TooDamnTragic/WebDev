@@ -300,26 +300,26 @@ body.education-page{
   --dy:13vmin + 2vmax;
   --light:#111010;
   --dark:#4e3f3f;
-  --textColor:#000000; /* Changed to black for contrast */
+  --textColor:#000000; /* Black text for contrast */
   --size:25vmin;
   z-index:6;
   font-size:calc(var(--size)*0.15);
   
-  /* Enhanced firefly-like appearance */
+  /* Much more yellow firefly-like appearance */
   background: radial-gradient(circle at var(--mx,50%) var(--my,50%), 
-    rgba(255, 255, 240, 0.95) 0%, 
-    rgba(255, 250, 205, 0.8) 30%, 
-    rgba(255, 248, 220, 0.6) 60%, 
-    rgba(255, 235, 100, 0.4) 80%,
+    rgba(255, 255, 80, 0.98) 0%, 
+    rgba(255, 240, 60, 0.9) 30%, 
+    rgba(255, 220, 40, 0.7) 60%, 
+    rgba(255, 200, 20, 0.5) 80%,
     rgba(17, 16, 16, 0.8) 100%);
   
-  /* Enhanced firefly glow effect */
+  /* Much more yellow firefly glow effect */
   box-shadow: 
-    inset -2px -2px 5px rgba(255, 255, 255, 0.4),
-    inset 2px 2px 8px rgba(0, 0, 0, 0.3),
-    0 0 25px rgba(255, 255, 150, 0.8),
-    0 0 50px rgba(255, 245, 120, 0.6),
-    0 0 75px rgba(255, 235, 100, 0.4);
+    inset -2px -2px 5px rgba(255, 255, 255, 0.5),
+    inset 2px 2px 8px rgba(0, 0, 0, 0.2),
+    0 0 30px rgba(255, 255, 100, 0.9),
+    0 0 60px rgba(255, 240, 80, 0.7),
+    0 0 90px rgba(255, 220, 60, 0.5);
   
   /* Enhanced floating animation */
   animation: fireflyFloat 4s ease-in-out infinite, fireflyGlow 3s ease-in-out infinite alternate;
@@ -341,65 +341,65 @@ body.education-page{
   }
 }
 
-/* Enhanced firefly glow pulsing animation */
+/* Much more yellow firefly glow pulsing animation */
 @keyframes fireflyGlow {
   0% {
     box-shadow: 
-      inset -2px -2px 5px rgba(255, 255, 255, 0.4),
-      inset 2px 2px 8px rgba(0, 0, 0, 0.3),
-      0 0 20px rgba(255, 255, 150, 0.6),
-      0 0 40px rgba(255, 245, 120, 0.4),
-      0 0 60px rgba(255, 235, 100, 0.2);
+      inset -2px -2px 5px rgba(255, 255, 255, 0.5),
+      inset 2px 2px 8px rgba(0, 0, 0, 0.2),
+      0 0 25px rgba(255, 255, 100, 0.7),
+      0 0 50px rgba(255, 240, 80, 0.5),
+      0 0 75px rgba(255, 220, 60, 0.3);
   }
   100% {
     box-shadow: 
-      inset -2px -2px 5px rgba(255, 255, 255, 0.5),
-      inset 2px 2px 8px rgba(0, 0, 0, 0.2),
-      0 0 30px rgba(255, 255, 150, 1.0),
-      0 0 60px rgba(255, 245, 120, 0.8),
-      0 0 90px rgba(255, 235, 100, 0.5);
+      inset -2px -2px 5px rgba(255, 255, 255, 0.6),
+      inset 2px 2px 8px rgba(0, 0, 0, 0.1),
+      0 0 35px rgba(255, 255, 100, 1.0),
+      0 0 70px rgba(255, 240, 80, 0.8),
+      0 0 105px rgba(255, 220, 60, 0.6);
   }
 }
 
-/* Enhanced hover state for Life ball */
+/* Enhanced hover state for Life ball - much more yellow */
 .life:hover {
   --scale:1.05;
   background: radial-gradient(circle at var(--mx,50%) var(--my,50%), 
-    rgba(255, 255, 255, 1) 0%, 
-    rgba(255, 255, 240, 0.95) 20%, 
-    rgba(255, 250, 205, 0.9) 40%, 
-    rgba(255, 248, 220, 0.7) 70%, 
-    rgba(255, 235, 100, 0.5) 85%,
+    rgba(255, 255, 60, 1) 0%, 
+    rgba(255, 240, 40, 0.98) 20%, 
+    rgba(255, 220, 20, 0.95) 40%, 
+    rgba(255, 200, 0, 0.8) 70%, 
+    rgba(255, 180, 0, 0.6) 85%,
     rgba(17, 16, 16, 0.9) 100%);
   
   box-shadow: 
-    inset -1px -1px 3px rgba(255, 255, 255, 0.7),
-    inset 1px 1px 5px rgba(0, 0, 0, 0.1),
-    0 0 35px rgba(255, 255, 150, 1.0),
-    0 0 70px rgba(255, 255, 240, 0.9),
-    0 0 105px rgba(255, 250, 205, 0.7);
+    inset -1px -1px 3px rgba(255, 255, 255, 0.8),
+    inset 1px 1px 5px rgba(0, 0, 0, 0.05),
+    0 0 40px rgba(255, 255, 80, 1.0),
+    0 0 80px rgba(255, 240, 60, 0.9),
+    0 0 120px rgba(255, 220, 40, 0.8);
   
-  filter: brightness(1.4);
+  filter: brightness(1.5);
   animation: fireflyFloat 2s ease-in-out infinite, fireflyGlowHover 1.5s ease-in-out infinite alternate;
 }
 
-/* Faster glow animation on hover */
+/* Much more yellow hover glow animation */
 @keyframes fireflyGlowHover {
   0% {
     box-shadow: 
-      inset -1px -1px 3px rgba(255, 255, 255, 0.7),
-      inset 1px 1px 5px rgba(0, 0, 0, 0.1),
-      0 0 30px rgba(255, 255, 150, 0.9),
-      0 0 60px rgba(255, 255, 240, 0.7),
-      0 0 90px rgba(255, 250, 205, 0.5);
+      inset -1px -1px 3px rgba(255, 255, 255, 0.8),
+      inset 1px 1px 5px rgba(0, 0, 0, 0.05),
+      0 0 35px rgba(255, 255, 80, 0.9),
+      0 0 70px rgba(255, 240, 60, 0.7),
+      0 0 105px rgba(255, 220, 40, 0.5);
   }
   100% {
     box-shadow: 
       inset -1px -1px 3px rgba(255, 255, 255, 0.9),
-      inset 1px 1px 5px rgba(0, 0, 0, 0.05),
-      0 0 40px rgba(255, 255, 150, 1.0),
-      0 0 80px rgba(255, 255, 240, 0.9),
-      0 0 120px rgba(255, 250, 205, 0.7);
+      inset 1px 1px 5px rgba(0, 0, 0, 0.02),
+      0 0 45px rgba(255, 255, 80, 1.0),
+      0 0 90px rgba(255, 240, 60, 0.9),
+      0 0 135px rgba(255, 220, 40, 0.8);
   }
 }
 
