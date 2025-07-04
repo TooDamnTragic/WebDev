@@ -226,7 +226,7 @@ body.education-page{
   pointer-events:auto;
   background:radial-gradient(circle at var(--mx,50%) var(--my,50%), var(--light,#eee), var(--dark,#666) 70%, #444);
   box-shadow:inset -5px -5px 10px rgba(255,255,255,0.4),
-             inset 5px 5px 15px rgba(0,0,0,0.7);
+            inset 5px 5px 15px rgba(0,0,0,0.7);
   transform-style:preserve-3d;
 }
 
