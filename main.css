@@ -295,7 +295,7 @@ body.education-page{
   font-size:calc(var(--size)*0.15);
 }
 
-.miseducation{
+.life{
   --dx:12vmin + 2vmax;
   --dy:13vmin + 2vmax;
   --light:#111010;
