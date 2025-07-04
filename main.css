@@ -321,8 +321,12 @@ body.education-page{
     0 0 60px rgba(255, 240, 80, 0.7),
     0 0 90px rgba(255, 220, 60, 0.5);
   
-  /* Enhanced floating animation */
-  animation: fireflyFloat 4s ease-in-out infinite, fireflyGlow 3s ease-in-out infinite alternate;
+  /* Enhanced floating animation with idle motion and pulsing light */
+  animation: 
+    fireflyFloat 4s ease-in-out infinite, 
+    fireflyGlow 2.5s ease-in-out infinite alternate,
+    lifeBallIdle 6s ease-in-out infinite,
+    lightPulse 3s ease-in-out infinite alternate;
 }
 
 /* Enhanced firefly floating animation */
@@ -338,6 +342,83 @@ body.education-page{
   }
   75% {
     transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(var(--scale,1)) translateY(-5px) translateX(2px);
+  }
+}
+
+/* Idle motion animation - subtle breathing and drifting */
+@keyframes lifeBallIdle {
+  0%, 100% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(var(--scale,1)) 
+               translateY(0px) translateX(0px) rotate(0deg);
+  }
+  16% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(calc(var(--scale,1) * 1.02)) 
+               translateY(-2px) translateX(1px) rotate(1deg);
+  }
+  33% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(calc(var(--scale,1) * 0.98)) 
+               translateY(-1px) translateX(-1px) rotate(-0.5deg);
+  }
+  50% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(calc(var(--scale,1) * 1.01)) 
+               translateY(-3px) translateX(2px) rotate(0.8deg);
+  }
+  66% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(calc(var(--scale,1) * 0.99)) 
+               translateY(-1px) translateX(-0.5px) rotate(-0.3deg);
+  }
+  83% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(calc(var(--scale,1) * 1.015)) 
+               translateY(-2px) translateX(1.5px) rotate(0.5deg);
+  }
+}
+
+/* Pulsing light animation - rhythmic brightness changes */
+@keyframes lightPulse {
+  0% {
+    filter: brightness(1.0) drop-shadow(0 0 15px rgba(255, 255, 100, 0.6));
+    box-shadow: 
+      inset -2px -2px 5px rgba(255, 255, 255, 0.5),
+      inset 2px 2px 8px rgba(0, 0, 0, 0.2),
+      0 0 25px rgba(255, 255, 100, 0.7),
+      0 0 50px rgba(255, 240, 80, 0.5),
+      0 0 75px rgba(255, 220, 60, 0.3);
+  }
+  25% {
+    filter: brightness(1.3) drop-shadow(0 0 25px rgba(255, 255, 100, 0.8));
+    box-shadow: 
+      inset -2px -2px 5px rgba(255, 255, 255, 0.6),
+      inset 2px 2px 8px rgba(0, 0, 0, 0.1),
+      0 0 35px rgba(255, 255, 100, 0.9),
+      0 0 70px rgba(255, 240, 80, 0.7),
+      0 0 105px rgba(255, 220, 60, 0.5);
+  }
+  50% {
+    filter: brightness(0.8) drop-shadow(0 0 10px rgba(255, 255, 100, 0.4));
+    box-shadow: 
+      inset -2px -2px 5px rgba(255, 255, 255, 0.4),
+      inset 2px 2px 8px rgba(0, 0, 0, 0.3),
+      0 0 20px rgba(255, 255, 100, 0.5),
+      0 0 40px rgba(255, 240, 80, 0.3),
+      0 0 60px rgba(255, 220, 60, 0.2);
+  }
+  75% {
+    filter: brightness(1.4) drop-shadow(0 0 30px rgba(255, 255, 100, 0.9));
+    box-shadow: 
+      inset -2px -2px 5px rgba(255, 255, 255, 0.7),
+      inset 2px 2px 8px rgba(0, 0, 0, 0.05),
+      0 0 40px rgba(255, 255, 100, 1.0),
+      0 0 80px rgba(255, 240, 80, 0.8),
+      0 0 120px rgba(255, 220, 60, 0.6);
+  }
+  100% {
+    filter: brightness(1.1) drop-shadow(0 0 20px rgba(255, 255, 100, 0.7));
+    box-shadow: 
+      inset -2px -2px 5px rgba(255, 255, 255, 0.6),
+      inset 2px 2px 8px rgba(0, 0, 0, 0.1),
+      0 0 30px rgba(255, 255, 100, 0.8),
+      0 0 60px rgba(255, 240, 80, 0.6),
+      0 0 90px rgba(255, 220, 60, 0.4);
   }
 }
 
@@ -361,7 +442,7 @@ body.education-page{
   }
 }
 
-/* Enhanced hover state for Life ball - much more yellow */
+/* Enhanced hover state for Life ball - much more yellow with enhanced animations */
 .life:hover {
   --scale:1.05;
   background: radial-gradient(circle at var(--mx,50%) var(--my,50%), 
@@ -380,7 +461,57 @@ body.education-page{
     0 0 120px rgba(255, 220, 40, 0.8);
   
   filter: brightness(1.5);
-  animation: fireflyFloat 2s ease-in-out infinite, fireflyGlowHover 1.5s ease-in-out infinite alternate;
+  animation: 
+    fireflyFloat 2s ease-in-out infinite, 
+    fireflyGlowHover 1s ease-in-out infinite alternate,
+    lifeBallIdleHover 3s ease-in-out infinite,
+    lightPulseHover 1.5s ease-in-out infinite alternate;
+}
+
+/* Faster idle motion on hover */
+@keyframes lifeBallIdleHover {
+  0%, 100% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(var(--scale,1.05)) 
+               translateY(0px) translateX(0px) rotate(0deg);
+  }
+  20% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(calc(var(--scale,1.05) * 1.03)) 
+               translateY(-3px) translateX(2px) rotate(2deg);
+  }
+  40% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(calc(var(--scale,1.05) * 0.97)) 
+               translateY(-1px) translateX(-2px) rotate(-1deg);
+  }
+  60% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(calc(var(--scale,1.05) * 1.02)) 
+               translateY(-4px) translateX(3px) rotate(1.5deg);
+  }
+  80% {
+    transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(calc(var(--scale,1.05) * 0.98)) 
+               translateY(-2px) translateX(-1px) rotate(-0.5deg);
+  }
+}
+
+/* Faster light pulse on hover */
+@keyframes lightPulseHover {
+  0% {
+    filter: brightness(1.5) drop-shadow(0 0 25px rgba(255, 255, 80, 0.9));
+    box-shadow: 
+      inset -1px -1px 3px rgba(255, 255, 255, 0.8),
+      inset 1px 1px 5px rgba(0, 0, 0, 0.05),
+      0 0 35px rgba(255, 255, 80, 0.9),
+      0 0 70px rgba(255, 240, 60, 0.7),
+      0 0 105px rgba(255, 220, 40, 0.5);
+  }
+  100% {
+    filter: brightness(1.8) drop-shadow(0 0 40px rgba(255, 255, 80, 1.0));
+    box-shadow: 
+      inset -1px -1px 3px rgba(255, 255, 255, 0.9),
+      inset 1px 1px 5px rgba(0, 0, 0, 0.02),
+      0 0 50px rgba(255, 255, 80, 1.0),
+      0 0 100px rgba(255, 240, 60, 0.9),
+      0 0 150px rgba(255, 220, 40, 0.8);
+  }
 }
 
 /* Much more yellow hover glow animation */
