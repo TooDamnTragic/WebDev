@@ -301,8 +301,9 @@ body.education-page{
   --light:#111010;
   --dark:#4e3f3f;
   --textColor:#f0ead6;
-  --size:18vmin;
+  --size:25vmin;
   z-index:6;
+  font-size:calc(var(--size)*0.15);
 }
 
 .section:hover{
