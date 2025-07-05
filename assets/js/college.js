@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const extracurricularSection = document.getElementById('extracurricular-section');
 
   // Enhanced font cycling effect for hero title - Mouse movement-based randomization
-  const heroTitle = document.querySelector('.education-hero h1');
+  const heroTitle = document.querySelector('.college-hero h1');
   
   // All available fonts from the fonts folder with adjusted scale values to prevent clipping
   const fontConfig = [
@@ -247,7 +247,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ProfileCard-style tilt effect for education items
+  // ProfileCard-style tilt effect for college items
   const initializeProfileCardEffects = () => {
     const ANIMATION_CONFIG = {
       SMOOTH_DURATION: 600,
@@ -363,9 +363,39 @@ document.addEventListener('DOMContentLoaded', () => {
       cardContainer.addEventListener('pointermove', handlePointerMove);
       cardContainer.addEventListener('pointerleave', handlePointerLeave);
 
-      // Initial animation
-      const initialX = item.clientWidth - ANIMATION_CONFIG.INITIAL_X_OFFSET;
-      const initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET;
+      // Initial animation with different positions for each card
+      let initialX, initialY;
+      
+      // Get the card's data attribute to identify it
+      const cardType = item.getAttribute('data-card');
+      
+      // Set different initial positions based on card type
+      switch(cardType) {
+        case 'rit':
+          initialX = item.clientWidth - 50;
+          initialY = 40;
+          break;
+        case 'honors':
+          initialX = 60;
+          initialY = item.clientHeight - 80;
+          break;
+        case 'cybersecurity':
+          initialX = item.clientWidth - 90;
+          initialY = item.clientHeight - 50;
+          break;
+        case 'math':
+          // Copy positioning from cybersecurity card for more randomness
+          initialX = item.clientWidth - 90;
+          initialY = item.clientHeight - 50;
+          break;
+        case 'sysadmin':
+          initialX = 80;
+          initialY = 60;
+          break;
+        default:
+          initialX = item.clientWidth - ANIMATION_CONFIG.INITIAL_X_OFFSET;
+          initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET;
+      }
 
       updateCardTransform(initialX, initialY);
       createSmoothAnimation(
@@ -480,7 +510,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     if (text) currentInfoText.textContent = text;
-    
+        // Match popup background to item color
+    if (color) {
+      currentInfo.querySelectorAll('.popup').forEach(p => {
+        p.style.background = `linear-gradient(135deg, ${color}, #212427)`;
+      });
+    }
     // Only change background if no other popups are active or this is the first one
     if (color && (activePopups.size === 1 || !body.classList.contains('dimmed'))) {
       body.style.background = `linear-gradient(to bottom, ${color}, rgb(0, 255, 136))`;
@@ -600,6 +635,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Set initial ARIA attributes
     item.setAttribute('aria-expanded', 'false');
     
+    // Hover interactions
+    item.addEventListener('mouseenter', () => {
+      if (!isMobile()) {
+        showInfo(item, isExtracurricular);
+      }
+    });
+    item.addEventListener('mouseleave', () => {
+      if (!isMobile()) {
+        hideInfo(isExtracurricular);
+      }
+    });
+
     // Click/touch events
     item.addEventListener('click', (e) => {
       // Prevent navigating via nested links
@@ -640,6 +687,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+    const setupInfoHoverListeners = (infoElement, isExtracurricular = false) => {
+    if (!infoElement) return;
+    const popupId = isExtracurricular ? 'extra' : 'main';
+
+    infoElement.addEventListener('mouseenter', () => {
+      if (popupTimeouts.has(popupId)) {
+        clearTimeout(popupTimeouts.get(popupId));
+        popupTimeouts.delete(popupId);
+      }
+    });
+
+    infoElement.addEventListener('mouseleave', () => {
+      hideInfo(isExtracurricular);
+    });
+  };
   // Setup all item listeners
   document.querySelectorAll('.curricular-section .item').forEach(item => {
     setupItemListeners(item, false);
@@ -648,6 +710,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.extracurricular-section .item').forEach(item => {
     setupItemListeners(item, true);
   });
+
+  setupInfoHoverListeners(info, false);
+  setupInfoHoverListeners(infoExtra, true);
 
   // Close button functionality
   if (infoClose) {

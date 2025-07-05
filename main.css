@@ -144,7 +144,7 @@ body.index-page{
   }
 }
 
-body.education-page{
+body.college-page{
   overflow-x:hidden;
   overflow-y:auto;
   background:#212427;
@@ -249,7 +249,7 @@ body.education-page{
 }
 
 
-.education{
+.college{
   --dx:-18vmin + -2vmax;
   --dy:-10vmin + -2vmax;
   --light:#ff0000;

@@ -181,12 +181,12 @@
   letter-spacing: 1px;
 }
 
-/* Education Section */
-.education-entry {
+/* college Section */
+.college-entry {
   margin-bottom: 1.5rem;
 }
 
-.education-header {
+.college-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -235,7 +235,7 @@
   font-style: italic;
 }
 
-.education-highlights {
+.college-highlights {
   display: flex;
   gap: 2rem;
   flex-wrap: wrap;
@@ -537,7 +537,7 @@
     font-size: 1.8rem;
   }
   
-  .education-header,
+  .college-header,
   .exp-header,
   .project-header,
   .qual-header {
@@ -550,7 +550,7 @@
     text-align: left;
   }
   
-  .education-highlights {
+  .college-highlights {
     flex-direction: column;
     gap: 0.5rem;
   }

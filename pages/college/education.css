@@ -1,12 +1,12 @@
-/* Education Page Specific Styles */
+/* college Page Specific Styles */
 
-/* Additional education-specific styles can go here */
+/* Additional college-specific styles can go here */
 /* Main styles are in main.css for better organization */
 
-/* Education page specific overrides */
-.education-page .items h2,
-.education-page .items h3,
-.education-page .items h4 {
+/* college page specific overrides */
+.college-page .items h2,
+.college-page .items h3,
+.college-page .items h4 {
   font-family: 'Savate', sans-serif;
   font-weight: normal;
   font-size: clamp(1rem, 2vw, 1.8rem);
@@ -15,22 +15,22 @@
   text-align: inherit;
 }
 
-/* Ensure proper font loading for education titles */
-.education-page h1 {
+/* Ensure proper font loading for college titles */
+.college-page h1 {
   font-family: 'DTGetai', 'Hackney', sans-serif;
   font-weight: normal;
 }
 
-.education-page h2,
-.education-page h3,
-.education-page h4,
-.education-page h5 {
+.college-page h2,
+.college-page h3,
+.college-page h4,
+.college-page h5 {
   font-family: 'Savate', sans-serif;
   font-weight: normal;
 }
 
-/* Education specific animations */
-@keyframes educationFadeIn {
+/* college specific animations */
+@keyframes collegeFadeIn {
   from {
     opacity: 0;
     transform: translateY(30px);
@@ -41,12 +41,12 @@
   }
 }
 
-.education-page .featured-item {
-  animation: educationFadeIn 0.8s ease-out forwards;
+.college-page .featured-item {
+  animation: collegeFadeIn 0.8s ease-out forwards;
 }
 
-/* Remove body padding for education page */
-body.education-page {
+/* Remove body padding for college page */
+body.college-page {
   padding-left: 0;
   padding-right: 0;
   box-sizing: border-box;
@@ -120,14 +120,14 @@ body.education-page {
 }
 
 
-/* Education page styles */
-.education-page {
+/* college page styles */
+.college-page {
   background: #212427;
   min-height: 100vh;
 }
 
 /* Hero section with centered title */
-.education-hero {
+.college-hero {
   height: 100vh;
   display: flex;
   align-items: center;
@@ -139,8 +139,8 @@ body.education-page {
   box-sizing: border-box;
 }
 
-.education-hero h1 {
-  font-size: clamp(3rem, 12vw, 8rem);
+.college-hero h1 {
+  font-size: clamp(2rem, 10vw, 8rem);
   color: #f0ead6;
   margin: 0;
   text-align: center;
@@ -161,11 +161,12 @@ body.education-page {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }
 
 /* Letter randomization styles with consistent sizing and no clipping */
-.education-hero h1 .letter {
+.college-hero h1 .letter {
   display: inline-block;
   transition: all 0.3s ease;
   /* Increased dimensions to prevent clipping */
@@ -191,89 +192,89 @@ body.education-page {
 }
 
 /* Letter appearance animation */
-.education-hero h1 .letter.appear {
+.college-hero h1 .letter.appear {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
 
 /* Specific font size adjustments to normalize visual width and prevent clipping */
-.education-hero h1 .letter[data-font="Hackney"] {
+.college-hero h1 .letter[data-font="Hackney"] {
   font-family: 'Hackney', sans-serif;
   transform: scale(1);
 }
 
-.education-hero h1 .letter[data-font="DTGetai"] {
+.college-hero h1 .letter[data-font="DTGetai"] {
   font-family: 'DTGetai', sans-serif;
   transform: scale(0.95); /* Reduced to prevent clipping */
 }
 
-.education-hero h1 .letter[data-font="Asember"] {
+.college-hero h1 .letter[data-font="Asember"] {
   font-family: 'Asember', sans-serif;
   transform: scale(0.9);
 }
 
-.education-hero h1 .letter[data-font="Savate"] {
+.college-hero h1 .letter[data-font="Savate"] {
   font-family: 'Savate', sans-serif;
   transform: scale(1);
 }
 
-.education-hero h1 .letter[data-font="Iconic"] {
+.college-hero h1 .letter[data-font="Iconic"] {
   font-family: 'Iconic', sans-serif;
   transform: scale(1); /* Reduced to prevent clipping */
 }
 
-.education-hero h1 .letter[data-font="Catrose"] {
+.college-hero h1 .letter[data-font="Catrose"] {
   font-family: 'Catrose', sans-serif;
   transform: scale(0.95);
 }
 
-.education-hero h1 .letter[data-font="Beautyful"] {
+.college-hero h1 .letter[data-font="Beautyful"] {
   font-family: 'Beautyful', sans-serif;
   transform: scale(1); /* Reduced to prevent clipping */
 }
 
-.education-hero h1 .letter[data-font="Runtime"] {
+.college-hero h1 .letter[data-font="Runtime"] {
   font-family: 'Runtime', sans-serif;
   transform: scale(1);
 }
 
-.education-hero h1 .letter[data-font="Arshine"] {
+.college-hero h1 .letter[data-font="Arshine"] {
   font-family: 'Arshine', sans-serif;
   transform: scale(1); /* Significantly reduced to prevent clipping */
 }
 
-.education-hero h1 .letter[data-font="Sophiamelanieregular"] {
+.college-hero h1 .letter[data-font="Sophiamelanieregular"] {
   font-family: 'Sophiamelanieregular', sans-serif;
   transform: scale(0.85);
 }
 
-.education-hero h1 .letter[data-font="Crackchakingtrialregular"] {
+.college-hero h1 .letter[data-font="Crackchakingtrialregular"] {
   font-family: 'Crackchakingtrialregular', sans-serif;
   transform: scale(0.95); /* Reduced to prevent clipping */
 }
 
-.education-hero h1 .letter[data-font="Johnfoster"] {
+.college-hero h1 .letter[data-font="Johnfoster"] {
   font-family: 'Johnfoster', sans-serif;
   transform: scale(1);
 }
 
-.education-hero h1 .letter[data-font="Motterdam"] {
+.college-hero h1 .letter[data-font="Motterdam"] {
   font-family: 'Motterdam', sans-serif;
   transform: scale(1); /* Reduced to prevent clipping */
 }
 
-.education-hero h1 .letter[data-font="Sacloud"] {
+.college-hero h1 .letter[data-font="Sacloud"] {
   font-family: 'Sacloud', sans-serif;
   transform: scale(0.95);
 }
 
-.education-hero h1 .letter[data-font="Tfwanderclouddemo"] {
+.college-hero h1 .letter[data-font="Tfwanderclouddemo"] {
   font-family: 'Tfwanderclouddemo', sans-serif;
   transform: scale(1); /* Reduced to prevent clipping */
 }
 
 /* Hover effect for continuous randomization */
-.education-hero h1:hover .letter {
+.college-hero h1:hover .letter {
   animation: letterFloat 0.4s ease-in-out infinite alternate;
 }
 
@@ -317,15 +318,15 @@ body.education-page {
 }
 
 /* Content sections - Seamless flow */
-.education-content {
+.college-content {
   position: relative;
   z-index: 2;
 }
 
-/* Curricular Section - Match education title color */
+/* Curricular Section - Match college title color */
 .curricular-section {
   min-height: 100vh;
-  background: #212427; /* Match education title background */
+  background: #212427; /* Match college title background */
   position: relative;
   opacity: 0;
   transform: translateY(100px);
@@ -340,10 +341,10 @@ body.education-page {
   transform: translateY(0);
 }
 
-/* Extracurricular Section - Match education title color */
+/* Extracurricular Section - Match college title color */
 .extracurricular-section {
   min-height: 100vh;
-  background: #212427; /* Match education title background */
+  background: #212427; /* Match college title background */
   position: relative;
   opacity: 0;
   transform: translateY(50px);
@@ -974,8 +975,8 @@ body.education-page {
     font-size: 2rem;
   }
   
-  .education-hero h1 {
-    font-size: 2.5rem;
+  .college-hero h1 {
+    font-size: clamp(1.8rem, 9vw, 2.5rem);
   }
   
   .items h2,
