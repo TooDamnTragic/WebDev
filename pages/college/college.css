@@ -360,7 +360,7 @@ body.college-page {
   transition: opacity 1s ease, transform 1s ease;
   width: 100%;
   /* Increased padding for better spacing */
-  padding: 6rem 0;
+  padding: 6rem 0 2rem;
 }
 
 .extracurricular-section.visible {
@@ -370,7 +370,7 @@ body.college-page {
 
 .overlay-header {
   text-align: center;
-  padding: 4rem 0 2rem;
+  padding: 3rem 0 1rem;
   position: relative;
 }
 
@@ -1273,3 +1273,25 @@ body.transitioning {
     transform: translateX(-50%);
   }
 }
+
+/* Font assignments for extracurricular menu items */
+.font-hackney .menu__item-link,
+.font-hackney .marquee span {font-family: 'Hackney', sans-serif;}
+.font-dtgetai .menu__item-link,
+.font-dtgetai .marquee span {font-family: 'DTGetai', sans-serif;}
+.font-asember .menu__item-link,
+.font-asember .marquee span {font-family: 'Asember', sans-serif;}
+.font-savate .menu__item-link,
+.font-savate .marquee span {font-family: 'Savate', sans-serif;}
+.font-iconic .menu__item-link,
+.font-iconic .marquee span {font-family: 'Iconic', sans-serif;}
+.font-catrose .menu__item-link,
+.font-catrose .marquee span {font-family: 'Catrose', sans-serif;}
+.font-beautyful .menu__item-link,
+.font-beautyful .marquee span {font-family: 'Beautyful', sans-serif;}
+.font-runtime .menu__item-link,
+.font-runtime .marquee span {font-family: 'Runtime', sans-serif;}
+.font-arshine .menu__item-link,
+.font-arshine .marquee span {font-family: 'Arshine', sans-serif;}
+.font-johnfoster .menu__item-link,
+.font-johnfoster .marquee span {font-family: 'Johnfoster', sans-serif;}
