@@ -15,6 +15,9 @@
   text-align: inherit;
 }
 
+.items li[data-card="rit"] h2 {font-size: clamp(1.2rem, 2.5vw, 2.2rem);}
+.items li[data-card="cybersecurity"] h3 {font-size: clamp(0.9rem, 1.8vw, 1.6rem);}
+
 /* Ensure proper font loading for college titles */
 .college-page h1 {
   font-family: 'DTGetai', 'Hackney', sans-serif;
