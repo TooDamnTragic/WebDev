@@ -15,8 +15,14 @@
   text-align: inherit;
 }
 
+/* Size tweaks for key items */
 .items li[data-card="rit"] h2 {font-size: clamp(1.2rem, 2.5vw, 2.2rem);}
 .items li[data-card="cybersecurity"] h3 {font-size: clamp(0.9rem, 1.8vw, 1.6rem);}
+/* Math Minor shorter title gets a bit larger */
+.items li[data-card="math"] h4 {font-size: clamp(1.1rem, 2vw, 1.9rem);}
+/* Networking & SysAdmin Minor is long so slightly smaller */
+.items li[data-card="sysadmin"] h4 {font-size: clamp(0.95rem, 1.8vw, 1.6rem);}
+
 
 /* Ensure proper font loading for college titles */
 .college-page h1 {
@@ -143,7 +149,7 @@ body.college-page {
 }
 
 .college-hero h1 {
-  font-size: clamp(2rem, 10vw, 8rem);
+  font-size: clamp(3rem, 15vw, 8rem);
   color: #f0ead6;
   margin: 0;
   text-align: center;
@@ -174,7 +180,7 @@ body.college-page {
   transition: all 0.3s ease;
   /* Increased dimensions to prevent clipping */
   width: 1em;
-  height: 1.6em; /* Increased height for tall fonts */
+  height: 2em; /* Increased height for tall fonts */
   text-align: center;
   vertical-align: middle;
   /* Normalize all fonts to same visual size */
@@ -203,12 +209,12 @@ body.college-page {
 /* Specific font size adjustments to normalize visual width and prevent clipping */
 .college-hero h1 .letter[data-font="Hackney"] {
   font-family: 'Hackney', sans-serif;
-  transform: scale(1);
+  transform: scale(1.1);
 }
 
 .college-hero h1 .letter[data-font="DTGetai"] {
   font-family: 'DTGetai', sans-serif;
-  transform: scale(0.95); /* Reduced to prevent clipping */
+  transform: scale(1.1); /* Reduced to prevent clipping */
 }
 
 .college-hero h1 .letter[data-font="Asember"] {
@@ -223,7 +229,7 @@ body.college-page {
 
 .college-hero h1 .letter[data-font="Iconic"] {
   font-family: 'Iconic', sans-serif;
-  transform: scale(1); /* Reduced to prevent clipping */
+  transform: scale(1.5); /* Reduced to prevent clipping */
 }
 
 .college-hero h1 .letter[data-font="Catrose"] {
@@ -233,7 +239,7 @@ body.college-page {
 
 .college-hero h1 .letter[data-font="Beautyful"] {
   font-family: 'Beautyful', sans-serif;
-  transform: scale(1); /* Reduced to prevent clipping */
+  transform: scale(2); /* Reduced to prevent clipping */
 }
 
 .college-hero h1 .letter[data-font="Runtime"] {
@@ -304,7 +310,7 @@ body.college-page {
   left: 50%;
   transform: translateX(-50%);
   color: rgba(240, 234, 214, 0.6);
-  font-size: 0.9rem;
+  font-size: 1.5rem;
   animation: bounce 2s infinite;
 }
 

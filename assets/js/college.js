@@ -649,9 +649,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Click/touch events
     item.addEventListener('click', (e) => {
-      // Prevent navigating via nested links
       if (e.target.tagName === 'A') {
-        e.preventDefault();
+        return;
       }
 
       if (isMobile()) {
@@ -665,6 +664,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Keyboard navigation
     item.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'A') return;
       switch(e.key) {
         case 'Enter':
         case ' ':
