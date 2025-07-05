@@ -239,7 +239,7 @@ body.college-page {
 
 .college-hero h1 .letter[data-font="Beautyful"] {
   font-family: 'Beautyful', sans-serif;
-  transform: scale(2); /* Reduced to prevent clipping */
+  transform: scale(1.5); /* Reduced to prevent clipping */
 }
 
 .college-hero h1 .letter[data-font="Runtime"] {
@@ -269,7 +269,7 @@ body.college-page {
 
 .college-hero h1 .letter[data-font="Motterdam"] {
   font-family: 'Motterdam', sans-serif;
-  transform: scale(1); /* Reduced to prevent clipping */
+  transform: scale(1.2); /* Reduced to prevent clipping */
 }
 
 .college-hero h1 .letter[data-font="Sacloud"] {
