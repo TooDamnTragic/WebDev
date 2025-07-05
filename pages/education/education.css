@@ -140,7 +140,7 @@ body.education-page {
 }
 
 .education-hero h1 {
-  font-size: clamp(3rem, 12vw, 8rem);
+  font-size: clamp(2rem, 10vw, 8rem);
   color: #f0ead6;
   margin: 0;
   text-align: center;
@@ -161,7 +161,8 @@ body.education-page {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }
 
 /* Letter randomization styles with consistent sizing and no clipping */
@@ -975,7 +976,7 @@ body.education-page {
   }
   
   .education-hero h1 {
-    font-size: 2.5rem;
+    font-size: clamp(1.8rem, 9vw, 2.5rem);
   }
   
   .items h2,
