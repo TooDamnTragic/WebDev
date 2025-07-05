@@ -1,3 +1,5 @@
+//this shit is copy pasted, no idea how this actually works
+
 document.addEventListener('DOMContentLoaded', () => {
 const items = document.querySelectorAll('#extracurricular-menu .menu__item');
 if (!items.length || typeof gsap === 'undefined') return;
