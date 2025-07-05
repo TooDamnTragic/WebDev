@@ -470,6 +470,8 @@
     margin: 0 !important;
   }
   
+
+
   .resume-header {
     background: rgb(3, 166, 161) !important;
     -webkit-print-color-adjust: exact !important;
@@ -493,7 +495,7 @@
     -webkit-print-color-adjust: exact !important;
     color-adjust: exact !important;
   }
-  
+
   .experience-item {
     background: rgba(255, 227, 187, 0.5) !important;
     -webkit-print-color-adjust: exact !important;
