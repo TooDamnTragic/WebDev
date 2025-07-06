@@ -57,6 +57,13 @@ body.college-page {
   box-sizing: border-box;
 }
 
+.iridescence-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
 /* Back button */
 .back-home {
   position: fixed;
