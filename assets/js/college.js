@@ -214,6 +214,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   heroTitles.forEach(initHeroTitle);
 
+  const scrollIndicator = document.querySelector('.scroll-indicator');
+  document.body.style.overflow = 'hidden';
+
+  const totalLetters = Array.from(heroTitles).reduce(
+    (sum, el) => sum + el.textContent.trim().length,
+    0
+  );
+  const showIndicatorDelay = 1000 + (totalLetters * 150) / 2;
+  const enableScrollDelay = 1000 + totalLetters * 150;
+
+  setTimeout(() => {
+    if (scrollIndicator) {
+      scrollIndicator.classList.add('visible');
+    }
+  }, showIndicatorDelay);
+
+  setTimeout(() => {
+    document.body.style.overflow = '';
+  }, enableScrollDelay);
+
   // ProfileCard-style tilt effect for college items
   const initializeProfileCardEffects = () => {
     const ANIMATION_CONFIG = {

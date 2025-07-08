@@ -331,8 +331,16 @@ body.college-page {
   color: rgba(0, 0, 0, 0.6);
   font-size: 1.5rem;
   z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
   animation: bounce 2s infinite;
 }
+
+.scroll-indicator.visible {
+  opacity: 1;
+}
+
 
 @keyframes bounce {
   0%, 20%, 50%, 80%, 100% {
