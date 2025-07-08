@@ -363,7 +363,6 @@ body.college-page {
 /* Curricular Section - Match college title color */
 .curricular-section {
   min-height: 100vh;
-  background: #212427; /* Match college title background */
   position: relative;
   opacity: 0;
   transform: translateY(100px);
@@ -433,8 +432,8 @@ body.college-page {
   top: 0;
   bottom: 0;
   left: 50%;
-  width: 2px;
-  background: #ffffff40;
+  width: 3px;
+  background: rgba(0, 0, 0, 0.1);
   transform: translateX(-50%);
   overflow: hidden;
 }
@@ -620,8 +619,8 @@ body.college-page {
 /* Enhanced Items with ProfileCard Effects - 30% larger */
 .items li {
   position: relative;
-  width: 58.5%; /* Increased from 45% by 30% */
-  margin: 4rem 0; /* Significantly increased spacing */
+  width: 58.5%;
+  margin: 4rem 0;
   float: left;
   clear: both;
   cursor: pointer;
