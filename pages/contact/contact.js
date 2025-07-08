@@ -1,13 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
   // UnicornStudio background initialization
   const backgroundLoader = document.getElementById('background-loader');
-  const unicornEmbed = document.getElementById('unicorn-embed');
+  const unicornBackground = document.querySelector('.unicorn-background');
   let backgroundInitialized = false;
   
   // Monitor for UnicornStudio initialization
   const checkUnicornStudio = () => {
     // Check if UnicornStudio is loaded and canvas exists
-    const canvas = unicornEmbed ? unicornEmbed.querySelector('canvas') : null;
+    const canvas = unicornBackground ? unicornBackground.querySelector('canvas') : null;
     
     if (window.UnicornStudio && window.UnicornStudio.isInitialized && canvas) {
       console.log('UnicornStudio background initialized');
@@ -38,6 +38,15 @@ document.addEventListener('DOMContentLoaded', () => {
       console.log('UnicornStudio background fallback timeout - using gradient background');
     }
   }, 15000);
+  
+  // Debug: Log when UnicornStudio script loads
+  const originalInit = window.UnicornStudio?.init;
+  if (window.UnicornStudio) {
+    window.UnicornStudio.init = function() {
+      console.log('UnicornStudio.init() called');
+      if (originalInit) originalInit.apply(this, arguments);
+    };
+  }
   
   // Elements
   const emailCard = document.querySelector('.email-card');
