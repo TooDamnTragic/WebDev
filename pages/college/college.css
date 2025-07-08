@@ -1230,7 +1230,7 @@ body.transitioning {
   white-space: nowrap;
   font-weight: 600;
   color: #fff;
-  font-size: 4vh;
+  font-size: 5vh;
 }
 
 .menu__item-link:hover {
@@ -1276,7 +1276,7 @@ body.transitioning {
   white-space: nowrap;
   text-transform: uppercase;
   font-weight: 400;
-  font-size: 4vh;
+  font-size: 5vh;
   line-height: 1.2;
   padding: 1vh 1vw 0;
 }
