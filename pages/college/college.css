@@ -168,14 +168,9 @@ body.college-page {
   animation: heroFadeIn 1.5s ease-out forwards;
   cursor: pointer;
   user-select: none;
-  /* Prevent layout shifts during font changes */
-  line-height: 1.4; /* Increased for better spacing */
+  line-height: 0.7;
   letter-spacing: 0.02em;
-  /* NO DEFAULT FONT - will be set by JavaScript */
   font-family: inherit;
-  /* Add extra space to prevent clipping */
-  padding: 1rem 0;
-  /* Ensure enough height for tall fonts */
   min-height: 1.6em;
   z-index: 2;
   display: flex;
@@ -191,12 +186,12 @@ body.college-page {
   transition: all 0.3s ease;
   /* Increased dimensions to prevent clipping */
   width: 1em;
-  height: 2em; /* Increased height for tall fonts */
+  height: 1.5em; /* Increased height for tall fonts */
   text-align: center;
   vertical-align: middle;
   /* Normalize all fonts to same visual size */
   font-size: inherit;
-  line-height: 1.2;
+  line-height: 1;
   /* Prevent text from being clipped */
   overflow: visible; /* Changed from hidden to visible */
   position: relative;
@@ -225,7 +220,7 @@ body.college-page {
 
 .college-hero .hero-title .letter[data-font="DTGetai"] {
   font-family: 'DTGetai', sans-serif;
-  transform: scale(1.1); /* Reduced to prevent clipping */
+  transform: scale(1.1); 
 }
 
 .college-hero .hero-title .letter[data-font="Asember"] {
@@ -240,7 +235,7 @@ body.college-page {
 
 .college-hero .hero-title .letter[data-font="Iconic"] {
   font-family: 'Iconic', sans-serif;
-  transform: scale(1.5); /* Reduced to prevent clipping */
+  transform: scale(1.5); 
 }
 
 .college-hero .hero-title .letter[data-font="Catrose"] {
@@ -250,7 +245,7 @@ body.college-page {
 
 .college-hero .hero-title .letter[data-font="Beautyful"] {
   font-family: 'Beautyful', sans-serif;
-  transform: scale(1.5); /* Reduced to prevent clipping */
+  transform: scale(1.5); 
 }
 
 .college-hero .hero-title .letter[data-font="Runtime"] {
@@ -270,7 +265,7 @@ body.college-page {
 
 .college-hero .hero-title .letter[data-font="Crackchakingtrialregular"] {
   font-family: 'Crackchakingtrialregular', sans-serif;
-  transform: scale(0.95); /* Reduced to prevent clipping */
+  transform: scale(0.95); 
 }
 
 .college-hero .hero-title .letter[data-font="Johnfoster"] {
@@ -280,7 +275,7 @@ body.college-page {
 
 .college-hero .hero-title .letter[data-font="Motterdam"] {
   font-family: 'Motterdam', sans-serif;
-  transform: scale(1.2); /* Reduced to prevent clipping */
+  transform: scale(1.2); 
 }
 
 .college-hero .hero-title .letter[data-font="Sacloud"] {
@@ -290,7 +285,7 @@ body.college-page {
 
 .college-hero .hero-title .letter[data-font="Tfwanderclouddemo"] {
   font-family: 'Tfwanderclouddemo', sans-serif;
-  transform: scale(1); /* Reduced to prevent clipping */
+  transform: scale(1); 
 }
 
 /* Hover effect for continuous randomization */
@@ -759,12 +754,7 @@ body.college-page {
   text-align: inherit;
   text-decoration: none;
   border-bottom: none;
-  background-image: linear-gradient(to bottom, #f0ead6, #f0ead6);
-  background-size: 1em 1.5em;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  -webkit-background-clip: text;
-  line-height: 1.2;
+  color: #f0ead6;
 }
 
 .items h2:hover,
@@ -1013,7 +1003,7 @@ body.college-page {
 
 #info, #info-extra {
   position:absolute;
-  left:50%;
+  left:60%;
   top:0;
   display:flex;
   align-items:center;
@@ -1025,7 +1015,7 @@ body.college-page {
   transform:translateX(-100%) scale(0);
   transform-origin:right center;
   transition:opacity .8s ease, transform .8s ease;
-  z-index:10;
+  z-index:1;
 }
 
 #info.right, #info-extra.right{
@@ -1057,6 +1047,14 @@ body.college-page {
   transform-style:preserve-3d;
   animation:glisten 3s ease-in-out infinite alternate;
   position:relative;
+  opacity:0;
+  transform:translateY(10px);
+  transition:opacity .5s ease, transform .5s ease;
+}
+
+#info.visible .popup, #info-extra.visible .popup {
+  opacity:1;
+  transform:translateY(0);
 }
 
 #info-image-wrapper, #info-extra-image-wrapper{
