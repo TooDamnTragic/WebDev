@@ -780,7 +780,6 @@ body.college-page {
 .items h3:hover,
 .items h4:hover {
   color: #ffffff;
-  text-decoration: underline;
   -webkit-text-fill-color: #ffffff;
 }
 
@@ -845,15 +844,12 @@ body.college-page {
 .link-button:hover,
 .link-button:focus{
   color:#ffffff;
-  text-decoration:underline;
 }
 
 .items li:hover h2,
 .items li:hover h3,
 .items li:hover h4{ 
   color:#ffffff; 
-  text-decoration: underline;
-  -webkit-text-fill-color: #ffffff;
 }
 
 /* Mobile info panels */
