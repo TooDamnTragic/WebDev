@@ -1,11 +1,16 @@
 /* college Page Specific Styles */
 
+html.college-page {
+  font-size: clamp(13px, calc(12px + 0.6vw), 18px);
+}
+
+
 .college-page .items h2,
 .college-page .items h3,
 .college-page .items h4 {
   font-family: 'Savate', sans-serif;
   font-weight: normal;
-  font-size: clamp(1.4rem, 4vw, 3rem);
+  font-size: clamp(1.2rem, 3.5vw, 2.4rem);
   margin: 0 0 0.6rem;
   word-wrap: normal;
   overflow-wrap: normal;
@@ -167,7 +172,7 @@ body.college-page {
 }
 
 .college-hero .hero-title {
-  font-size: clamp(3rem, 15vw, 8rem);
+  font-size: clamp(3rem, 8vw, 8rem);
   color: #000000;
   margin: 0;
   text-align: center;
@@ -390,7 +395,7 @@ body.college-page {
 }
 
 .overlay-header h2 {
-  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-size: clamp(1.8rem, 6vw, 4.5rem);
   margin: 0;
   color: #f0ead6;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
@@ -998,23 +1003,24 @@ body.college-page {
 
 @media(max-width:480px){
   .overlay-header h2 {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
   
   .college-hero .hero-title {
-    font-size: clamp(1.8rem, 9vw, 2.5rem);
+    font-size: clamp(1.5rem, 7vw, 2.5rem);
   }
   
   .items h2,
   .items h3,
   .items h4 {
-    font-size: clamp(1.8rem, 5vw, 2.4rem); /* Increased small mobile font sizes */
+    font-size: clamp(1.2rem, 4.5vw, 2rem);
   }
   
   .desc {
     font-size: 1rem; /* Increased small mobile description size */
   }
 }
+
 
 #info, #info-extra {
   position:absolute;
