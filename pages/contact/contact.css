@@ -20,11 +20,23 @@
   height: 100vh;
   z-index: -1;
   pointer-events: none;
+  overflow: hidden;
 }
 
-.unicorn-background [data-us-project] {
+#unicorn-embed {
   width: 100% !important;
   height: 100% !important;
+  display: block !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
+/* Ensure UnicornStudio canvas fills container */
+.unicorn-background canvas {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
 }
 
 /* Loading overlay for background */
@@ -49,6 +61,7 @@
 
 .background-loader.hidden {
   opacity: 0;
+  pointer-events: none;
 }
 
 /* Dynamic Gradient Animation for fallback */

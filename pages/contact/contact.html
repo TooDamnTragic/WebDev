@@ -10,7 +10,7 @@
 <body class="contact-page">
   <!-- UnicornStudio Background -->
   <div class="unicorn-background">
-    <div data-us-project="4Vq53pk2zEPdtV0k9rMM" style="width:1440px; height: 900px"></div>
+    <div id="unicorn-embed" data-us-project="4Vq53pk2zEPdtV0k9rMM" style="width:100vw; height: 100vh;"></div>
   </div>
   
   <!-- Fallback background loader -->
@@ -188,7 +188,26 @@
   <script src="../../assets/js/pixel-effect.js"></script>
   <script src="../../assets/js/contact.js"></script>
   <!-- UnicornStudio Script -->
-  <script type="text/javascript">!function(){if(!window.UnicornStudio){window.UnicornStudio={isInitialized:!1};var i=document.createElement("script");i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.27/dist/unicornStudio.umd.js",i.onload=function(){window.UnicornStudio.isInitialized||(UnicornStudio.init(),window.UnicornStudio.isInitialized=!0)},(document.head || document.body).appendChild(i)}}();</script>
+  <script type="text/javascript">
+    !function(){
+      if(!window.UnicornStudio){
+        window.UnicornStudio={isInitialized:!1};
+        var i=document.createElement("script");
+        i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.27/dist/unicornStudio.umd.js";
+        i.onload=function(){
+          if(!window.UnicornStudio.isInitialized){
+            UnicornStudio.init();
+            window.UnicornStudio.isInitialized=!0;
+            console.log('UnicornStudio initialized successfully');
+          }
+        };
+        i.onerror=function(){
+          console.error('Failed to load UnicornStudio script');
+        };
+        (document.head || document.body).appendChild(i);
+      }
+    }();
+  </script>
   <script src="../../transition.js"></script>
 </body>
 </html>
