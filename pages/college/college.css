@@ -1235,7 +1235,7 @@ body.transitioning {
   height: 100%;
   position: relative;
   cursor: pointer;
-  text-transform: uppercase;
+  text-transform: none;
   text-decoration: none;
   white-space: nowrap;
   font-weight: 600;
@@ -1282,7 +1282,7 @@ body.transitioning {
 .marquee span {
   color: #060010;
   white-space: nowrap;
-  text-transform: uppercase;
+  text-transform: none;
   font-weight: 400;
   font-size: 5vh;
   line-height: 1.2;
@@ -1341,3 +1341,5 @@ body.transitioning {
 .font-demoarmagist .marquee span {font-family: 'Demoarmagist', sans-serif;}
 .font-hastegi .menu__item-link,
 .font-hastegi .marquee span {font-family: 'Hastegi', sans-serif;}
+.font-washington .menu__item-link,
+.font-washington .marquee span {font-family: 'Washington', sans-serif;}

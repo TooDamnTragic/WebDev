@@ -143,6 +143,12 @@ cwap
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Washington';
+  src: url('assets/fonts/WashingtonThin-RpaPE.ttf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 
 body.index-page{
