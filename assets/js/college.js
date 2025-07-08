@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const extracurricularSection = document.getElementById('extracurricular-section');
 
   // Enhanced font cycling effect for hero title - Mouse movement-based randomization
-  const heroTitle = document.querySelector('.college-hero h1');
+  const heroTitles = document.querySelectorAll('.college-hero .hero-title');
   
   // All available fonts from the fonts folder with adjusted scale values to prevent clipping
   const fontConfig = [
@@ -39,17 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: 'Tfwanderclouddemo', scale: 1 }
   ];
 
-  let isRandomizing = false;
-  let randomizeInterval;
-  let letterElements = [];
-  let currentFonts = []; // Track current font for each letter
-  let mouseMovementTimeout;
-  let lastMouseX = 0;
-  let lastMouseY = 0;
-  let isMouseMoving = false;
-  let isHovering = false;
-
-  // Function to shuffle array (Fisher-Yates algorithm)
   const shuffleArray = (array) => {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -59,12 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
     return shuffled;
   };
 
-  // Function to wrap each letter in a span with consistent sizing
   const wrapLettersInSpans = (element) => {
     const text = element.textContent;
     const wrappedText = text.split('').map(char => {
       if (char === ' ') {
-        return ' '; // Keep spaces as is
+        return ' ';
       }
       return `<span class="letter" style="display: inline-block;">${char}</span>`;
     }).join('');
@@ -72,180 +60,135 @@ document.addEventListener('DOMContentLoaded', () => {
     return element.querySelectorAll('.letter');
   };
 
-  // Function to apply font to a letter with size normalization
   const applyFontToLetter = (letterElement, fontConfig) => {
     const fontName = fontConfig.name;
     const scale = fontConfig.scale;
-    
-    // Apply font and size normalization
     letterElement.style.fontFamily = `'${fontName}', sans-serif`;
     letterElement.style.setProperty('--letter-scale', scale);
     letterElement.setAttribute('data-font', fontName);
     letterElement.style.transition = 'all 0.3s ease';
   };
 
-  // Function to randomize a single letter's font with size normalization
-  const randomizeLetter = (letterElement, letterIndex) => {
+  const randomizeLetter = (letterElement, letterIndex, currentFonts) => {
     const randomFontConfig = fontConfig[Math.floor(Math.random() * fontConfig.length)];
     applyFontToLetter(letterElement, randomFontConfig);
     currentFonts[letterIndex] = randomFontConfig;
   };
 
-  // Function to calculate mouse movement speed
-  const calculateMouseSpeed = (currentX, currentY) => {
-    const deltaX = Math.abs(currentX - lastMouseX);
-    const deltaY = Math.abs(currentY - lastMouseY);
+  const calculateMouseSpeed = (currentX, currentY, lastMouse) => {
+    const deltaX = Math.abs(currentX - lastMouse.x);
+    const deltaY = Math.abs(currentY - lastMouse.y);
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-    
-    lastMouseX = currentX;
-    lastMouseY = currentY;
-    
+    lastMouse.x = currentX;
+    lastMouse.y = currentY;
     return distance;
   };
 
-  // Function to start the initial random appearance animation
-  const startRandomAppearance = () => {
-    if (!letterElements.length) return;
+  const initHeroTitle = (heroTitle) => {
+    let randomizeInterval;
+    const letterElements = wrapLettersInSpans(heroTitle);
+    const currentFonts = new Array(letterElements.length);
+    const lastMouse = { x: 0, y: 0 };
+    let mouseMovementTimeout;
+    let isMouseMoving = false;
+    let isHovering = false;
 
-    // Create a shuffled order for letter appearance
-    const appearanceOrder = shuffleArray([...Array(letterElements.length).keys()]);
-    
-    // Initialize each letter with a random font but keep it invisible
-    letterElements.forEach((letter, index) => {
-      const randomFontConfig = fontConfig[Math.floor(Math.random() * fontConfig.length)];
-      applyFontToLetter(letter, randomFontConfig);
-      currentFonts[index] = randomFontConfig;
-    });
+    const startRandomAppearance = () => {
+      const appearanceOrder = shuffleArray([...Array(letterElements.length).keys()]);
+      appearanceOrder.forEach((letterIndex, sequenceIndex) => {
+        const randomFontConfig = fontConfig[Math.floor(Math.random() * fontConfig.length)];
+        applyFontToLetter(letterElements[letterIndex], randomFontConfig);
+        currentFonts[letterIndex] = randomFontConfig;
+        setTimeout(() => {
+          letterElements[letterIndex].classList.add('appear');
+        }, sequenceIndex * 150);
+      });
+    };
 
-    // Animate letters appearing in random order
-    appearanceOrder.forEach((letterIndex, sequenceIndex) => {
-      setTimeout(() => {
-        letterElements[letterIndex].classList.add('appear');
-      }, sequenceIndex * 150); // 150ms delay between each letter
-    });
-  };
-
-  // Function to start mouse movement-based randomization
-  const startMouseRandomization = () => {
-    if (randomizeInterval) {
-      clearInterval(randomizeInterval);
-    }
-    
-    randomizeInterval = setInterval(() => {
-      // Only randomize if mouse is actively moving and hovering
-      if (isMouseMoving && isHovering) {
-        // Randomize 2-4 random letters each cycle
-        const numLettersToRandomize = Math.floor(Math.random() * 3) + 2;
-        const lettersToRandomize = [];
-        
-        for (let i = 0; i < numLettersToRandomize && i < letterElements.length; i++) {
-          const randomIndex = Math.floor(Math.random() * letterElements.length);
-          if (!lettersToRandomize.includes(randomIndex)) {
-            lettersToRandomize.push(randomIndex);
+    const startMouseRandomization = () => {
+      if (randomizeInterval) {
+        clearInterval(randomizeInterval);
+      }
+      randomizeInterval = setInterval(() => {
+        if (isMouseMoving && isHovering) {
+          const numLettersToRandomize = Math.floor(Math.random() * 3) + 2;
+          const lettersToRandomize = [];
+          for (let i = 0; i < numLettersToRandomize && i < letterElements.length; i++) {
+            const randomIndex = Math.floor(Math.random() * letterElements.length);
+            if (!lettersToRandomize.includes(randomIndex)) {
+              lettersToRandomize.push(randomIndex);
+            }
           }
+          lettersToRandomize.forEach(index => {
+            randomizeLetter(letterElements[index], index, currentFonts);
+          });
         }
-        
-        lettersToRandomize.forEach(index => {
-          randomizeLetter(letterElements[index], index);
-        });
+      }, 150);
+    };
+
+    const stopRandomizing = () => {
+      if (randomizeInterval) {
+        clearInterval(randomizeInterval);
+        randomizeInterval = null;
       }
-    }, 150); // Check every 150ms for smooth randomization
-  };
+    };
 
-  // Function to stop randomizing
-  const stopRandomizing = () => {
-    if (randomizeInterval) {
-      clearInterval(randomizeInterval);
-      randomizeInterval = null;
-    }
-  };
-
-  // Mouse movement detection with speed-based randomization
-  const handleMouseMovement = (e) => {
-    if (!isHovering) return;
-    
-    const rect = heroTitle.getBoundingClientRect();
-    const currentX = e.clientX - rect.left;
-    const currentY = e.clientY - rect.top;
-    const speed = calculateMouseSpeed(currentX, currentY);
-    
-    // Set mouse as moving if speed is above threshold
-    if (speed > 1) { // Lower threshold for more sensitivity
-      isMouseMoving = true;
-      
-      // Clear existing timeout
-      if (mouseMovementTimeout) {
-        clearTimeout(mouseMovementTimeout);
+    const handleMouseMovement = (e) => {
+      if (!isHovering) return;
+      const rect = heroTitle.getBoundingClientRect();
+      const currentX = e.clientX - rect.left;
+      const currentY = e.clientY - rect.top;
+      const speed = calculateMouseSpeed(currentX, currentY, lastMouse);
+      if (speed > 1) {
+        isMouseMoving = true;
+        if (mouseMovementTimeout) clearTimeout(mouseMovementTimeout);
+        mouseMovementTimeout = setTimeout(() => {
+          isMouseMoving = false;
+        }, 100);
       }
-      
-      // Set timeout to detect when mouse stops moving
-      mouseMovementTimeout = setTimeout(() => {
-        isMouseMoving = false;
-      }, 100); // Mouse considered stopped after 100ms of no movement
-    }
-  };
+    };
 
-  if (heroTitle) {
-    // Wrap letters and initialize
-    letterElements = wrapLettersInSpans(heroTitle);
-    currentFonts = new Array(letterElements.length);
-    
-    // Start the random appearance animation immediately
-    setTimeout(() => {
-      startRandomAppearance();
-    }, 1000); // Start after 1 second
+    setTimeout(startRandomAppearance, 1000);
 
-    // Add mouse event listeners
     heroTitle.addEventListener('mouseenter', (e) => {
       isHovering = true;
-      // Initialize mouse tracking
       const rect = heroTitle.getBoundingClientRect();
-      lastMouseX = e.clientX - rect.left;
-      lastMouseY = e.clientY - rect.top;
-      
-      // Start mouse-based randomization
+      lastMouse.x = e.clientX - rect.left;
+      lastMouse.y = e.clientY - rect.top;
       startMouseRandomization();
     });
-    
+
     heroTitle.addEventListener('mousemove', handleMouseMovement);
-    
+
     heroTitle.addEventListener('mouseleave', () => {
       isHovering = false;
       isMouseMoving = false;
-      
-      // Clear movement timeout
-      if (mouseMovementTimeout) {
-        clearTimeout(mouseMovementTimeout);
-      }
-      
-      // Stop randomization completely when not hovering
+      if (mouseMovementTimeout) clearTimeout(mouseMovementTimeout);
       stopRandomizing();
     });
-    
-    // Optional: Add click effect for mobile
+
     heroTitle.addEventListener('click', () => {
       if (!isHovering) {
-        // Trigger a quick randomization burst on mobile
         for (let i = 0; i < 3; i++) {
           setTimeout(() => {
             const numLettersToRandomize = Math.floor(Math.random() * 4) + 2;
             const lettersToRandomize = [];
-            
             for (let j = 0; j < numLettersToRandomize && j < letterElements.length; j++) {
               const randomIndex = Math.floor(Math.random() * letterElements.length);
               if (!lettersToRandomize.includes(randomIndex)) {
                 lettersToRandomize.push(randomIndex);
               }
             }
-            
             lettersToRandomize.forEach(index => {
-              randomizeLetter(letterElements[index], index);
+              randomizeLetter(letterElements[index], index, currentFonts);
             });
           }, i * 200);
         }
       }
     });
-  }
+  };
+
+  heroTitles.forEach(initHeroTitle);
 
   // ProfileCard-style tilt effect for college items
   const initializeProfileCardEffects = () => {
@@ -407,8 +350,52 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Initialize ProfileCard effects
+   const initializeTitlePressure = () => {
+    document.querySelectorAll('.edu-container .item').forEach(item => {
+      const cardContainer = item.querySelector('.card-container');
+      const heading = item.querySelector('h2, h3, h4, h5');
+      if (!cardContainer || !heading) return;
+
+      const text = heading.textContent.trim();
+      heading.textContent = '';
+      const spans = [];
+      text.split('').forEach(char => {
+        const span = document.createElement('span');
+        span.className = 'item-title-char';
+        span.textContent = char;
+        heading.appendChild(span);
+        spans.push(span);
+      });
+
+      const updateChars = (e) => {
+        const rect = cardContainer.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const maxDist = Math.hypot(rect.width, rect.height) / 2;
+
+        spans.forEach(span => {
+          const sRect = span.getBoundingClientRect();
+          const cx = sRect.left - rect.left + sRect.width / 2;
+          const cy = sRect.top - rect.top + sRect.height / 2;
+          const dist = Math.hypot(x - cx, y - cy);
+          const scale = 1 + Math.max(0, (maxDist - dist) / maxDist) * 0.5;
+          span.style.transform = `scale(${scale})`;
+        });
+      };
+
+      const resetChars = () => {
+        spans.forEach(span => {
+          span.style.transform = 'scale(1)';
+        });
+      };
+
+      cardContainer.addEventListener('pointermove', updateChars);
+      cardContainer.addEventListener('pointerleave', resetChars);
+    });
+  };
   setTimeout(() => {
     initializeProfileCardEffects();
+    initializeTitlePressure();
   }, 500);
   
   // Mobile detection

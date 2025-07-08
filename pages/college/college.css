@@ -19,6 +19,12 @@
 /* Networking & SysAdmin Minor is long so slightly smaller */
 .items li[data-card="sysadmin"] h4 {font-size: clamp(0.95rem, 1.8vw, 1.6rem);}
 
+/* Dynamic title character scaling */
+.item-title-char {
+  display: inline-block;
+  transition: transform 0.15s ease-out;
+  will-change: transform;
+}
 
 /* Ensure proper font loading for college titles */
 .college-page h1 {
@@ -142,6 +148,7 @@ body.college-page {
 .college-hero {
   height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -151,7 +158,7 @@ body.college-page {
   box-sizing: border-box;
 }
 
-.college-hero h1 {
+.college-hero .hero-title {
   font-size: clamp(3rem, 15vw, 8rem);
   color: #000000;
   margin: 0;
@@ -179,7 +186,7 @@ body.college-page {
 }
 
 /* Letter randomization styles with consistent sizing and no clipping */
-.college-hero h1 .letter {
+.college-hero .hero-title .letter {
   display: inline-block;
   transition: all 0.3s ease;
   /* Increased dimensions to prevent clipping */
@@ -205,89 +212,89 @@ body.college-page {
 }
 
 /* Letter appearance animation */
-.college-hero h1 .letter.appear {
+.college-hero .hero-title .letter.appear {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
 
 /* Specific font size adjustments to normalize visual width and prevent clipping */
-.college-hero h1 .letter[data-font="Hackney"] {
+.college-hero .hero-title .letter[data-font="Hackney"] {
   font-family: 'Hackney', sans-serif;
   transform: scale(1.1);
 }
 
-.college-hero h1 .letter[data-font="DTGetai"] {
+.college-hero .hero-title .letter[data-font="DTGetai"] {
   font-family: 'DTGetai', sans-serif;
   transform: scale(1.1); /* Reduced to prevent clipping */
 }
 
-.college-hero h1 .letter[data-font="Asember"] {
+.college-hero .hero-title .letter[data-font="Asember"] {
   font-family: 'Asember', sans-serif;
   transform: scale(0.9);
 }
 
-.college-hero h1 .letter[data-font="Savate"] {
+.college-hero .hero-title .letter[data-font="Savate"] {
   font-family: 'Savate', sans-serif;
   transform: scale(1);
 }
 
-.college-hero h1 .letter[data-font="Iconic"] {
+.college-hero .hero-title .letter[data-font="Iconic"] {
   font-family: 'Iconic', sans-serif;
   transform: scale(1.5); /* Reduced to prevent clipping */
 }
 
-.college-hero h1 .letter[data-font="Catrose"] {
+.college-hero .hero-title .letter[data-font="Catrose"] {
   font-family: 'Catrose', sans-serif;
   transform: scale(0.95);
 }
 
-.college-hero h1 .letter[data-font="Beautyful"] {
+.college-hero .hero-title .letter[data-font="Beautyful"] {
   font-family: 'Beautyful', sans-serif;
   transform: scale(1.5); /* Reduced to prevent clipping */
 }
 
-.college-hero h1 .letter[data-font="Runtime"] {
+.college-hero .hero-title .letter[data-font="Runtime"] {
   font-family: 'Runtime', sans-serif;
   transform: scale(1);
 }
 
-.college-hero h1 .letter[data-font="Arshine"] {
+.college-hero .hero-title .letter[data-font="Arshine"] {
   font-family: 'Arshine', sans-serif;
   transform: scale(1); /* Significantly reduced to prevent clipping */
 }
 
-.college-hero h1 .letter[data-font="Sophiamelanieregular"] {
+.college-hero .hero-title .letter[data-font="Sophiamelanieregular"] {
   font-family: 'Sophiamelanieregular', sans-serif;
   transform: scale(0.85);
 }
 
-.college-hero h1 .letter[data-font="Crackchakingtrialregular"] {
+.college-hero .hero-title .letter[data-font="Crackchakingtrialregular"] {
   font-family: 'Crackchakingtrialregular', sans-serif;
   transform: scale(0.95); /* Reduced to prevent clipping */
 }
 
-.college-hero h1 .letter[data-font="Johnfoster"] {
+.college-hero .hero-title .letter[data-font="Johnfoster"] {
   font-family: 'Johnfoster', sans-serif;
   transform: scale(1);
 }
 
-.college-hero h1 .letter[data-font="Motterdam"] {
+.college-hero .hero-title .letter[data-font="Motterdam"] {
   font-family: 'Motterdam', sans-serif;
   transform: scale(1.2); /* Reduced to prevent clipping */
 }
 
-.college-hero h1 .letter[data-font="Sacloud"] {
+.college-hero .hero-title .letter[data-font="Sacloud"] {
   font-family: 'Sacloud', sans-serif;
   transform: scale(0.95);
 }
 
-.college-hero h1 .letter[data-font="Tfwanderclouddemo"] {
+.college-hero .hero-title .letter[data-font="Tfwanderclouddemo"] {
   font-family: 'Tfwanderclouddemo', sans-serif;
   transform: scale(1); /* Reduced to prevent clipping */
 }
 
 /* Hover effect for continuous randomization */
-.college-hero h1:hover .letter {
+.college-hero .hero-title:hover .letter {
   animation: letterFloat 0.4s ease-in-out infinite alternate;
 }
 
@@ -989,7 +996,7 @@ body.college-page {
     font-size: 2rem;
   }
   
-  .college-hero h1 {
+  .college-hero .hero-title {
     font-size: clamp(1.8rem, 9vw, 2.5rem);
   }
   
