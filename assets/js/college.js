@@ -383,12 +383,25 @@ document.addEventListener('DOMContentLoaded', () => {
       const text = heading.textContent.trim();
       heading.textContent = '';
       const spans = [];
-      text.split('').forEach(char => {
-        const span = document.createElement('span');
-        span.className = 'item-title-char';
-        span.textContent = char;
-        heading.appendChild(span);
-        spans.push(span);
+      // Split the text into words so wrapping only occurs at spaces
+      const words = text.split(' ');
+      words.forEach((word, wordIndex) => {
+        const wordSpan = document.createElement('span');
+        wordSpan.className = 'item-title-word';
+
+        word.split('').forEach(char => {
+          const span = document.createElement('span');
+          span.className = 'item-title-char';
+          span.textContent = char;
+          wordSpan.appendChild(span);
+          spans.push(span);
+        });
+
+        heading.appendChild(wordSpan);
+        // Add the space back as a normal text node so the browser can wrap at spaces
+        if (wordIndex < words.length - 1) {
+          heading.appendChild(document.createTextNode(' '));
+        }
       });
 
       const updateChars = (e) => {
