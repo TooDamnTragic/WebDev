@@ -5,19 +5,21 @@
 .college-page .items h4 {
   font-family: 'Savate', sans-serif;
   font-weight: normal;
-  font-size: clamp(1rem, 2vw, 1.8rem);
-  margin: 0 0 0.3rem;
+  font-size: clamp(1.4rem, 4vw, 3rem);
+  margin: 0 0 0.6rem;
   word-wrap: break-word;
   text-align: inherit;
+  line-height: 1.3;
+  letter-spacing: 0.05em;
 }
 
 /* Size tweaks for key items */
-.items li[data-card="rit"] h2 {font-size: clamp(1.2rem, 2.5vw, 2.2rem);}
-.items li[data-card="cybersecurity"] h3 {font-size: clamp(0.9rem, 1.8vw, 1.6rem);}
+.items li[data-card="rit"] h2 {font-size: clamp(1rem, 2.5vw, 2.1rem);}
+.items li[data-card="cybersecurity"] h3 {font-size: clamp(1rem, 2.5vw, 1.9rem);}
 /* Math Minor shorter title gets a bit larger */
-.items li[data-card="math"] h4 {font-size: clamp(1.1rem, 2vw, 1.9rem);}
+.items li[data-card="math"] h4 {font-size: clamp(1.3rem, 3vw, 2.6rem);}
 /* Networking & SysAdmin Minor is long so slightly smaller */
-.items li[data-card="sysadmin"] h4 {font-size: clamp(0.95rem, 1.8vw, 1.6rem);}
+.items li[data-card="sysadmin"] h4 {font-size: clamp(1rem, 2.5vw, 1.8rem);}
 
 /* Dynamic title character scaling */
 .item-title-char {
@@ -754,8 +756,16 @@ body.college-page {
   text-align: inherit;
   text-decoration: none;
   border-bottom: none;
-  color: #f0ead6;
+  background-image: linear-gradient(to bottom, #f0ead6, #f0ead6);
+  background-size: 1em 1.5em;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  line-height: 1.2;
+  width: 100%;
+  display: block;
 }
+
 
 .items h2:hover,
 .items h3:hover,

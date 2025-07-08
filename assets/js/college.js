@@ -16,6 +16,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const curricularSection = document.getElementById('curricular-section');
   const extracurricularSection = document.getElementById('extracurricular-section');
+  const adjustHeadingSizes = () => {
+    document.querySelectorAll('.edu-container .item').forEach(item => {
+      const heading = item.querySelector('h2, h3, h4, h5');
+      if (!heading) return;
+
+      const container = item.querySelector('.card-container') || item;
+      const computed = getComputedStyle(container);
+      const containerWidth = container.clientWidth -
+        parseFloat(computed.paddingLeft || 0) -
+        parseFloat(computed.paddingRight || 0);
+
+      let size = 3.2; // start large
+      const min = 1.2;
+      heading.style.fontSize = `${size}rem`;
+      heading.style.lineHeight = '1.2';
+      heading.style.letterSpacing = '0.05em';
+
+      while (heading.scrollWidth > containerWidth && size > min) {
+        size -= 0.05;
+        heading.style.fontSize = `${size}rem`;
+      }
+    });
+  };
+
 
   // Enhanced font cycling effect for hero title - Mouse movement-based randomization
   const heroTitles = document.querySelectorAll('.college-hero .hero-title');
@@ -393,10 +417,13 @@ document.addEventListener('DOMContentLoaded', () => {
       cardContainer.addEventListener('pointerleave', resetChars);
     });
   };
-  setTimeout(() => {
+   setTimeout(() => {
     initializeProfileCardEffects();
+    adjustHeadingSizes();
     initializeTitlePressure();
   }, 500);
+
+  window.addEventListener('resize', adjustHeadingSizes);
   
   // Mobile detection
   const isMobile = () => window.innerWidth <= 768;
