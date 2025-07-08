@@ -1252,9 +1252,7 @@ body.transitioning {
 
 .marquee__inner-wrap {
   height: 100%;
-  width: 200%;
-  display: flex;
-  transform: translateX(0);
+  overflow: hidden;
 }
 
 .marquee__inner {
@@ -1262,9 +1260,9 @@ body.transitioning {
   align-items: center;
   position: relative;
   height: 100%;
-  width: 200%;
+  width: max-content;
   will-change: transform;
-  animation: marquee 15s linear infinite;
+  animation: marquee var(--marquee-duration, 15s) linear infinite;
 }
 
 .marquee span {
@@ -1296,7 +1294,7 @@ body.transitioning {
     transform: translateX(0);
   }
   to {
-    transform: translateX(-50%);
+    transform: translateX(calc(-1 * var(--marquee-width)));
   }
 }
 
