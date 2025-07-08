@@ -8,13 +8,11 @@
   <link rel="stylesheet" href="contact.css">
 </head>
 <body class="contact-page">
-  <!-- UnicornStudio Background - Exact embed code -->
-  <div class="unicorn-background">
-    <div data-us-project="4Vq53pk2zEPdtV0k9rMM" style="width:100vw; height: 100vh"></div>
-  </div>
+  <!-- Dither Background Container -->
+  <div class="dither-background" id="dither-background"></div>
   
   <!-- Fallback background -->
-  <div class="background-loader" id="background-loader"></div>
+  <div class="dither-loader" id="dither-loader"></div>
   
   <!-- Back to Home -->
   <div class="back-home">
@@ -187,8 +185,7 @@
   <!-- Load pixel effect and other scripts -->
   <script src="../../assets/js/pixel-effect.js"></script>
   <script src="../../assets/js/contact.js"></script>
-  <!-- UnicornStudio Script - Exact code -->
-  <script type="text/javascript">!function(){if(!window.UnicornStudio){window.UnicornStudio={isInitialized:!1};var i=document.createElement("script");i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.27/dist/unicornStudio.umd.js",i.onload=function(){window.UnicornStudio.isInitialized||(UnicornStudio.init(),window.UnicornStudio.isInitialized=!0)},(document.head || document.body).appendChild(i)}}();</script>
+  <script type="module" src="../../assets/js/dither-background.js"></script>
   <script src="../../transition.js"></script>
 </body>
 </html>

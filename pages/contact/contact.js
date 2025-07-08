@@ -1,52 +1,62 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // UnicornStudio background initialization
-  const backgroundLoader = document.getElementById('background-loader');
-  const unicornBackground = document.querySelector('.unicorn-background');
-  let backgroundInitialized = false;
+  // Dither background initialization
+  const ditherLoader = document.getElementById('dither-loader');
+  const ditherContainer = document.getElementById('dither-background');
+  let ditherBackground = null;
   
-  // Monitor for UnicornStudio initialization
-  const checkUnicornStudio = () => {
-    // Check if UnicornStudio is loaded and canvas exists
-    const canvas = unicornBackground ? unicornBackground.querySelector('canvas') : null;
-    
-    if (window.UnicornStudio && window.UnicornStudio.isInitialized && canvas) {
-      console.log('UnicornStudio background initialized');
-      backgroundInitialized = true;
+  // Initialize dither background
+  const initDitherBackground = async () => {
+    try {
+      const { default: DitherBackground } = await import('../../assets/js/dither-background.js');
       
-      // Hide fallback background after UnicornStudio loads
+      ditherBackground = new DitherBackground(ditherContainer, {
+        waveColor: [0.5, 0.5, 0.5],
+        disableAnimation: false,
+        enableMouseInteraction: true,
+        mouseRadius: 0.3,
+        colorNum: 4,
+        waveAmplitude: 0.3,
+        waveFrequency: 3,
+        waveSpeed: 0.05,
+        pixelSize: 2
+      });
+      
+      console.log('Dither background initialized');
+      
+      // Hide loader after dither background loads
       setTimeout(() => {
-        if (backgroundLoader) {
-          backgroundLoader.classList.add('hidden');
+        if (ditherLoader) {
+          ditherLoader.classList.add('hidden');
         }
       }, 1000);
-    } else if (window.UnicornStudio && window.UnicornStudio.isInitialized) {
-      // UnicornStudio loaded but no canvas yet, keep checking
-      setTimeout(checkUnicornStudio, 200);
-    } else {
-      // Keep checking until UnicornStudio is ready
-      setTimeout(checkUnicornStudio, 500);
+      
+    } catch (error) {
+      console.error('Failed to initialize dither background:', error);
+      
+      // Hide loader and show fallback
+      if (ditherLoader) {
+        ditherLoader.classList.add('hidden');
+      }
     }
   };
   
-  // Start checking for UnicornStudio
-  setTimeout(checkUnicornStudio, 500);
+  // Initialize dither background
+  initDitherBackground();
   
-  // Fallback: Hide loader after 15 seconds regardless
-  setTimeout(() => {
-    if (backgroundLoader && !backgroundLoader.classList.contains('hidden')) {
-      backgroundLoader.classList.add('hidden');
-      console.log('UnicornStudio background fallback timeout - using gradient background');
+  // Cleanup on page unload
+  window.addEventListener('beforeunload', () => {
+    if (ditherBackground) {
+      ditherBackground.destroy();
     }
-  }, 15000);
+  });
   
-  // Debug: Log when UnicornStudio script loads
-  const originalInit = window.UnicornStudio?.init;
-  if (window.UnicornStudio) {
-    window.UnicornStudio.init = function() {
-      console.log('UnicornStudio.init() called');
-      if (originalInit) originalInit.apply(this, arguments);
-    };
-  }
+  // Fallback: Hide loader after 10 seconds regardless
+  setTimeout(() => {
+    if (ditherLoader && !ditherLoader.classList.contains('hidden')) {
+      ditherLoader.classList.add('hidden');
+      console.log('Dither background fallback timeout - using gradient background');
+    }
+  }, 10000);
   
   // Elements
   const emailCard = document.querySelector('.email-card');
