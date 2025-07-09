@@ -1,3 +1,4 @@
+// Dither Background Effect - Vanilla Three.js implementation
 import * as THREE from 'https://unpkg.com/three@0.178.0/build/three.module.js';
 
 class DitherBackground {
@@ -13,11 +14,14 @@ class DitherBackground {
       disableAnimation: options.disableAnimation || false,
       enableMouseInteraction: options.enableMouseInteraction !== false,
       mouseRadius: options.mouseRadius || 1,
+      pixelRatioCap: options.pixelRatioCap || 1,
     };
     
     this.mouse = { x: 0, y: 0 };
     this.clock = new THREE.Clock();
     this.animationId = null;
+        this.lastTime = 0;
+    this.frameInterval = 1 / 60 ; // cap rendering to ~30fps
     
     this.init();
   }
@@ -28,12 +32,14 @@ class DitherBackground {
     this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
     
     this.renderer = new THREE.WebGLRenderer({ 
-      antialias: true, 
-      preserveDrawingBuffer: true,
+      antialias: false, 
+      preserveDrawingBuffer: false,
       alpha: true 
     });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setPixelRatio(
+      Math.min(window.devicePixelRatio, this.options.pixelRatioCap)
+    );
     this.container.appendChild(this.renderer.domElement);
     
     // Create wave shader material
@@ -110,7 +116,7 @@ class DitherBackground {
         return 2.3 * mix(n_x.x, n_x.y, fade_xy.y);
       }
 
-      const int OCTAVES = 8;
+      const int OCTAVES = 4;
       float fbm(vec2 p) {
         float value = 0.0;
         float amp = 1.0;
