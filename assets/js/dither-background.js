@@ -1,5 +1,4 @@
-// Dither Background Effect - Vanilla Three.js implementation
-import * as THREE from 'three';
+import * as THREE from 'https://unpkg.com/three@0.178.0/build/three.module.js';
 
 class DitherBackground {
   constructor(container, options = {}) {
