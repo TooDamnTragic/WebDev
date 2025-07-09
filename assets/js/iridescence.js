@@ -24,14 +24,6 @@ uniform float uSpeed;
 
 varying vec2 vUv;
 
-vec3 palette(float t) {
-  vec3 blue = vec3(0.2, 0.6, 1.0);
-  vec3 yellow = vec3(1.0, 0.9, 0.1);
-  vec3 purple = vec3(0.7, 0.2, 1.0);
-  vec3 mix1 = mix(blue, yellow, smoothstep(0.0, 0.5, t));
-  return mix(mix1, purple, smoothstep(0.5, 1.0, t));
-}
-
 void main() {
   float mr = min(uResolution.x, uResolution.y);
   vec2 uv = (vUv.xy * 2.0 - 1.0) * uResolution.xy / mr;
