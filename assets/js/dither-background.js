@@ -8,21 +8,33 @@ class DitherBackground {
       waveSpeed: options.waveSpeed || 0.05,
       waveFrequency: options.waveFrequency || 3,
       waveAmplitude: options.waveAmplitude || 0.3,
-      waveColor: options.waveColor || [0.5, 0.5, 0.5],
       colorNum: options.colorNum || 4,
       pixelSize: options.pixelSize || 2,
       disableAnimation: options.disableAnimation || false,
       enableMouseInteraction: options.enableMouseInteraction !== false,
       mouseRadius: options.mouseRadius || 1,
       pixelRatioCap: options.pixelRatioCap || 1,
+      colorCycleSpeed: options.colorCycleSpeed || 8,
     };
+
+    // Set up color palette for cycling. Use provided palette or fall back to
+    // a default inspired by bright cyan, pink, and yellow hues.
+    const palette = options.colors || [
+      [1.0, 0.3, 0.85],
+      [0.98, 1.0, 0.6],
+      [0.36, 1.0, 0.8],
+      [0.45, 0.82, 1.0],
+    ];
+    this.colors = palette.map((c) => new THREE.Color(...c));
+
+    // Uniform color instance used by the shader
+    this.waveColor = this.colors[0].clone();
     
     this.mouse = { x: 0, y: 0 };
     this.clock = new THREE.Clock();
     this.animationId = null;
         this.lastTime = 0;
-    this.frameInterval = 1 / 60 ; // cap rendering to ~30fps
-    
+    this.frameInterval = 1 / 60 ;
     this.init();
   }
   
@@ -161,7 +173,7 @@ class DitherBackground {
         waveSpeed: { value: this.options.waveSpeed },
         waveFrequency: { value: this.options.waveFrequency },
         waveAmplitude: { value: this.options.waveAmplitude },
-        waveColor: { value: new THREE.Color(...this.options.waveColor) },
+        waveColor: { value: this.waveColor},
         mousePos: { value: new THREE.Vector2(0, 0) },
         enableMouseInteraction: { value: this.options.enableMouseInteraction ? 1 : 0 },
         mouseRadius: { value: this.options.mouseRadius },
@@ -276,12 +288,30 @@ class DitherBackground {
     this.ditherMaterial.uniforms.resolution.value.set(width, height);
   }
   
+  updateWaveColor() {
+    if (this.colors.length <= 1) return;
+
+    const t = this.clock.getElapsedTime() / this.options.colorCycleSpeed;
+    const idx = Math.floor(t) % this.colors.length;
+    const nextIdx = (idx + 1) % this.colors.length;
+    const blend = t - Math.floor(t);
+
+    const c1 = this.colors[idx];
+    const c2 = this.colors[nextIdx];
+
+    this.waveColor.r = THREE.MathUtils.lerp(c1.r, c2.r, blend);
+    this.waveColor.g = THREE.MathUtils.lerp(c1.g, c2.g, blend);
+    this.waveColor.b = THREE.MathUtils.lerp(c1.b, c2.b, blend);
+  }
+  
   animate() {
     this.animationId = requestAnimationFrame(() => this.animate());
-    
+
     if (!this.options.disableAnimation) {
       this.waveMaterial.uniforms.time.value = this.clock.getElapsedTime();
+      this.updateWaveColor();
     }
+    
     
     // Render to texture first
     this.renderer.setRenderTarget(this.renderTarget);

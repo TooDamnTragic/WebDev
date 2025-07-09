@@ -21,7 +21,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const { default: DitherBackground } = await import('./dither-background.js');
 
       ditherBackground = new DitherBackground(ditherContainer, {
-        waveColor: [0.5, 0.5, 0.5],
+        colors: [
+          [1, 0.3, 0.85],
+          [0.98, 1, 0.6],
+          [0.36, 1, 0.8],
+          [0.45, 0.82, 1]
+        ],
         disableAnimation: false,
         enableMouseInteraction: true,
         mouseRadius: 0.3,
