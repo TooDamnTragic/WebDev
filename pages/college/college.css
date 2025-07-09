@@ -10,7 +10,7 @@ html.college-page {
 .college-page .items h4 {
   font-family: 'Savate', sans-serif;
   font-weight: normal;
-  font-size: clamp(1rem, 3vw, 2rem);
+  font-size: clamp(0.8rem, 2.5vw, 1.6rem);
   margin: 0 0 0.6rem;
   word-wrap: normal;
   overflow-wrap: normal;
@@ -20,12 +20,12 @@ html.college-page {
 }
 
 /* Size tweaks for key items */
-.items li[data-card="rit"] h2 {font-size: clamp(0.9rem, 2.3vw, 1.8rem);}
-.items li[data-card="cybersecurity"] h3 {font-size: clamp(0.9rem, 2.3vw, 1.6rem);}
+.items li[data-card="rit"] h2 {font-size: clamp(0.8rem, 2.2vw, 1.5rem);}
+.items li[data-card="cybersecurity"] h3 {font-size: clamp(0.8rem, 2.2vw, 1.4rem);}
 /* Math Minor shorter title gets a bit larger */
-.items li[data-card="math"] h4 {font-size: clamp(1.1rem, 2.5vw, 2.2rem);}
+.items li[data-card="math"] h4 {font-size: clamp(0.9rem, 2.3vw, 1.8rem);}
 /* Networking & SysAdmin Minor is long so slightly smaller */
-.items li[data-card="sysadmin"] h4 {font-size: clamp(0.9rem, 2.3vw, 1.6rem);}
+.items li[data-card="sysadmin"] h4 {font-size: clamp(0.8rem, 2.1vw, 1.4rem);}
 
 /* Dynamic title character scaling */
 .item-title-char {
@@ -77,7 +77,7 @@ body.college-page {
 }
 
 .iridescence-container {
-  position: absolute;
+  position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 1;
@@ -988,8 +988,9 @@ body.college-page {
   .items h2,
   .items h3,
   .items h4 {
-    font-size: clamp(2rem, 6vw, 2.8rem); /* Increased mobile font sizes */
+    font-size: clamp(1.2rem, 4.5vw, 2rem);
   }
+  
   
   .desc {
     font-size: 1.1rem; /* Increased mobile description size */
@@ -1019,7 +1020,7 @@ body.college-page {
   .items h2,
   .items h3,
   .items h4 {
-    font-size: clamp(1.2rem, 4.5vw, 2rem);
+    font-size: clamp(0.9rem, 3.5vw, 1.4rem);
   }
   
   .desc {
