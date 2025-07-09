@@ -1,7 +1,7 @@
 /* Contact Page Styles - Redesigned with 6 Miseducation-Style Cards */
 .contact-page {
   /* Dither background effect */
-  background: #000000;
+  background: transparent;
   min-height: 100vh;
   display: flex;
   align-items: center;
