@@ -1178,7 +1178,7 @@ body.transitioning {
   opacity:0;
   pointer-events:none;
 }
-
+}
 .loader-logo{
   display:grid;
   grid-template-columns:repeat(2,var(--tile-size));
@@ -1339,4 +1339,3 @@ body.transitioning {
 .font-hastegi .marquee span {font-family: 'Hastegi', sans-serif;}
 .font-washington .menu__item-link,
 .font-washington .marquee span {font-family: 'Washington', sans-serif;}
-}
