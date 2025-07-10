@@ -891,4 +891,15 @@ document.addEventListener('DOMContentLoaded', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
+
+  // Miseducation text effect - exact same as miseducation page
+  const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  
+  function longRandomString() {
+    let out = "";
+    for (let i = 0; i < 500; i++) { // Reduced character count for larger icons
+      out += CHARS[Math.floor(Math.random() * CHARS.length)];
+    }
+    return out;
+  }
 });
