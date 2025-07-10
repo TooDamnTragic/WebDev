@@ -679,12 +679,15 @@ body.college-page {
   border-radius: var(--card-radius);
   
   /* Randomized icon cloud mask - WHITE ICONS scattered randomly */
-  mask-image: var(--icon);
-  -webkit-mask-image: var(--icon);
+  mask-image: var(--icon), var(--icon);
+  -webkit-mask-image: var(--icon), var(--icon);
   mask-mode: luminance;
-  mask-repeat: no-repeat;
-  mask-size: 800px 800px; /* Large tile to prevent visible repeats */
-  mask-position: center;
+  /* Two layers of icons - larger and smaller - tiled across the card */
+  mask-repeat: round;
+  /* Larger icons on the first layer, dense smaller icons on the second */
+  mask-size: 400px 400px, 220px 220px;
+  /* Offset layers so icons extend past all corners */
+  mask-position: -100px -100px, -40px -40px;
 
   /* White shine with colored glare overlay */
   background-image: 
@@ -730,8 +733,8 @@ body.college-page {
 
 /* Cybersecurity Card - Silver gradients and glare with circuit/tech icons scattered randomly */
 .items li[data-card="cybersecurity"] .card-container {
-  --card-gradient: radial-gradient(35% 52% at 55% 20%, rgba(192, 192, 192, 0.3) 0%, transparent 100%),
-                  radial-gradient(100% 100% at 50% 50%, rgba(192, 192, 192, 0.15) 1%, transparent 76%);
+  --card-gradient: radial-gradient(35% 52% at 55% 20%, rgba(161, 219, 226, 0.3) 0%, transparent 100%),
+                  radial-gradient(100% 100% at 50% 50%, rgba(142, 141, 219, 0.15) 1%, transparent 76%);
   --glare-color: rgba(192, 192, 192, 0.4);
   --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='800' viewBox='0 0 800 800'%3E%3Cdefs%3E%3Csymbol id='circuit' viewBox='0 0 256 256' fill='white'%3E%3Cpath d='M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM88,160a8,8,0,1,1-8,8A8,8,0,0,1,88,160ZM48,48H80v97.38a24,24,0,1,0,16,0V115.31l48,48V208H48ZM208,208H160V160a8,8,0,0,0-2.34-5.66L96,92.69V48h32V72a8,8,0,0,0,2.34,5.66l16,16A23.74,23.74,0,0,0,144,104a24,24,0,1,0,24-24,23.74,23.74,0,0,0-10.34,2.35L144,68.69V48h64V208ZM168,96a8,8,0,1,1-8,8A8,8,0,0,1,168,96Z'/%3E%3C/symbol%3E%3C/defs%3E%3Cuse href='%23circuit' x='58' y='62' width='28' height='28' transform='rotate(-18 72 76)'/%3E%3Cuse href='%23circuit' x='285' y='95' width='24' height='24' transform='rotate(32 297 107)'/%3E%3Cuse href='%23circuit' x='520' y='140' width='30' height='30' transform='rotate(-8 535 155)'/%3E%3Cuse href='%23circuit' x='140' y='240' width='26' height='26' transform='rotate(48 153 253)'/%3E%3Cuse href='%23circuit' x='680' y='200' width='32' height='32' transform='rotate(-25 696 216)'/%3E%3Cuse href='%23circuit' x='360' y='340' width='28' height='28' transform='rotate(15 374 354)'/%3E%3Cuse href='%23circuit' x='75' y='420' width='24' height='24' transform='rotate(-35 87 432)'/%3E%3Cuse href='%23circuit' x='580' y='460' width='30' height='30' transform='rotate(22 595 475)'/%3E%3Cuse href='%23circuit' x='740' y='520' width='26' height='26' transform='rotate(-12 753 533)'/%3E%3Cuse href='%23circuit' x='180' y='620' width='28' height='28' transform='rotate(38 194 634)'/%3E%3Cuse href='%23circuit' x='440' y='680' width='24' height='24' transform='rotate(-28 452 692)'/%3E%3Cuse href='%23circuit' x='650' y='750' width='32' height='32' transform='rotate(5 666 766)'/%3E%3Cuse href='%23circuit' x='25' y='320' width='30' height='30' transform='rotate(-42 40 335)'/%3E%3Cuse href='%23circuit' x='380' y='540' width='26' height='26' transform='rotate(18 393 553)'/%3E%3Cuse href='%23circuit' x='560' y='320' width='28' height='28' transform='rotate(-15 574 334)'/%3E%3Cuse href='%23circuit' x='220' y='460' width='24' height='24' transform='rotate(45 232 472)'/%3E%3Cuse href='%23circuit' x='480' y='220' width='30' height='30' transform='rotate(-32 495 235)'/%3E%3Cuse href='%23circuit' x='720' y='380' width='26' height='26' transform='rotate(28 733 393)'/%3E%3C/svg%3E");
 }
