@@ -685,9 +685,9 @@ body.college-page {
   /* Two layers of icons - larger and smaller - tiled across the card */
   mask-repeat: round;
   /* Larger icons on the first layer, dense smaller icons on the second */
-  mask-size: 400px 400px, 220px 220px;
+  mask-size: 9050px 9050px, 5000px 5000px;
   /* Offset layers so icons extend past all corners */
-  mask-position: -100px -100px, -40px -40px;
+  mask-position: -130px -130px, -60px -60px;
 
   /* White shine with colored glare overlay */
   background-image: 
