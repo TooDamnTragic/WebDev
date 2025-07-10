@@ -796,17 +796,15 @@ body.college-page {
   -webkit-text-fill-color: #000;
 }
 
-/* Enhanced description text */
 .desc { 
-  font-size: 1.2rem; /* Increased from 0.9rem */
+  font-size: 1.2rem;
   margin-top: 1rem;
   line-height: 1.6;
   color: rgba(0,0,0, 0.9);
 }
 
-/* Years/dates styling */
 .years {
-  font-size: 1rem; /* Scaled down */
+  font-size: 1rem;
   color: rgba(0,0,0, 0.7);
   font-style: italic;
   margin: 0.3rem 0;
@@ -825,13 +823,12 @@ body.college-page {
   padding-left: 1rem;
 }
 
-/* dots on the divider */
 .items li::before{
   content:"";
   position:absolute;
   top:50%;
   transform:translateY(-50%);
-  width:12px; /* Slightly larger dots */
+  width:12px;
   height:12px;
   border-radius:50%;
   background:#f0ead6;
@@ -1025,8 +1022,7 @@ body.college-page {
   }
   
   .desc {
-    font-size: 1rem; /* Increased small mobile description size */
-  }
+    font-size: 1rem;
 }
 
 
