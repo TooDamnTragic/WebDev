@@ -757,6 +757,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.extracurricular-section .item').forEach(item => {
     setupItemListeners(item, true);
   });
+  document.querySelectorAll('.extracurricular-section .item').forEach(item => {
+    setupItemListeners(item, true);
+  });
   
 
   setupInfoHoverListeners(info, false);
