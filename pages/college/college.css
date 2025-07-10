@@ -1023,6 +1023,7 @@ body.college-page {
   
   .desc {
     font-size: 1rem;
+  }
 }
 
 
@@ -1178,7 +1179,7 @@ body.transitioning {
   opacity:0;
   pointer-events:none;
 }
-}
+
 .loader-logo{
   display:grid;
   grid-template-columns:repeat(2,var(--tile-size));
