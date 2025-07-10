@@ -588,6 +588,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (isMobile()) return; // Skip on mobile
     
     const currentInfo = isExtracurricular ? infoExtra : info;
+        if (!currentInfo) {
+      return;
+    }
     const popupId = isExtracurricular ? 'extra' : 'main';
     
     if (immediate) {
