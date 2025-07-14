@@ -323,7 +323,7 @@ body.college-page {
 }
 
 /* Scroll indicator */
-.scroll-indicator {
+.scroll-indicator{
   position: absolute;
   bottom: 2rem;
   left: 50%;
