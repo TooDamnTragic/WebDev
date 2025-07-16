@@ -19,7 +19,7 @@ const distMetric = (x, y, x2, y2) => {
     const yDiff = y - y2;
     return xDiff * xDiff + yDiff * yDiff;
 };
-
+  
 const findClosestEdge = (mouseX, mouseY, width, height) => {
     const topEdgeDist = distMetric(mouseX, mouseY, width / 2, 0);
     const bottomEdgeDist = distMetric(mouseX, mouseY, width / 2, height);
