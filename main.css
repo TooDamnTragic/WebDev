@@ -162,7 +162,7 @@ body.index-page{
   background-size: 100% 100%, 100% 100%, 100% 100%, 2px 2px;
   animation: subtleGlow 8s ease-in-out infinite alternate;
 }
-   
+
 @keyframes subtleGlow {
   0% {
     background: 
