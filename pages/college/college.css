@@ -171,13 +171,8 @@ body.college-page {
   box-sizing: border-box;
 }
 
-<<<<<<< HEAD
-.college-hero h1 {
-  font-size: clamp(3rem, 15vw, 8rem);
-=======
 .college-hero .hero-title {
   font-size: clamp(3rem, 8vw, 8rem);
->>>>>>> f24906bebabfbe19df3f28428fb251eb920cf0e8
   color: #000000;
   margin: 0;
   text-align: center;
@@ -334,11 +329,7 @@ body.college-page {
   bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
-<<<<<<< HEAD
-  color: rgba(24, 24, 21, 0.6);
-=======
   color: rgba(0, 0, 0, 0.6);
->>>>>>> f24906bebabfbe19df3f28428fb251eb920cf0e8
   font-size: 1.5rem;
   z-index: 2;
   opacity: 0;
