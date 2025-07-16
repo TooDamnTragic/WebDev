@@ -11,6 +11,62 @@ document.addEventListener('DOMContentLoaded', () => {
   const fileList = document.getElementById('fileList');
   const notification = document.getElementById('notification');
 
+    // Dither background initialization
+  const ditherLoader = document.getElementById('dither-loader');
+  const ditherContainer = document.getElementById('dither-background');
+  let ditherBackground = null;
+
+  const initDitherBackground = async () => {
+    try {
+      const { default: DitherBackground } = await import('./dither-background.js');
+
+      ditherBackground = new DitherBackground(ditherContainer, {
+        colors: [
+          [1, 0.3, 0.85],
+          [0.98, 1, 0.6],
+          [0.36, 1, 0.8],
+          [0.45, 0.82, 1]
+        ],
+        disableAnimation: false,
+        enableMouseInteraction: true,
+        mouseRadius: 0.3,
+        colorNum: 4,
+        waveAmplitude: 0.3,
+        waveFrequency: 3,
+        waveSpeed: 0.05,
+        pixelSize: 2
+      });
+
+      console.log('Dither background initialized');
+
+      // Hide loader after dither background loads
+      setTimeout(() => {
+        if (ditherLoader) {
+          ditherLoader.classList.add('hidden');
+        }
+      }, 1000);
+
+    } catch (error) {
+      console.error('Failed to initialize dither background:', error);
+
+      // Hide loader and show fallback
+      if (ditherLoader) {
+        ditherLoader.classList.add('hidden');
+      }
+    }
+  };
+
+  // Initialize dither background
+  initDitherBackground();
+
+  // Fallback: Hide loader after 10 seconds regardless
+  setTimeout(() => {
+    if (ditherLoader && !ditherLoader.classList.contains('hidden')) {
+      ditherLoader.classList.add('hidden');
+      console.log('Dither background fallback timeout - using gradient background');
+    }
+  }, 10000);
+
   // File handling
   let selectedFiles = [];
 
@@ -419,5 +475,8 @@ updateTransform() {
   // Cleanup on page unload
   window.addEventListener('beforeunload', () => {
     magneticCards.forEach(card => card.destroy());
+    if (ditherBackground) {
+      ditherBackground.destroy();
+    }
   });
 });

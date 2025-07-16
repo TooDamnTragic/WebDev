@@ -4,6 +4,14 @@ document.addEventListener('DOMContentLoaded', () => {
 const items = document.querySelectorAll('#extracurricular-menu .menu__item');
 if (!items.length || typeof gsap === 'undefined') return;
 
+// Duplicate marquee content so the horizontal scroll can loop seamlessly
+document
+    .querySelectorAll('#extracurricular-menu .marquee__inner')
+    .forEach((inner) => {
+    inner.innerHTML += inner.innerHTML;
+    const singleWidth = inner.scrollWidth / 2;
+    inner.style.setProperty('--marquee-width', `${singleWidth}px`);
+    });
 const animationDefaults = { duration: 0.6, ease: 'expo' };
 
 const distMetric = (x, y, x2, y2) => {

@@ -1,15 +1,7 @@
 /* Contact Page Styles - Redesigned with 6 Miseducation-Style Cards */
 .contact-page {
-  /* Low Saturation, Low Brightness Dynamic Gradient Background */
-  background: linear-gradient(
-    45deg,
-    #3674B5,
-    #578FCA,
-    #F5F0CD,
-    #FADA7A
-  );
-  background-size: 400% 400%;
-  animation: dynamicGradient 15s ease infinite;
+  /* Dither background effect */
+  background: transparent;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -19,7 +11,54 @@
   padding: 2rem;
 }
 
-/* Dynamic Gradient Animation */
+/* Dither Background Container */
+.dither-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* Ensure Three.js canvas fills container */
+.dither-background canvas {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+}
+
+/* Loading state for dither background */
+.dither-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    45deg,
+    #3674B5,
+    #578FCA,
+    #F5F0CD,
+    #FADA7A
+  );
+  background-size: 400% 400%;
+  animation: dynamicGradient 15s ease infinite;
+  z-index: 0;
+  transition: opacity 1s ease;
+}
+
+.dither-loader.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Dynamic Gradient Animation for fallback */
 @keyframes dynamicGradient {
   0% {
     background-position: 0% 50%;
@@ -43,7 +82,7 @@
   position: fixed;
   top: 1.5rem;
   left: 1.5rem;
-  z-index: 100;
+  z-index: 1000;
   opacity: 0.7;
 }
 
@@ -81,6 +120,8 @@
   gap: 2rem;
   max-width: 1200px;
   width: 100%;
+  position: relative;
+  z-index: 10;
 }
 
 /* Contact Cards - Miseducation Style with Enhanced Styling and Magnetic Effect */
