@@ -10,7 +10,7 @@
   flex-direction: column;
   align-items: center;
   font-family: 'Cabin', Arial, sans-serif;
-  position: relative;
+  position: relative;  
 }
 
 @keyframes gradientShift {
