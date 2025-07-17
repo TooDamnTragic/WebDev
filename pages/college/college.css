@@ -1151,6 +1151,7 @@ body.college-page {
   border-radius:12px;
   box-shadow:0 8px 20px rgba(0,0,0,0.5), inset 0 0 10px rgba(255,255,255,0.15);
   border:1px solid rgba(240,234,214,0.4);
+  font-family:'Cabin', sans-serif;
   transform-style:preserve-3d;
   animation:glisten 3s ease-in-out infinite alternate;
   position:relative;
