@@ -9,8 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const infoExtraImage = document.getElementById('info-extra-image');
   const infoExtraImageLink = document.getElementById('info-extra-image-link');
   const infoExtraText = document.getElementById('info-extra-text');
-  const infoClose = document.getElementById('info-close');
-  const infoExtraClose = document.getElementById('info-extra-close');
   const body = document.body;
   const defaultBg = getComputedStyle(body).background;
 
@@ -643,7 +641,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         popupTimeouts.delete(popupId);
-      }, 2000); // 2 second delay
+      }, 1000); // 2 second delay
       
       popupTimeouts.set(popupId, timeoutId);
     }
@@ -778,27 +776,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   setupInfoHoverListeners(info, false);
   setupInfoHoverListeners(infoExtra, true);
-
-  // Close button functionality
-  if (infoClose) {
-    infoClose.addEventListener('click', () => hideInfo(false, true));
-    infoClose.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        hideInfo(false, true);
-      }
-    });
-  }
-  
-  if (infoExtraClose) {
-    infoExtraClose.addEventListener('click', () => hideInfo(true, true));
-    infoExtraClose.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        hideInfo(true, true);
-      }
-    });
-  }
 
   // Handle window resize
   const handleResize = debounce(() => {
