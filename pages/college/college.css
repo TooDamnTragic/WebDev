@@ -173,7 +173,7 @@ body.college-page {
 
 .college-hero .hero-title {
   font-size: clamp(3rem, 8vw, 8rem);
-  color: #000000;
+  color: #000 !important;
   margin: 0;
   text-align: center;
   opacity: 0;
@@ -206,6 +206,7 @@ body.college-page {
   /* Normalize all fonts to same visual size */
   font-size: inherit;
   line-height: 1;
+  color: #000;
   /* Prevent text from being clipped */
   overflow: visible; /* Changed from hidden to visible */
   position: relative;

@@ -34,4 +34,35 @@
 .font-list li {
   font-size: 2rem;
   margin-bottom: 2rem;
+ position: relative;
+  cursor: default;
+}
+
+.font-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translate(-50%, -0.5rem);
+  white-space: nowrap;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+
+.font-list li:hover .font-tooltip {
+  opacity: 1;
+}
+
+.dark-column .font-tooltip {
+  background: #fff;
+  color: #000;
+}
+
+.light-column .font-tooltip {
+  background: #000;
+  color: #fff;
 }
