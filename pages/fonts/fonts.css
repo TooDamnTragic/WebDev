@@ -1,0 +1,37 @@
+.fonts-page {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.font-container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.font-column {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.light-column {
+  background: #fff;
+  color: #000;
+}
+
+.dark-column {
+  background: #000;
+  color: #fff;
+}
+
+.font-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.font-list li {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}

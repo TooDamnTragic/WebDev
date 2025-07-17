@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // All available fonts from the fonts folder with adjusted scale values to prevent clipping
   const fontConfig = [
     { name: 'Hackney', scale: 1 },
-    { name: 'DTGetai', scale: 0.95 }, 
+    { name: 'DTGetai', scale: 0.95 },
     { name: 'Asember', scale: 0.9 },
     { name: 'Savate', scale: 1 },
     { name: 'Iconic', scale: 1 },
