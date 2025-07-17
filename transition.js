@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
+  const color = localStorage.getItem('transitionColor');
+  if (color) {
+    const overlay = document.createElement('div');
+    overlay.className = 'page-transition';
+    overlay.style.setProperty('--transition-color', color);
+    document.body.appendChild(overlay);
+    requestAnimationFrame(() => overlay.classList.add('shrink'));
+    overlay.addEventListener('transitionend', () => overlay.remove());
+    localStorage.removeItem('transitionColor');
+  }
+
   document.querySelectorAll('a:not(.section)').forEach(link => {
     link.addEventListener('click', e => {
       const url = link.getAttribute('href');

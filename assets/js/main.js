@@ -16,6 +16,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     link.addEventListener('click', e => {
       e.preventDefault();
+      const color = getComputedStyle(link).getPropertyValue('--light') || '#000';
+      localStorage.setItem('transitionColor', color.trim());
       link.classList.add('zoom');
       document.body.classList.add('fade-out');
       setTimeout(() => {
