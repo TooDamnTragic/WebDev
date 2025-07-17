@@ -357,6 +357,7 @@ body.college-page{
   display:flex;
   align-items:center;
   justify-content:center;
+  font-family:'Sophiamelanieregular', sans-serif;
   text-decoration:none;
   color:var(--textColor,#111);
   opacity:0;
