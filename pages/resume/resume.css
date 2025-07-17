@@ -1,12 +1,69 @@
 /* Simplified resume page styles */
 .resume-page {
-  background: #f5f5f5;
+  background: linear-gradient(120deg, #1a1d20, #212427);
+  background-size: 400% 400%;
+  animation: gradientShift 20s ease infinite;
   min-height: 100vh;
   padding: 2rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: 'Cabin', Arial, sans-serif;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.iridescence-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.back-home {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.5rem;
+  z-index: 100;
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+}
+
+.back-home:hover {
+  opacity: 1;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  font-size: 0.9rem;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+  background: rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.back-link:hover {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.back-link svg {
+  width: 16px;
+  height: 16px;
 }
 
 .pdf-wrapper {
@@ -31,8 +88,4 @@
   padding: 0.75rem 1.25rem;
   border-radius: 25px;
   font-weight: bold;
-}
-
-.download-btn:hover {
-  background: #e0430d;
 }
