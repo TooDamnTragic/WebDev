@@ -856,8 +856,8 @@ body.college-page {
   text-align: inherit;
   text-decoration: none;
   border-bottom: none;
-  color: #3f3f3f;
-  -webkit-text-fill-color: #3f3f3f;
+  color: #040404;
+  -webkit-text-fill-color: #040404;
   background-image: none;
   background-clip: border-box;
   -webkit-background-clip: border-box;
@@ -871,8 +871,8 @@ body.college-page {
 .items h2:hover,
 .items h3:hover,
 .items h4:hover {
-  color: #3f3f3f;
-  -webkit-text-fill-color: #3f3f3f;
+  color: #040404;
+  -webkit-text-fill-color: #040404;
 }
 
 .desc { 
@@ -931,13 +931,13 @@ body.college-page {
 }
 .link-button:hover,
 .link-button:focus{
-  color:#3f3f3f;
+  color:#040404;
 }
 
 .items li:hover h2,
 .items li:hover h3,
 .items li:hover h4{ 
-  color:#3f3f3f; 
+  color:#040404; 
 }
 
 /* Mobile info panels */
