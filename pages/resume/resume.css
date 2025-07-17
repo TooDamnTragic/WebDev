@@ -10,6 +10,7 @@
   flex-direction: column;
   align-items: center;
   font-family: 'Cabin', Arial, sans-serif;
+  position: relative;
 }
 
 @keyframes gradientShift {
@@ -18,11 +19,11 @@
   100% { background-position: 0% 50%; }
 }
 
-.iridescence-container {
+.darkveil-canvas {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: -1;
+  z-index: 1;
 }
 
 .back-home {
@@ -67,6 +68,8 @@
 }
 
 .pdf-wrapper {
+  position: relative;
+  z-index: 10;
   width: 100%;
   max-width: 850px;
   background: #fff;
@@ -82,6 +85,8 @@
 }
 
 .download-btn {
+  position: relative;
+  z-index: 20;
   background: #ff4f0f;
   color: #fff;
   text-decoration: none;
