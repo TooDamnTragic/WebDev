@@ -871,8 +871,8 @@ body.college-page {
 .items h2:hover,
 .items h3:hover,
 .items h4:hover {
-  color: #000;
-  -webkit-text-fill-color: #000;
+  color: #3f3f3f;
+  -webkit-text-fill-color: #3f3f3f;
 }
 
 .desc { 
@@ -931,13 +931,13 @@ body.college-page {
 }
 .link-button:hover,
 .link-button:focus{
-  color:#ffffff;
+  color:#3f3f3f;
 }
 
 .items li:hover h2,
 .items li:hover h3,
 .items li:hover h4{ 
-  color:#ffffff; 
+  color:#3f3f3f; 
 }
 
 /* Mobile info panels */
