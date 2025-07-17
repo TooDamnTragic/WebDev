@@ -303,6 +303,68 @@ body.college-page {
 }
 
 /* Hover effect for continuous randomization */
+
+.college-hero .hero-title .letter[data-font="Basheq"] {
+  font-family: 'Basheq', sans-serif;
+  transform: scale(1);
+}
+.college-hero .hero-title .letter[data-font="Cabin"] {
+  font-family: 'Cabin', sans-serif;
+  transform: scale(1);
+}
+.college-hero .hero-title .letter[data-font="Demoarmagist"] {
+  font-family: 'Demoarmagist', sans-serif;
+  transform: scale(1);
+}
+.college-hero .hero-title .letter[data-font="Hastegi"] {
+  font-family: 'Hastegi', sans-serif;
+  transform: scale(1);
+}
+.college-hero .hero-title .letter[data-font="Washington"] {
+  font-family: 'Washington', sans-serif;
+  transform: scale(1);
+}
+.college-hero .hero-title .letter[data-font="Aporrheton"] {
+  font-family: 'Aporrheton', sans-serif;
+  transform: scale(1);
+}
+.college-hero .hero-title .letter[data-font="Blogh"] {
+  font-family: 'Blogh', sans-serif;
+  transform: scale(1);
+}
+.college-hero .hero-title .letter[data-font="HackneyAlt"] {
+  font-family: 'HackneyAlt', sans-serif;
+  transform: scale(1);
+}
+.college-hero .hero-title .letter[data-font="LigemaDemo"] {
+  font-family: 'LigemaDemo', sans-serif;
+  transform: scale(1);
+}
+.college-hero .hero-title .letter[data-font="Plact"] {
+  font-family: 'Plact', sans-serif;
+  transform: scale(1);
+}
+.college-hero .hero-title .letter[data-font="Plunct"] {
+  font-family: 'Plunct', sans-serif;
+  transform: scale(1);
+}
+.college-hero .hero-title .letter[data-font="ThunderBlackHC"] {
+  font-family: 'ThunderBlackHC', sans-serif;
+  transform: scale(1);
+}
+.college-hero .hero-title .letter[data-font="TuringAbstract"] {
+  font-family: 'TuringAbstract', sans-serif;
+  transform: scale(1);
+}
+.college-hero .hero-title .letter[data-font="TuringBlock"] {
+  font-family: 'TuringBlock', sans-serif;
+  transform: scale(1);
+}
+.college-hero .hero-title .letter[data-font="TuringOutline"] {
+  font-family: 'TuringOutline', sans-serif;
+  transform: scale(1);
+}
+
 .college-hero .hero-title:hover .letter {
   animation: letterFloat 0.4s ease-in-out infinite alternate;
 }

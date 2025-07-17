@@ -1,3 +1,40 @@
+@import url('assets/fonts/Web-PS/Thunder-BlackHC.css');
+@import url('assets/fonts/Web-PS/Thunder-BlackHCItalic.css');
+@import url('assets/fonts/Web-PS/Thunder-BlackLC.css');
+@import url('assets/fonts/Web-PS/Thunder-BlackLCItalic.css');
+@import url('assets/fonts/Web-PS/Thunder-BoldHC.css');
+@import url('assets/fonts/Web-PS/Thunder-BoldHCItalic.css');
+@import url('assets/fonts/Web-PS/Thunder-BoldLC.css');
+@import url('assets/fonts/Web-PS/Thunder-BoldLCItalic.css');
+@import url('assets/fonts/Web-PS/Thunder-ExtraBoldHC.css');
+@import url('assets/fonts/Web-PS/Thunder-ExtraBoldHCItalic.css');
+@import url('assets/fonts/Web-PS/Thunder-ExtraBoldLC.css');
+@import url('assets/fonts/Web-PS/Thunder-ExtraBoldLCItalic.css');
+@import url('assets/fonts/Web-PS/Thunder-ExtraLightHC.css');
+@import url('assets/fonts/Web-PS/Thunder-ExtraLightHCItalic.css');
+@import url('assets/fonts/Web-PS/Thunder-ExtraLightLC.css');
+@import url('assets/fonts/Web-PS/Thunder-ExtraLightLCItalic.css');
+@import url('assets/fonts/Web-PS/Thunder-HC.css');
+@import url('assets/fonts/Web-PS/Thunder-HCItalic.css');
+@import url('assets/fonts/Web-PS/Thunder-LC.css');
+@import url('assets/fonts/Web-PS/Thunder-LCItalic.css');
+@import url('assets/fonts/Web-PS/Thunder-LightHC.css');
+@import url('assets/fonts/Web-PS/Thunder-LightHCItalic.css');
+@import url('assets/fonts/Web-PS/Thunder-LightLC.css');
+@import url('assets/fonts/Web-PS/Thunder-LightLCItalic.css');
+@import url('assets/fonts/Web-PS/Thunder-MediumHC.css');
+@import url('assets/fonts/Web-PS/Thunder-MediumHCItalic.css');
+@import url('assets/fonts/Web-PS/Thunder-MediumLC.css');
+@import url('assets/fonts/Web-PS/Thunder-MediumLCItalic.css');
+@import url('assets/fonts/Web-PS/Thunder-SemiBoldHC.css');
+@import url('assets/fonts/Web-PS/Thunder-SemiBoldHCItalic.css');
+@import url('assets/fonts/Web-PS/Thunder-SemiBoldLC.css');
+@import url('assets/fonts/Web-PS/Thunder-SemiBoldLCItalic.css');
+@import url('assets/fonts/Web-PS/Thunder-ThinHC.css');
+@import url('assets/fonts/Web-PS/Thunder-ThinHCItalic.css');
+@import url('assets/fonts/Web-PS/Thunder-ThinLC.css');
+@import url('assets/fonts/Web-PS/Thunder-ThinLCItalic.css');
+
 body,html{
   margin:0;
   padding:0;
@@ -114,7 +151,66 @@ cwap
   font-weight: normal;
   font-style: normal;
 }
-
+@font-face {
+  font-family: 'Aporrheton';
+  src: url('assets/fonts/Aporrheton_font.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Blogh';
+  src: url('assets/fonts/Blogh.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'HackneyAlt';
+  src: url('assets/fonts/HackneyPersonalUseOnly.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'LigemaDemo';
+  src: url('assets/fonts/Ligema DEMO.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Plact';
+  src: url('assets/fonts/PintassilgoPrints - Plact.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Plunct';
+  src: url('assets/fonts/PintassilgoPrints - Plunct.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'ThunderBlackHC';
+  src: url('assets/fonts/Thunder-BlackHC.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'TuringAbstract';
+  src: url('assets/fonts/Turing Abstract.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'TuringBlock';
+  src: url('assets/fonts/Turing Block.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'TuringOutline';
+  src: url('assets/fonts/Turing Outline.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
 @font-face {
   font-family: 'Basheq';
   src: url('assets/fonts/BasheqVintageDemoVersionRegular-gwpmE.otf') format('opentype');
