@@ -84,7 +84,7 @@
     </a>
 
     <!-- Resume Card -->
-    <a href="../resume/resume.html" class="contact-card resume-card">
+      <div class="contact-card resume-card" id="resumeCard">
       <div class="card-glow glow-mask"></div>
       <div class="card-darken"></div>
       <div class="card-backdrop"></div>
@@ -99,7 +99,7 @@
         </svg>
         <span class="contact-label">Resume</span>
       </div>
-    </a>
+    </div>
 
     <!-- Discord Card -->
     <a href="https://discord.gg/869793843137105921" target="_blank" class="contact-card discord-card">
@@ -171,6 +171,24 @@
           </button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Resume Modal -->
+  <div id="resumeModal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h2>My Resume</h2>
+        <button class="modal-close" id="closeResumeModal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="resume-content">
+        <embed src="../../assets/media/Resume.pdf" type="application/pdf" class="resume-embed" />
+      </div>
     </div>
   </div>
 

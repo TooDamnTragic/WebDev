@@ -731,6 +731,19 @@ body.college-page {
   background-position: 0 0, 0 0, 50% 50%;
 }
 
+
+/* Resume Modal */
+.resume-content {
+  padding: 1rem;
+}
+
+.resume-embed {
+  width: 100%;
+  height: 80vh;
+  border: none;
+}
+
+
 .items li:hover .card-container,
 .items li.active .card-container {
   --card-opacity: 0.35;

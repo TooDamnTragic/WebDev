@@ -10,7 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const fileInput = document.getElementById('attachments');
   const fileList = document.getElementById('fileList');
   const notification = document.getElementById('notification');
-
+  const resumeCard = document.getElementById('resumeCard');
+  const resumeModal = document.getElementById('resumeModal');
+  const closeResumeModal = document.getElementById('closeResumeModal');
+  
     // Dither background initialization
   const ditherLoader = document.getElementById('dither-loader');
   const ditherContainer = document.getElementById('dither-background');
@@ -231,6 +234,13 @@ updateTransform() {
     });
   }
 
+  if (resumeCard) {
+    resumeCard.addEventListener('click', (e) => {
+      e.preventDefault();
+      openResumeModal();
+    });
+  }
+
   // Modal Functions
   const openModal = () => {
     modal.classList.add('active');
@@ -247,6 +257,17 @@ updateTransform() {
     document.body.style.overflow = '';
     resetForm();
   };
+
+  const openResumeModal = () => {
+    resumeModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeResumeModalFunc = () => {
+    resumeModal.classList.remove('active');
+    document.body.style.overflow = '';
+  };
+
 
   const resetForm = () => {
     emailForm.reset();
@@ -409,7 +430,11 @@ updateTransform() {
   if (closeModal) {
     closeModal.addEventListener('click', closeModalFunc);
   }
-  
+
+  if (closeResumeModal) {
+    closeResumeModal.addEventListener('click', closeResumeModalFunc);
+  }
+
   if (cancelBtn) {
     cancelBtn.addEventListener('click', closeModalFunc);
   }
@@ -423,10 +448,23 @@ updateTransform() {
     });
   }
 
+  if (resumeModal) {
+    resumeModal.addEventListener('click', (e) => {
+      if (e.target === resumeModal) {
+        closeResumeModalFunc();
+      }
+    });
+  }
+
   // Close modal on Escape key
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal && modal.classList.contains('active')) {
-      closeModalFunc();
+    if (e.key === 'Escape') {
+      if (modal && modal.classList.contains('active')) {
+        closeModalFunc();
+      }
+      if (resumeModal && resumeModal.classList.contains('active')) {
+        closeResumeModalFunc();
+      }
     }
   });
 
