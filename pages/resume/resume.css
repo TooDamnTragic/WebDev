@@ -87,10 +87,11 @@
 .download-btn {
   position: relative;
   z-index: 20;
-  background: #ff4f0f;
+  background: #2c878376;
   color: #fff;
   text-decoration: none;
   padding: 0.75rem 1.25rem;
   border-radius: 25px;
   font-weight: bold;
 }  
+
