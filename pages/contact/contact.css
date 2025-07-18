@@ -374,9 +374,13 @@
 }
 
 .modal-container {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px);
-  border-radius: 20px;
+  background-color: #d4d0c8;
+  font-family: "MS Sans Serif", sans-serif;
+  border-width: 6px;
+  border-style: solid;
+  border-image-source: url("../../assets/media/contact/Window_Base.png");
+  border-image-slice: 6;
+  border-image-width: 6px;
   width: 90%;
   max-width: 600px;
   max-height: 90vh;
@@ -394,35 +398,48 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2rem 2rem 1rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 4px 8px;
+  background: url("../../assets/media/contact/Window_Header.png") repeat-x;
+  color: #fff;
+  min-height: 28px;
 }
 
 .modal-header h2 {
   margin: 0;
-  color: #333;
-  font-size: 1.8rem;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: normal;
+  color: #fff;
+  font-family: "MS Sans Serif", sans-serif;
 }
 
 .modal-close {
-  background: none;
-  border: none;
+  background-color: #d4d0c8;
+  border-width: 4px;
+  border-style: solid;
+  border-image-source: url("../../assets/media/contact/Windows_Button.png");
+  border-image-slice: 4;
+  border-image-width: 4px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 50%;
-  transition: background-color 0.2s ease;
-  color: #666;
 }
 
-.modal-close:hover {
-  background: rgba(0, 0, 0, 0.1);
-  color: #333;
+.modal-close:hover,
+.modal-close:focus {
+  border-image-source: url("../../assets/media/contact/Windows_Button_Focus.png");
+}
+.modal-close:active {
+  border-image-source: url("../../assets/media/contact/Windows_Button_Pressed.png");
 }
 
 .modal-close svg {
-  width: 24px;
-  height: 24px;
+  width: 16px;
+  height: 16px;
+  stroke: #000;
 }
 
 /* Form Styles */
@@ -445,22 +462,23 @@
 .form-group input,
 .form-group textarea {
   width: 100%;
-  padding: 1rem;
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
+  padding: 4px;
+  font-size: 14px;
+  font-family: "MS Sans Serif", sans-serif;
+  border-width: 4px;
+  border-style: solid;
+  border-image-source: url("../../assets/media/contact/Windows_Inner_Frame.png");
+  border-image-slice: 4;
+  border-image-width: 4px;
+  background-color: #fff;
+  transition: all 0.1s ease;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #667eea;
-  background: rgba(255, 255, 255, 0.95);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+  border-image-source: url("../../assets/media/contact/Windows_Inner_Frame_Inverted.png");
+  background-color: #fff;
 }
 
 .form-group textarea {
@@ -568,30 +586,49 @@
 }
 
 .btn-secondary {
-  background: rgba(0, 0, 0, 0.1);
-  color: #666;
+  background-color: #d4d0c8;
+  color: #000;
+  border-width: 4px;
+  border-style: solid;
+  border-image-source: url("../../assets/media/contact/Windows_Button.png");
+  border-image-slice: 4;
+  border-image-width: 4px;
+  font-family: "MS Sans Serif", sans-serif;
 }
 
-.btn-secondary:hover {
-  background: rgba(0, 0, 0, 0.15);
-  color: #333;
+.btn-secondary:hover,
+.btn-secondary:focus {
+  border-image-source: url("../../assets/media/contact/Windows_Button_Focus.png");
+}
+
+.btn-secondary:active {
+  border-image-source: url("../../assets/media/contact/Windows_Button_Pressed.png");
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
+  background-color: #d4d0c8;
+  color: #000;
   min-width: 140px;
+  border-width: 4px;
+  border-style: solid;
+  border-image-source: url("../../assets/media/contact/Windows_Button.png");
+  border-image-slice: 4;
+  border-image-width: 4px;
+  font-family: "MS Sans Serif", sans-serif;
 }
 
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+.btn-primary:hover,
+.btn-primary:focus {
+  border-image-source: url("../../assets/media/contact/Windows_Button_Focus.png");
+}
+
+.btn-primary:active {
+  border-image-source: url("../../assets/media/contact/Windows_Button_Pressed.png");
 }
 
 .btn-primary:disabled {
-  opacity: 0.7;
+  border-image-source: url("../../assets/media/contact/Windows_Button_Inactive.png");
   cursor: not-allowed;
-  transform: none;
 }
 
 .btn-loader {
