@@ -117,6 +117,7 @@
 .contact-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
   gap: 2rem;
   max-width: 1200px;
   width: 100%;
@@ -691,7 +692,7 @@
   border-radius: 12px;
   padding: 1rem 1.5rem;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  transform: translateX(400px);
+  transform: translateX(calc(100% + 2rem));
   transition: transform 0.3s ease;
   z-index: 1001;
   max-width: 350px;
@@ -753,6 +754,7 @@
 @media (max-width: 1024px) {
   .contact-grid {
     grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
     gap: 1.5rem;
   }
   
@@ -784,6 +786,7 @@
   
   .contact-grid {
     grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
     gap: 1rem;
   }
   
