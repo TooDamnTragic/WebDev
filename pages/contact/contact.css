@@ -322,8 +322,8 @@
 
 .contact-card:hover .contact-label {
   text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8),
-               0 2px 8px rgba(0, 0, 0, 0.6),
-               0 1px 4px rgba(0, 0, 0, 0.4);
+              0 2px 8px rgba(0, 0, 0, 0.6),
+              0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* Specific card colors for backdrop gradients */
@@ -420,33 +420,13 @@
   border: none;
 }
 
-#resumeModal .resume-actions {
-  margin-top: 0.5rem;
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-}
-
-#resumeModal .resume-btn {
-  background: #4caf50;
-  color: #fff;
-  text-decoration: none;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  transition: background 0.3s;
-}
-
-#resumeModal .resume-btn:hover {
-  background: #66bb6a;
-}
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 4px 8px;
-   background: url("../../assets/media/contact/Window_Header.png") no-repeat;
+  background: url("../../assets/media/contact/Window_Header.png") no-repeat;
   background-size: 100% 100%;
   color: #fff;
   min-height: 28px;
