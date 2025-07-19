@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
   const color = localStorage.getItem('transitionColor');
   if (color) {
     const overlay = document.createElement('div');
