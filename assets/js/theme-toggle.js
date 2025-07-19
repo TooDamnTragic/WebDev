@@ -6,8 +6,7 @@ const btn = document.createElement('button');
 btn.id = 'theme-toggle';
 btn.className = 'theme-toggle';
 document.body.appendChild(btn);
-requestAnimationFrame(() => btn.classList.add('show'));
-
+setTimeout(() => btn.classList.add('show'), 3200);
 const applyTheme = (theme) => {
     if (theme === 'light') {
     document.documentElement.classList.add('light-mode');
