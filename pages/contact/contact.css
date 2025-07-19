@@ -398,9 +398,16 @@
 
 
 /* Resume Modal Specific Styles */
+
+#resumeModal {
+  background: radial-gradient(circle at center, rgba(0,0,0,0.9), rgba(0,0,0,0.95));
+}
+
 #resumeModal .modal-container {
   width: 95%;
   max-width: 850px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  will-change: transform;
 }
 
 #resumeModal .resume-content {
@@ -413,6 +420,26 @@
   border: none;
 }
 
+#resumeModal .resume-actions {
+  margin-top: 0.5rem;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+#resumeModal .resume-btn {
+  background: #4caf50;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  transition: background 0.3s;
+}
+
+#resumeModal .resume-btn:hover {
+  background: #66bb6a;
+}
 
 .modal-header {
   display: flex;

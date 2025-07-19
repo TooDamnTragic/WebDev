@@ -14,6 +14,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const resumeModal = document.getElementById('resumeModal');
   const closeResumeModal = document.getElementById('closeResumeModal');
   
+    const resumeContainer = document.querySelector('#resumeModal .modal-container');
+
+  const handleResumeTilt = (e) => {
+    if (!resumeModal.classList.contains('active')) return;
+    const rect = resumeContainer.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    const rotateX = (-y / rect.height) * 8;
+    const rotateY = (x / rect.width) * 8;
+    resumeContainer.style.transform = `perspective(1000px) scale(1) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+  };
+
+  const resetResumeTilt = () => {
+    resumeContainer.style.transform = 'perspective(1000px) scale(1) rotateX(0) rotateY(0)';
+  };
+  
     // Dither background initialization
   const ditherLoader = document.getElementById('dither-loader');
   const ditherContainer = document.getElementById('dither-background');
@@ -266,6 +282,9 @@ updateTransform() {
   const closeResumeModalFunc = () => {
     resumeModal.classList.remove('active');
     document.body.style.overflow = '';
+        if (resumeContainer) {
+      resumeContainer.style.transform = '';
+    }
   };
 
 
@@ -435,6 +454,10 @@ updateTransform() {
     closeResumeModal.addEventListener('click', closeResumeModalFunc);
   }
 
+  if (resumeContainer) {
+    resumeContainer.addEventListener('mousemove', handleResumeTilt);
+    resumeContainer.addEventListener('mouseleave', resetResumeTilt);
+  }
   if (cancelBtn) {
     cancelBtn.addEventListener('click', closeModalFunc);
   }
