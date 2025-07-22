@@ -15,7 +15,10 @@ class DitherBackground {
       mouseRadius: options.mouseRadius || 1,
       pixelRatioCap: options.pixelRatioCap || 1,
       colorCycleSpeed: options.colorCycleSpeed || 8,
+      mouseFlowStrength: options.mouseFlowStrength || 0.002,
+      mouseVelocityDecay: options.mouseVelocityDecay || 0.9,
     };
+
 
     // Set up color palette for cycling. Use provided palette or fall back to
     // a default inspired by bright cyan, pink, and yellow hues.
@@ -29,49 +32,51 @@ class DitherBackground {
 
     // Uniform color instance used by the shader
     this.waveColor = this.colors[0].clone();
-    
+
     this.mouse = { x: 0, y: 0 };
+    this.lastMouse = { x: 0, y: 0 };
+    this.mouseVelocity = new THREE.Vector2(0, 0);
     this.clock = new THREE.Clock();
     this.animationId = null;
-        this.lastTime = 0;
-    this.frameInterval = 1 / 60 ;
+    this.lastTime = 0;
+    this.frameInterval = 1 / 60;
     this.init();
   }
-  
+
   init() {
     // Create scene, camera, renderer
     this.scene = new THREE.Scene();
     this.camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    
-    this.renderer = new THREE.WebGLRenderer({ 
-      antialias: false, 
+
+    this.renderer = new THREE.WebGLRenderer({
+      antialias: false,
       preserveDrawingBuffer: false,
-      alpha: true 
+      alpha: true
     });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(
       Math.min(window.devicePixelRatio, this.options.pixelRatioCap)
     );
     this.container.appendChild(this.renderer.domElement);
-    
+
     // Create wave shader material
     this.createWaveMaterial();
-    
+
     // Create dither post-processing
     this.createDitherEffect();
-    
+
     // Create geometry
     const geometry = new THREE.PlaneGeometry(2, 2);
     this.mesh = new THREE.Mesh(geometry, this.waveMaterial);
     this.scene.add(this.mesh);
-    
+
     // Add event listeners
     this.addEventListeners();
-    
+
     // Start animation
     this.animate();
   }
-  
+
   createWaveMaterial() {
     const waveVertexShader = `
       precision highp float;
@@ -81,7 +86,7 @@ class DitherBackground {
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }
     `;
-    
+
     const waveFragmentShader = `
       precision highp float;
       uniform vec2 resolution;
@@ -93,6 +98,8 @@ class DitherBackground {
       uniform vec2 mousePos;
       uniform int enableMouseInteraction;
       uniform float mouseRadius;
+      uniform vec2 mouseVelocity;
+      uniform float mouseFlowStrength;
       varying vec2 vUv;
 
       vec4 mod289(vec4 x) { return x - floor(x * (1.0/289.0)) * 289.0; }
@@ -149,6 +156,7 @@ class DitherBackground {
       void main() {
         vec2 uv = vUv - 0.5;
         uv.x *= resolution.x / resolution.y;
+        uv += mouseVelocity * mouseFlowStrength;
         float f = pattern(uv);
         
         if (enableMouseInteraction == 1) {
@@ -163,7 +171,7 @@ class DitherBackground {
         gl_FragColor = vec4(col, 1.0);
       }
     `;
-    
+
     this.waveMaterial = new THREE.ShaderMaterial({
       vertexShader: waveVertexShader,
       fragmentShader: waveFragmentShader,
@@ -173,18 +181,20 @@ class DitherBackground {
         waveSpeed: { value: this.options.waveSpeed },
         waveFrequency: { value: this.options.waveFrequency },
         waveAmplitude: { value: this.options.waveAmplitude },
-        waveColor: { value: this.waveColor},
+        waveColor: { value: this.waveColor },
         mousePos: { value: new THREE.Vector2(0, 0) },
         enableMouseInteraction: { value: this.options.enableMouseInteraction ? 1 : 0 },
         mouseRadius: { value: this.options.mouseRadius },
+        mouseVelocity: { value: new THREE.Vector2(0, 0) },
+        mouseFlowStrength: { value: this.options.mouseFlowStrength },
       }
     });
   }
-  
+
   createDitherEffect() {
     // Create render target for post-processing
     this.renderTarget = new THREE.WebGLRenderTarget(
-      window.innerWidth, 
+      window.innerWidth,
       window.innerHeight,
       {
         minFilter: THREE.LinearFilter,
@@ -193,7 +203,7 @@ class DitherBackground {
         type: THREE.UnsignedByteType
       }
     );
-    
+
     // Dither shader
     const ditherVertexShader = `
       varying vec2 vUv;
@@ -202,7 +212,7 @@ class DitherBackground {
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }
     `;
-    
+
     const ditherFragmentShader = `
       precision highp float;
       uniform sampler2D tDiffuse;
@@ -242,7 +252,7 @@ class DitherBackground {
         gl_FragColor = color;
       }
     `;
-    
+
     this.ditherMaterial = new THREE.ShaderMaterial({
       vertexShader: ditherVertexShader,
       fragmentShader: ditherFragmentShader,
@@ -253,41 +263,49 @@ class DitherBackground {
         pixelSize: { value: this.options.pixelSize }
       }
     });
-    
+
     // Create quad for post-processing
     const quadGeometry = new THREE.PlaneGeometry(2, 2);
     this.ditherQuad = new THREE.Mesh(quadGeometry, this.ditherMaterial);
     this.ditherScene = new THREE.Scene();
     this.ditherScene.add(this.ditherQuad);
   }
-  
+
   addEventListeners() {
     // Mouse movement
     this.container.addEventListener('mousemove', (e) => {
       if (!this.options.enableMouseInteraction) return;
-      
+
       const rect = this.container.getBoundingClientRect();
-      this.mouse.x = (e.clientX - rect.left) * window.devicePixelRatio;
-      this.mouse.y = (e.clientY - rect.top) * window.devicePixelRatio;
-      
+      const x = (e.clientX - rect.left) * window.devicePixelRatio;
+      const y = (e.clientY - rect.top) * window.devicePixelRatio;
+
+      this.mouseVelocity.set(
+        (x - this.mouse.x) / window.innerWidth,
+        (y - this.mouse.y) / window.innerHeight
+      );
+
+      this.mouse.x = x;
+      this.mouse.y = y;
+
       this.waveMaterial.uniforms.mousePos.value.set(this.mouse.x, this.mouse.y);
     });
-    
+
     // Window resize
     window.addEventListener('resize', () => this.onWindowResize());
   }
-  
+
   onWindowResize() {
     const width = window.innerWidth;
     const height = window.innerHeight;
-    
+
     this.renderer.setSize(width, height);
     this.renderTarget.setSize(width, height);
-    
+
     this.waveMaterial.uniforms.resolution.value.set(width, height);
     this.ditherMaterial.uniforms.resolution.value.set(width, height);
   }
-  
+
   updateWaveColor() {
     if (this.colors.length <= 1) return;
 
@@ -303,7 +321,7 @@ class DitherBackground {
     this.waveColor.g = THREE.MathUtils.lerp(c1.g, c2.g, blend);
     this.waveColor.b = THREE.MathUtils.lerp(c1.b, c2.b, blend);
   }
-  
+
   animate() {
     this.animationId = requestAnimationFrame(() => this.animate());
 
@@ -311,30 +329,33 @@ class DitherBackground {
       this.waveMaterial.uniforms.time.value = this.clock.getElapsedTime();
       this.updateWaveColor();
     }
-    
-    
+
+    // update mouse velocity decay
+    this.mouseVelocity.multiplyScalar(this.options.mouseVelocityDecay);
+    this.waveMaterial.uniforms.mouseVelocity.value.copy(this.mouseVelocity);
+
     // Render to texture first
     this.renderer.setRenderTarget(this.renderTarget);
     this.renderer.render(this.scene, this.camera);
-    
+
     // Then render with dither effect
     this.renderer.setRenderTarget(null);
     this.renderer.render(this.ditherScene, this.camera);
   }
-  
+
   destroy() {
     if (this.animationId) {
       cancelAnimationFrame(this.animationId);
     }
-    
+
     if (this.renderer && this.renderer.domElement && this.renderer.domElement.parentNode) {
       this.renderer.domElement.parentNode.removeChild(this.renderer.domElement);
     }
-    
+
     if (this.renderer) {
       this.renderer.dispose();
     }
-    
+
     if (this.renderTarget) {
       this.renderTarget.dispose();
     }
