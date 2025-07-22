@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const resumeCard = document.getElementById('resumeCard');
   const resumeModal = document.getElementById('resumeModal');
   const closeResumeModal = document.getElementById('closeResumeModal');
-  
-    const resumeContainer = document.querySelector('#resumeModal .modal-container');
+
+  const resumeContainer = document.querySelector('#resumeModal .modal-container');
 
   const handleResumeTilt = (e) => {
     if (!resumeModal.classList.contains('active')) return;
@@ -29,8 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const resetResumeTilt = () => {
     resumeContainer.style.transform = 'perspective(1000px) scale(1) rotateX(0) rotateY(0)';
   };
-  
-    // Dither background initialization
+
+  // Dither background initialization
   const ditherLoader = document.getElementById('dither-loader');
   const ditherContainer = document.getElementById('dither-background');
   let ditherBackground = null;
@@ -53,8 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
         waveAmplitude: 0.3,
         waveFrequency: 3,
         waveSpeed: 0.05,
-        pixelSize: 2
+        pixelSize: 2,
+        mouseFlowStrength: 0.05,
+        mouseVelocityDecay: 0.92
       });
+
 
       console.log('Dither background initialized');
 
@@ -91,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Miseducation text effect - exact same as miseducation page
   const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  
+
   function longRandomString() {
     let out = "";
     for (let i = 0; i < 1500; i++) {
@@ -108,13 +111,13 @@ document.addEventListener('DOMContentLoaded', () => {
       this.magnetStrength = options.magnetStrength || 3;
       this.activeTransition = options.activeTransition || "transform 0.3s ease-out";
       this.inactiveTransition = options.inactiveTransition || "transform 0.5s ease-in-out";
-      
+
       this.isActive = false;
       this.position = { x: 0, y: 0 };
-      
+
       this.init();
     }
-    
+
     init() {
       // Create inner wrapper for magnetic effect - preserve existing content
       const existingContent = this.element.innerHTML;
@@ -125,54 +128,54 @@ document.addEventListener('DOMContentLoaded', () => {
       this.element.style.position = 'relative';
       this.element.style.display = 'inline-block';
       this.element.style.willChange = 'transform';
-      
+
       // Bind event handlers
       this.handleMouseMove = this.handleMouseMove.bind(this);
       this.handleMouseLeave = this.handleMouseLeave.bind(this);
-      
+
       // Add event listeners
       window.addEventListener('mousemove', this.handleMouseMove);
       this.element.addEventListener('mouseleave', this.handleMouseLeave);
     }
-    
+
     handleMouseMove(e) {
       const rect = this.element.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
-      
+
       const distX = Math.abs(centerX - e.clientX);
       const distY = Math.abs(centerY - e.clientY);
-      
+
       if (distX < rect.width / 2 + this.padding && distY < rect.height / 2 + this.padding) {
         this.isActive = true;
-        
+
         const offsetX = (e.clientX - centerX) / this.magnetStrength;
         const offsetY = (e.clientY - centerY) / this.magnetStrength;
         this.position = { x: offsetX, y: offsetY };
-        
+
         this.updateTransform();
       } else {
         this.deactivate();
       }
     }
-    
+
     handleMouseLeave() {
       this.deactivate();
     }
-    
+
     deactivate() {
       this.isActive = false;
       this.position = { x: 0, y: 0 };
       this.updateTransform();
     }
-    
-updateTransform() {
+
+    updateTransform() {
       const transition = this.isActive ? this.activeTransition : this.inactiveTransition;
       this.element.style.transition = transition;
       this.element.style.setProperty('--mx', `${this.position.x}px`);
       this.element.style.setProperty('--my', `${this.position.y}px`);
     }
-    
+
     destroy() {
       window.removeEventListener('mousemove', this.handleMouseMove);
       this.element.removeEventListener('mouseleave', this.handleMouseLeave);
@@ -182,7 +185,7 @@ updateTransform() {
   // Initialize all contact cards with magnetic effect and text effect
   const contactCards = document.querySelectorAll('.contact-card');
   const magneticCards = [];
-  
+
   contactCards.forEach(card => {
     // Initialize magnetic effect first
     const magneticCard = new MagneticCard(card, {
@@ -192,22 +195,22 @@ updateTransform() {
       inactiveTransition: "transform 0.4s ease-in-out"
     });
     magneticCards.push(magneticCard);
-    
+
     // Now get the elements after magnetic wrapper is created
     const cardText = card.querySelector('.card-text');
     const cardGlow = card.querySelector('.card-glow');
     const cardDarken = card.querySelector('.card-darken');
-    
-        // Base dark overlay
+
+    // Base dark overlay
     if (cardDarken) {
       cardDarken.style.background = 'rgba(0,0,0,0.2)';
     }
-    
+
     // Seed initial text
     if (cardText) {
       cardText.textContent = longRandomString();
     }
-    
+
     // Add mouse move effect for text randomization and glow
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
@@ -261,7 +264,7 @@ updateTransform() {
   const openModal = () => {
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
-    
+
     // Focus first input
     setTimeout(() => {
       document.getElementById('senderEmail').focus();
@@ -282,7 +285,7 @@ updateTransform() {
   const closeResumeModalFunc = () => {
     resumeModal.classList.remove('active');
     document.body.style.overflow = '';
-        if (resumeContainer) {
+    if (resumeContainer) {
       resumeContainer.style.transform = '';
     }
   };
@@ -308,7 +311,7 @@ updateTransform() {
 
   const updateFileList = () => {
     fileList.innerHTML = '';
-    
+
     selectedFiles.forEach((file, index) => {
       const fileItem = document.createElement('div');
       fileItem.className = 'file-item';
@@ -374,7 +377,7 @@ updateTransform() {
       emailData.append('from', formData.senderEmail);
       emailData.append('subject', formData.subject);
       emailData.append('message', formData.message);
-      
+
       // Add files
       selectedFiles.forEach(file => {
         emailData.append('attachments', file);
@@ -394,7 +397,7 @@ updateTransform() {
       }
     } catch (error) {
       console.error('Email sending error:', error);
-      
+
       // For demo purposes, we'll show success after a delay
       // In production, replace this with actual email service integration
       setTimeout(() => {
@@ -408,10 +411,10 @@ updateTransform() {
   const showNotification = (message, type = 'success') => {
     const notificationText = notification.querySelector('.notification-text');
     notificationText.textContent = message;
-    
+
     notification.className = `notification ${type}`;
     notification.classList.add('show');
-    
+
     setTimeout(() => {
       notification.classList.remove('show');
     }, 5000);
@@ -420,23 +423,23 @@ updateTransform() {
   // Form Validation
   const validateForm = (formData) => {
     const errors = [];
-    
+
     if (!formData.senderEmail.trim()) {
       errors.push('Please provide your email or phone number');
     }
-    
+
     if (!formData.subject.trim()) {
       errors.push('Please enter a subject');
     }
-    
+
     if (!formData.message.trim()) {
       errors.push('Please enter a message');
     }
-    
+
     if (formData.senderEmail.includes('@') && !isValidEmail(formData.senderEmail)) {
       errors.push('Please enter a valid email address');
     }
-    
+
     return errors;
   };
 
@@ -502,24 +505,24 @@ updateTransform() {
   if (emailForm) {
     emailForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      
+
       const formData = {
         senderEmail: document.getElementById('senderEmail').value,
         subject: document.getElementById('subject').value,
         message: document.getElementById('message').value
       };
-      
+
       const errors = validateForm(formData);
-      
+
       if (errors.length > 0) {
         showNotification(errors[0], 'error');
         return;
       }
-      
+
       // Show loading state
       sendBtn.classList.add('loading');
       sendBtn.disabled = true;
-      
+
       try {
         await sendEmail(formData);
       } catch (error) {

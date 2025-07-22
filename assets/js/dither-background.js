@@ -36,6 +36,7 @@ class DitherBackground {
     this.mouse = { x: 0, y: 0 };
     this.lastMouse = { x: 0, y: 0 };
     this.mouseVelocity = new THREE.Vector2(0, 0);
+    this.flowOffset = new THREE.Vector2(0, 0);
     this.clock = new THREE.Clock();
     this.animationId = null;
     this.lastTime = 0;
@@ -99,7 +100,7 @@ class DitherBackground {
       uniform int enableMouseInteraction;
       uniform float mouseRadius;
       uniform vec2 mouseVelocity;
-      uniform float mouseFlowStrength;
+      uniform vec2 flowOffset;
       varying vec2 vUv;
 
       vec4 mod289(vec4 x) { return x - floor(x * (1.0/289.0)) * 289.0; }
@@ -156,7 +157,7 @@ class DitherBackground {
       void main() {
         vec2 uv = vUv - 0.5;
         uv.x *= resolution.x / resolution.y;
-        uv += mouseVelocity * mouseFlowStrength;
+        uv += flowOffset;
         float f = pattern(uv);
         
         if (enableMouseInteraction == 1) {
@@ -186,7 +187,7 @@ class DitherBackground {
         enableMouseInteraction: { value: this.options.enableMouseInteraction ? 1 : 0 },
         mouseRadius: { value: this.options.mouseRadius },
         mouseVelocity: { value: new THREE.Vector2(0, 0) },
-        mouseFlowStrength: { value: this.options.mouseFlowStrength },
+        flowOffset: { value: new THREE.Vector2(0, 0) },
       }
     });
   }
@@ -333,6 +334,10 @@ class DitherBackground {
     // update mouse velocity decay
     this.mouseVelocity.multiplyScalar(this.options.mouseVelocityDecay);
     this.waveMaterial.uniforms.mouseVelocity.value.copy(this.mouseVelocity);
+
+    this.flowOffset.addScaledVector(this.mouseVelocity, this.options.mouseFlowStrength);
+    this.flowOffset.multiplyScalar(this.options.mouseVelocityDecay);
+    this.waveMaterial.uniforms.flowOffset.value.copy(this.flowOffset);
 
     // Render to texture first
     this.renderer.setRenderTarget(this.renderTarget);
