@@ -274,7 +274,7 @@ class DitherBackground {
 
   addEventListeners() {
     // Mouse movement
-    this.container.addEventListener('mousemove', (e) => {
+    window.addEventListener('mousemove', (e) => {
       if (!this.options.enableMouseInteraction) return;
 
       const rect = this.container.getBoundingClientRect();
