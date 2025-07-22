@@ -148,7 +148,6 @@
   border: 3px solid transparent;
   /* Base for neon border */
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  /* Subtle base shadow */
 }
 
 /* Magnetic Inner Wrapper - Contains all moving elements */
@@ -249,13 +248,12 @@
   position: absolute;
   inset: 0;
   border-radius: 32px;
-  /* Match card border radius */
   background: linear-gradient(to right, #22c55e, #3b82f6);
   opacity: 0;
   backdrop-filter: blur(40px);
   transition: opacity 0.5s;
   pointer-events: none;
-  z-index: 2;
+  z-index: 8;
 }
 
 .contact-card:hover .card-backdrop {
@@ -330,10 +328,9 @@
   transform: translate(-50%, -50%);
   border-radius: 50%;
   background: var(--icon-glow-color, rgba(255, 255, 255, 0.6));
-  filter: blur(6000px);
   opacity: 0;
   transition: opacity 0.3s, transform 0.3s;
-  z-index: 9;
+  z-index: 2;
   pointer-events: none;
 }
 
