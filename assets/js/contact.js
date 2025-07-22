@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         mouseRadius: 0.3,
         colorNum: 4,
         waveAmplitude: 0.3,
-        waveFrequency: 3,
+        waveFrequency: 3, 7  
         waveSpeed: 0.05,
         pixelSize: 2,
         mouseFlowStrength: 0.05,
