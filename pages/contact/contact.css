@@ -40,13 +40,11 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(
-    45deg,
-    #3674B5,
-    #578FCA,
-    #F5F0CD,
-    #FADA7A
-  );
+  background: linear-gradient(45deg,
+      #3674B5,
+      #578FCA,
+      #F5F0CD,
+      #FADA7A);
   background-size: 400% 400%;
   animation: dynamicGradient 15s ease infinite;
   z-index: 0;
@@ -63,15 +61,19 @@
   0% {
     background-position: 0% 50%;
   }
+
   25% {
     background-position: 100% 50%;
   }
+
   50% {
     background-position: 100% 100%;
   }
+
   75% {
     background-position: 50% 100%;
   }
+
   100% {
     background-position: 0% 50%;
   }
@@ -132,7 +134,8 @@
   height: 280px;
   aspect-ratio: 1;
   overflow: hidden;
-  border-radius: 32px; /* More curved edges */
+  border-radius: 32px;
+  /* More curved edges */
   background: transparent;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -142,8 +145,10 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  border: 3px solid transparent; /* Base for neon border */
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Subtle base shadow */
+  border: 3px solid transparent;
+  /* Base for neon border */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  /* Subtle base shadow */
 }
 
 /* Magnetic Inner Wrapper - Contains all moving elements */
@@ -162,57 +167,59 @@
 /* Specific card hover effects with complementary edge colors */
 .contact-card:hover {
   transform: translate3d(var(--mx), var(--my), 0) scale(1.05);
-  border: 3px solid #1abc5c; /* Complementary to red (#ea4335) */
-  box-shadow: 
-    0 0 20px rgba(26, 188, 92, 0.5),
-    0 0 40px rgba(26, 188, 92, 0.3),
+  border: 3px solid #ea4335;
+  /* Match email card color */
+  box-shadow:
+    0 0 20px rgba(234, 67, 53, 0.5),
+    0 0 40px rgba(234, 67, 53, 0.3),
     0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
 .linkedin-card:hover {
   transform: translate3d(var(--mx), var(--my), 0) scale(1.05);
-  border: 3px solid #ff8800; /* Complementary to blue (#0077b5) */
-  box-shadow: 
-    0 0 20px rgba(255, 136, 0, 0.5),
-    0 0 40px rgba(255, 136, 0, 0.3),
+  border: 3px solid #0077b5;
+  box-shadow:
+    0 0 20px rgba(0, 119, 181, 0.5),
+    0 0 40px rgba(0, 119, 181, 0.3),
     0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
 .github-card:hover {
   transform: translate3d(var(--mx), var(--my), 0) scale(1.05);
-  border: 3px solid #cccccc; /* Complementary to dark gray (#333) */
-  box-shadow: 
-    0 0 20px rgba(204, 204, 204, 0.5),
-    0 0 40px rgba(204, 204, 204, 0.3),
+  border: 3px solid #333;
+  box-shadow:
+    0 0 20px rgba(51, 51, 51, 0.5),
+    0 0 40px rgba(51, 51, 51, 0.3),
     0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
 .devpost-card:hover {
   transform: translate3d(var(--mx), var(--my), 0) scale(1.05);
-  border: 3px solid #ffcf78; /* Complementary to dark blue (#003087) */
-  box-shadow: 
-    0 0 20px rgba(255, 207, 120, 0.5),
-    0 0 40px rgba(255, 207, 120, 0.3),
+  border: 3px solid #003087;
+  box-shadow:
+    0 0 20px rgba(0, 48, 135, 0.5),
+    0 0 40px rgba(0, 48, 135, 0.3),
     0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
 .discord-card:hover {
   transform: translate3d(var(--mx), var(--my), 0) scale(1.05);
-  border: 3px solid #8d7625; /* Complementary to Discord blue (#7289da) */
-  box-shadow: 
-    0 0 20px rgba(141, 118, 37, 0.5),
-    0 0 40px rgba(141, 118, 37, 0.3),
+  border: 3px solid #7289da;
+  box-shadow:
+    0 0 20px rgba(114, 137, 218, 0.5),
+    0 0 40px rgba(114, 137, 218, 0.3),
     0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
 .resume-card:hover {
   transform: translate3d(var(--mx), var(--my), 0) scale(1.05);
-  border: 3px solid #af4c50; /* Complementary to green (#4caf50) */
-  box-shadow: 
-    0 0 20px rgba(175, 76, 80, 0.5),
-    0 0 40px rgba(175, 76, 80, 0.3),
+  border: 3px solid #4caf50;
+  box-shadow:
+    0 0 20px rgba(76, 175, 80, 0.5),
+    0 0 40px rgba(76, 175, 80, 0.3),
     0 8px 25px rgba(0, 0, 0, 0.2);
 }
+
 
 /* Glow mask effect */
 .glow-mask {
@@ -220,11 +227,13 @@
   -webkit-mask-image: linear-gradient(white, transparent);
 }
 
+
 /* Cursor-driven glow - MOVED INSIDE magnetic-inner */
 .card-glow {
   position: absolute;
   inset: 0;
-  border-radius: 32px; /* Match card border radius */
+  border-radius: 32px;
+  /* Match card border radius */
   opacity: 0.5;
   transition: opacity 0.5s;
   pointer-events: none;
@@ -239,7 +248,8 @@
 .card-backdrop {
   position: absolute;
   inset: 0;
-  border-radius: 32px; /* Match card border radius */
+  border-radius: 32px;
+  /* Match card border radius */
   background: linear-gradient(to right, #22c55e, #3b82f6);
   opacity: 0;
   backdrop-filter: blur(40px);
@@ -249,7 +259,7 @@
 }
 
 .contact-card:hover .card-backdrop {
-  opacity: 1;
+  opacity: 0.7;
 }
 
 /* Random text background - MOVED INSIDE magnetic-inner */
@@ -301,14 +311,37 @@
   color: white;
   transition: all 0.3s ease;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+  position: relative;
 }
 
 .contact-card:hover .contact-icon {
-  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.8)) 
-          drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6))
-          drop-shadow(0 2px 5px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.8)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6)) drop-shadow(0 2px 5px rgba(0, 0, 0, 0.4));
   transform: scale(1.1);
 }
+
+/* Gaussian blur glow behind icons */
+.contact-icon::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 800px;
+  height: 800px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--icon-glow-color, rgba(255, 255, 255, 0.6));
+  filter: blur(200px);
+  opacity: 0.4;
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 500;
+  /* behind icon but above text */
+}
+
+.contact-card:hover .contact-icon::after {
+  opacity: 0.8;
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
 
 /* Contact Labels with Enhanced Shadow on Hover */
 .contact-label {
@@ -322,29 +355,53 @@
 
 .contact-card:hover .contact-label {
   text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8),
-              0 2px 8px rgba(0, 0, 0, 0.6),
-              0 1px 4px rgba(0, 0, 0, 0.4);
+    0 2px 8px rgba(0, 0, 0, 0.6),
+    0 1px 4px rgba(0, 0, 0, 0.4);
 }
 
 /* Specific card colors for backdrop gradients */
+.email-card {
+  --icon-glow-color: rgba(234, 67, 53, 0.7);
+}
+
 .email-card .card-backdrop {
   background: linear-gradient(135deg, #ea4335, #d33b2c);
+}
+
+.linkedin-card {
+  --icon-glow-color: rgba(0, 119, 181, 0.7);
 }
 
 .linkedin-card .card-backdrop {
   background: linear-gradient(135deg, #0077b5, #005885);
 }
 
+.github-card {
+  --icon-glow-color: rgba(51, 51, 51, 0.7);
+}
+
 .github-card .card-backdrop {
   background: linear-gradient(135deg, #333, #24292e);
+}
+
+.devpost-card {
+  --icon-glow-color: rgba(0, 48, 135, 0.7);
 }
 
 .devpost-card .card-backdrop {
   background: linear-gradient(135deg, #003087, #002060);
 }
 
+.discord-card {
+  --icon-glow-color: rgba(114, 137, 218, 0.7);
+}
+
 .discord-card .card-backdrop {
   background: linear-gradient(135deg, #7289da, #5b6eae);
+}
+
+.resume-card {
+  --icon-glow-color: rgba(76, 175, 80, 0.7);
 }
 
 .resume-card .card-backdrop {
@@ -400,7 +457,7 @@
 /* Resume Modal Specific Styles */
 
 #resumeModal {
-  background: radial-gradient(circle at center, rgba(0,0,0,0.9), rgba(0,0,0,0.95));
+  background: radial-gradient(circle at center, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.95));
 }
 
 #resumeModal .modal-container {
@@ -460,6 +517,7 @@
 .modal-close:focus {
   border-image-source: url("../../assets/media/contact/Windows_Button_Focus.png");
 }
+
 .modal-close:active {
   border-image-source: url("../../assets/media/contact/Windows_Button_Pressed.png");
 }
@@ -686,8 +744,13 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* Notification */
@@ -764,23 +827,29 @@
     justify-items: center;
     gap: 1.5rem;
   }
-  
+
   .contact-card {
     width: 240px;
     height: 240px;
-    border-radius: 28px; /* Slightly less curved on smaller screens */
+    border-radius: 28px;
+    /* Slightly less curved on smaller screens */
   }
-  
+
   .card-glow,
   .card-backdrop {
     border-radius: 28px;
   }
-  
+
   .contact-icon {
     width: 40px;
     height: 40px;
   }
-  
+
+  .contact-icon::after {
+    width: 60px;
+    height: 60px;
+  }
+
   .contact-label {
     font-size: 1rem;
   }
@@ -790,51 +859,56 @@
   .contact-page {
     padding: 1rem;
   }
-  
+
   .contact-grid {
     grid-template-columns: repeat(2, 1fr);
     justify-items: center;
     gap: 1rem;
   }
-  
+
   .contact-card {
     width: 180px;
     height: 180px;
     border-radius: 24px;
   }
-  
+
   .card-glow,
   .card-backdrop {
     border-radius: 24px;
   }
-  
+
   .contact-icon {
     width: 32px;
     height: 32px;
   }
-  
+
+  .contact-icon::after {
+    width: 48px;
+    height: 48px;
+  }
+
   .contact-label {
     font-size: 0.9rem;
   }
-  
+
   .card-text {
     font-size: 10px;
     padding: 6px;
   }
-  
+
   .modal-container {
     width: 95%;
     margin: 1rem;
   }
-  
+
   .email-form {
     padding: 1.5rem;
   }
-  
+
   .form-actions {
     flex-direction: column;
   }
-  
+
   .notification {
     top: 1rem;
     right: 1rem;
@@ -848,28 +922,33 @@
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .contact-card {
     width: 200px;
     height: 200px;
     margin: 0 auto;
     border-radius: 20px;
   }
-  
+
   .card-glow,
   .card-backdrop {
     border-radius: 20px;
   }
-  
+
   .contact-icon {
     width: 36px;
     height: 36px;
   }
-  
+
+  .contact-icon::after {
+    width: 56px;
+    height: 56px;
+  }
+
   .contact-label {
     font-size: 1rem;
   }
-  
+
   .card-text {
     font-size: 8px;
     padding: 4px;
