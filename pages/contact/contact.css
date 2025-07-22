@@ -124,7 +124,7 @@
   max-width: 1200px;
   width: 100%;
   position: relative;
-  z-index: 10;
+  z-index: 2;
 }
 
 /* Contact Cards - Miseducation Style with Enhanced Styling and Magnetic Effect */
@@ -236,7 +236,7 @@
   opacity: 0.5;
   transition: opacity 0.5s;
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
 
 .contact-card:hover .card-glow {
@@ -253,7 +253,7 @@
   backdrop-filter: blur(40px);
   transition: opacity 0.5s;
   pointer-events: none;
-  z-index: 8;
+  z-index: 1.5;
 }
 
 .contact-card:hover .card-backdrop {
@@ -308,7 +308,7 @@
   height: 48px;
   color: white;
   transition: all 0.3s ease;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.3));
   position: relative;
 }
 
@@ -323,14 +323,14 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 200px;
-  height: 200px;
+  width: 20px;
+  height: 20px;
   transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: var(--icon-glow-color, rgba(255, 255, 255, 0.6));
-  opacity: 0;
-  transition: opacity 0.3s, transform 0.3s;
-  z-index: 1;
+  border-radius: 10%;
+  background: var(--icon-glow-color, rgb(255, 255, 255, 0.6));
+  opacity: 1;
+  transition: opacity 1s, transform 0.3s;
+  z-index: 4;
   pointer-events: none;
 }
 
