@@ -768,7 +768,7 @@ body.college-page {
   mask-position: -50px -50px, -30px -30px;
 
   /* White shine with colored glare overlay */
-  background-image: 
+  background-image:   
     repeating-linear-gradient(0deg, 
       rgba(255, 255, 255, 0.15) 5%, 
       rgba(255, 255, 255, 0.08) 10%, 
@@ -779,7 +779,7 @@ body.college-page {
       rgba(255, 255, 255, 0.1) 20%, 
       transparent 120%);
   background-position: var(--background-x) var(--background-y), center;
-  background-size: 300% 300%, 200% 200%;
+  background-size: 300% 300%, 200% 200%; 
   mix-blend-mode: screen;
   opacity: 0;
   transition: opacity 0.6s ease, mask-position 0.3s ease;
