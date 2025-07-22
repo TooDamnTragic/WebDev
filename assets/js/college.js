@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const fontConfig = [
     { name: 'Hackney', scale: 1 },
     { name: 'DTGetai', scale: 0.95 },
-    { name: 'Asember', scale: 0.9 },
+    // { name: 'Asember', scale: 0.9 },
     { name: 'Savate', scale: 1 },
     { name: 'Iconic', scale: 1 },
     { name: 'Catrose', scale: 0.95 },
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: 'Arshine', scale: 1 },
     { name: 'Sophiamelanieregular', scale: 0.85 },
     { name: 'Crackchakingtrialregular', scale: 0.95 },
-    { name: 'Johnfoster', scale: 1 },
+    // { name: 'Johnfoster', scale: 1 },
     { name: 'Motterdam', scale: 1 },
     { name: 'Sacloud', scale: 0.95 },
     { name: 'Tfwanderclouddemo', scale: 1 },
@@ -63,17 +63,17 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: 'Cabin', scale: 1 },
     { name: 'Demoarmagist', scale: 1 },
     { name: 'Hastegi', scale: 1 },
-    { name: 'Washington', scale: 1 },
+    // { name: 'Washington', scale: 1 },
     { name: 'Aporrheton', scale: 1 },
     { name: 'Blogh', scale: 1 },
-    { name: 'HackneyAlt', scale: 1 },
+    // { name: 'HackneyAlt', scale: 1 },
     { name: 'LigemaDemo', scale: 1 },
     { name: 'Plact', scale: 1 },
     { name: 'Plunct', scale: 1 },
-    { name: 'ThunderBlackHC', scale: 1 },
-    { name: 'TuringAbstract', scale: 1 },
-    { name: 'TuringBlock', scale: 1 },
-    { name: 'TuringOutline', scale: 1 }
+    { name: 'ThunderBlackHC', scale: 1 }
+    // { name: 'TuringAbstract', scale: 1 },
+    // { name: 'TuringBlock', scale: 1 },
+    // { name: 'TuringOutline', scale: 1 }
   ];
 
   const shuffleArray = (array) => {
