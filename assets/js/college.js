@@ -38,10 +38,66 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  // Load names and descriptions from external info.txt
+  const loadInfo = () => {
+    fetch('info.txt')
+      .then(res => res.text())
+      .then(text => {
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch (e) {
+          console.error('Failed to parse info.txt', e);
+          return;
+        }
+
+        // Curricular items
+        if (data.curricular) {
+          Object.keys(data.curricular).forEach(key => {
+            const item = document.querySelector(`.curricular-section .item[data-card="${key}"]`);
+            if (!item) return;
+            const heading = item.querySelector('h2, h3, h4, h5');
+            const mobileText = item.querySelector('.mobile-text');
+            const infoObj = data.curricular[key];
+            if (heading && infoObj.name) heading.textContent = infoObj.name;
+            if (infoObj.description) {
+              item.setAttribute('data-text', infoObj.description);
+              if (mobileText) mobileText.textContent = infoObj.description;
+            }
+          });
+        }
+
+        // Extracurricular names
+        if (data.extracurricular) {
+          const menuItems = document.querySelectorAll('#extracurricular-menu .menu__item');
+          let index = 0;
+          Object.keys(data.extracurricular).forEach(key => {
+            const name = data.extracurricular[key];
+            const menuItem = menuItems[index];
+            if (menuItem) {
+              const link = menuItem.querySelector('.menu__item-link');
+              if (link) link.textContent = name;
+              const spans = menuItem.querySelectorAll('.marquee__inner span');
+              spans.forEach(span => {
+                span.textContent = name;
+              });
+            }
+            index++;
+          });
+        }
+
+        adjustHeadingSizes();
+      })
+      .catch(err => console.error('Failed to load info.txt', err));
+  };
+
+  // Fetch and apply text content
+  loadInfo();
+
 
   // Enhanced font cycling effect for hero title - Mouse movement-based randomization
   const heroTitles = document.querySelectorAll('.college-hero .hero-title');
-  
+
   // All available fonts from the fonts folder with adjusted scale values to prevent clipping
   const fontConfig = [
     { name: 'Hackney', scale: 1 },
@@ -272,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Wrap content in card container
       const content = item.innerHTML;
       item.innerHTML = `<div class="card-container"><div class="card-content">${content}</div></div>`;
-      
+
       const cardContainer = item.querySelector('.card-container');
       let rafId = null;
 
@@ -365,12 +421,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Initial animation with different positions for each card
       let initialX, initialY;
-      
+
       // Get the card's data attribute to identify it
       const cardType = item.getAttribute('data-card');
-      
+
       // Set different initial positions based on card type
-      switch(cardType) {
+      switch (cardType) {
         case 'rit':
           initialX = item.clientWidth - 50;
           initialY = 40;
@@ -407,7 +463,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Initialize ProfileCard effects
-   const initializeTitlePressure = () => {
+  const initializeTitlePressure = () => {
     document.querySelectorAll('.edu-container .item').forEach(item => {
       const cardContainer = item.querySelector('.card-container');
       const heading = item.querySelector('h2, h3, h4, h5');
@@ -463,21 +519,21 @@ document.addEventListener('DOMContentLoaded', () => {
       cardContainer.addEventListener('pointerleave', resetChars);
     });
   };
-   setTimeout(() => {
+  setTimeout(() => {
     initializeProfileCardEffects();
     adjustHeadingSizes();
     initializeTitlePressure();
   }, 500);
 
   window.addEventListener('resize', adjustHeadingSizes);
-  
+
   // Mobile detection
   const isMobile = () => window.innerWidth <= 768;
-  
+
   // Multiple popup management
   const activePopups = new Set();
   const popupTimeouts = new Map();
-  
+
   // Debounce function for performance
   const debounce = (func, wait) => {
     let timeout;
@@ -497,7 +553,7 @@ document.addEventListener('DOMContentLoaded', () => {
       skeleton.style.display = 'none';
       img.style.opacity = '1';
     });
-    
+
     img.addEventListener('error', () => {
       skeleton.style.display = 'none';
       img.style.opacity = '0.5';
@@ -516,7 +572,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (infoExtraImageSkeleton) {
       handleImageLoad(infoExtraImage, infoExtraImageSkeleton);
     }
-    
+
     // Mobile images
     document.querySelectorAll('.mobile-image').forEach(img => {
       const skeleton = img.parentElement.querySelector('.image-skeleton');
@@ -529,28 +585,28 @@ document.addEventListener('DOMContentLoaded', () => {
   // Show info function with overlapping support
   const showInfo = (item, isExtracurricular = false) => {
     if (isMobile()) return; // Skip on mobile
-    
+
     const img = item.getAttribute('data-image');
     const text = item.getAttribute('data-text');
     const color = item.getAttribute('data-color');
     const link = item.getAttribute('data-link');
-    
+
     const currentInfo = isExtracurricular ? infoExtra : info;
     const currentInfoImage = isExtracurricular ? infoExtraImage : infoImage;
     const currentInfoLink = isExtracurricular ? infoExtraImageLink : infoImageLink;
     const currentInfoText = isExtracurricular ? infoExtraText : infoText;
-    
+
     const popupId = isExtracurricular ? 'extra' : 'main';
-    
+
     // Clear any existing timeout for this popup
     if (popupTimeouts.has(popupId)) {
       clearTimeout(popupTimeouts.get(popupId));
       popupTimeouts.delete(popupId);
     }
-    
+
     // Add to active popups
     activePopups.add(popupId);
-    
+
     if (img) {
       const skeleton = currentInfo.querySelector('.image-skeleton');
       if (skeleton) {
@@ -568,9 +624,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       }
     }
-    
+
     if (text) currentInfoText.textContent = text;
-        // Match popup background to item color
+    // Match popup background to item color
     if (color) {
       currentInfo.querySelectorAll('.popup').forEach(p => {
         p.style.background = `linear-gradient(135deg, ${color}, #212427)`;
@@ -580,18 +636,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (color && (activePopups.size === 1 || !body.classList.contains('dimmed'))) {
       body.style.background = `linear-gradient(to bottom, ${color}, rgb(0, 255, 136))`;
     }
-    
+
     body.classList.add('dimmed');
-    
+
     if (item.classList.contains('left')) {
       currentInfo.classList.add('right');
     } else {
       currentInfo.classList.remove('right');
     }
-    
+
     void currentInfo.offsetWidth; // force reflow
     currentInfo.classList.add('visible');
-    
+
     const offset = item.offsetTop + item.offsetHeight / 2 - currentInfo.offsetHeight / 2;
     currentInfo.style.top = offset + 'px';
   };
@@ -599,27 +655,27 @@ document.addEventListener('DOMContentLoaded', () => {
   // Hide info function with overlapping support
   const hideInfo = (isExtracurricular = false, immediate = false) => {
     if (isMobile()) return; // Skip on mobile
-    
+
     const currentInfo = isExtracurricular ? infoExtra : info;
-        if (!currentInfo) {
+    if (!currentInfo) {
       return;
     }
     const popupId = isExtracurricular ? 'extra' : 'main';
-    
+
     if (immediate) {
       // Clear any existing timeout
       if (popupTimeouts.has(popupId)) {
         clearTimeout(popupTimeouts.get(popupId));
         popupTimeouts.delete(popupId);
       }
-      
+
       // Remove from active popups
       activePopups.delete(popupId);
-      
+
       currentInfo.classList.remove('visible');
       currentInfo.classList.remove('right');
       void currentInfo.offsetWidth;
-      
+
       // Only remove dimmed state if no other popups are active
       if (activePopups.size === 0) {
         body.classList.remove('dimmed');
@@ -629,20 +685,20 @@ document.addEventListener('DOMContentLoaded', () => {
       // Set timeout for delayed hiding
       const timeoutId = setTimeout(() => {
         activePopups.delete(popupId);
-        
+
         currentInfo.classList.remove('visible');
         currentInfo.classList.remove('right');
         void currentInfo.offsetWidth;
-        
+
         // Only remove dimmed state if no other popups are active
         if (activePopups.size === 0) {
           body.classList.remove('dimmed');
           body.style.background = defaultBg;
         }
-        
+
         popupTimeouts.delete(popupId);
       }, 1000); // 2 second delay
-      
+
       popupTimeouts.set(popupId, timeoutId);
     }
   };
@@ -651,7 +707,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const toggleMobileInfo = (item) => {
     const mobileInfo = item.querySelector('.mobile-info');
     const isExpanded = item.classList.contains('expanded');
-    
+
     // Close all other expanded items
     items.forEach(otherItem => {
       if (otherItem !== item) {
@@ -659,14 +715,14 @@ document.addEventListener('DOMContentLoaded', () => {
         otherItem.setAttribute('aria-expanded', 'false');
       }
     });
-    
+
     if (isExpanded) {
       item.classList.remove('expanded');
       item.setAttribute('aria-expanded', 'false');
     } else {
       item.classList.add('expanded');
       item.setAttribute('aria-expanded', 'true');
-      
+
       // Scroll item into view
       setTimeout(() => {
         item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -678,18 +734,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const handleScroll = debounce(() => {
     const scrollY = window.scrollY;
     const windowHeight = window.innerHeight;
-    
+
     // Show curricular section when scrolled past hero
     if (scrollY > windowHeight * 0.5) {
       curricularSection.classList.add('visible');
     }
-    
+
     // Show extracurricular section when scrolled to it
     const extracurricularTop = extracurricularSection.offsetTop;
     if (scrollY + windowHeight >= extracurricularTop - windowHeight * 0.3) {
       extracurricularSection.classList.add('visible');
     }
-    
+
     updateDividerProgress();
   }, 16);
 
@@ -697,7 +753,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const setupItemListeners = (item, isExtracurricular = false) => {
     // Set initial ARIA attributes
     item.setAttribute('aria-expanded', 'false');
-    
+
     // Hover interactions
     item.addEventListener('mouseenter', () => {
       if (!isMobile()) {
@@ -724,11 +780,11 @@ document.addEventListener('DOMContentLoaded', () => {
         showInfo(item, isExtracurricular);
       }
     });
-    
+
     // Keyboard navigation
     item.addEventListener('keydown', (e) => {
       if (e.target.tagName === 'A') return;
-      switch(e.key) {
+      switch (e.key) {
         case 'Enter':
         case ' ':
           e.preventDefault();
@@ -750,7 +806,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-    const setupInfoHoverListeners = (infoElement, isExtracurricular = false) => {
+  const setupInfoHoverListeners = (infoElement, isExtracurricular = false) => {
     if (!infoElement) return;
     const popupId = isExtracurricular ? 'extra' : 'main';
 
@@ -769,7 +825,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.curricular-section .item').forEach(item => {
     setupItemListeners(item, false);
   });
-  
+
   document.querySelectorAll('.extracurricular-section .item').forEach(item => {
     setupItemListeners(item, true);
   });
@@ -781,7 +837,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const handleResize = debounce(() => {
     adjustInfoLayout();
     updateDividerProgress();
-    
+
     // Reset mobile states on resize
     if (!isMobile()) {
       items.forEach(item => {
@@ -804,17 +860,17 @@ document.addEventListener('DOMContentLoaded', () => {
     dividers.forEach((divider, index) => {
       const container = eduContainers[index];
       if (!container) return;
-      
+
       const rect = container.getBoundingClientRect();
       const viewport = window.innerHeight;
       let progress = (viewport - rect.top) / (rect.height + viewport);
-      
+
       if (progress < 0) {
         progress = 0;
       } else if (progress > 1) {
         progress = 1;
       }
-      
+
       divider.style.setProperty('--progress', progress);
     });
   };
@@ -840,7 +896,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const imageWrapper = currentInfo.querySelector('[id$="-image-wrapper"]');
       const textWrapper = currentInfo.querySelector('[id$="-text-wrapper"]');
       if (!imageWrapper || !textWrapper) return;
-      
+
       const totalWidth = imageWrapper.offsetWidth + textWrapper.offsetWidth;
       if (totalWidth > window.innerWidth * 0.8) {
         currentInfo.classList.add('stacked');
@@ -873,7 +929,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
-  
+
   // Back to Top button functionality
   const backToTopButton = document.getElementById('backToTop');
   if (backToTopButton) {
@@ -892,7 +948,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Miseducation text effect - exact same as miseducation page
   const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  
+
   function longRandomString() {
     let out = "";
     for (let i = 0; i < 500; i++) { // Reduced character count for larger icons
