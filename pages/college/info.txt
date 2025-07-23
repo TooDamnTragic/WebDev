@@ -22,16 +22,96 @@
     }
   },
   "extracurricular": {
-    "honorsCouncil": "Honors Council",
-    "dangerousTexts": "Dangerous Texts Society",
-    "signatures": "Signatures Art and Literature Magazine",
-    "wordsmiths": "Wordsmiths Writing Club",
-    "psp": "Phi Sigma Pi Frat",
-    "globalUnion": "Global Union",
-    "blueTeam": "RIT Blue Team",
-    "fantasyClub": "Fantasy Club",
-    "puzzlesClub": "RIT Puzzles Club",
-    "mathClub": "Math Club",
-    "philosophyClub": "RIT Philosophy Club"
+    "extracurricularActivity_1": {
+      "name": "Honors Council",
+      "descriptions": [
+        "Academic Excellence Committee Chair",
+        "International Delegate",
+        "Academic Excellence Committee",
+        "Honors Council"
+      ]
+    },
+    "extracurricularActivity_2": {
+      "name": "The Dangerous Texts Society",
+      "descriptions": [
+        "Dangerous Texts Society",
+        "Vice-President",
+        "Society of Banned Books",
+        "Vice-President"
+      ]
+    },
+    "extracurricularActivity_3": {
+      "name": "Phi Sigma Pi",
+      "descriptions": [
+        "Phi Sigma Pi National Honor Fraternity",
+        "Fundrasing Chair",
+        "Delta Alpha Chapter",
+        "PSP"
+      ]
+    },
+    "extracurricularActivity_4": {
+      "name": "Goodbye, GoodBuy!",
+      "descriptions": [
+        "Goodbye, GoodBuy!",
+        "Volunteering",
+        "Collection Captain",
+        "Volunterring"
+      ]
+    },
+    "extracurricularActivity_5": {
+      "name": "Signatures Art and Literature Magazine",
+      "descriptions": [
+        "Literary Team",
+        "Signatures Magazine",
+        "Literary Team",
+        "Signatures Magazine"
+      ]
+    },
+    "extracurricularActivity_6": {
+      "name": "Wordsmiths Writing Club",
+      "descriptions": [
+        "Wordsmiths Club",
+        "Wordsmiths Club",
+        "Wordsmiths Club",
+        "I'm just a member"
+      ]
+    },
+    "extracurricularActivity_7": {
+      "name": "RIT Fantasy Club",
+      "descriptions": [
+        "Fantasy Club",
+        "Fantasy Club",
+        "Fantasy Club",
+        "I'm just a member"
+      ]
+    },
+    "extracurricularActivity_8": {
+      "name": "RITSEC",
+      "descriptions": [
+        "RITSEC",
+        "RIT Blue Team CCDC mini-comp Winner",
+        "RITSEC",
+        "I'm just a member"
+      ]
+    },
+    "extracurricularActivity_9": {
+      "name": "Math Club",
+      "descriptions": [
+        "Math Club",
+        "Math Club",
+        "Math Club",
+        "I'm just a member"
+      ]
+    },
+    "extracurricularActivity_10": {
+      "name": "RIT Philosophy Club",
+      "descriptions": [
+        "RIT Philosophy Club",
+        "RIT Philosophy Club",
+        "RIT Philosophy Club",
+        "I'm just a member"
+      ]
+    }
   }
 }
+

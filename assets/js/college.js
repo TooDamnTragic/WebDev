@@ -67,20 +67,22 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         }
 
-        // Extracurricular names
+        // Extracurricular names and descriptions
         if (data.extracurricular) {
           const menuItems = document.querySelectorAll('#extracurricular-menu .menu__item');
           let index = 0;
           Object.keys(data.extracurricular).forEach(key => {
-            const name = data.extracurricular[key];
+            const infoObj = data.extracurricular[key];
             const menuItem = menuItems[index];
-            if (menuItem) {
+            if (menuItem && infoObj) {
               const link = menuItem.querySelector('.menu__item-link');
-              if (link) link.textContent = name;
-              const spans = menuItem.querySelectorAll('.marquee__inner span');
-              spans.forEach(span => {
-                span.textContent = name;
-              });
+              if (link && infoObj.name) link.textContent = infoObj.name;
+              if (Array.isArray(infoObj.descriptions)) {
+                const spans = menuItem.querySelectorAll('.marquee__inner span');
+                infoObj.descriptions.forEach((desc, i) => {
+                  if (spans[i]) spans[i].textContent = desc;
+                });
+              }
             }
             index++;
           });
