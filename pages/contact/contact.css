@@ -313,7 +313,7 @@
 }
 
 .contact-card:hover .contact-icon {
-  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.8)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6)) drop-shadow(0 2px 5px rgba(0, 0, 0, 0.4));
+  filter: drop-shadow(0 8px 4px --icon-glow-color) drop-shadow(0 4px 10px --icon-glow-color) drop-shadow(0 2px 15px --icon-glow-color) drop-shadow(0 2px 30px --icon-glow-color) drop-shadow(0 2px 50px --icon-glow-color);
   transform: scale(1.1);
 }
 
@@ -346,14 +346,13 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  filter: drop-shadow(0 8px 4px rgba(0, 0, 0, 1));
   transition: all 0.3s ease;
+  z-index: 10;
 }
 
 .contact-card:hover .contact-label {
-  text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8),
-    0 2px 8px rgba(0, 0, 0, 0.6),
-    0 1px 4px rgba(0, 0, 0, 0.4);
+  filter: drop-shadow(0 8px 4px --icon-glow-color) drop-shadow(0 4px 10px --icon-glow-color) drop-shadow(0 2px 15px --icon-glow-color);
 }
 
 /* Specific card colors for backdrop gradients */
