@@ -17,6 +17,7 @@ class DitherBackground {
       colorCycleSpeed: options.colorCycleSpeed || 8,
       mouseFlowStrength: options.mouseFlowStrength || 0.002,
       mouseVelocityDecay: options.mouseVelocityDecay || 0.9,
+      mouseRotationStrength: options.mouseRotationStrength || 0.5,
     };
 
 
@@ -39,6 +40,7 @@ class DitherBackground {
     this.flowOffset = new THREE.Vector2(0, 0);
     this.clock = new THREE.Clock();
     this.animationId = null;
+    this.rotation = 0;
     this.lastTime = 0;
     this.frameInterval = 1 / 60;
     this.init();
@@ -101,6 +103,7 @@ class DitherBackground {
       uniform float mouseRadius;
       uniform vec2 mouseVelocity;
       uniform vec2 flowOffset;
+      uniform float rotation;
       varying vec2 vUv;
 
       vec4 mod289(vec4 x) { return x - floor(x * (1.0/289.0)) * 289.0; }
@@ -158,6 +161,9 @@ class DitherBackground {
         vec2 uv = vUv - 0.5;
         uv.x *= resolution.x / resolution.y;
         uv += flowOffset;
+        float c = cos(rotation);
+        float s = sin(rotation);
+        uv = mat2(c, -s, s, c) * uv;
         float f = pattern(uv);
         
         if (enableMouseInteraction == 1) {
@@ -188,6 +194,7 @@ class DitherBackground {
         mouseRadius: { value: this.options.mouseRadius },
         mouseVelocity: { value: new THREE.Vector2(0, 0) },
         flowOffset: { value: new THREE.Vector2(0, 0) },
+        rotation: { value: 0 },
       }
     });
   }
@@ -335,9 +342,9 @@ class DitherBackground {
     this.mouseVelocity.multiplyScalar(this.options.mouseVelocityDecay);
     this.waveMaterial.uniforms.mouseVelocity.value.copy(this.mouseVelocity);
 
-    this.flowOffset.addScaledVector(this.mouseVelocity, this.options.mouseFlowStrength);
-    this.flowOffset.multiplyScalar(this.options.mouseVelocityDecay);
-    this.waveMaterial.uniforms.flowOffset.value.copy(this.flowOffset);
+    this.rotation += this.mouseVelocity.x * this.options.mouseRotationStrength;
+    this.rotation *= this.options.mouseVelocityDecay;
+    this.waveMaterial.uniforms.rotation.value = this.rotation;
 
     // Render to texture first
     this.renderer.setRenderTarget(this.renderTarget);
