@@ -5,19 +5,20 @@ class DitherBackground {
   constructor(container, options = {}) {
     this.container = container;
     this.options = {
-      waveSpeed: options.waveSpeed || 0.05,
-      waveFrequency: options.waveFrequency || 3,
+      waveSpeed: options.waveSpeed || 0.5,
+      waveFrequency: options.waveFrequency || 30,
       waveAmplitude: options.waveAmplitude || 0.3,
       colorNum: options.colorNum || 4,
-      pixelSize: options.pixelSize || 2,
+      pixelSize: options.pixelSize || 20,
       disableAnimation: options.disableAnimation || false,
       enableMouseInteraction: options.enableMouseInteraction !== false,
       mouseRadius: options.mouseRadius || 1,
       pixelRatioCap: options.pixelRatioCap || 1,
       colorCycleSpeed: options.colorCycleSpeed || 8,
-      mouseFlowStrength: options.mouseFlowStrength || 0.002,
+      mouseFlowStrength: options.mouseFlowStrength || 0.01,
       mouseVelocityDecay: options.mouseVelocityDecay || 0.9,
-      mouseRotationStrength: options.mouseRotationStrength || 0.5,
+      mouseRotationStrength: options.mouseRotationStrength || 0.3,
+      rotationEase: options.rotationEase || 0.1,
     };
 
 
@@ -41,8 +42,9 @@ class DitherBackground {
     this.clock = new THREE.Clock();
     this.animationId = null;
     this.rotation = 0;
+    this.targetRotation = 0;
     this.lastTime = 0;
-    this.frameInterval = 1 / 60;
+    this.frameInterval = 1 / 160;
     this.init();
   }
 
@@ -161,9 +163,14 @@ class DitherBackground {
         vec2 uv = vUv - 0.5;
         uv.x *= resolution.x / resolution.y;
         uv += flowOffset;
+        vec2 pivot = vec2(0.0);
+        if (enableMouseInteraction == 1) {
+          pivot = (mousePos / resolution - 0.5) * vec2(1.0, -1.0);
+          pivot.x *= resolution.x / resolution.y;
+        }
         float c = cos(rotation);
         float s = sin(rotation);
-        uv = mat2(c, -s, s, c) * uv;
+        uv = mat2(c, -s, s, c) * (uv - pivot) + pivot;
         float f = pattern(uv);
         
         if (enableMouseInteraction == 1) {
@@ -342,8 +349,11 @@ class DitherBackground {
     this.mouseVelocity.multiplyScalar(this.options.mouseVelocityDecay);
     this.waveMaterial.uniforms.mouseVelocity.value.copy(this.mouseVelocity);
 
-    this.rotation += this.mouseVelocity.x * this.options.mouseRotationStrength;
-    this.rotation *= this.options.mouseVelocityDecay;
+    this.targetRotation +=
+      this.mouseVelocity.x * this.options.mouseRotationStrength;
+    this.targetRotation *= this.options.mouseVelocityDecay;
+    this.rotation +=
+      (this.targetRotation - this.rotation) * this.options.rotationEase;
     this.waveMaterial.uniforms.rotation.value = this.rotation;
 
     // Render to texture first
