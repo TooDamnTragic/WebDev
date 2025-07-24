@@ -86,7 +86,7 @@
       "name": "Signatures Art and Literature Magazine",
       "descriptions": [
         "Literary Team",
-        "Signatures Magazine",
+        "Signatures Art and Literary Magazine",
         "Literary Team",
         "Signatures Magazine"
       ],
