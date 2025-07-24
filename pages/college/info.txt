@@ -64,7 +64,7 @@
         "../../assets/media/college/extracurricular/RIT-PSP.jpg",
         "../../assets/media/college/extracurricular/RIT-PSP.jpg",
         "../../assets/media/college/extracurricular/RIT-PSP.jpg",
-        "../../assets/m  sedia/college/extracurricular/RIT-PSP.jpg"
+        "../../assets/mdia/college/extracurricular/RIT-PSP.jpg"
       ]
     },
     "extracurricularActivity_4": {
