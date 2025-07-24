@@ -29,6 +29,12 @@
         "International Delegate",
         "Academic Excellence Committee",
         "Honors Council"
+      ],
+      "images": [
+        "../../assets/media/college/extracurricular/RIT-honors.jpeg",
+        "../../assets/media/college/extracurricular/RIT-honors.jpeg",
+        "../../assets/media/college/extracurricular/RIT-honors.jpeg",
+        "../../assets/media/college/extracurricular/RIT-honors.jpeg"
       ]
     },
     "extracurricularActivity_2": {
@@ -38,6 +44,12 @@
         "Vice-President",
         "Society of Banned Books",
         "Vice-President"
+      ],
+      "images": [
+        "../../assets/media/college/extracurricular/RIT-DTS.png",
+        "../../assets/media/college/extracurricular/RIT-DTS.png",
+        "../../assets/media/college/extracurricular/RIT-DTS.png",
+        "../../assets/media/college/extracurricular/RIT-DTS.png"
       ]
     },
     "extracurricularActivity_3": {
@@ -47,6 +59,12 @@
         "Fundrasing Chair",
         "Delta Alpha Chapter",
         "PSP"
+      ],
+      "images": [
+        "../../assets/media/college/extracurricular/RIT-PSP.jpg",
+        "../../assets/media/college/extracurricular/RIT-PSP.jpg",
+        "../../assets/media/college/extracurricular/RIT-PSP.jpg",
+        "../../assets/media/college/extracurricular/RIT-PSP.jpg"
       ]
     },
     "extracurricularActivity_4": {
@@ -56,6 +74,12 @@
         "Volunteering",
         "Collection Captain",
         "Volunterring"
+      ],
+      "images": [
+        "../../assets/media/college/extracurricular/RIT-honors.jpeg",
+        "../../assets/media/college/extracurricular/RIT-honors.jpeg",
+        "../../assets/media/college/extracurricular/RIT-honors.jpeg",
+        "../../assets/media/college/extracurricular/RIT-honors.jpeg"
       ]
     },
     "extracurricularActivity_5": {
@@ -65,6 +89,12 @@
         "Signatures Magazine",
         "Literary Team",
         "Signatures Magazine"
+      ],
+      "images": [
+        "../../assets/media/college/extracurricular/RIT-SignaturesCollage-1.jpg",
+        "../../assets/media/college/extracurricular/RIT-SignaturesCollage-1.jpg",
+        "../../assets/media/college/extracurricular/RIT-SignaturesCollage-1.jpg",
+        "../../assets/media/college/extracurricular/RIT-SignaturesCollage-1.jpg"
       ]
     },
     "extracurricularActivity_6": {
@@ -74,6 +104,12 @@
         "Wordsmiths Club",
         "Wordsmiths Club",
         "I'm just a member"
+      ],
+      "images": [
+        "../../assets/media/college/extracurricular/RIT-Wordsmiths.png",
+        "../../assets/media/college/extracurricular/RIT-Wordsmiths.png",
+        "../../assets/media/college/extracurricular/RIT-Wordsmiths.png",
+        "../../assets/media/college/extracurricular/RIT-Wordsmiths.png"
       ]
     },
     "extracurricularActivity_7": {
@@ -83,6 +119,12 @@
         "Fantasy Club",
         "Fantasy Club",
         "I'm just a member"
+      ],
+      "images": [
+        "../../assets/media/college/RIT-1.jpg",
+        "../../assets/media/college/RIT-1.jpg",
+        "../../assets/media/college/RIT-1.jpg",
+        "../../assets/media/college/RIT-1.jpg"
       ]
     },
     "extracurricularActivity_8": {
@@ -92,6 +134,12 @@
         "RIT Blue Team CCDC mini-comp Winner",
         "RITSEC",
         "I'm just a member"
+      ],
+      "images": [
+        "../../assets/media/college/RIT-GU.png",
+        "../../assets/media/college/RIT-GU.png",
+        "../../assets/media/college/RIT-GU.png",
+        "../../assets/media/college/RIT-GU.png"
       ]
     },
     "extracurricularActivity_9": {
@@ -101,6 +149,12 @@
         "Math Club",
         "Math Club",
         "I'm just a member"
+      ],
+      "images": [
+        "../../assets/media/college/RIT-Gosnell.jpg",
+        "../../assets/media/college/RIT-Gosnell.jpg",
+        "../../assets/media/college/RIT-Gosnell.jpg",
+        "../../assets/media/college/RIT-Gosnell.jpg"
       ]
     },
     "extracurricularActivity_10": {
@@ -110,8 +164,13 @@
         "RIT Philosophy Club",
         "RIT Philosophy Club",
         "I'm just a member"
+      ],
+      "images": [
+        "../../assets/media/college/RIT-SysAdminLab.jpg",
+        "../../assets/media/college/RIT-SysAdminLab.jpg",
+        "../../assets/media/college/RIT-SysAdminLab.jpg",
+        "../../assets/media/college/RIT-SysAdminLab.jpg"
       ]
     }
   }
 }
-

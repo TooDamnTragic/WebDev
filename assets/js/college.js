@@ -66,7 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           });
         }
-
         // Extracurricular names and descriptions
         if (data.extracurricular) {
           const menuItems = document.querySelectorAll('#extracurricular-menu .menu__item');
@@ -77,17 +76,24 @@ document.addEventListener('DOMContentLoaded', () => {
             if (menuItem && infoObj) {
               const link = menuItem.querySelector('.menu__item-link');
               if (link && infoObj.name) link.textContent = infoObj.name;
+
               if (Array.isArray(infoObj.descriptions)) {
                 const spans = menuItem.querySelectorAll('.marquee__inner span');
                 infoObj.descriptions.forEach((desc, i) => {
                   if (spans[i]) spans[i].textContent = desc;
                 });
               }
+
+              if (Array.isArray(infoObj.images)) {
+                const imgs = menuItem.querySelectorAll('.marquee__img');
+                infoObj.images.forEach((src, i) => {
+                  if (imgs[i]) imgs[i].style.backgroundImage = `url('${src}')`;
+                });
+              }
             }
             index++;
           });
         }
-
         adjustHeadingSizes();
       })
       .catch(err => console.error('Failed to load info.txt', err));
