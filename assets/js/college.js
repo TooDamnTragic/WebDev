@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const infoObj = data.curricular[key];
             if (heading && infoObj.name) heading.textContent = infoObj.name;
             if (infoObj.description) {
-              item.setAttribute('data-text', infoObj.description);
+              item.setAttribute('dat a-text', infoObj.description);
               if (mobileText) mobileText.textContent = infoObj.description;
             }
           });
