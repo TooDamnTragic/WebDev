@@ -44,7 +44,7 @@ class DitherBackground {
     this.rotation = 0;
     this.targetRotation = 0;
     this.lastTime = 0;
-    this.frameInterval = 1 / 160;
+    this.frameInterval = 1 / 120;
     this.init();
   }
 
