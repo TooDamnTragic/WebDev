@@ -16,11 +16,14 @@ const FRAG = `
 precision highp float;
 
 uniform float uTime;
-uniform vec3 uColor;
+uniform vec3 uColor1;
+uniform vec3 uColor2;
+uniform vec3 uColor3;
 uniform vec3 uResolution;
 uniform vec2 uMouse;
 uniform float uAmplitude;
 uniform float uSpeed;
+
 
 varying vec2 vUv;
 
@@ -38,8 +41,11 @@ void main() {
   }
   d += uTime * 0.5 * uSpeed;
   vec3 col = vec3(cos(uv * vec2(d, a)) * 0.6 + 0.4, cos(a + d) * 0.5 + 0.5);
-  col = cos(col * cos(vec3(d, a, 2.5)) * 0.5 + 0.5) * uColor;
-  gl_FragColor = vec4(col, 1.0);
+  col = cos(col * cos(vec3(d, a, 2.5)) * 0.5 + 0.5);
+  float t = clamp(col.r, 0.0, 1.0);
+  vec3 gradAB = mix(uColor1, uColor2, smoothstep(0.0, 0.5, t));
+  vec3 grad = mix(gradAB, uColor3, smoothstep(0.5, 1.0, t));
+  gl_FragColor = vec4(grad * col, 1.0);
 }
 `;
 
@@ -51,8 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const gl = renderer.gl;
   gl.clearColor(1, 1, 1, 1);
 
-  const colorAttr = container.getAttribute('data-color');
-  const color = colorAttr ? colorAttr.split(',').map(Number) : [1, 1, 1];
+  const colorAttr1 = container.getAttribute('data-color-1') || container.getAttribute('data-color');
+  const color1 = colorAttr1 ? colorAttr1.split(',').map(Number) : [1, 1, 1];
+  const colorAttr2 = container.getAttribute('data-color-2');
+  const color2 = colorAttr2 ? colorAttr2.split(',').map(Number) : color1;
+  const colorAttr3 = container.getAttribute('data-color-3');
+  const color3 = colorAttr3 ? colorAttr3.split(',').map(Number) : color2;
   const amplitude = parseFloat(container.getAttribute('data-amplitude')) || 0.1;
   const speed = parseFloat(container.getAttribute('data-speed')) || 1.0;
   const mouseReact = container.getAttribute('data-mouse-react') !== 'false';
@@ -75,7 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
     fragment: FRAG,
     uniforms: {
       uTime: { value: 0 },
-      uColor: { value: new Color(...color) },
+      uColor1: { value: new Color(...color1) },
+      uColor2: { value: new Color(...color2) },
+      uColor3: { value: new Color(...color3) },
       uResolution: { value: new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height) },
       uMouse: { value: new Float32Array([0.5, 0.5]) },
       uAmplitude: { value: amplitude },

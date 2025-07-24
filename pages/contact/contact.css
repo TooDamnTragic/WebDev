@@ -82,8 +82,8 @@
 /* Back Button - Remove existing hover effects */
 .back-home {
   position: fixed;
-  top: 1.5rem;
-  left: 1.5rem;
+  top: clamp(1rem, 1vw + 0.5rem, 2rem);
+  left: clamp(1rem, 1vw + 0.5rem, 2rem);
   z-index: 1000;
   opacity: 0.7;
 }
@@ -98,8 +98,8 @@
   gap: 0.5rem;
   color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
-  font-size: 0.9rem;
-  padding: 0.8rem 1.2rem;
+  font-size: clamp(0.8rem, 0.8rem + 0.5vw, 1.2rem);
+  padding: clamp(0.6rem, 0.6rem + 0.3vw, 1rem) clamp(1rem, 1rem + 0.6vw, 1.6rem);
   border: 1px solid rgba(255, 255, 255, 0.4);
   border-radius: 25px;
   backdrop-filter: blur(15px);
@@ -111,8 +111,8 @@
 }
 
 .back-link svg {
-  width: 16px;
-  height: 16px;
+  width: clamp(14px, 1vw + 12px, 20px);
+  height: clamp(14px, 1vw + 12px, 20px);
 }
 
 /* Contact Grid */

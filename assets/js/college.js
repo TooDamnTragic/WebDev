@@ -665,6 +665,10 @@ document.addEventListener('DOMContentLoaded', () => {
       currentInfo.querySelectorAll('.popup').forEach(p => {
         p.style.background = `linear-gradient(135deg, ${color}, #212427)`;
       });
+      currentInfo.style.setProperty('--popup-color', color);
+      if (currentInfoImage) {
+        currentInfoImage.style.borderColor = color;
+      }
     }
     // Only change background if no other popups are active or this is the first one
     if (color && (activePopups.size === 1 || !body.classList.contains('dimmed'))) {

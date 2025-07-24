@@ -114,7 +114,7 @@ body.college-page {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(0, 0, 0, 0.8);
   text-decoration: none;
   font-size: 0.9rem;
   padding: 0.8rem 1.2rem;
@@ -124,19 +124,31 @@ body.college-page {
   background: rgba(0, 0, 0, 0.3);
   overflow: hidden;
   transition: all 0.3s ease;
+  z-index: 11;
 }
 
 .back-link:hover {
-  color: white;
-  border-color: rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.1);
+  color: rgba(0, 0, 0, 1);
+  border: 1px solid rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(0px);
   transform: translateY(-2px);
+  z-index: 14;
 }
 
 .back-link svg {
-  width: 16px;
-  height: 16px;
+  width: clamp(14px, 1vw + 12px, 20px);
+  height: clamp(14px, 1vw + 12px, 20px);
+  position: relative;
+  z-index: 2;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
 }
+
+.back-link:hover svg {
+  opacity: 1;
+}
+
 
 /* Back to Top button */
 .back-to-top {
@@ -482,8 +494,8 @@ body.college-page {
 
 /* Extracurricular Section - Match college title color */
 .extracurricular-section {
-  min-height: 100vh;
-  background: #212427;
+  min-height: 60vh;
+  background: linear-gradient(90deg, #63C8FF, transparent, #63C8FF);
   /* Match college title background */
   position: relative;
   opacity: 0;
@@ -508,7 +520,7 @@ body.college-page {
 .overlay-header h2 {
   font-size: clamp(1.8rem, 6vw, 4.5rem);
   margin: 0;
-  color: #f0ead6;
+  color: #FDFFB8;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   font-family: 'DTGetai', 'Hackney', sans-serif;
 }
@@ -516,7 +528,7 @@ body.college-page {
 .overlay-divider {
   width: 100px;
   height: 3px;
-  background: linear-gradient(90deg, transparent, #f0ead6, transparent);
+  background: linear-gradient(90deg, transparent, #FDFFB8, #FDFFB8, transparent);
   margin: 1rem auto;
   border-radius: 2px;
 }
@@ -558,7 +570,7 @@ body.college-page {
   top: 0;
   width: 4px;
   height: 100%;
-  background: #f0ead640;
+  background: #e7e4d715;
   transform: translateX(-50%);
   clip-path: polygon(40% 0%, 60% 0%,
       70% 5%, 30% 10%,
@@ -580,7 +592,7 @@ body.college-page {
   left: 0;
   width: 100%;
   height: calc(var(--progress, 0) * 100%);
-  background: #e02b2b;
+  background: #4DFFBE;
   transition: height .3s linear;
 }
 
@@ -594,11 +606,11 @@ body.college-page {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #e02b2b;
+  background: #68ffc8;
   box-shadow:
-    0 0 6px 2px #e02b2b,
-    0 0 12px 4px #ff3c00,
-    0 0 28px 10px #ff5100;
+    0 0 6px 2px #4DFFBE,
+    0 0 12px 4px #4DFFBE,
+    0 0 28px 10px #4DFFBE;
   animation: cometPulse 1.2s ease-in-out infinite alternate;
   transition: top .3s linear;
   z-index: 10;
@@ -608,9 +620,9 @@ body.college-page {
 .extracurricular-section .divider::before {
   background: #f0ead6;
   box-shadow:
-    0 0 6px 2px #f0ead6,
+    0 0 6px 2px #ffffff,
     0 0 12px 4px #ffffff,
-    0 0 28px 10px #f0ead680;
+    0 0 28px 10px #ffffff80;
 }
 
 /* Comet tail effect */
@@ -622,9 +634,9 @@ body.college-page {
   height: calc(var(--progress, 0) * 100%);
   background: linear-gradient(to bottom,
       transparent 0%,
-      #e02b2b 20%,
-      #ff3c00 60%,
-      #ff5100 100%);
+      #4DFFBE 20%,
+      #4DFFBE 60%,
+      #4DFFBE 100%);
   transition: height .3s linear;
 }
 
@@ -658,17 +670,17 @@ body.college-page {
 @keyframes cometPulse {
   from {
     box-shadow:
-      0 0 4px 1px #e02b2b,
-      0 0 10px 4px #ff3c00,
-      0 0 24px 8px #ff5100;
+      0 0 4px 1px #4DFFBE,
+      0 0 10px 4px #4DFFBE,
+      0 0 24px 8px #4DFFBE;
     transform: translate(-50%, -50%) scale(0.8);
   }
 
   to {
     box-shadow:
-      0 0 8px 3px #e02b2b,
-      0 0 16px 6px #ff3c00,
-      0 0 32px 12px #ff5100;
+      0 0 8px 3px #94FFD8,
+      0 0 16px 6px #94FFD8,
+      0 0 32px 12px #94FFD8;
     transform: translate(-50%, -50%) scale(1.2);
   }
 }
@@ -724,10 +736,9 @@ body.college-page {
   --card-radius: 20px;
   --icon: none;
   --card-gradient: none;
-  --glare-color: rgba(240, 234, 214, 0.3);
+  --glare-color: rgba(255, 25, 209, 0.692);
 }
 
-/* Enhanced Items with ProfileCard Effects - 30% larger */
 .items li {
   position: relative;
   width: 50%;
@@ -737,24 +748,15 @@ body.college-page {
   cursor: pointer;
   z-index: 6;
   transition: transform 0.2s ease;
-
-  /* ProfileCard wrapper styles */
   perspective: 500px;
   transform: translate3d(0, 0, 0.1px);
   touch-action: none;
 }
 
-/* Bring hovered or selected titles above others */
 .items li:hover,
 .items li.active,
 .items li.expanded {
   z-index: 200;
-}
-
-.items li:focus {
-  outline: 2px solid #f0ead6;
-  outline-offset: 4px;
-  border-radius: 4px;
 }
 
 /* Clean ProfileCard-style card container with colored background gradients */
@@ -842,10 +844,9 @@ body.college-page {
 .items li:hover .card-container::after,
 .items li.active .card-container::after {
   opacity: 1.8;
-  /* More visible on hover to reveal colored glare */
 }
 
-/* Alternative approach - if you want even larger icons, use these values instead: */
+/* Alternative - for larger icons: */
 /*
 .items li .card-container::after {
   mask-size: 200px 200px, 150px 150px;
@@ -912,7 +913,7 @@ body.college-page {
   transform: translate3d(calc(var(--pointer-from-left) * -6px + 3px), calc(var(--pointer-from-top) * -6px + 3px), 0.1px);
 }
 
-/* Significantly increased font sizes */
+
 .items h2,
 .items h3,
 .items h4 {
@@ -1082,7 +1083,7 @@ body.college-page {
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
-  border-radius: 6px;
+  border-radius: 12px;
 }
 
 @keyframes shimmer {
@@ -1172,6 +1173,7 @@ body.college-page {
 
 #info,
 #info-extra {
+  --popup-color: #40d6cf;
   position: absolute;
   left: 60%;
   top: 0;
@@ -1245,10 +1247,10 @@ body.college-page {
 #info-image-wrapper.popup,
 #info-extra-image-wrapper.popup {
   padding: 0;
-  border: none;
+  border: 2px solid var(--popup-color, #40d6cf);
   background: none;
   box-shadow: none;
-  border-radius: 0;
+  border-radius: 12px;
 }
 
 #info-image,
@@ -1257,7 +1259,7 @@ body.college-page {
   height: 100%;
   display: block;
   object-fit: contain;
-  border-radius: 0;
+  border-radius: 12px;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -1421,7 +1423,7 @@ body.transitioning {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  background: #fff;
+  background: #4DFFBE;
   transform: translate3d(0, 101%, 0);
   transition: transform 0.6s ease-expo;
 }
@@ -1442,7 +1444,7 @@ body.transitioning {
 }
 
 .marquee span {
-  color: #060010;
+  color: #FDFFB8;
   white-space: nowrap;
   text-transform: none;
   font-weight: 400;
@@ -1549,4 +1551,31 @@ body.transitioning {
 .font-washington .menu__item-link,
 .font-washington .marquee span {
   font-family: 'Washington', sans-serif;
+}
+
+/* Glare hover effect for popup images */
+.glare-hover {
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.glare-hover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(var(--gh-angle, -30deg),
+      hsla(0, 0%, 0%, 0) 60%,
+      rgba(255, 255, 255, 0.6) 70%,
+      hsla(0, 0%, 0%, 0) 100%);
+  transition: var(--gh-duration, 1600ms) ease;
+  background-size: var(--gh-size, 250%) var(--gh-size, 250%), 100% 100%;
+  background-repeat: no-repeat;
+  background-position: -100% -100%, 0 0;
+}
+
+.glare-hover:hover::before {
+  background-position: 100% 100%, 0 0;
 }
