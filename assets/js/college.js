@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const infoExtraImage = document.getElementById('info-extra-image');
   const infoExtraImageLink = document.getElementById('info-extra-image-link');
   const infoExtraText = document.getElementById('info-extra-text');
+  const infoImageWrapper = document.getElementById('info-image-wrapper');
+  const infoExtraImageWrapper = document.getElementById('info-extra-image-wrapper');
   const body = document.body;
   const defaultBg = getComputedStyle(body).background;
 
@@ -557,10 +559,17 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   // Image loading with skeleton
-  const handleImageLoad = (img, skeleton) => {
+  const handleImageLoad = (img, skeleton, wrapper) => {
+    const updateWidth = () => {
+      if (!wrapper) return;
+      const ratio = img.naturalWidth / img.naturalHeight || 1;
+      wrapper.style.width = `${wrapper.offsetHeight * ratio}px`;
+    };
+
     img.addEventListener('load', () => {
       skeleton.style.display = 'none';
       img.style.opacity = '1';
+      updateWidth();
     });
 
     img.addEventListener('error', () => {
@@ -568,6 +577,10 @@ document.addEventListener('DOMContentLoaded', () => {
       img.style.opacity = '0.5';
       img.alt = 'Image failed to load';
     });
+
+    if (img.complete) {
+      updateWidth();
+    }
   };
 
   // Initialize image loading for all images
@@ -576,19 +589,31 @@ document.addEventListener('DOMContentLoaded', () => {
     const infoImageSkeleton = document.querySelector('#info-image-wrapper .image-skeleton');
     const infoExtraImageSkeleton = document.querySelector('#info-extra-image-wrapper .image-skeleton');
     if (infoImageSkeleton) {
-      handleImageLoad(infoImage, infoImageSkeleton);
+      handleImageLoad(infoImage, infoImageSkeleton, infoImageWrapper);
     }
     if (infoExtraImageSkeleton) {
-      handleImageLoad(infoExtraImage, infoExtraImageSkeleton);
+      handleImageLoad(infoExtraImage, infoExtraImageSkeleton, infoExtraImageWrapper);
     }
 
     // Mobile images
     document.querySelectorAll('.mobile-image').forEach(img => {
       const skeleton = img.parentElement.querySelector('.image-skeleton');
+      const wrapper = img.parentElement;
       if (skeleton) {
-        handleImageLoad(img, skeleton);
+        handleImageLoad(img, skeleton, wrapper);
       }
     });
+  };
+
+  const updateAllWrapperWidths = () => {
+    if (infoImageWrapper && infoImage && infoImage.complete) {
+      const ratio = infoImage.naturalWidth / infoImage.naturalHeight || 1;
+      infoImageWrapper.style.width = `${infoImageWrapper.offsetHeight * ratio}px`;
+    }
+    if (infoExtraImageWrapper && infoExtraImage && infoExtraImage.complete) {
+      const ratio = infoExtraImage.naturalWidth / infoExtraImage.naturalHeight || 1;
+      infoExtraImageWrapper.style.width = `${infoExtraImageWrapper.offsetHeight * ratio}px`;
+    }
   };
 
   // Show info function with overlapping support
@@ -844,6 +869,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Handle window resize
   const handleResize = debounce(() => {
+    updateAllWrapperWidths();
     adjustInfoLayout();
     updateDividerProgress();
 
@@ -917,6 +943,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize everything
   initializeImages();
+  updateAllWrapperWidths();
   adjustInfoLayout();
   updateDividerProgress();
 

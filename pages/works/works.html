@@ -1,80 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Works - Portfolio</title>
+  <title>Works - Interactive Card</title>
   <link rel="stylesheet" href="../../main.css">
   <link rel="stylesheet" href="works.css">
-  <!-- Framer UnicornStudio Embed Component -->
-  <script type="module" src="https://framer.com/m/UnicornStudioEmbed-wWy9.js"></script>
 </head>
+
 <body class="works-page">
-  <!-- Back Button - Overlaid on top -->
+  <!-- Back to Home -->
   <div class="back-home">
     <a href="../../index.html" class="back-link" aria-label="Back to Home">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M19 12H5M12 19l-7-7 7-7"/>
+        <path d="M19 12H5M12 19l-7-7 7-7" />
       </svg>
       Back
     </a>
   </div>
 
-  <!-- Full-page Framer UnicornStudio Scene -->
-  <div class="unicorn-scene-container">
-    <unicorn-studio-embed
-      id="framer-scene"
-      class="unicorn-embed"
-      project-id="5sDatTn9CTTI9BI4n19Q"
-      scale="1"
-      dpi="1.5"
-      fps="60"
-      alt-text="Interactive portfolio showcase"
-      aria-label="Interactive 3D portfolio scene"
-      style="width: 100%; height: 100%; display: block;"
-    ></unicorn-studio-embed>
-    
-    <!-- Loading indicator -->
-    <div id="scene-loader" class="scene-loader">
-      <div class="loader-spinner"></div>
-      <p>Loading interactive scene...</p>
-      <p style="font-size: 0.8rem; opacity: 0.6; margin-top: 1rem;">
-        If this takes too long, try refreshing the page
-      </p>
-    </div>
+  <!-- Card -->
+  <div id="card" class="card-container">
+    <!-- Cursor-driven glow -->
+    <div id="glow" class="card-glow glow-mask"></div>
+
+    <!-- Color backdrop -->
+    <div class="card-backdrop"></div>
+
+    <!-- Random text -->
+    <p id="randomText" class="card-text"></p>
   </div>
 
-  <!-- Scroll-triggered Footer with Button-style Navigation -->
-  <footer class="scroll-footer" id="scroll-footer">
-    <div class="footer-content">
-      <h2 class="footer-title">Navigate Portfolio</h2>
-      <nav class="footer-nav">
-        <a href="../../index.html" class="footer-link main-site">
-          <div class="footer-link-icon">🏠</div>
-          <span>Main Website</span>
-        </a>
-        <a href="../college/college.html" class="footer-link">
-          <div class="footer-link-icon">🎓</div>
-          <span>college</span>
-        </a>
-        <a href="../contact/contact.html" class="footer-link">
-          <div class="footer-link-icon">📧</div>
-          <span>Contact Me</span>
-        </a>
-        <a href="../life2/life2.html" class="footer-link">
-          <div class="footer-link-icon">✨</div>
-          <span>Life</span>
-        </a>
-      </nav>
-      <div class="footer-hint">
-        <p>Click any button above to explore different sections • Scroll up to return to the scene</p>
-      </div>
-    </div>
-  </footer>
-
   <script src="../../assets/js/pixel-effect.js"></script>
-  <script src="works.js"></script>
+  <script src="../../works.js"></script>
   <script src="../../assets/js/theme-toggle.js"></script>
   <script src="../../transition.js"></script>
 </body>
+
 </html>

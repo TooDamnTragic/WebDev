@@ -891,3 +891,72 @@ html.light-mode .life {
   --dark: #8b6f6f;
   --textColor: #000;
 }
+
+/* Dark mode base styles */
+html.dark-mode body {
+  background: #DEDBD8;
+  color: #0F1529;
+}
+
+/* Index page dark theme */
+html.dark-mode body.index-page {
+  background: #020B1B;
+  color: #DDDDDD;
+}
+
+/* Works page dark theme */
+html.dark-mode body.works-page {
+  background: #110B04;
+  color: #EEEEEE;
+}
+
+/* Contact page dark theme */
+html.dark-mode body.contact-page {
+  background: #000A0F;
+  color: #EEEEEE;
+}
+
+/* Life page dark theme */
+html.dark-mode body.life-page,
+html.dark-mode body.life2-page,
+html.dark-mode body.miseducation-page {
+  background: #0A000F;
+  color: #EEEEEE;
+}
+
+/* Fonts preview page dark theme */
+html.dark-mode body.fonts-page {
+  background: #080808;
+  color: #FFFFFF;
+}
+
+/* Education (college) page dark theme */
+html.dark-mode body.college-page {
+  background: #0F0F0F;
+  color: #EEEEEE;
+}
+
+/* Dark mode colors for navigation circles on the index page */
+html.dark-mode .college {
+  --light: #006363;
+  --dark: #3BA3A3;
+  --textColor: #EEEEEE;
+}
+
+html.dark-mode .works {
+  --light: #602B00;
+  --dark: #CAA284;
+  --textColor: #EEEEEE;
+}
+
+html.dark-mode .contact {
+  --light: #470B75;
+  --dark: #AF90BA;
+  --textColor: #EEEEEE;
+}
+
+html.dark-mode .life {
+  --light: #000000;
+  --dark: #749090;
+  --textColor: #FFFFFF;
+}

@@ -121,10 +121,10 @@
         "I'm just a member"
       ],
       "images": [
-        "../../assets/media/college/RIT-1.jpg",
-        "../../assets/media/college/RIT-1.jpg",
-        "../../assets/media/college/RIT-1.jpg",
-        "../../assets/media/college/RIT-1.jpg"
+        "../../assets/media/college/RIT-Cybersecurity-Building.jpg",
+        "../../assets/media/college/RIT-Cybersecurity-Building.jpg",
+        "../../assets/media/college/RIT-Cybersecurity-Building.jpg",
+        "../../assets/media/college/RIT-Cybersecurity-Building.jpg"
       ]
     },
     "extracurricularActivity_8": {

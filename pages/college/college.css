@@ -1236,7 +1236,7 @@ body.college-page {
 
 #info-image-wrapper,
 #info-extra-image-wrapper {
-  width: 30vmin;
+  width: auto;
   height: 30vmin;
   overflow: hidden;
   position: relative;
@@ -1253,10 +1253,10 @@ body.college-page {
 
 #info-image,
 #info-extra-image {
-  width: 100%;
+  width: auto;
   height: 100%;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 0;
   opacity: 0;
   transition: opacity 0.3s ease;
