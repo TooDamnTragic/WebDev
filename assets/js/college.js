@@ -40,7 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Load names and descriptions from external info.txt
   const loadInfo = () => {
-    fetch('info.txt')
+    const infoUrl = new URL('info.txt', window.location.href).toString();
+    fetch(infoUrl)
       .then(res => res.text())
       .then(text => {
         let data;
