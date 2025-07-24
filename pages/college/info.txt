@@ -132,7 +132,7 @@
       "descriptions": [
         "RITSEC",
         "RIT Blue Team CCDC mini-comp Winner",
-        "RIT SEC",
+        "RIT Seurity Club",
         "I'm just a member"
       ],
       "images": [
