@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
           data = JSON.parse(text);
         } catch (e) {
-          console.error('Failed to parse info.txt', e);
+          console.error('Failed to parse inf.txt', e);
           return;
         }
 
