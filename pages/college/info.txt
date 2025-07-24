@@ -70,7 +70,7 @@
     "extracurricularActivity_4": {
       "name": "Goodbye, GoodBuy!",
       "descriptions": [
-        "Goodbye, GoodBuy!",
+        "Goodbye, GoodBuy! Sale",
         "Volunteering",
         "Collection Captain",
         "Volunteering"
