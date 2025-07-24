@@ -14,7 +14,7 @@
     },
     "math": {
       "name": "Mathematics Minor",
-      "description": "The mathematics minor is designed for students who want to learn new skills and develop new ways of framing and solving problems. It offers students the opportunity to explore connections among mathematical ideas and to further develop mathematical ways of thinking."
+      "description": "The mathematics minor is designed for students who want to learn new skills and develop new   ways of framing and solving problems. It offers students the opportunity to explore connections among mathematical ideas and to further develop mathematical ways of thinking."
     },
     "sysadmin": {
       "name": "Networking and Systems Administration Minor",
