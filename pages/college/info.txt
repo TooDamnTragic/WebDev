@@ -73,7 +73,7 @@
         "Goodbye, GoodBuy!",
         "Volunteering",
         "Collection Captain",
-        "Volunterring"
+        "Volunteering"
       ],
       "images": [
         "../../assets/media/college/extracurricular/RIT-honors.jpeg",
