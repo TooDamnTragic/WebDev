@@ -495,7 +495,7 @@ body.college-page {
 /* Extracurricular Section - Match college title color */
 .extracurricular-section {
   min-height: 60vh;
-  background: linear-gradient(0deg, #8B93FF, #8B93FF, #8B93FF, transparent);
+  background: linear-gradient(0deg, #8B93FF, transparent);
   /* Match college title background */
   position: relative;
   opacity: 0;
@@ -1286,7 +1286,7 @@ body.college-page {
   inset: 0;
   border-radius: 8px;
   pointer-events: none;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0) 40%);
+  background: linear-gradient(135deg, rgba(255, 180, 15, 0.5), rgba(249, 122, 0, 1) 40%);
   transform: translateZ(1px);
 }
 
