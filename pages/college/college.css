@@ -128,7 +128,7 @@ body.college-page {
 }
 
 .back-link:hover {
-  color: rgba(0, 0, 0, 1);
+  color: #5755FE;
   border: 1px solid rgba(0, 0, 0, 0.7);
   background: rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(0px);
@@ -160,7 +160,7 @@ body.college-page {
   border-radius: 50%;
   border: none;
   background: rgba(0, 0, 0, 0.4);
-  color: #f0ead6;
+  color: #FBF8EF;
   font-size: 1.2rem;
   display: none;
   align-items: center;
@@ -178,7 +178,7 @@ body.college-page {
 
 /* college page styles */
 .college-page {
-  background: #212427;
+  color: #B4EBE6;
   min-height: 100vh;
 }
 
@@ -190,7 +190,7 @@ body.college-page {
   align-items: center;
   justify-content: center;
   position: relative;
-  background: #212427;
+  color: #FFF7FC;
   /* Add extra padding to prevent clipping */
   padding: 2rem;
   box-sizing: border-box;
@@ -198,7 +198,7 @@ body.college-page {
 
 .college-hero .hero-title {
   font-size: clamp(3rem, 8vw, 8rem);
-  color: #000 !important;
+  color: #5755FE !important;
   margin: 0;
   text-align: center;
   opacity: 0;
@@ -231,7 +231,7 @@ body.college-page {
   /* Normalize all fonts to same visual size */
   font-size: inherit;
   line-height: 1;
-  color: #000;
+  color: #FF71CD;
   /* Prevent text from being clipped */
   overflow: visible;
   /* Changed from hidden to visible */
@@ -495,7 +495,7 @@ body.college-page {
 /* Extracurricular Section - Match college title color */
 .extracurricular-section {
   min-height: 60vh;
-  background: linear-gradient(90deg, #63C8FF, transparent, #63C8FF);
+  background: linear-gradient(0deg, #8B93FF, #8B93FF, #8B93FF, transparent);
   /* Match college title background */
   position: relative;
   opacity: 0;
@@ -520,7 +520,7 @@ body.college-page {
 .overlay-header h2 {
   font-size: clamp(1.8rem, 6vw, 4.5rem);
   margin: 0;
-  color: #FDFFB8;
+  color: #5755FE;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   font-family: 'DTGetai', 'Hackney', sans-serif;
 }
@@ -528,7 +528,7 @@ body.college-page {
 .overlay-divider {
   width: 100px;
   height: 3px;
-  background: linear-gradient(90deg, transparent, #FDFFB8, #FDFFB8, transparent);
+  background: linear-gradient(90deg, transparent, #8B93FF, #8B93FF, transparent);
   margin: 1rem auto;
   border-radius: 2px;
 }
@@ -592,7 +592,7 @@ body.college-page {
   left: 0;
   width: 100%;
   height: calc(var(--progress, 0) * 100%);
-  background: #4DFFBE;
+  background: #B4EBE6;
   transition: height .3s linear;
 }
 
@@ -606,11 +606,11 @@ body.college-page {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: #68ffc8;
+  background: #B4EBE6;
   box-shadow:
-    0 0 6px 2px #4DFFBE,
-    0 0 12px 4px #4DFFBE,
-    0 0 28px 10px #4DFFBE;
+    0 0 6px 2px #B4EBE6,
+    0 0 12px 4px #B4EBE6,
+    0 0 28px 10px #B4EBE6;
   animation: cometPulse 1.2s ease-in-out infinite alternate;
   transition: top .3s linear;
   z-index: 10;
@@ -618,7 +618,7 @@ body.college-page {
 
 /* Special comet for twisted divider */
 .extracurricular-section .divider::before {
-  background: #f0ead6;
+  background: #FBF8EF;
   box-shadow:
     0 0 6px 2px #ffffff,
     0 0 12px 4px #ffffff,
@@ -634,9 +634,9 @@ body.college-page {
   height: calc(var(--progress, 0) * 100%);
   background: linear-gradient(to bottom,
       transparent 0%,
-      #4DFFBE 20%,
-      #4DFFBE 60%,
-      #4DFFBE 100%);
+      #B4EBE6 20%,
+      #B4EBE6 60%,
+      #B4EBE6 100%);
   transition: height .3s linear;
 }
 
@@ -648,9 +648,9 @@ body.college-page {
   height: calc(var(--progress, 0) * 100%);
   background: linear-gradient(to bottom,
       transparent 0%,
-      #f0ead6 20%,
+      #FBF8EF 20%,
       #ffffff 60%,
-      #f0ead680 100%);
+      #FBF8EF80 100%);
   transform: translateX(-50%);
   transition: height .3s linear;
   clip-path: polygon(40% 0%, 60% 0%,
@@ -670,17 +670,17 @@ body.college-page {
 @keyframes cometPulse {
   from {
     box-shadow:
-      0 0 4px 1px #4DFFBE,
-      0 0 10px 4px #4DFFBE,
-      0 0 24px 8px #4DFFBE;
+      0 0 4px 1px #B4EBE6,
+      0 0 10px 4px #B4EBE6,
+      0 0 24px 8px #B4EBE6;
     transform: translate(-50%, -50%) scale(0.8);
   }
 
   to {
     box-shadow:
-      0 0 8px 3px #94FFD8,
-      0 0 16px 6px #94FFD8,
-      0 0 32px 12px #94FFD8;
+      0 0 8px 3px #B4EBE6,
+      0 0 16px 6px #B4EBE6,
+      0 0 32px 12px #B4EBE6;
     transform: translate(-50%, -50%) scale(1.2);
   }
 }
@@ -925,8 +925,8 @@ body.college-page {
   text-align: inherit;
   text-decoration: none;
   border-bottom: none;
-  color: #040404;
-  -webkit-text-fill-color: #040404;
+  color: #5755FE;
+  -webkit-text-fill-color: #5755FE;
   background-image: none;
   background-clip: border-box;
   -webkit-background-clip: border-box;
@@ -940,8 +940,8 @@ body.college-page {
 .items h2:hover,
 .items h3:hover,
 .items h4:hover {
-  color: #040404;
-  -webkit-text-fill-color: #040404;
+  color: #5755FE;
+  -webkit-text-fill-color: #5755FE;
 }
 
 .desc {
@@ -979,7 +979,7 @@ body.college-page {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: #f0ead6;
+  background: #FBF8EF;
   pointer-events: none;
   box-shadow: 0 0 10px rgba(240, 234, 214, 0.5);
 }
@@ -1012,13 +1012,13 @@ body.college-page {
 
 .link-button:hover,
 .link-button:focus {
-  color: #040404;
+  color: #5755FE;
 }
 
 .items li:hover h2,
 .items li:hover h3,
 .items li:hover h4 {
-  color: #040404;
+  color: #5755FE;
 }
 
 /* Mobile info panels */
@@ -1173,7 +1173,7 @@ body.college-page {
 
 #info,
 #info-extra {
-  --popup-color: #40d6cf;
+  --popup-color: #8B93FF;
   position: absolute;
   left: 60%;
   top: 0;
@@ -1216,7 +1216,7 @@ body.college-page {
 
 #info .popup,
 #info-extra .popup {
-  background: #40d6cf;
+  background: #B4EBE6;
   padding: 1.5rem;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255, 255, 255, 0.15);
@@ -1247,7 +1247,7 @@ body.college-page {
 #info-image-wrapper.popup,
 #info-extra-image-wrapper.popup {
   padding: 0;
-  border: 2px solid var(--popup-color, #40d6cf);
+  border: 2px solid var(--popup-color, #8B93FF);
   background: none;
   box-shadow: none;
   border-radius: 12px;
@@ -1337,7 +1337,7 @@ body.transitioning {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #212427;
+  background: #FF71CD;
   z-index: 1000;
   transition: opacity .6s ease;
 }
@@ -1366,7 +1366,7 @@ body.transitioning {
 .loader-letter {
   width: var(--tile-size);
   height: var(--tile-size);
-  color: #f0ead6;
+  color: #FBF8EF;
 }
 
 /* Flowing menu effect for extracurricular section */
@@ -1389,7 +1389,7 @@ body.transitioning {
   position: relative;
   overflow: hidden;
   text-align: center;
-  box-shadow: 0 -1px #fff;
+  box-shadow: 0 -1px #FFF7FC;
 }
 
 .menu__item-link {
@@ -1403,7 +1403,7 @@ body.transitioning {
   text-decoration: none;
   white-space: nowrap;
   font-weight: 600;
-  color: #fff;
+  color: #FFF7FC;
   font-size: 5vh;
   line-height: 1.3;
   padding: 0.5rem 0;
@@ -1415,7 +1415,7 @@ body.transitioning {
 }
 
 .menu__item-link:focus:not(:focus-visible) {
-  color: #fff;
+  color: #FFF7FC;
 }
 
 .marquee {
@@ -1426,7 +1426,7 @@ body.transitioning {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  background: #4DFFBE;
+  background: #FF71CD;
   transform: translate3d(0, 101%, 0);
   transition: transform 0.6s ease-expo;
 }
@@ -1447,7 +1447,7 @@ body.transitioning {
 }
 
 .marquee span {
-  color: #FDFFB8;
+  color: #FFF7FC;
   white-space: nowrap;
   text-transform: none;
   font-weight: 400;

@@ -293,7 +293,7 @@ body.index-page {
 body.college-page {
   overflow-x: hidden;
   overflow-y: auto;
-  background: #212427;
+  background: #80CBC4;
 }
 
 
@@ -303,7 +303,7 @@ body.college-page {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #212427;
+  background: #80CBC4;
   z-index: 1000;
   transition: opacity .6s ease;
 }
@@ -863,9 +863,10 @@ html.light-mode body.fonts-page {
 
 /* Education (college) page light theme */
 html.light-mode body.college-page {
-  background: #f0f0f0;
-  color: #111;
+  background: #FBF8EF;
+  color: #80CBC4;
 }
+
 
 /* Invert only the iridescence effect on the college page */
 html.light-mode .college-page #iridescence {
@@ -874,9 +875,9 @@ html.light-mode .college-page #iridescence {
 
 /* Light mode colors for navigation circles on the index page */
 html.light-mode .college {
-  --light: #ff9c9c;
-  --dark: #c45c5c;
-  --textColor: #111;
+  --light: #80CBC4;
+  --dark: #B4EBE6;
+  --textColor: #5755FE;
 }
 
 html.light-mode .works {
@@ -935,17 +936,17 @@ html.dark-mode body.fonts-page {
   color: #FFFFFF;
 }
 
-/* Education (college) page dark theme */
+/* College page dark theme */
 html.dark-mode body.college-page {
-  background: #0F0F0F;
-  color: #EEEEEE;
+  background: #80CBC4;
+  color: #FBF8EF;
 }
 
 /* Dark mode colors for navigation circles on the index page */
 html.dark-mode .college {
-  --light: #006363;
-  --dark: #3BA3A3;
-  --textColor: #EEEEEE;
+  --light: #B4EBE6;
+  --dark: #80CBC4;
+  --textColor: #FBF8EF;
 }
 
 html.dark-mode .works {
