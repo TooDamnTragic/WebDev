@@ -1405,6 +1405,9 @@ body.transitioning {
   font-weight: 600;
   color: #fff;
   font-size: 5vh;
+  line-height: 1.3;
+  padding: 0.5rem 0;
+  box-sizing: border-box;
 }
 
 .menu__item-link:hover {
@@ -1449,8 +1452,8 @@ body.transitioning {
   text-transform: none;
   font-weight: 400;
   font-size: 5vh;
-  line-height: 1.2;
-  padding: 1vh 1vw 0;
+  line-height: 1.4;
+  padding: 1.5vh 1vw;
 }
 
 .marquee__img {

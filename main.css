@@ -869,7 +869,7 @@ html.light-mode body.college-page {
 
 /* Invert only the iridescence effect on the college page */
 html.light-mode .college-page #iridescence {
-  filter: invert(1);
+  filter: invert();
 }
 
 /* Light mode colors for navigation circles on the index page */
