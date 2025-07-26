@@ -231,7 +231,7 @@ body.college-page {
   /* Normalize all fonts to same visual size */
   font-size: inherit;
   line-height: 1;
-  color: #FF71CD;
+  color: #9929EA;
   /* Prevent text from being clipped */
   overflow: visible;
   /* Changed from hidden to visible */
