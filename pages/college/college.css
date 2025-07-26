@@ -1582,3 +1582,9 @@ body.transitioning {
 .glare-hover:hover::before {
   background-position: 100% 100%, 0 0;
 }
+
+/* Dark mode overrides for hero title */
+html.dark-mode .college-hero .hero-title,
+html.dark-mode .college-hero .hero-title .letter {
+  color: #ffffff !important;
+}
