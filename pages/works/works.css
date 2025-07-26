@@ -1,4 +1,6 @@
 /* Works Page Styles */
+
+/* Page Layout */
 .works-page {
     background: #0d0d0d;
     min-height: 100vh;
@@ -8,11 +10,7 @@
     overflow: hidden;
 }
 
-.glow-mask {
-    mask-image: linear-gradient(white, transparent);
-    -webkit-mask-image: linear-gradient(white, transparent);
-}
-
+/* Card Container */
 .card-container {
     position: relative;
     width: 320px;
@@ -58,7 +56,7 @@
     opacity: 1;
 }
 
-/* Random text */
+/* Card Text */
 .card-text {
     position: absolute;
     inset: 0;
@@ -72,6 +70,12 @@
     font-weight: bold;
     color: white;
     pointer-events: none;
+}
+
+/* Mask for the glowing text */
+.glow-mask {
+    mask-image: linear-gradient(white, transparent);
+    -webkit-mask-image: linear-gradient(white, transparent);
 }
 
 /* Back button */
@@ -99,19 +103,19 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 25px;
     backdrop-filter: blur(10px);
-    background: rgba(0, 0, 0, 0.3);
-    overflow: hidden;
-    transition: all 0.3s ease;
-}
 
-.back-link:hover {
-    color: white;
-    border-color: rgba(255, 255, 255, 0.6);
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px);
-}
+    .back-link:hover {
+        color: white;
+        border-color: rgba(255, 255, 255, 0.6);
+        background: rgba(255, 255, 255, 0.1);
+        transform: translateY(-2px);
+    }
 
-.back-link svg {
+    .back-link svg {
+        width: clamp(14px, 1vw + 12px, 20px);
+        height: clamp(14px, 1vw + 12px, 20px);
+    }
+
     width: clamp(14px, 1vw + 12px, 20px);
     height: clamp(14px, 1vw + 12px, 20px);
 }

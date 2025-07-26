@@ -1,4 +1,6 @@
 /* Life Page Styles */
+
+/* Page Layout */
 .life-page {
   background: #0d0d0d;
   min-height: 100vh;
@@ -8,11 +10,7 @@
   overflow: hidden;
 }
 
-.glow-mask {
-  mask-image: linear-gradient(white, transparent);
-  -webkit-mask-image: linear-gradient(white, transparent);
-}
-
+/* Card Container */
 .card-container {
   position: relative;
   width: 320px;
@@ -58,7 +56,7 @@
   opacity: 1;
 }
 
-/* Random text */
+/* Card Text */
 .card-text {
   position: absolute;
   inset: 0;
@@ -72,6 +70,12 @@
   font-weight: bold;
   color: white;
   pointer-events: none;
+}
+
+/* Mask for the glowing text */
+.glow-mask {
+  mask-image: linear-gradient(white, transparent);
+  -webkit-mask-image: linear-gradient(white, transparent);
 }
 
 /* Back button */
