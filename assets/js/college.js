@@ -663,7 +663,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Match popup background to item color
     if (color) {
       currentInfo.querySelectorAll('.popup').forEach(p => {
-        p.style.background = `linear-gradient(135deg, ${color}, #212427)`;
+        p.style.background = color;
       });
       currentInfo.style.setProperty('--popup-color', color);
       if (currentInfoImage) {
