@@ -1583,8 +1583,13 @@ body.transitioning {
   background-position: 100% 100%, 0 0;
 }
 
-/* Dark mode overrides for hero title */
+/* Theme overrides for hero title */
+html.light-mode .college-hero .hero-title,
+html.light-mode .college-hero .hero-title .letter {
+  color: #ffffff !important;
+}
+
 html.dark-mode .college-hero .hero-title,
 html.dark-mode .college-hero .hero-title .letter {
-  color: #ffffff !important;
+  color: #5755FE !important;
 }

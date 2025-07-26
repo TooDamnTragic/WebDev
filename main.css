@@ -869,16 +869,17 @@ html.light-mode body.fonts-page {
 
 /* Education (college) page light theme */
 html.light-mode body.college-page {
-  background: #FBF8EF;
-  color: #80CBC4;
+  background: #80CBC4;
+  color: #FBF8EF;
 }
 
 /* Light mode colors for navigation circles on the index page */
 html.light-mode .college {
-  --light: #7fffd4;
-  --dark: #32bfa2;
-  --textColor: #064742;
+  --light: #B4EBE6;
+  --dark: #80CBC4;
+  --textColor: #FBF8EF;
 }
+
 
 html.light-mode .works {
   --light: #91f0ff;
@@ -938,15 +939,15 @@ html.dark-mode body.fonts-page {
 
 /* College page dark theme */
 html.dark-mode body.college-page {
-  background: #80CBC4;
-  color: #FBF8EF;
+  background: #FBF8EF;
+  color: #80CBC4;
 }
 
 /* Dark mode colors for navigation circles on the index page */
 html.dark-mode .college {
-  --light: #B4EBE6;
-  --dark: #80CBC4;
-  --textColor: #FBF8EF;
+  --light: #7fffd4;
+  --dark: #32bfa2;
+  --textColor: #064742;
 }
 
 html.dark-mode .works {
