@@ -831,8 +831,8 @@ html.light-mode .theme-toggle svg {
 
 /* Index page light theme */
 html.light-mode body.index-page {
-  /* Bright sky gradient for light mode */
-  background: linear-gradient(to bottom, #a7d8ff 0%, #e8f7ff 80%, #ffffff 100%);
+  /* Sky blue gradient for light mode */
+  background: linear-gradient(to bottom, #91C8E4 0%, #749BC2 50%, #4682A9 100%);
   color: #222;
 }
 
