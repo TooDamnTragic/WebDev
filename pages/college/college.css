@@ -520,7 +520,7 @@ body.college-page {
 .overlay-header h2 {
   font-size: clamp(1.8rem, 6vw, 4.5rem);
   margin: 0;
-  color: #5755FE;
+  color: #424259;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   font-family: 'DTGetai', 'Hackney', sans-serif;
 }
@@ -925,8 +925,8 @@ body.college-page {
   text-align: inherit;
   text-decoration: none;
   border-bottom: none;
-  color: #5755FE;
-  -webkit-text-fill-color: #5755FE;
+  color: #7f7df4;
+  -webkit-text-fill-color: #440160;
   background-image: none;
   background-clip: border-box;
   -webkit-background-clip: border-box;
@@ -940,8 +940,8 @@ body.college-page {
 .items h2:hover,
 .items h3:hover,
 .items h4:hover {
-  color: #5755FE;
-  -webkit-text-fill-color: #5755FE;
+  color: #7674fc;
+  -webkit-text-fill-color: #8b89ff;
 }
 
 .desc {
@@ -1631,4 +1631,25 @@ html.light-mode #info-extra .popup {
 html.dark-mode #info .popup,
 html.dark-mode #info-extra .popup {
   background: #FEEBF6;
+}
+
+/* Dark mode styling for extracurricular menu */
+html.dark-mode .extracurricular-section .overlay-header h2 {
+  color: #FAE3C6;
+}
+
+html.dark-mode .extracurricular-section .menu__item-link {
+  color: #F564A9;
+}
+
+html.dark-mode .extracurricular-section .menu__item-link:hover {
+  color: #FAA4BD;
+}
+
+html.dark-mode .extracurricular-section .marquee {
+  background: #533B4D;
+}
+
+html.dark-mode .extracurricular-section .marquee span {
+  color: #FAA4BD;
 }
