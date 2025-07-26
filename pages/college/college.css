@@ -506,6 +506,10 @@ body.college-page {
   padding: 6rem 0 2rem;
 }
 
+html.dark-mode .extracurricular-section {
+  background: linear-gradient(0deg, #2A1458, transparent);
+}
+
 .extracurricular-section.visible {
   opacity: 1;
   transform: translateY(0);
@@ -936,12 +940,23 @@ body.college-page {
   letter-spacing: 0.1em;
 }
 
+html.dark-mode .items h4 {
+  color: #8b89ff;
+  -webkit-text-fill-color: #8b89ff;
+}
+
+
 
 .items h2:hover,
 .items h3:hover,
 .items h4:hover {
   color: #7674fc;
-  -webkit-text-fill-color: #8b89ff;
+  -webkit-text-fill-color: #b014f3;
+}
+
+html.dark-mode .items h4:hover {
+  color: #8b89ff;
+  -webkit-text-fill-color: #d0cfff;
 }
 
 .desc {
@@ -956,6 +971,13 @@ body.college-page {
   color: rgba(0, 0, 0, 0.7);
   font-style: italic;
   margin: 0.3rem 0;
+}
+
+
+html.dark-mode .desc {
+  font-size: 1rem;
+  color: rgba(201, 164, 164, 0.7);
+
 }
 
 .items li.left {
