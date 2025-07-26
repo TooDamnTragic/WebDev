@@ -940,6 +940,8 @@ html.dark-mode .extracurricular-section {
   letter-spacing: 0.1em;
 }
 
+html.dark-mode .items h2,
+html.dark-mode .items h3,
 html.dark-mode .items h4 {
   color: #8b89ff;
   -webkit-text-fill-color: #8b89ff;
@@ -954,6 +956,8 @@ html.dark-mode .items h4 {
   -webkit-text-fill-color: #b014f3;
 }
 
+html.dark-mode .items h2:hover,
+html.dark-mode .items h3:hover,
 html.dark-mode .items h4:hover {
   color: #8b89ff;
   -webkit-text-fill-color: #d0cfff;
@@ -979,6 +983,11 @@ html.dark-mode .desc {
   color: rgba(201, 164, 164, 0.7);
 
 }
+
+html.dark-mode .years {
+  color: rgba(201, 164, 164, 0.7);
+}
+
 
 .items li.left {
   margin-right: 50%;
@@ -1657,11 +1666,11 @@ html.dark-mode #info-extra .popup {
 
 /* Dark mode styling for extracurricular menu */
 html.dark-mode .extracurricular-section .overlay-header h2 {
-  color: #FAE3C6;
+  color: #F564A9;
 }
 
 html.dark-mode .extracurricular-section .menu__item-link {
-  color: #F564A9;
+  color: #FAA4BD;
 }
 
 html.dark-mode .extracurricular-section .menu__item-link:hover {
@@ -1673,5 +1682,5 @@ html.dark-mode .extracurricular-section .marquee {
 }
 
 html.dark-mode .extracurricular-section .marquee span {
-  color: #FAA4BD;
+  color: #fae3c6;
 }
