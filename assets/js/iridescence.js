@@ -23,6 +23,7 @@ uniform vec3 uResolution;
 uniform vec2 uMouse;
 uniform float uAmplitude;
 uniform float uSpeed;
+uniform float uIsLight;
 
 
 varying vec2 vUv;
@@ -45,7 +46,8 @@ void main() {
   float t = clamp(col.r, 0.0, 1.0);
   vec3 gradAB = mix(uColor1, uColor2, smoothstep(0.0, 0.5, t));
   vec3 grad = mix(gradAB, uColor3, smoothstep(0.5, 1.0, t));
-  gl_FragColor = vec4(col, 1.0);
+  vec3 finalCol = mix(grad + col, col, uIsLight);
+  gl_FragColor = vec4(finalCol, 1.0);
 }
 `;
 
@@ -91,13 +93,23 @@ document.addEventListener('DOMContentLoaded', () => {
       uResolution: { value: new Color(gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height) },
       uMouse: { value: new Float32Array([0.5, 0.5]) },
       uAmplitude: { value: amplitude },
-      uSpeed: { value: speed }
+      uSpeed: { value: speed },
+      uIsLight: { value: document.documentElement.classList.contains('light-mode') ? 1 : 0 }
     }
   });
 
   const mesh = new Mesh(gl, { geometry, program });
   container.appendChild(gl.canvas);
   resize();
+
+  const updateIsLight = () => {
+    program.uniforms.uIsLight.value = document.documentElement.classList.contains('light-mode') ? 1 : 0;
+  };
+
+  const observer = new MutationObserver(updateIsLight);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+  updateIsLight();
 
   let frame;
   function update(t) {
@@ -123,6 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (gl.canvas.parentNode === container) {
       container.removeChild(gl.canvas);
     }
+    observer.disconnect();
     gl.getExtension('WEBGL_lose_context')?.loseContext();
   });
 });
