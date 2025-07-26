@@ -32,7 +32,7 @@ void main() {
   vec2 uv = (vUv.xy * 2.0 - 1.0) * uResolution.xy / mr;
 
   uv += (uMouse - vec2(0.5)) * uAmplitude;
-
+  
   float d = -uTime * 0.5 * uSpeed;
   float a = 0.0;
   for (float i = 0.0; i < 8.0; ++i) {
