@@ -880,7 +880,6 @@ html.light-mode .college {
   --textColor: #FBF8EF;
 }
 
-
 html.light-mode .works {
   --light: #91f0ff;
   --dark: #1fa6c8;
@@ -966,4 +965,9 @@ html.dark-mode .life {
   --light: #000000;
   --dark: #749090;
   --textColor: #FFFFFF;
+}
+
+/* Invert iridescence colors in dark mode */
+html.dark-mode .college-page #iridescence {
+  filter: invert();
 }
