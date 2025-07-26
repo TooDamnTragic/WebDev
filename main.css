@@ -831,7 +831,8 @@ html.light-mode .theme-toggle svg {
 
 /* Index page light theme */
 html.light-mode body.index-page {
-  background: #fdf4e4;
+  /* Bright sky gradient for light mode */
+  background: linear-gradient(to bottom, #a7d8ff 0%, #e8f7ff 80%, #ffffff 100%);
   color: #222;
 }
 
@@ -875,27 +876,27 @@ html.light-mode .college-page #iridescence {
 
 /* Light mode colors for navigation circles on the index page */
 html.light-mode .college {
-  --light: #80CBC4;
-  --dark: #B4EBE6;
-  --textColor: #5755FE;
+  --light: #7fffd4;
+  --dark: #32bfa2;
+  --textColor: #064742;
 }
 
 html.light-mode .works {
-  --light: #9fd4ff;
-  --dark: #355d7b;
-  --textColor: #111;
+  --light: #91f0ff;
+  --dark: #1fa6c8;
+  --textColor: #064742;
 }
 
 html.light-mode .contact {
-  --light: #b8f48a;
-  --dark: #506f45;
-  --textColor: #111;
+  --light: #aff5e2;
+  --dark: #2db1a6;
+  --textColor: #064742;
 }
 
 html.light-mode .life {
-  --light: #ffffff;
-  --dark: #8b6f6f;
-  --textColor: #000;
+  --light: #d0fff9;
+  --dark: #3fa9b9;
+  --textColor: #064742;
 }
 
 /* Dark mode base styles */

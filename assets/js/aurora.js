@@ -107,74 +107,90 @@ fragColor = vec4(auroraColor * auroraAlpha, auroraAlpha);
 `;
 
 document.addEventListener('DOMContentLoaded', () => {
-const container = document.getElementById('aurora');
-if (!container) return;
+    const container = document.getElementById('aurora');
+    if (!container) return;
 
-const renderer = new Renderer({
-    alpha: true,
-    premultipliedAlpha: true,
-    antialias: true,
-    webgl2: true
-});
-const gl = renderer.gl;
-gl.clearColor(0, 0, 0, 0);
-gl.enable(gl.BLEND);
-gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
-gl.canvas.style.backgroundColor = 'transparent';
+    const renderer = new Renderer({
+        alpha: true,
+        premultipliedAlpha: true,
+        antialias: true,
+        webgl2: true
+    });
+    const gl = renderer.gl;
+    gl.clearColor(0, 0, 0, 0);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    gl.canvas.style.backgroundColor = 'transparent';
 
-let program;
+    let program;
 
-function resize() {
-    const width = container.offsetWidth;
-    const height = container.offsetHeight;
-    renderer.setSize(width, height);
-    if (program) {
-    program.uniforms.uResolution.value = [width, height];
+    function resize() {
+        const width = container.offsetWidth;
+        const height = container.offsetHeight;
+        renderer.setSize(width, height);
+        if (program) {
+            program.uniforms.uResolution.value = [width, height];
+        }
     }
-}
-window.addEventListener('resize', resize);
+    window.addEventListener('resize', resize);
 
-const geometry = new Triangle(gl);
-if (geometry.attributes.uv) {
-    delete geometry.attributes.uv;
-}
-
-const colorStops = ['#5227FF', '#7cff67', '#5227FF'];
-const colorStopsArray = colorStops.map(hex => {
-    const c = new Color(hex);
-    return [c.r, c.g, c.b];
-});
-
-program = new Program(gl, {
-    vertex: VERT,
-    fragment: FRAG,
-    uniforms: {
-    uTime: { value: 0 },
-    uAmplitude: { value: 1.0 },
-    uColorStops: { value: colorStopsArray },
-    uResolution: { value: [container.offsetWidth, container.offsetHeight] },
-    uBlend: { value: 0.5 }
+    const geometry = new Triangle(gl);
+    if (geometry.attributes.uv) {
+        delete geometry.attributes.uv;
     }
-});
 
-const mesh = new Mesh(gl, { geometry, program });
-container.appendChild(gl.canvas);
+    const colorStopsDark = ['#5227FF', '#7cff67', '#5227FF'];
+    const colorStopsLight = ['#FFFFFF', '#FFF8B5', '#FFFFFF'];
 
-resize();
+    const getColorStopsArray = () => {
+        const colors = document.documentElement.classList.contains('light-mode') ?
+            colorStopsLight : colorStopsDark;
+        return colors.map(hex => {
+            const c = new Color(hex);
+            return [c.r, c.g, c.b];
+        });
+    };
 
-let frame;
-function update(t) {
+    program = new Program(gl, {
+        vertex: VERT,
+        fragment: FRAG,
+        uniforms: {
+            uTime: { value: 0 },
+            uAmplitude: { value: 1.0 },
+            uColorStops: { value: getColorStopsArray() },
+            uResolution: { value: [container.offsetWidth, container.offsetHeight] },
+            uBlend: { value: 0.5 }
+        }
+    });
+
+    const mesh = new Mesh(gl, { geometry, program });
+    container.appendChild(gl.canvas);
+
+    resize();
+
+    const updateColors = () => {
+        program.uniforms.uColorStops.value = getColorStopsArray();
+    };
+
+    const observer = new MutationObserver(updateColors);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+    updateColors();
+
+    let frame;
+    function update(t) {
+        frame = requestAnimationFrame(update);
+        program.uniforms.uTime.value = t * 0.001;
+        renderer.render({ scene: mesh });
+    }
     frame = requestAnimationFrame(update);
-    program.uniforms.uTime.value = t * 0.001;
-    renderer.render({ scene: mesh });
-}
-frame = requestAnimationFrame(update);
 
-window.addEventListener('beforeunload', () => {
-    cancelAnimationFrame(frame);
-    if (container && gl.canvas.parentNode === container) {
-    container.removeChild(gl.canvas);
-    }
-    gl.getExtension('WEBGL_lose_context')?.loseContext();
-});
+    window.addEventListener('beforeunload', () => {
+        cancelAnimationFrame(frame);
+        if (container && gl.canvas.parentNode === container) {
+            container.removeChild(gl.canvas);
+        }
+        observer.disconnect();
+        gl.getExtension('WEBGL_lose_context')?.loseContext();
+    });
 });
