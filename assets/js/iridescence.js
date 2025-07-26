@@ -46,7 +46,7 @@ void main() {
   float t = clamp(col.r, 0.0, 1.0);
   vec3 gradAB = mix(uColor1, uColor2, smoothstep(0.0, 0.5, t));
   vec3 grad = mix(gradAB, uColor3, smoothstep(0.5, 1.0, t));
-  vec3 finalCol = mix(grad + col, col, uIsLight);
+  vec3 finalCol = mix( col,grad + col, uIsLight);
   gl_FragColor = vec4(finalCol, 1.0);
 }
 `;
