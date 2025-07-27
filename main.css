@@ -813,12 +813,8 @@ html.light-mode .theme-toggle svg path {
   fill: #fff;
 }
 
-/* cooper */
-/* Index page light theme */
 html.light-mode body.index-page {
-  /* Solid sky blue background for light mode */
   background: skyblue;
-  /* Disable dark mode animation that overrides the gradient */
   animation: none;
   color: #222;
 }
