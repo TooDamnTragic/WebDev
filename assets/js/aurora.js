@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const colorStopsDark = ['#5227FF', '#7cff67', '#5227FF'];
-    const colorStopsLight = ['#FFFFFF', '#FFF8B5', '#FFFFFF'];
+    const colorStopsLight = ['#FFFFFF', '#00FF00', '#FFFFFF'];
 
     const getColorStopsArray = () => {
         const colors = document.documentElement.classList.contains('light-mode') ?

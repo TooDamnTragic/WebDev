@@ -816,13 +816,12 @@ html.light-mode .theme-toggle svg path {
 /* cooper */
 /* Index page light theme */
 html.light-mode body.index-page {
-  /* Sky blue gradient for light mode */
-  background: linear-gradient(to bottom, #91C8E4 0%, #749BC2 50%, #4682A9 100%);
+  /* Solid sky blue background for light mode */
+  background: skyblue;
   /* Disable dark mode animation that overrides the gradient */
   animation: none;
   color: #222;
 }
-
 
 /* Works page light theme */
 html.light-mode body.works-page {
