@@ -996,4 +996,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     return out;
   }
+  const backHome = document.querySelector('.back-home');
+  if (backHome) {
+    setTimeout(() => backHome.classList.add('show'), 3200);
+  }
 });

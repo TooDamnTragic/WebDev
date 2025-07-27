@@ -102,8 +102,14 @@ body.college-page {
   top: 1.5rem;
   left: 1.5rem;
   z-index: 10;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.back-home.show {
   opacity: 0.3;
-  transition: opacity 0.3s ease;
+  transform: translateY(0);
 }
 
 .back-home:hover {
