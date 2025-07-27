@@ -1070,8 +1070,8 @@ html.dark-mode .years {
 
 .mobile-image-container {
   position: relative;
-  width: 100%;
-  height: 200px;
+  width: 90vw;
+  height: auto;
   margin-bottom: 1rem;
   border-radius: 6px;
   overflow: hidden;
@@ -1079,8 +1079,8 @@ html.dark-mode .years {
 
 .mobile-image {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -1333,6 +1333,18 @@ html.dark-mode .years {
     max-width: 90vw;
     align-items: center;
   }
+
+  #info-image-wrapper,
+  #info-extra-image-wrapper {
+    width: 90vw;
+    height: auto;
+  }
+
+  #info-image,
+  #info-extra-image {
+    width: 100%;
+    height: auto;
+  }
 }
 
 @keyframes glisten {
@@ -1439,7 +1451,7 @@ body.transitioning {
   white-space: nowrap;
   font-weight: 600;
   color: #FFF7FC;
-  font-size: clamp(1.3rem, 4.5vw, 3rem);
+  font-size: clamp(1.3rem, 4.5vw, 5vh);
   line-height: 1.3;
   padding: 0.5rem 0;
   box-sizing: border-box;
@@ -1486,7 +1498,7 @@ body.transitioning {
   white-space: nowrap;
   text-transform: none;
   font-weight: 400;
-  font-size: clamp(1.3rem, 4.5vw, 3rem);
+  font-size: clamp(1.3rem, 4.5vw, 5vh);
   line-height: 1.4;
   padding: 1.5vh 1vw;
 }
