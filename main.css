@@ -413,8 +413,8 @@ body.college-page {
 .college {
   --dx: -18vmin + -2vmax;
   --dy: -10vmin + -2vmax;
-  --light: #ff0000;
-  --dark: #503b3b;
+  --light: red;
+  --dark: red;
   --textColor: #f0ead6;
   --size: 40vmin;
   z-index: 9;
@@ -424,8 +424,8 @@ body.college-page {
 .works {
   --dx: 11vmin + 2vmax;
   --dy: -7vmin + -2vmax;
-  --light: #2aa1e0;
-  --dark: #3a3a49;
+  --light: blue;
+  --dark: blue;
   --textColor: #f0ead6;
   --size: 35vmin;
   z-index: 8;
@@ -435,8 +435,8 @@ body.college-page {
 .contact {
   --dx: -6vmin + -2vmax;
   --dy: 10vmin + 2vmax;
-  --light: #8dec34;
-  --dark: #58634e;
+  --light: green;
+  --dark: green;
   --textColor: #f0ead6;
   --size: 30vmin;
   z-index: 7;
@@ -446,39 +446,14 @@ body.college-page {
 .life {
   --dx: 12vmin + 2vmax;
   --dy: 13vmin + 2vmax;
-  --light: #111010;
-  --dark: #4e3f3f;
+  --light: yellow;
+  --dark: yellow;
   --textColor: #000000;
   /* Black text for contrast */
   --size: 20vmin;
   /* Smaller size */
   z-index: 6;
   font-size: calc(var(--size)*0.15);
-
-  /* White core with subtle yellow tint */
-  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%),
-      rgba(255, 255, 245, 0.9) 0%,
-      rgba(255, 255, 235, 0.85) 20%,
-      rgba(255, 250, 225, 0.8) 40%,
-      rgba(255, 245, 210, 0.7) 60%,
-      rgba(255, 235, 190, 0.6) 80%,
-      rgba(17, 16, 16, 0.8) 100%);
-
-  /* Subtle yellow glow around white core */
-  box-shadow:
-    inset -2px -2px 5px rgba(255, 255, 255, 0.6),
-    inset 2px 2px 8px rgba(0, 0, 0, 0.15),
-    0 0 15px rgba(255, 255, 120, 0.4),
-    0 0 30px rgba(255, 240, 100, 0.3),
-    0 0 45px rgba(255, 220, 80, 0.2);
-
-  /* Enhanced floating animation with idle motion and slow pulsing light */
-  animation:
-    fireflyFloat 4s ease-in-out infinite,
-    fireflyGlow 2.5s ease-in-out infinite alternate,
-    lifeBallIdle 6s ease-in-out infinite,
-    lightPulse 3s ease-in-out infinite alternate;
-  /* 3 second pulse */
 }
 
 /* Enhanced firefly floating animation */
@@ -879,27 +854,27 @@ html.light-mode body.college-page {
 
 /* Light mode colors for navigation circles on the index page */
 html.light-mode .college {
-  --light: #B4EBE6;
-  --dark: #80CBC4;
-  --textColor: #FBF8EF;
+  --light: red;
+  --dark: red;
+  --textColor: #f0ead6;
 }
 
 html.light-mode .works {
-  --light: #91f0ff;
-  --dark: #1fa6c8;
-  --textColor: #064742;
+  --light: blue;
+  --dark: blue;
+  --textColor: #f0ead6;
 }
 
 html.light-mode .contact {
-  --light: #aff5e2;
-  --dark: #2db1a6;
-  --textColor: #064742;
+  --light: green;
+  --dark: green;
+  --textColor: #f0ead6;
 }
 
 html.light-mode .life {
-  --light: #d0fff9;
-  --dark: #3fa9b9;
-  --textColor: #064742;
+  --light: yellow;
+  --dark: yellow;
+  --textColor: #000000;
 }
 
 /* Dark mode base styles */
@@ -948,30 +923,25 @@ html.dark-mode body.college-page {
 
 /* Dark mode colors for navigation circles on the index page */
 html.dark-mode .college {
-  --light: #7fffd4;
-  --dark: #32bfa2;
-  --textColor: #064742;
+  --light: red;
+  --dark: red;
+  --textColor: #f0ead6;
 }
 
 html.dark-mode .works {
-  --light: #602B00;
-  --dark: #CAA284;
-  --textColor: #EEEEEE;
+  --light: blue;
+  --dark: blue;
+  --textColor: #f0ead6;
 }
 
 html.dark-mode .contact {
-  --light: #470B75;
-  --dark: #AF90BA;
-  --textColor: #EEEEEE;
+  --light: green;
+  --dark: green;
+  --textColor: #f0ead6;
 }
 
 html.dark-mode .life {
-  --light: #000000;
-  --dark: #749090;
-  --textColor: #FFFFFF;
-}
-
-/* Invert iridescence colors in dark mode */
-html.dark-mode .college-page #iridescence {
-  filter: invert();
+  --light: yellow;
+  --dark: yellow;
+  --textColor: #000000;
 }
