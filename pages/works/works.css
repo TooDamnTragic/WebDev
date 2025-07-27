@@ -104,19 +104,31 @@
     border-radius: 50px;
     backdrop-filter: blur(10px);
     background: rgba(255, 255, 255, 0.7);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    z-index: 11;
 }
 
 .back-link:hover {
-    color: white;
-    border-color: rgba(255, 255, 255, 0.6);
-    background: rgba(255, 255, 255, 0.1);
+    color: #5755FE;
+    border: 1px solid rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(0px);
     transform: translateY(-2px);
+    z-index: 14;
 }
 
 .back-link svg {
-
     width: clamp(22px, 1.6vw + 19px, 32px);
     height: clamp(22px, 1.6vw + 19px, 32px);
+    position: relative;
+    z-index: 2;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+.back-link:hover svg {
+    opacity: 1;
 }
 
 html.light-mode .back-link {
