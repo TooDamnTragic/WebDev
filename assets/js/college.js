@@ -1000,6 +1000,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (backHome) {
     setTimeout(() => backHome.classList.add('show'), 3200);
   }
+
   const backLink = document.querySelector('.back-link');
   if (backLink) {
     backLink.addEventListener('click', e => {

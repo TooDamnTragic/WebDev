@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (skipLoader) {
     nav.classList.add('show');
     if (loader) loader.remove();
+    const overlay = document.createElement('div');
+    overlay.className = 'skip-overlay';
+    document.body.appendChild(overlay);
+    requestAnimationFrame(() => overlay.classList.add('fade-out'));
+    overlay.addEventListener('transitionend', () => overlay.remove());
     localStorage.removeItem('skipLoader');
   } else {
 
