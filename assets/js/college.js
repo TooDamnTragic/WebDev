@@ -1000,4 +1000,23 @@ document.addEventListener('DOMContentLoaded', () => {
   if (backHome) {
     setTimeout(() => backHome.classList.add('show'), 3200);
   }
+  const backLink = document.querySelector('.back-link');
+  if (backLink) {
+    backLink.addEventListener('click', e => {
+      if (!document.documentElement.classList.contains('light-mode')) return;
+      e.preventDefault();
+      localStorage.setItem('skipLoader', 'true');
+      backLink.classList.add('glow');
+      const rect = backLink.getBoundingClientRect();
+      const overlay = document.createElement('div');
+      overlay.className = 'arrow-flash';
+      overlay.style.left = `${rect.left + rect.width / 2}px`;
+      overlay.style.top = `${rect.top + rect.height / 2}px`;
+      document.body.appendChild(overlay);
+      requestAnimationFrame(() => overlay.classList.add('expand'));
+      overlay.addEventListener('transitionend', () => {
+        window.location.href = backLink.href;
+      });
+    });
+  }
 });

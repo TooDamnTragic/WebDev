@@ -1,14 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
   const nav = document.querySelector('.nav');
   const loader = document.getElementById('loader');
-  
-  setTimeout(() => {
+
+  const skipLoader = localStorage.getItem('skipLoader') === 'true';
+  if (skipLoader) {
     nav.classList.add('show');
-    if(loader){
-      loader.classList.add('hide');
-      setTimeout(() => loader.remove(), 6000);
-    }
-  }, 3200);
+    if (loader) loader.remove();
+    localStorage.removeItem('skipLoader');
+  } else {
+
+    setTimeout(() => {
+      nav.classList.add('show');
+      if (loader) {
+        loader.classList.add('hide');
+        setTimeout(() => loader.remove(), 6000);
+      }
+    }, 3200);
+  }
 
   document.querySelectorAll('.section').forEach(link => {
     const text = link.textContent.trim().split('');

@@ -1706,3 +1706,36 @@ html.dark-mode .extracurricular-section .marquee {
 html.dark-mode .extracurricular-section .marquee span {
   color: #fae3c6;
 }
+
+/* Back button glow transition - light mode */
+html.light-mode .back-link.glow svg {
+  animation: backArrowGlow 0.6s forwards;
+}
+
+@keyframes backArrowGlow {
+  from {
+    filter: drop-shadow(0 0 0 rgba(255, 255, 255, 0.9));
+  }
+
+  to {
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 1));
+  }
+}
+
+.arrow-flash {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.7s ease;
+  z-index: 2000;
+}
+
+.arrow-flash.expand {
+  transform: translate(-50%, -50%) scale(120);
+}
