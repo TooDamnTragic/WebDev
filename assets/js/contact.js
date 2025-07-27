@@ -55,8 +55,11 @@ document.addEventListener('DOMContentLoaded', () => {
         waveSpeed: 0.05,
         pixelSize: 2,
         mouseFlowStrength: 0.05,
-        mouseVelocityDecay: 0.92
+        mouseVelocityDecay: 0.92,
+        mouseRotationStrength: 0,
+        rotationEase: 0
       });
+
 
 
       console.log('Dither background initialized');
