@@ -448,6 +448,10 @@ body.college-page {
   opacity: 1;
 }
 
+html.dark-mode .scroll-indicator {
+  color: rgba(21, 255, 0, 0.6);
+}
+
 
 @keyframes bounce {
 
@@ -1435,7 +1439,7 @@ body.transitioning {
   white-space: nowrap;
   font-weight: 600;
   color: #FFF7FC;
-  font-size: 5vh;
+  font-size: clamp(1.3rem, 4.5vw, 3rem);
   line-height: 1.3;
   padding: 0.5rem 0;
   box-sizing: border-box;
@@ -1482,7 +1486,7 @@ body.transitioning {
   white-space: nowrap;
   text-transform: none;
   font-weight: 400;
-  font-size: 5vh;
+  font-size: clamp(1.3rem, 4.5vw, 3rem);
   line-height: 1.4;
   padding: 1.5vh 1vw;
 }
