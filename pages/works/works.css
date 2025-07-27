@@ -96,13 +96,14 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.6);
     text-decoration: none;
-    font-size: clamp(0.8rem, 0.8rem + 0.5vw, 1.2rem);
-    padding: clamp(0.6rem, 0.6rem + 0.3vw, 1rem) clamp(1rem, 1rem + 0.6vw, 1.6rem);
+    font-size: clamp(1.6rem, 1.6rem + 1vw, 2.4rem);
+    padding: clamp(1.2rem, 1.2rem + 0.6vw, 2rem) clamp(2rem, 2rem + 1.2vw, 3.2rem);
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 25px;
     backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.7);
 
     .back-link:hover {
         color: white;
@@ -112,13 +113,14 @@
     }
 
     .back-link svg {
-        width: clamp(14px, 1vw + 12px, 20px);
-        height: clamp(14px, 1vw + 12px, 20px);
+        width: clamp(28px, 2vw + 24px, 40px);
+        height: clamp(28px, 2vw + 24px, 40px);
     }
 
-    width: clamp(14px, 1vw + 12px, 20px);
-    height: clamp(14px, 1vw + 12px, 20px);
+    width: clamp(28px, 2vw + 24px, 40px);
+    height: clamp(28px, 2vw + 24px, 40px);
 }
+
 
 /* Mobile Responsiveness */
 @media (max-width: 768px) {

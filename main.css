@@ -773,7 +773,7 @@ body.fade-out {
   background: rgba(255, 255, 255, 0.7);
   border: none;
   border-radius: 50%;
-  padding: clamp(0.25rem, 0.15rem + 0.3vw, 0.5rem);
+  padding: clamp(0.5rem, 0.3rem + 0.6vw, 1rem);
   cursor: pointer;
   z-index: 100;
   opacity: 0;
@@ -792,8 +792,8 @@ body.fade-out {
 }
 
 .theme-toggle svg {
-  width: clamp(1rem, 1vw + 0.5rem, 1.75rem);
-  height: clamp(1rem, 1vw + 0.5rem, 1.75rem);
+  width: clamp(2rem, 2vw + 1rem, 3.5rem);
+  height: clamp(2rem, 2vw + 1rem, 3.5rem);
 }
 
 html.light-mode body {
