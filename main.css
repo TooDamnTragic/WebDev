@@ -785,7 +785,7 @@ body.fade-out {
   position: fixed;
   top: clamp(1rem, calc(0.5rem + 2vw), 3rem);
   right: clamp(1rem, calc(0.5rem + 2vw), 3rem);
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(0, 0, 0, 0.7);
   border: none;
   border-radius: 50%;
   padding: clamp(0.5rem, 0.3rem + 0.6vw, 1rem);
@@ -817,7 +817,7 @@ html.light-mode body {
 }
 
 html.light-mode .theme-toggle {
-  background: #000;
+  background: #fff;
 }
 
 html.light-mode .theme-toggle svg {
@@ -825,7 +825,7 @@ html.light-mode .theme-toggle svg {
 }
 
 html.light-mode .theme-toggle svg path {
-  fill: #fff;
+  fill: #000;
 }
 
 html.light-mode body.index-page {

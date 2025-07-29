@@ -469,7 +469,11 @@ html.dark-mode .back-link:hover {
 }
 
 html.dark-mode .scroll-indicator {
-  color: rgba(21, 255, 0, 0.6);
+  color: rgba(18, 179, 3, 0.6);
+}
+
+tml.dark-mode .scroll-indicator.visible {
+  opacity: 0.7;
 }
 
 
