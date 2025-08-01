@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (hasChanged) {
                 const transform = `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`;
-                const filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : '';
+                const filte  r = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : '';
                 card.style.transform = transform;
                 card.style.filter = filter;
                 lastTransforms.set(i, newTransform);
