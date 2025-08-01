@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const defaultBg = getComputedStyle(body).background;
 
   const curricularSection = document.getElementById('curricular-section');
+  const certificateSection = document.getElementById('certificate-section');
   const extracurricularSection = document.getElementById('extracurricular-section');
   const adjustHeadingSizes = () => {
     document.querySelectorAll('.edu-container .item').forEach(item => {
@@ -776,6 +777,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Show curricular section when scrolled past hero
     if (scrollY > windowHeight * 0.5) {
       curricularSection.classList.add('visible');
+    }
+
+    // Show certificate section when scrolled to it
+    if (certificateSection) {
+      const certTop = certificateSection.offsetTop;
+      if (scrollY + windowHeight >= certTop - windowHeight * 0.3) {
+        certificateSection.classList.add('visible');
+      }
     }
 
     // Show extracurricular section when scrolled to it
