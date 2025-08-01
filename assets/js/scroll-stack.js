@@ -1,22 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
     const scroller = document.getElementById('certificate-stack');
-    if (!scroller || typeof Lenis === 'undefined') return;
+    if (!scroller) return;
 
-    const lenis = new Lenis({
-        wrapper: scroller,
-        content: scroller.querySelector('.scroll-stack-inner'),
-        duration: 1.2,
-        easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
-        touchMultiplier: 2,
-        normalizeWheel: true,
-        wheelMultiplier: 1,
-        touchInertiaMultiplier: 35,
-        lerp: 0.1,
-        syncTouch: true,
-        syncTouchLerp: 0.075,
-        touchInertia: 0.6
-    });
+    let lenis;
+    if (typeof Lenis !== 'undefined') {
+        lenis = new Lenis({
+            wrapper: scroller,
+            content: scroller.querySelector('.scroll-stack-inner'),
+            duration: 1.2,
+            easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smoothWheel: true,
+            touchMultiplier: 2,
+            normalizeWheel: true,
+            wheelMultiplier: 1,
+            touchInertiaMultiplier: 35,
+            lerp: 0.1,
+            syncTouch: true,
+            syncTouchLerp: 0.075,
+            touchInertia: 0.6
+        });
+    }
 
     const cards = Array.from(scroller.querySelectorAll('.scroll-stack-card'));
     const lastTransforms = new Map();
@@ -124,13 +127,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    lenis.on('scroll', updateCardTransforms);
+    if (lenis) {
+        lenis.on('scroll', updateCardTransforms);
 
-    function raf(time) {
-        lenis.raf(time);
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+
         requestAnimationFrame(raf);
+    } else {
+        scroller.addEventListener('scroll', updateCardTransforms);
     }
 
-    requestAnimationFrame(raf);
     updateCardTransforms();
 });
