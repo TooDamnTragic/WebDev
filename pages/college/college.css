@@ -1761,7 +1761,7 @@ html.light-mode .back-link.glow svg {
 /* Certificates Scroll Stack Section */
 .certificate-section {
   min-height: 60vh;
-  background: linear-gradient(0deg, #8B93FF, transparent);
+  background: transparent;
   position: relative;
   opacity: 0;
   transform: translateY(50px);
