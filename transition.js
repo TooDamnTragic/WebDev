@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.removeItem('transitionColor');
   }
 
-  document.querySelectorAll('a:not(.section)').forEach(link => {
+  document.querySelectorAll('a:not(.section):not(.home-link)').forEach(link => {
     link.addEventListener('click', e => {
       const url = link.getAttribute('href');
       if (!url || url.startsWith('http') || url.startsWith('mailto:')) return;
