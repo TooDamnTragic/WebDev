@@ -5,10 +5,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const color = localStorage.getItem('transitionColor');
   if (color) {
     const overlay = document.createElement('div');
-    overlay.className = 'page-slide';
+    overlay.className = 'page-transition';
     overlay.style.setProperty('--transition-color', color);
     document.body.appendChild(overlay);
-    requestAnimationFrame(() => overlay.classList.add('hide'));
+    requestAnimationFrame(() => overlay.classList.add('shrink'));
     overlay.addEventListener('transitionend', () => overlay.remove());
     localStorage.removeItem('transitionColor');
   }
@@ -18,9 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const url = link.getAttribute('href');
       if (!url || url.startsWith('http') || url.startsWith('mailto:')) return;
       e.preventDefault();
-      const overlay = document.createElement('div');
-      overlay.className = 'page-slide show';
-      document.body.appendChild(overlay);
+      document.body.classList.add('fade-out');
       setTimeout(() => {
         window.location = url;
       }, 400);
