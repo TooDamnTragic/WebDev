@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const hasChanged =
                 !last ||
                 Math.abs(last.translateY - newTransform.translateY) > 0.1 ||
-                Math.abs(last.scal  e - newTransform.scale) > 0.001 ||
+                Math.abs(last.scale - newTransform.scale) > 0.001 ||
                 Math.abs(last.rotation - newTransform.rotation) > 0.1 ||
                 Math.abs(last.blur - newTransform.blur) > 0.1;
 
