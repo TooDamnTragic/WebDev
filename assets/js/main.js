@@ -29,13 +29,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     link.addEventListener('click', e => {
       e.preventDefault();
-      const color = getComputedStyle(link).getPropertyValue('--light') || '#000';
-      localStorage.setItem('transitionColor', color.trim());
-      link.classList.add('zoom');
-      document.body.classList.add('fade-out');
-      setTimeout(() => {
-        window.location = link.getAttribute('href');
-      }, 600);
+      if (link.classList.contains('college')) {
+        const overlay = document.createElement('div');
+        overlay.className = 'slide-overlay';
+        document.body.appendChild(overlay);
+        requestAnimationFrame(() => overlay.classList.add('expand'));
+        overlay.addEventListener('transitionend', () => {
+          window.location = link.getAttribute('href');
+        });
+      } else {
+        const color = getComputedStyle(link).getPropertyValue('--light') || '#000';
+        localStorage.setItem('transitionColor', color.trim());
+        link.classList.add('zoom');
+        document.body.classList.add('fade-out');
+        setTimeout(() => {
+          window.location = link.getAttribute('href');
+        }, 600);
+      }
     });
   });
 
