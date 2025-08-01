@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const nav = document.querySelector('.planet-nav');
+  const nav = document.querySelector('.nav');
   const loader = document.getElementById('loader');
 
   const skipLoader = localStorage.getItem('skipLoader') === 'true';
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 3200);
   }
 
-  document.querySelectorAll('.planet').forEach(link => {
+  document.querySelectorAll('.section').forEach(link => {
     const text = link.textContent.trim().split('');
     link.innerHTML = text.map(ch => `<span>${ch}</span>`).join('');
 
@@ -39,5 +39,21 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // simple hover effects no longer need mouse tracking
+  document.addEventListener('mousemove', e => {
+    document.querySelectorAll('.section').forEach(section => {
+      const rect = section.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const dx = x - cx;
+      const dy = y - cy;
+      const dist = Math.hypot(dx, dy);
+      const maxDist = Math.hypot(rect.width, rect.height) / 2;
+      const intensity = 1 - Math.min(dist / maxDist, 1);
+      section.style.setProperty('--mx', `${x}px`);
+      section.style.setProperty('--my', `${y}px`);
+      section.style.setProperty('--intensity', intensity.toFixed(3));
+    });
+  });
 });
