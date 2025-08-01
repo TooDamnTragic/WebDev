@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const curricularSection = document.getElementById('curricular-section');
   const certificateSection = document.getElementById('certificate-section');
   const extracurricularSection = document.getElementById('extracurricular-section');
+
   const adjustHeadingSizes = () => {
     document.querySelectorAll('.edu-container .item').forEach(item => {
       const heading = item.querySelector('h2, h3, h4, h5');
@@ -106,7 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Fetch and apply text content
   loadInfo();
 
-
   // Enhanced font cycling effect for hero title - Mouse movement-based randomization
   const heroTitles = document.querySelectorAll('.college-hero .hero-title');
 
@@ -114,7 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const fontConfig = [
     { name: 'Hackney', scale: 1 },
     { name: 'DTGetai', scale: 0.95 },
-    // { name: 'Asember', scale: 0.9 },
     { name: 'Savate', scale: 1 },
     { name: 'Iconic', scale: 1 },
     { name: 'Catrose', scale: 0.95 },
@@ -123,7 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: 'Arshine', scale: 1 },
     { name: 'Sophiamelanieregular', scale: 0.85 },
     { name: 'Crackchakingtrialregular', scale: 0.95 },
-    // { name: 'Johnfoster', scale: 1 },
     { name: 'Motterdam', scale: 1 },
     { name: 'Sacloud', scale: 0.95 },
     { name: 'Tfwanderclouddemo', scale: 1 },
@@ -131,17 +129,12 @@ document.addEventListener('DOMContentLoaded', () => {
     { name: 'Cabin', scale: 1 },
     { name: 'Demoarmagist', scale: 1 },
     { name: 'Hastegi', scale: 1 },
-    // { name: 'Washington', scale: 1 },
     { name: 'Aporrheton', scale: 1 },
     { name: 'Blogh', scale: 1 },
-    // { name: 'HackneyAlt', scale: 1 },
     { name: 'LigemaDemo', scale: 1 },
     { name: 'Plact', scale: 1 },
     { name: 'Plunct', scale: 1 },
     { name: 'ThunderBlackHC', scale: 1 }
-    // { name: 'TuringAbstract', scale: 1 },
-    // { name: 'TuringBlock', scale: 1 },
-    // { name: 'TuringOutline', scale: 1 }
   ];
 
   const shuffleArray = (array) => {
@@ -531,6 +524,7 @@ document.addEventListener('DOMContentLoaded', () => {
       cardContainer.addEventListener('pointerleave', resetChars);
     });
   };
+
   setTimeout(() => {
     initializeProfileCardEffects();
     adjustHeadingSizes();
@@ -736,7 +730,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         popupTimeouts.delete(popupId);
-      }, 1000); // 2 second delay
+      }, 1000); // 1 second delay
 
       popupTimeouts.set(popupId, timeoutId);
     }
@@ -868,6 +862,7 @@ document.addEventListener('DOMContentLoaded', () => {
       hideInfo(isExtracurricular);
     });
   };
+
   // Setup all item listeners
   document.querySelectorAll('.curricular-section .item').forEach(item => {
     setupItemListeners(item, false);
@@ -1005,6 +1000,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     return out;
   }
+
   const backHome = document.querySelector('.back-home');
   if (backHome) {
     setTimeout(() => backHome.classList.add('show'), 3200);

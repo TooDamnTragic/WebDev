@@ -1,24 +1,49 @@
 document.addEventListener('DOMContentLoaded', () => {
     const scroller = document.getElementById('certificate-stack');
-    if (!scroller || typeof Lenis === 'undefined') return;
+    if (!scroller) {
+        console.error('Certificate stack scroller not found');
+        return;
+    }
 
-    const lenis = new Lenis({
-        wrapper: scroller,
-        content: scroller.querySelector('.scroll-stack-inner'),
-        duration: 1.2,
-        easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
-        touchMultiplier: 2,
-        normalizeWheel: true,
-        wheelMultiplier: 1,
-        touchInertiaMultiplier: 35,
-        lerp: 0.1,
-        syncTouch: true,
-        syncTouchLerp: 0.075,
-        touchInertia: 0.6
-    });
+    // Check if Lenis is available
+    let lenis = null;
+    if (typeof Lenis !== 'undefined') {
+        try {
+            lenis = new Lenis({
+                wrapper: scroller,
+                content: scroller.querySelector('.scroll-stack-inner'),
+                duration: 1.2,
+                easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                smoothWheel: true,
+                touchMultiplier: 2,
+                normalizeWheel: true,
+                wheelMultiplier: 1,
+                touchInertiaMultiplier: 35,
+                lerp: 0.1,
+                syncTouch: true,
+                syncTouchLerp: 0.075,
+                touchInertia: 0.6
+            });
+
+            function raf(time) {
+                lenis.raf(time);
+                requestAnimationFrame(raf);
+            }
+            requestAnimationFrame(raf);
+        } catch (error) {
+            console.warn('Lenis initialization failed, using native scroll:', error);
+            lenis = null;
+        }
+    } else {
+        console.warn('Lenis not available, using native scroll');
+    }
 
     const cards = Array.from(scroller.querySelectorAll('.scroll-stack-card'));
+    if (cards.length === 0) {
+        console.warn('No scroll stack cards found');
+        return;
+    }
+
     const lastTransforms = new Map();
     const itemDistance = 100;
     const itemScale = 0.03;
@@ -29,6 +54,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const rotationAmount = 0;
     const blurAmount = 0;
 
+    console.log(`Initializing scroll stack with ${cards.length} cards`);
+
+    // Set initial card properties
     cards.forEach((card, i) => {
         if (i < cards.length - 1) {
             card.style.marginBottom = `${itemDistance}px`;
@@ -61,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const stackPos = parsePercentage(stackPosition, containerHeight);
         const scaleEndPos = parsePercentage(scaleEndPosition, containerHeight);
         const endElement = scroller.querySelector('.scroll-stack-end');
-        const endElementTop = endElement ? endElement.offsetTop : 0;
+        const endElementTop = endElement ? endElement.offsetTop : scroller.scrollHeight;
 
         cards.forEach((card, i) => {
             const cardTop = card.offsetTop;
@@ -124,13 +152,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    lenis.on('scroll', updateCardTransforms);
-
-    function raf(time) {
-        lenis.raf(time);
-        requestAnimationFrame(raf);
+    // Set up scroll listener
+    if (lenis) {
+        lenis.on('scroll', updateCardTransforms);
+    } else {
+        scroller.addEventListener('scroll', updateCardTransforms);
     }
 
-    requestAnimationFrame(raf);
-    updateCardTransforms();
+    // Initial update with delay to ensure layout is complete
+    setTimeout(() => {
+        updateCardTransforms();
+    }, 100);
+
+    // Handle resize
+    window.addEventListener('resize', () => {
+        setTimeout(updateCardTransforms, 100);
+    });
 });
