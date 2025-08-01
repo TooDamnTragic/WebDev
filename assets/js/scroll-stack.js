@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
             touchInertia: 0.6
         });
     }
-
     const cards = Array.from(scroller.querySelectorAll('.scroll-stack-card'));
     const lastTransforms = new Map();
     const itemDistance = 100;
@@ -59,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateCardTransforms() {
-        const scrollTop = scroller.scrollTop;
+        const scrollTop = lenis ? lenis.scroll : scroller.scrollTop;
         const containerHeight = scroller.clientHeight;
         const stackPos = parsePercentage(stackPosition, containerHeight);
         const scaleEndPos = parsePercentage(scaleEndPosition, containerHeight);
