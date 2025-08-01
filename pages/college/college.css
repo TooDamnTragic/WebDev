@@ -1757,3 +1757,75 @@ html.light-mode .back-link.glow svg {
 .arrow-flash.expand {
   transform: translate(-50%, -50%) scale(120);
 }
+
+/* Certificates Scroll Stack Section */
+.certificate-section {
+  min-height: 60vh;
+  background: linear-gradient(0deg, #8B93FF, transparent);
+  position: relative;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 1s ease, transform 1s ease;
+  width: 100%;
+  padding: 6rem 0;
+}
+
+html.dark-mode .certificate-section {
+  background: linear-gradient(0deg, #2A1458, transparent);
+}
+
+.certificate-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-stack-scroller {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: visible;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: scroll-position;
+}
+
+.scroll-stack-inner {
+  padding: 20vh 5rem 50rem;
+  min-height: 100vh;
+}
+
+.scroll-stack-card-wrapper {
+  position: relative;
+}
+
+.scroll-stack-card {
+  transform-origin: top center;
+  will-change: transform, filter;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  height: 20rem;
+  width: 100%;
+  margin: 30px 0;
+  padding: 3rem;
+  border-radius: 40px;
+  box-sizing: border-box;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  position: relative;
+  background: #fff;
+}
+
+html.dark-mode .scroll-stack-card {
+  background: #1a1a1a;
+  color: #ddd;
+}
+
+.scroll-stack-end {
+  width: 100%;
+  height: 1px;
+}
