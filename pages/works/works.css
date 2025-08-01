@@ -111,7 +111,7 @@
 
 .back-link:hover {
     color: #5755FE;
-    border: 1px solid rgba(0, 0, 0, 0.7);
+    border: 1px soli d rgba(0, 0, 0, 0.7);
     background: rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(0px);
     transform: translateY(-2px);
