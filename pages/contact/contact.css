@@ -10,6 +10,7 @@
   overflow-y: auto;
   position: relative;
   padding: 2rem;
+  box-sizing: border-box;
 }
 
 /* Dither Background Container */
@@ -152,11 +153,13 @@ html.dark-mode .back-link:hover {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   justify-items: center;
+  justify-content: center;
   gap: 2rem;
   max-width: 1200px;
   width: 100%;
   position: relative;
   z-index: 2;
+  margin: 0 auto;
 }
 
 /* Contact Cards - Miseducation Style with Enhanced Styling and Magnetic Effect */
@@ -886,6 +889,7 @@ html.dark-mode .back-link:hover {
 @media (max-width: 768px) {
   .contact-page {
     padding: 1rem;
+    align-items: flex-start;
   }
 
   .contact-grid {
