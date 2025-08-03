@@ -46,29 +46,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const lastTransforms = new Map();
     const itemDistance = 100;
-    const itemScale = 0.03;
+    const itemScale = 0.04;
     const itemStackDistance = 30;
     const stackPosition = '20%';
     const scaleEndPosition = '10%';
-    const baseScale = 0.85;
+    const baseScale = 0.5;
     const rotationAmount = 0;
     const blurAmount = 0;
 
     console.log(`Initializing scroll stack with ${cards.length} cards`);
 
     // Set initial card properties
-    cards.forEach((card, i) => {
-        if (i < cards.length - 1) {
-            card.style.marginBottom = `${itemDistance}px`;
-        }
-        card.style.willChange = 'transform, filter';
-        card.style.transformOrigin = 'top center';
-        card.style.backfaceVisibility = 'hidden';
-        card.style.transform = 'translateZ(0)';
-        card.style.webkitTransform = 'translateZ(0)';
-        card.style.perspective = '1000px';
-        card.style.webkitPerspective = '1000px';
-    });
+    const totalCards = cards.length;
+
+    function updateCardSizes() {
+        const minWidth = 40;
+        const maxWidth = 80;
+        const step = totalCards > 1 ? (maxWidth - minWidth) / (totalCards - 1) : 0;
+
+        cards.forEach((card, i) => {
+            if (i < totalCards - 1) {
+                card.style.marginBottom = `${itemDistance}px`;
+            }
+
+            const cardWidth = minWidth + step * i;
+            card.style.width = `${cardWidth}vw`;
+            const widthPx = window.innerWidth * (cardWidth / 100);
+            card.style.height = `${widthPx * 0.75}px`;
+            card.style.willChange = 'transform, filter';
+            card.style.transformOrigin = 'top center';
+            card.style.backfaceVisibility = 'hidden';
+            card.style.transform = 'translateZ(0)';
+            card.style.webkitTransform = 'translateZ(0)';
+            card.style.perspective = '1000px';
+            card.style.webkitPerspective = '1000px';
+        });
+    }
+
+    updateCardSizes();
 
     function parsePercentage(value, containerHeight) {
         if (typeof value === 'string' && value.includes('%')) {
@@ -99,10 +114,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const pinEnd = endElementTop - containerHeight / 2;
 
             const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd);
-            const targetScale = baseScale + i * itemScale;
+            const targetScale = Math.min(1, baseScale + i * itemScale);
             const scale = 1 - scaleProgress * (1 - targetScale);
             const rotation = rotationAmount ? i * rotationAmount * scaleProgress : 0;
-
             let blur = 0;
             if (blurAmount) {
                 let topCardIndex = 0;
@@ -166,6 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Handle resize
     window.addEventListener('resize', () => {
+        updateCardSizes();
         setTimeout(updateCardTransforms, 100);
     });
 });

@@ -13,7 +13,7 @@
       position: relative;
       width: 100vw;
       margin: 0;
-      height: 80vh;
+      height: 200vh;
       overflow-y: auto;
       overflow-x: hidden;
       scroll-behavior: smooth;
@@ -22,18 +22,17 @@
 
     .scroll-stack-inner {
       position: relative;
-      /* Important: needs enough height for all cards plus spacing */
-      min-height: 300vh;
-      /* Increased for more cards */
+      min-height: 1vh;
       padding: 20vh 0 100vh;
-      /* Extra space at bottom */
+
     }
 
     .scroll-stack-card {
       position: relative;
-      width: 100%;
+      width: 40%;
+      aspect-ratio: 2.5;
       max-width: none;
-      margin: 0;
+      margin: 0 auto;
       padding: 2rem;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       border-radius: 15px;

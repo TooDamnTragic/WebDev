@@ -47,17 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
           [0.45, 0.82, 1]
         ],
         disableAnimation: false,
-        enableMouseInteraction: true,
-        mouseRadius: 0.3,
+        enableMouseInteraction: false,
         colorNum: 4,
         waveAmplitude: 0.3,
         waveFrequency: 3,
         waveSpeed: 0.05,
-        pixelSize: 2,
-        mouseFlowStrength: 0.05,
-        mouseVelocityDecay: 0.92,
-        mouseRotationStrength: 0,
-        rotationEase: 0
+        pixelSize: 2
       });
 
 
