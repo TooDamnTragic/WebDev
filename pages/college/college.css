@@ -1820,10 +1820,103 @@ html.dark-mode .certificate-section {
   background: #fff;
 }
 
-html.dark-mode .scroll-stack-card {
-  background: #1a1a1a;
-  color: #ddd;
+/* License & achievement card color rotation */
+#certificate-stack html.dark-mode .scroll-stack-card:nth-child(5n + 1) {
+  background-color: #231005;
 }
+
+#certificate-stack html.dark-mode .scroll-stack-card:nth-child(5n + 1) h3,
+#certificate-stack html.dark-mode .scroll-stack-card:nth-child(5n + 1) p {
+  color: #EAE0DA;
+}
+
+#certificate-stack .scroll-stack-card:nth-child(5n + 1) {
+  background-color: #EAE0DA;
+}
+
+#certificate-stack .scroll-stack-card:nth-child(5n + 1) h3,
+#certificate-stack .scroll-stack-card:nth-child(5n + 1) p {
+  color: #231005;
+}
+
+
+#certificate-stack html.dark-mode .scroll-stack-card:nth-child(5n + 2) {
+  background-color: #C67E5A;
+}
+
+#certificate-stack html.dark-mode .scroll-stack-card:nth-child(5n + 2) h3,
+#certificate-stack html.dark-mode .scroll-stack-card:nth-child(5n + 2) p {
+  color: #F0E78F;
+}
+
+
+#certificate-stack .scroll-stack-card:nth-child(5n + 2) {
+  background-color: #F0E78F;
+}
+
+#certificate-stack .scroll-stack-card:nth-child(5n + 2) h3,
+#certificate-stack .scroll-stack-card:nth-child(5n + 2) p {
+  color: #C67E5A;
+}
+
+#certificate-stack html.dark-mode .scroll-stack-card:nth-child(5n + 3) {
+  background-color: #CFB6BA;
+}
+
+#certificate-stack html.dark-mode .scroll-stack-card:nth-child(5n + 3) h3,
+#certificate-stack html.dark-mode .scroll-stack-card:nth-child(5n + 3) p {
+  color: #242D3E;
+}
+
+#certificate-stack .scroll-stack-card:nth-child(5n + 3) {
+  background-color: #242D3E;
+}
+
+#certificate-stack .scroll-stack-card:nth-child(5n + 3) h3,
+#certificate-stack .scroll-stack-card:nth-child(5n + 3) p {
+  color: #CFB6BA;
+}
+
+
+#certificate-stack .html.dark-mode scroll-stack-card:nth-child(5n + 4) {
+  background-color: #FA6172;
+}
+
+#certificate-stack html.dark-mode .scroll-stack-card:nth-child(5n + 4) h3,
+#certificate-stack html.dark-mode .scroll-stack-card:nth-child(5n + 4) p {
+  color: #EEE8D8;
+}
+
+
+#certificate-stack .scroll-stack-card:nth-child(5n + 4) {
+  background-color: #EEE8D8;
+}
+
+#certificate-stack .scroll-stack-card:nth-child(5n + 4) h3,
+#certificate-stack .scroll-stack-card:nth-child(5n + 4) p {
+  color: #FA6172;
+}
+
+#certificate-stack html.dark-mode .scroll-stack-card:nth-child(5n + 5) {
+  background-color: #6F714B;
+}
+
+#certificate-stack html.dark-mode .scroll-stack-card:nth-child(5n + 5) h3,
+#certificate-stack html.dark-mode .scroll-stack-card:nth-child(5n + 5) p {
+  color: #FDFBE8;
+}
+
+#certificate-stack .scroll-stack-card:nth-child(5n + 5) {
+  background-color: #FDFBE8;
+}
+
+#certificate-stack .scroll-stack-card:nth-child(5n + 5) h3,
+#certificate-stack .scroll-stack-card:nth-child(5n + 5) p {
+  color: #6F714B;
+}
+
+
+
 
 .scroll-stack-end {
   width: 100%;

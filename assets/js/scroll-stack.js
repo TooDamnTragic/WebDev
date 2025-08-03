@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
             lenis = new Lenis({
                 wrapper: scroller,
                 content: scroller.querySelector('.scroll-stack-inner'),
-                duration: 1.2,
+                duration: 0.3,
                 easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
                 smoothWheel: true,
                 touchMultiplier: 8,
@@ -46,14 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const lastTransforms = new Map();
     const itemDistance = 100;
-    const itemScale = 0.04;
-    const itemStackDistance = 30;
+    const itemScale = 0.1;
+    const itemStackDistance = 1;
     const stackPosition = '20%';
     const scaleEndPosition = '10%';
-    const baseScale = 0.5;
-    const rotationAmount = 0;
+    const baseScale = 1;
+    const rotationAmount = 1.5;
     const blurAmount = 0;
-
     console.log(`Initializing scroll stack with ${cards.length} cards`);
 
     // Set initial card properties
@@ -72,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const cardWidth = minWidth + step * i;
             card.style.width = `${cardWidth}vw`;
             const widthPx = window.innerWidth * (cardWidth / 100);
-            card.style.height = `${widthPx * 0.75}px`;
+            card.style.height = `${widthPx * 0.5}px`;
             card.style.willChange = 'transform, filter';
             card.style.transformOrigin = 'top center';
             card.style.backfaceVisibility = 'hidden';
