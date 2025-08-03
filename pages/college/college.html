@@ -11,9 +11,8 @@
     /* Essential scroll stack styles - add to your college.css */
     .scroll-stack-scroller {
       position: relative;
-      width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
+      width: 100vw;
+      margin: 0;
       height: 80vh;
       overflow-y: auto;
       overflow-x: hidden;
@@ -26,15 +25,15 @@
       /* Important: needs enough height for all cards plus spacing */
       min-height: 300vh;
       /* Increased for more cards */
-      padding-bottom: 100vh;
+      padding: 20vh 0 100vh;
       /* Extra space at bottom */
     }
 
     .scroll-stack-card {
       position: relative;
-      width: 90%;
-      max-width: 600px;
-      margin: 0 auto;
+      width: 100%;
+      max-width: none;
+      margin: 0;
       padding: 2rem;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       border-radius: 15px;
