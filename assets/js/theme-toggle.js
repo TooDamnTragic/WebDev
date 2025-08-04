@@ -17,8 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
             document.documentElement.classList.add('dark-mode');
             btn.innerHTML = sunIcon;
         }
-    };
 
+        // Notify listeners about theme changes so individual pages can react
+        window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme } }));
+    };
 
     const stored = localStorage.getItem('theme') || 'dark';
     applyTheme(stored);

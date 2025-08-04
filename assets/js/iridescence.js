@@ -47,7 +47,7 @@ void main() {
   vec3 gradAB = mix(uColor1, uColor2, smoothstep(0.0, 0.5, t));
   vec3 grad = mix(gradAB, uColor3, smoothstep(0.5, 1.0, t));
   vec3 finalCol = mix( grad + col,col, uIsLight);
-  gl_FragColor = vec4(finalCol, 1.0);
+  gl_FragColor = vec4(mix(t * finalCol, finalCol, uIsLight), 1.0);
 }
 `;
 

@@ -1,4 +1,30 @@
-/* Contact Page Styles - Redesigned with 6 Miseducation-Style Cards */
+/* Contact Page Styles*/
+
+.light-mode {
+  --contact-card-bg: rgba(255, 255, 255, 0.6);
+  --contact-card-color: #ffffff;
+  --contact-card-text: rgba(0, 0, 0, 0.3);
+  --card-darken-bg: rgba(255, 0, 0, 1);
+  --dither-loader-bg: linear-gradient(45deg,
+      #3674B5,
+      #578FCA,
+      #F5F0CD,
+      #FADA7A);
+}
+
+.dark-mode {
+  --contact-card-bg: rgba(255, 255, 255, 0);
+  --contact-card-color: rgba(255, 255, 255, 1);
+  --contact-card-text: rgba(255, 255, 255, 0.6);
+  --card-darken-bg: rgb(255, 0, 0);
+  --dither-loader-bg: linear-gradient(45deg,
+      #3674B5,
+      #578FCA,
+      #F5F0CD,
+      #FADA7A);
+}
+
+
 .contact-page {
   /* Dither background effect */
   background: transparent;
@@ -42,11 +68,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(45deg,
-      #3674B5,
-      #578FCA,
-      #F5F0CD,
-      #FADA7A);
+  background: var(--dither-loader-bg);
   background-size: 400% 400%;
   animation: dynamicGradient 15s ease infinite;
   z-index: 0;
@@ -112,7 +134,7 @@
 }
 
 .back-link:hover {
-  color: #5755FE;
+  color: #86f57c;
   border: 1px solid rgba(0, 0, 0, 0.7);
   background: rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(0px);
@@ -171,11 +193,11 @@ html.dark-mode .back-link:hover {
   overflow: hidden;
   border-radius: 32px;
   /* More curved edges */
-  background: transparent;
+  background: var(--contact-card-bg);
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
-  color: white;
+  color: var(--contact-card-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -184,6 +206,7 @@ html.dark-mode .back-link:hover {
   /* Base for neon border */
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
+
 
 /* Magnetic Inner Wrapper - Contains all moving elements */
 .magnetic-inner {
@@ -310,7 +333,7 @@ html.dark-mode .back-link:hover {
   font-family: 'Courier New', monospace;
   font-size: 14px;
   font-weight: bold;
-  color: white;
+  color: var(--contact-card-text);
   pointer-events: none;
   z-index: 3;
 }
@@ -321,7 +344,7 @@ html.dark-mode .back-link:hover {
   inset: 0;
   border-radius: 32px;
   pointer-events: none;
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--card-darken-bg);
   mix-blend-mode: add;
   z-index: 8;
 }
@@ -341,7 +364,7 @@ html.dark-mode .back-link:hover {
 .contact-icon {
   width: 48px;
   height: 48px;
-  color: white;
+  color: inherit;
   transition: all 0.3s ease;
   filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.3));
   position: relative;

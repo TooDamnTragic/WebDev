@@ -29,33 +29,49 @@ document.addEventListener('DOMContentLoaded', () => {
   const resetResumeTilt = () => {
     resumeContainer.style.transform = 'perspective(1000px) scale(1) rotateX(0) rotateY(0)';
   };
-
   // Dither background initialization
   const ditherLoader = document.getElementById('dither-loader');
   const ditherContainer = document.getElementById('dither-background');
   let ditherBackground = null;
+  let DitherBackgroundClass = null;
 
-  const initDitherBackground = async () => {
+
+  const lightPalette = [
+    [1, 0.6, 0.4],
+    [0.98, 1, 0.6],
+    [0.36, 1, 0.8],
+    [0.45, 0.82, 1]
+  ];
+
+
+  const darkPalette = [
+    [1, 0.3, 0.85],
+    [0.98, 1, 0.6],
+    [0.36, 1, 0.8],
+    [0.45, 0.82, 1]
+  ];
+
+  const initDitherBackground = async (palette) => {
     try {
-      const { default: DitherBackground } = await import('./dither-background.js');
+      if (!DitherBackgroundClass) {
+        const module = await import('./dither-background.js');
+        DitherBackgroundClass = module.default;
+      }
 
-      ditherBackground = new DitherBackground(ditherContainer, {
-        colors: [
-          [1, 0.3, 0.85],
-          [0.98, 1, 0.6],
-          [0.36, 1, 0.8],
-          [0.45, 0.82, 1]
-        ],
+      if (ditherBackground) {
+        ditherBackground.destroy();
+      }
+
+      ditherBackground = new DitherBackgroundClass(ditherContainer, {
+        colors: palette,
         disableAnimation: false,
         enableMouseInteraction: false,
         colorNum: 4,
         waveAmplitude: 0.3,
         waveFrequency: 3,
-        waveSpeed: 0.05,
+        waveSpeed: 0.1,
         pixelSize: 2
       });
-
-
 
       console.log('Dither background initialized');
 
@@ -76,8 +92,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
-  // Initialize dither background
-  initDitherBackground();
+  const applyThemeToDither = (theme) => {
+    const palette = theme === 'light' ? lightPalette : darkPalette;
+    initDitherBackground(palette);
+  };
+
+  // Initialize dither background with current theme
+  const currentTheme = localStorage.getItem('theme') || 'dark';
+  applyThemeToDither(currentTheme);
+
+  // Update background on theme changes
+  window.addEventListener('themeChanged', (e) => {
+    applyThemeToDither(e.detail.theme);
+  });
 
   // Fallback: Hide loader after 10 seconds regardless
   setTimeout(() => {
@@ -100,6 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     return out;
   }
+
 
   // Magnetic Effect Implementation
   class MagneticCard {

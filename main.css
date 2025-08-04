@@ -816,17 +816,38 @@ html.light-mode body {
   color: #222;
 }
 
+html.dark-mode body {
+  background: #DEDBD8;
+  color: #0F1529;
+}
+
 html.light-mode .theme-toggle {
   background: #fff;
 }
+
+html.dark-mode .theme-toggle {
+  background: #000;
+}
+
+
 
 html.light-mode .theme-toggle svg {
   filter: none;
 }
 
+html.dark-mode .theme-toggle svg {
+  filter: none;
+}
+
+
 html.light-mode .theme-toggle svg path {
   fill: #000;
 }
+
+html.dark-mode .theme-toggle svg path {
+  fill: #fff;
+}
+
 
 html.light-mode body.index-page {
   background: #5EABD6;
@@ -892,10 +913,7 @@ html.light-mode .life {
 }
 
 /* Dark mode base styles */
-html.dark-mode body {
-  background: #DEDBD8;
-  color: #0F1529;
-}
+
 
 /* Index page dark theme */
 html.dark-mode body.index-page {
@@ -962,5 +980,9 @@ html.dark-mode .life {
 
 /* Invert iridescence colors in dark mode */
 html.dark-mode .college-page #iridescence {
+  filter: invert();
+}
+
+html.light-mode .contact-page #dither-background {
   filter: invert();
 }

@@ -48,8 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const itemDistance = 100;
     const itemScale = 0.1;
     const itemStackDistance = 1;
-    const stackPosition = '20%';
-    const scaleEndPosition = '10%';
+    const stackPosition = '10%';
+    const scaleEndPosition = '5%';
     const baseScale = 1;
     const rotationAmount = 1.5;
     const blurAmount = 0;
@@ -59,8 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalCards = cards.length;
 
     function updateCardSizes() {
-        const minWidth = 40;
-        const maxWidth = 80;
+        const minWidth = 30;
+        const maxWidth = 60;
         const step = totalCards > 1 ? (maxWidth - minWidth) / (totalCards - 1) : 0;
 
         cards.forEach((card, i) => {
@@ -69,9 +69,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const cardWidth = minWidth + step * i;
-            card.style.width = `${cardWidth}vw`;
             const widthPx = window.innerWidth * (cardWidth / 100);
-            card.style.height = `${widthPx * 0.5}px`;
+            const clampedWidth = Math.min(480, Math.max(220, widthPx));
+            card.style.width = `${clampedWidth}px`;
+            card.style.height = `${clampedWidth * 0.5}px`;
             card.style.willChange = 'transform, filter';
             card.style.transformOrigin = 'top center';
             card.style.backfaceVisibility = 'hidden';
