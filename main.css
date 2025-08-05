@@ -831,15 +831,6 @@ html.dark-mode .theme-toggle {
 
 
 
-html.light-mode .theme-toggle svg {
-  filter: none;
-}
-
-html.dark-mode .theme-toggle svg {
-  filter: none;
-}
-
-
 html.light-mode .theme-toggle svg path {
   fill: #000;
 }
@@ -885,6 +876,10 @@ html.light-mode body.fonts-page {
 html.light-mode body.college-page {
   background: #80CBC4;
   color: #FBF8EF;
+}
+
+html.light-mode .theme-toggle.glow svg {
+  animation: backArrowGlow 0.6s forwards;
 }
 
 /* Light mode colors for navigation circles on the index page */
