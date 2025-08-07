@@ -1667,6 +1667,10 @@ html.dark-mode .certificate-section {
   background: linear-gradient(0deg, #2A1458, transparent);
 }
 
+#certificate-stack {
+  margin-top: -15vh;
+}
+
 .certificate-section.visible {
   opacity: 1;
   transform: translateY(0);
