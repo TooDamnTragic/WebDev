@@ -699,7 +699,7 @@ html.dark-mode .extracurricular-section {
 
 .items li {
   position: relative;
-  width: clamp(260px, 45%, 500px);
+  width: clamp(286px, 55%, 550px);
   margin: 2rem 0;
   float: left;
   clear: both;
@@ -944,13 +944,13 @@ html.dark-mode .years {
 
 
 .items li.left {
-  margin-right: 50%;
+  margin-right: 30%;
   text-align: right;
   padding-right: 1rem;
 }
 
 .items li.right {
-  margin-left: 50%;
+  margin-left: 30%;
   text-align: left;
   float: right;
   padding-left: 1rem;
@@ -1108,6 +1108,15 @@ html.dark-mode .years {
     border: 1px solid rgba(240, 234, 214, 0.1);
   }
 
+  /* Reset alternating timeline offsets on small screens */
+  .items li.left,
+  .items li.right {
+    float: none;
+    margin: 3rem 0;
+    padding: 2rem;
+    text-align: left;
+  }
+
   .items h2,
   .items h3,
   .items h4 {
@@ -1172,7 +1181,7 @@ html.dark-mode .years {
   transform: translateX(-100%) scale(0);
   transform-origin: right center;
   transition: opacity .8s ease, transform .8s ease;
-  z-index: 120000;
+  z-index: 100;
 }
 
 #info.right,
@@ -1191,6 +1200,11 @@ html.dark-mode .years {
 #info.right.visible,
 #info-extra.right.visible {
   transform: translateX(0) scale(1);
+}
+
+#info:hover,
+#info-extra:hover {
+  z-index: 300;
 }
 
 #info.stacked,
@@ -1282,6 +1296,23 @@ html.dark-mode .years {
     flex-direction: column;
     max-width: 90vw;
     align-items: center;
+  }
+
+  /* Center info popups on narrow screens */
+  #info,
+  #info-extra,
+  #info.right,
+  #info-extra.right {
+    left: 50%;
+    transform: translate(-50%, 0) scale(0);
+    transform-origin: center top;
+  }
+
+  #info.visible,
+  #info.right.visible,
+  #info-extra.visible,
+  #info-extra.right.visible {
+    transform: translate(-50%, 0) scale(1);
   }
 
   #info-image-wrapper,
