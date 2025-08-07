@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.className = 'theme-toggle';
     document.body.appendChild(btn);
     setTimeout(() => btn.classList.add('show'), 3200);
+    const backLink = document.querySelector('.back-link');
+    if (backLink) setTimeout(() => backLink.classList.add('show'), 3200);
     const applyTheme = (theme) => {
         if (theme === 'light') {
             document.documentElement.classList.add('light-mode');

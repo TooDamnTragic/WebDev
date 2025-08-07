@@ -811,6 +811,41 @@ body.fade-out {
   height: clamp(2rem, 2vw + 1rem, 3.5rem);
 }
 
+/* Back link button */
+.back-link {
+  position: fixed;
+  top: clamp(1rem, calc(0.5rem + 2vw), 3rem);
+  left: clamp(1rem, calc(0.5rem + 2vw), 3rem);
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  border-radius: 50%;
+  padding: clamp(0.5rem, 0.3rem + 0.6vw, 1rem);
+  cursor: pointer;
+  z-index: 100;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.back-link.show {
+  opacity: 0.3;
+  transform: translateY(0);
+}
+
+.back-link:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.back-link svg {
+  width: clamp(2rem, 2vw + 1rem, 3.5rem);
+  height: clamp(2rem, 2vw + 1rem, 3.5rem);
+}
+
 html.light-mode body {
   background: #fafafa;
   color: #222;
@@ -829,8 +864,6 @@ html.dark-mode .theme-toggle {
   background: #000;
 }
 
-
-
 html.light-mode .theme-toggle svg path {
   fill: #000;
 }
@@ -839,6 +872,23 @@ html.dark-mode .theme-toggle svg path {
   fill: #fff;
 }
 
+html.light-mode .back-link {
+  background: #fff;
+  color: #000;
+}
+
+html.dark-mode .back-link {
+  background: #000;
+  color: #fff;
+}
+
+html.light-mode .back-link svg path {
+  stroke: #000;
+}
+
+html.dark-mode .back-link svg path {
+  stroke: #fff;
+}
 
 html.light-mode body.index-page {
   background: #5EABD6;
@@ -880,6 +930,38 @@ html.light-mode body.college-page {
 
 html.light-mode .theme-toggle.glow svg {
   animation: backArrowGlow 0.6s forwards;
+}
+
+html.light-mode .back-link.glow svg {
+  animation: backArrowGlow 0.6s forwards;
+}
+
+@keyframes backArrowGlow {
+  from {
+    filter: drop-shadow(0 0 0 rgba(255, 255, 255, 0.9));
+  }
+
+  to {
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 1));
+  }
+}
+
+.arrow-flash {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.7s ease;
+  z-index: 2000;
+}
+
+.arrow-flash.expand {
+  transform: translate(-50%, -50%) scale(120);
 }
 
 /* Light mode colors for navigation circles on the index page */
