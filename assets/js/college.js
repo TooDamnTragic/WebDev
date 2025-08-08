@@ -672,11 +672,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     body.classList.add('dimmed');
 
-    if (item.classList.contains('left')) {
+
+    const containerRect = document.querySelector('.edu-container').getBoundingClientRect();
+    const itemRect = item.getBoundingClientRect();
+    const isNarrow = window.matchMedia('(max-width: 800px)').matches;
+    const gap = 20;
+
+    let left;
+    if (isNarrow) {
+      currentInfo.classList.remove('right');
+      left = itemRect.left + itemRect.width / 2 - containerRect.left;
+    } else if (item.classList.contains('left')) {
       currentInfo.classList.add('right');
+      left = itemRect.right - containerRect.left + gap;
     } else {
       currentInfo.classList.remove('right');
+      left = itemRect.left - containerRect.left - gap;
     }
+
+    currentInfo.style.left = left + 'px';
 
     void currentInfo.offsetWidth; // force reflow
     currentInfo.classList.add('visible');
@@ -684,6 +698,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const offset = item.offsetTop + item.offsetHeight / 2 - currentInfo.offsetHeight / 2;
     currentInfo.style.top = offset + 'px';
   };
+
 
   // Hide info function with overlapping support
   const hideInfo = (isExtracurricular = false, immediate = false) => {

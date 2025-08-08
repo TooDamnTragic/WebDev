@@ -1117,6 +1117,7 @@ html.dark-mode .years {
     text-align: left;
   }
 
+
   .items h2,
   .items h3,
   .items h4 {
@@ -1169,7 +1170,7 @@ html.dark-mode .years {
 #info-extra {
   --popup-color: #8B93FF;
   position: absolute;
-  left: 60%;
+  left: 0;
   top: 0;
   display: flex;
   align-items: center;
@@ -1179,7 +1180,7 @@ html.dark-mode .years {
   pointer-events: none;
   opacity: 0;
   transform: translateX(-100%) scale(0);
-  transform-origin: right center;
+  transform-origin: right top;
   transition: opacity .8s ease, transform .8s ease;
   z-index: 100;
 }
@@ -1187,7 +1188,7 @@ html.dark-mode .years {
 #info.right,
 #info-extra.right {
   transform: translateX(0) scale(0);
-  transform-origin: left center;
+  transform-origin: left top;
 }
 
 #info.visible,
@@ -1289,21 +1290,16 @@ html.dark-mode .years {
   transform: translateZ(1px);
 }
 
+
 @media (max-width: 800px) {
 
-  #info,
-  #info-extra {
-    flex-direction: column;
-    max-width: 90vw;
-    align-items: center;
-  }
-
-  /* Center info popups on narrow screens */
   #info,
   #info-extra,
   #info.right,
   #info-extra.right {
-    left: 50%;
+    flex-direction: column;
+    max-width: 90vw;
+    align-items: center;
     transform: translate(-50%, 0) scale(0);
     transform-origin: center top;
   }
@@ -1699,7 +1695,8 @@ html.dark-mode .certificate-section {
 }
 
 #certificate-stack {
-  margin-top: -15vh;
+  margin-top: -30vh;
+  margin-bottom: -900vh;
 }
 
 .certificate-section.visible {
@@ -1713,7 +1710,7 @@ html.dark-mode .certificate-section {
   height: 100%;
   overflow-y: visible;
   overflow-x: visible;
-  overscroll-behavior: contain;
+  overscroll-behavior: auto;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
   -webkit-transform: translateZ(0);
@@ -1755,11 +1752,11 @@ html.dark-mode .certificate-section {
 }
 
 #certificate-stack .scroll-stack-card:first-child h3 {
-  font-size: 2.5rem;
+  font-size: 1.5rem;
 }
 
 #certificate-stack .scroll-stack-card:first-child p {
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
 
 /* License & achievement card color rotation */

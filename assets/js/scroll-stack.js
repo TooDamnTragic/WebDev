@@ -57,6 +57,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Set initial card properties
     const totalCards = cards.length;
+    const inner = scroller.querySelector('.scroll-stack-inner');
+
+    function updatePadding() {
+        if (inner) {
+            const extraPadding = cards.length * itemDistance + window.innerHeight;
+            inner.style.paddingBottom = `${extraPadding}px`;
+        }
+    }
 
     function updateCardSizes() {
         const minWidth = 30;
@@ -84,6 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     updateCardSizes();
+    updatePadding();
 
     function parsePercentage(value, containerHeight) {
         if (typeof value === 'string' && value.includes('%')) {
@@ -173,6 +182,15 @@ document.addEventListener('DOMContentLoaded', () => {
         scroller.addEventListener('scroll', updateCardTransforms);
     }
 
+    scroller.addEventListener('wheel', (e) => {
+        const atTop = scroller.scrollTop <= 0;
+        const atBottom = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 1;
+        if ((atTop && e.deltaY < 0) || (atBottom && e.deltaY > 0)) {
+            e.preventDefault();
+            window.scrollBy({ top: e.deltaY, behavior: 'smooth' });
+        }
+    }, { passive: false });
+
     // Initial update with delay to ensure layout is complete
     setTimeout(() => {
         updateCardTransforms();
@@ -181,6 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle resize
     window.addEventListener('resize', () => {
         updateCardSizes();
+        updatePadding();
         setTimeout(updateCardTransforms, 100);
     });
 });
