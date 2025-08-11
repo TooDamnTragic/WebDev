@@ -61,8 +61,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updatePadding() {
         if (inner) {
-            const extraPadding = cards.length * itemDistance + window.innerHeight;
+            const extraPadding = window.innerHeight * 0.1;
             inner.style.paddingBottom = `${extraPadding}px`;
+        }
+        const end = scroller.querySelector('.scroll-stack-end');
+        if (end) {
+            const endHeight = window.innerHeight * 0.2;
+            end.style.height = `${endHeight}px`;
         }
     }
 

@@ -99,28 +99,60 @@ body.college-page {
 /* Back to Top button */
 .back-to-top {
   position: fixed;
-  right: 1.5rem;
-  bottom: 1.5rem;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+  bottom: clamp(1rem, calc(0.5rem + 2vw), 3rem);
+  right: clamp(1rem, calc(0.5rem + 2vw), 3rem);
+  background: rgba(0, 0, 0, 0.7);
   border: none;
-  background: rgba(0, 0, 0, 0.4);
-  color: #FBF8EF;
-  font-size: 1.2rem;
-  display: none;
-  align-items: center;
-  justify-content: center;
+  border-radius: 50%;
+  --btn-pad: clamp(0.5rem, 0.3rem + 0.6vw, 1rem);
+  --btn-icon: clamp(2rem, 2vw + 1rem, 3.5rem);
+  width: calc(var(--btn-icon) + var(--btn-pad) * 2);
+  height: calc(var(--btn-icon) + var(--btn-pad) * 2);
+  padding: var(--btn-pad);
   cursor: pointer;
   z-index: 100;
-  backdrop-filter: blur(8px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 }
 
 .back-to-top.show {
-  display: flex;
+  opacity: 0.3;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
+.back-to-top:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.back-to-top svg {
+  width: var(--btn-icon);
+  height: var(--btn-icon);
+}
+
+html.light-mode .back-to-top {
+  background: #fff;
+  color: #000;
+}
+
+html.dark-mode .back-to-top {
+  background: #000;
+  color: #fff;
+}
+
+html.light-mode .back-to-top svg path {
+  stroke: #000;
+}
+
+html.dark-mode .back-to-top svg path {
+  stroke: #fff;
+}
 
 /* college page styles */
 .college-page {
@@ -1695,8 +1727,7 @@ html.dark-mode .certificate-section {
 }
 
 #certificate-stack {
-  margin-top: -30vh;
-  margin-bottom: -900vh;
+  margin-top: 0vh;
 }
 
 .certificate-section.visible {
