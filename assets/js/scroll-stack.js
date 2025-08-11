@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
             lenis = new Lenis({
                 wrapper: scroller,
                 content: scroller.querySelector('.scroll-stack-inner'),
+                orientation: 'horizontal',
                 duration: 0.3,
                 easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
                 smoothWheel: true,
@@ -51,8 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const stackPosition = '10%';
     const scaleEndPosition = '5%';
     const baseScale = 1;
-    const rotationAmount = 1.5;
     const blurAmount = 0;
+    const cardRotations = cards.map(() => (Math.random() * 60 - 30));
     console.log(`Initializing scroll stack with ${cards.length} cards`);
 
     // Set initial card properties
@@ -61,13 +62,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updatePadding() {
         if (inner) {
-            const extraPadding = window.innerHeight * 0.1;
-            inner.style.paddingBottom = `${extraPadding}px`;
+            const extraPadding = window.innerWidth * 0.1;
+            inner.style.paddingRight = `${extraPadding}px`;
         }
         const end = scroller.querySelector('.scroll-stack-end');
         if (end) {
-            const endHeight = window.innerHeight * 0.2;
-            end.style.height = `${endHeight}px`;
+            const endWidth = window.innerWidth * 0.2;
+            end.style.width = `${endWidth}px`;
         }
     }
 
@@ -78,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         cards.forEach((card, i) => {
             if (i < totalCards - 1) {
-                card.style.marginBottom = `${itemDistance}px`;
+                card.style.marginRight = `${itemDistance}px`;
             }
 
             const cardWidth = minWidth + step * i;
@@ -87,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.style.width = `${clampedWidth}px`;
             card.style.height = `${clampedWidth * 0.6}px`;
             card.style.willChange = 'transform, filter';
-            card.style.transformOrigin = 'top center';
+            card.style.transformOrigin = 'center left';
             card.style.backfaceVisibility = 'hidden';
             card.style.transform = 'translateZ(0)';
             card.style.webkitTransform = 'translateZ(0)';
@@ -99,45 +100,45 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCardSizes();
     updatePadding();
 
-    function parsePercentage(value, containerHeight) {
+    function parsePercentage(value, containerWidth) {
         if (typeof value === 'string' && value.includes('%')) {
-            return (parseFloat(value) / 100) * containerHeight;
+            return (parseFloat(value) / 100) * containerWidth;
         }
         return parseFloat(value);
     }
 
-    function calculateProgress(scrollTop, start, end) {
-        if (scrollTop < start) return 0;
-        if (scrollTop > end) return 1;
-        return (scrollTop - start) / (end - start);
+    function calculateProgress(scrollLeft, start, end) {
+        if (scrollLeft < start) return 0;
+        if (scrollLeft > end) return 1;
+        return (scrollLeft - start) / (end - start);
     }
 
     function updateCardTransforms() {
-        const scrollTop = scroller.scrollTop;
-        const containerHeight = scroller.clientHeight;
-        const stackPos = parsePercentage(stackPosition, containerHeight);
-        const scaleEndPos = parsePercentage(scaleEndPosition, containerHeight);
+        const scrollLeft = scroller.scrollLeft;
+        const containerWidth = scroller.clientWidth;
+        const stackPos = parsePercentage(stackPosition, containerWidth);
+        const scaleEndPos = parsePercentage(scaleEndPosition, containerWidth);
         const endElement = scroller.querySelector('.scroll-stack-end');
-        const endElementTop = endElement ? endElement.offsetTop : scroller.scrollHeight;
+        const endElementLeft = endElement ? endElement.offsetLeft : scroller.scrollWidth;
 
         cards.forEach((card, i) => {
-            const cardTop = card.offsetTop;
-            const triggerStart = cardTop - stackPos - itemStackDistance * i;
-            const triggerEnd = cardTop - scaleEndPos;
-            const pinStart = cardTop - stackPos - itemStackDistance * i;
-            const pinEnd = endElementTop - containerHeight / 2;
+            const cardLeft = card.offsetLeft;
+            const triggerStart = cardLeft - stackPos - itemStackDistance * i;
+            const triggerEnd = cardLeft - scaleEndPos;
+            const pinStart = cardLeft - stackPos - itemStackDistance * i;
+            const pinEnd = endElementLeft - containerWidth / 2;
 
-            const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd);
+            const scaleProgress = calculateProgress(scrollLeft, triggerStart, triggerEnd);
             const targetScale = Math.min(1, baseScale + i * itemScale);
             const scale = 1 - scaleProgress * (1 - targetScale);
-            const rotation = rotationAmount ? i * rotationAmount * scaleProgress : 0;
+            const rotation = cardRotations[i] * scaleProgress;
             let blur = 0;
             if (blurAmount) {
                 let topCardIndex = 0;
                 for (let j = 0; j < cards.length; j++) {
-                    const jCardTop = cards[j].offsetTop;
-                    const jTriggerStart = jCardTop - stackPos - itemStackDistance * j;
-                    if (scrollTop >= jTriggerStart) {
+                    const jCardLeft = cards[j].offsetLeft;
+                    const jTriggerStart = jCardLeft - stackPos - itemStackDistance * j;
+                    if (scrollLeft >= jTriggerStart) {
                         topCardIndex = j;
                     }
                 }
@@ -147,16 +148,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            let translateY = 0;
-            const isPinned = scrollTop >= pinStart && scrollTop <= pinEnd;
+            let translateX = 0;
+            const isPinned = scrollLeft >= pinStart && scrollLeft <= pinEnd;
             if (isPinned) {
-                translateY = scrollTop - cardTop + stackPos + itemStackDistance * i;
-            } else if (scrollTop > pinEnd) {
-                translateY = pinEnd - cardTop + stackPos + itemStackDistance * i;
+                translateX = scrollLeft - cardLeft + stackPos + itemStackDistance * i;
+            } else if (scrollLeft > pinEnd) {
+                translateX = pinEnd - cardLeft + stackPos + itemStackDistance * i;
             }
 
             const newTransform = {
-                translateY: Math.round(translateY * 100) / 100,
+                translateX: Math.round(translateX * 100) / 100,
                 scale: Math.round(scale * 1000) / 1000,
                 rotation: Math.round(rotation * 100) / 100,
                 blur: Math.round(blur * 100) / 100
@@ -165,13 +166,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const last = lastTransforms.get(i);
             const hasChanged =
                 !last ||
-                Math.abs(last.translateY - newTransform.translateY) > 0.1 ||
+                Math.abs(last.translateX - newTransform.translateX) > 0.1 ||
                 Math.abs(last.scale - newTransform.scale) > 0.001 ||
                 Math.abs(last.rotation - newTransform.rotation) > 0.1 ||
                 Math.abs(last.blur - newTransform.blur) > 0.1;
 
             if (hasChanged) {
-                const transform = `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`;
+                const transform = `translate3d(${newTransform.translateX}px, 0, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`;
                 const filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : '';
                 card.style.transform = transform;
                 card.style.filter = filter;
@@ -188,11 +189,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     scroller.addEventListener('wheel', (e) => {
-        const atTop = scroller.scrollTop <= 0;
-        const atBottom = scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 1;
-        if ((atTop && e.deltaY < 0) || (atBottom && e.deltaY > 0)) {
+        const atLeft = scroller.scrollLeft <= 0;
+        const atRight = scroller.scrollLeft + scroller.clientWidth >= scroller.scrollWidth - 1;
+        if ((atLeft && e.deltaY < 0) || (atRight && e.deltaY > 0)) {
             e.preventDefault();
             window.scrollBy({ top: e.deltaY, behavior: 'smooth' });
+        } else {
+            e.preventDefault();
+            scroller.scrollLeft += e.deltaY;
         }
     }, { passive: false });
 
