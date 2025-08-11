@@ -16,9 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 duration: 0.3,
                 easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
                 smoothWheel: true,
-                touchMultiplier: 8,
+                touchMultiplier: 16,
                 normalizeWheel: true,
-                wheelMultiplier: 2,
+                wheelMultiplier: 4,
                 touchInertiaMultiplier: 35,
                 lerp: 0.1,
                 syncTouch: true,
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const lastTransforms = new Map();
-    const itemDistance = 100;
+    const itemDistance = -40;
     const itemScale = 0.1;
     const itemStackDistance = 1;
     const stackPosition = '10%';
@@ -99,6 +99,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateCardSizes();
     updatePadding();
+
+    // Hover tilt effect
+    cards.forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            const rotateX = (-y / rect.height) * 8;
+            const rotateY = (x / rect.width) * 8;
+            card.style.setProperty('--tiltX', `${rotateX}deg`);
+            card.style.setProperty('--tiltY', `${rotateY}deg`);
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.setProperty('--tiltX', '0deg');
+            card.style.setProperty('--tiltY', '0deg');
+        });
+    });
 
     function parsePercentage(value, containerWidth) {
         if (typeof value === 'string' && value.includes('%')) {
@@ -172,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 Math.abs(last.blur - newTransform.blur) > 0.1;
 
             if (hasChanged) {
-                const transform = `translate3d(${newTransform.translateX}px, 0, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`;
+                const transform = `translate3d(${newTransform.translateX}px, 0, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg) rotateY(var(--tiltY, 0deg)) rotateX(var(--tiltX, 0deg))`;
                 const filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : '';
                 card.style.transform = transform;
                 card.style.filter = filter;
@@ -188,17 +205,27 @@ document.addEventListener('DOMContentLoaded', () => {
         scroller.addEventListener('scroll', updateCardTransforms);
     }
 
-    scroller.addEventListener('wheel', (e) => {
+    function handleWheel(e) {
+        const rect = scroller.getBoundingClientRect();
+        if (rect.bottom <= 0 || rect.top >= window.innerHeight) return;
+
         const atLeft = scroller.scrollLeft <= 0;
         const atRight = scroller.scrollLeft + scroller.clientWidth >= scroller.scrollWidth - 1;
-        if ((atLeft && e.deltaY < 0) || (atRight && e.deltaY > 0)) {
-            e.preventDefault();
-            window.scrollBy({ top: e.deltaY, behavior: 'smooth' });
-        } else {
-            e.preventDefault();
-            scroller.scrollLeft += e.deltaY;
+        const delta = e.deltaY * 2;
+
+        if ((delta < 0 && atLeft) || (delta > 0 && atRight)) {
+            return; // allow normal page scroll
         }
-    }, { passive: false });
+
+        e.preventDefault();
+        if (lenis) {
+            lenis.scrollTo(scroller.scrollLeft + delta, { immediate: true });
+        } else {
+            scroller.scrollLeft += delta;
+        }
+    }
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
 
     // Initial update with delay to ensure layout is complete
     setTimeout(() => {

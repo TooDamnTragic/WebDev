@@ -1739,8 +1739,7 @@ html.dark-mode .certificate-section {
   position: relative;
   width: 100vw;
   height: 100vh;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
@@ -1767,7 +1766,7 @@ html.dark-mode .certificate-section {
   transform-style: preserve-3d;
   height: 20rem;
   width: 100%;
-  margin: 0 100px 0 0;
+  margin: 0 -40px 0 0;
   padding: 3rem;
   border-radius: 40px;
   box-sizing: border-box;
@@ -1775,6 +1774,7 @@ html.dark-mode .certificate-section {
   transform: translateZ(0);
   position: relative;
   background: #fff;
+  transition: transform 0.2s ease;
 }
 
 #certificate-stack .scroll-stack-card:first-child h3,
