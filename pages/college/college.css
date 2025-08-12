@@ -1760,7 +1760,7 @@ html.dark-mode .certificate-section {
 }
 
 .scroll-stack-card {
-  transform-origin: center left;
+  transform-origin: center;
   will-change: transform, filter;
   backface-visibility: hidden;
   transform-style: preserve-3d;

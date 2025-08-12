@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const itemDistance = -40;
     const itemScale = 0.1;
     const itemStackDistance = 1;
-    const stackPosition = '10%';
-    const scaleEndPosition = '5%';
+    const stackPosition = '50%';
+    const scaleEndPosition = '45%';
     const baseScale = 1;
     const blurAmount = 0;
     const cardRotations = cards.map(() => (Math.random() * 60 - 30));
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             card.style.width = `${clampedWidth}px`;
             card.style.height = `${clampedWidth * 0.6}px`;
             card.style.willChange = 'transform, filter';
-            card.style.transformOrigin = 'center left';
+            card.style.transformOrigin = 'center';
             card.style.backfaceVisibility = 'hidden';
             card.style.transform = 'translateZ(0)';
             card.style.webkitTransform = 'translateZ(0)';
@@ -138,11 +138,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const endElement = scroller.querySelector('.scroll-stack-end');
         const endElementLeft = endElement ? endElement.offsetLeft : scroller.scrollWidth;
 
+
         cards.forEach((card, i) => {
             const cardLeft = card.offsetLeft;
-            const triggerStart = cardLeft - stackPos - itemStackDistance * i;
-            const triggerEnd = cardLeft - scaleEndPos;
-            const pinStart = cardLeft - stackPos - itemStackDistance * i;
+            const cardWidth = card.offsetWidth;
+            const cardCenter = cardLeft + cardWidth / 2;
+            const triggerStart = cardCenter - stackPos - itemStackDistance * i;
+            const triggerEnd = cardCenter - scaleEndPos;
+            const pinStart = cardCenter - stackPos - itemStackDistance * i;
             const pinEnd = endElementLeft - containerWidth / 2;
 
             const scaleProgress = calculateProgress(scrollLeft, triggerStart, triggerEnd);
@@ -153,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (blurAmount) {
                 let topCardIndex = 0;
                 for (let j = 0; j < cards.length; j++) {
-                    const jCardLeft = cards[j].offsetLeft;
+                    const jCardLeft = cards[j].offsetLeft + cards[j].offsetWidth / 2;
                     const jTriggerStart = jCardLeft - stackPos - itemStackDistance * j;
                     if (scrollLeft >= jTriggerStart) {
                         topCardIndex = j;
@@ -166,11 +169,12 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             let translateX = 0;
+            const translateOffset = stackPos - cardWidth / 2 + itemStackDistance * i;
             const isPinned = scrollLeft >= pinStart && scrollLeft <= pinEnd;
             if (isPinned) {
-                translateX = scrollLeft - cardLeft + stackPos + itemStackDistance * i;
+                translateX = scrollLeft - cardLeft + translateOffset;
             } else if (scrollLeft > pinEnd) {
-                translateX = pinEnd - cardLeft + stackPos + itemStackDistance * i;
+                translateX = pinEnd - cardLeft + translateOffset;
             }
 
             const newTransform = {
