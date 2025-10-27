@@ -8,33 +8,43 @@ import React, {
 import { createRoot } from 'react-dom/client';
 import { useGesture } from '@use-gesture/react';
 
-const DEFAULT_IMAGES = [
+
+const DESIGN_ASSET_BASE = '../../assets/media/designs/';
+const DESIGN_IMAGE_FILES = [
+    { file: '1.png', alt: 'Collage of monochrome geometric layouts' },
+    { file: '2.png', alt: 'Layered magenta collage poster' },
+    { file: '3.png', alt: 'Gradient poster with abstract typography' },
     {
-        src: 'https://images.unsplash.com/photo-1755331039789-7e5680e26e8f?q=80&w=1000&auto=format&fit=crop',
-        alt: 'Abstract art gradient'
+        file: 'Copy of VINTAGE BROADSHEET - 4PP - TEMPLATE (289 x 380 mm).png',
+        alt: 'Vintage broadsheet style newspaper mockup'
+    },
+    { file: 'Front cover.png', alt: 'Magazine cover concept with bold title' },
+    {
+        file: 'Light Brown White Black Collage Art Personal Interests Zine.png',
+        alt: 'Collage art zine spread with muted tones'
     },
     {
-        src: 'https://images.unsplash.com/photo-1755569309049-98410b94f66d?q=80&w=1000&auto=format&fit=crop',
-        alt: 'Sculptural pattern'
+        file: 'Orange and Green Illustrated Open Mic Stand Up Flyer (1).png',
+        alt: 'Illustrated open mic event flyer in orange and green'
     },
+    { file: 'Poetry Workshop.png', alt: 'Poetry workshop promotional poster' },
     {
-        src: 'https://images.unsplash.com/photo-1755497595318-7e5e3523854f?q=80&w=1000&auto=format&fit=crop',
-        alt: 'Digital artwork texture'
+        file: 'ROle PlayER GAMES (Real Estate Flyer).png',
+        alt: 'Role player games themed real estate flyer'
     },
-    {
-        src: 'https://images.unsplash.com/photo-1755353985163-c2a0fe5ac3d8?q=80&w=1000&auto=format&fit=crop',
-        alt: 'Contemporary art composition'
-    },
-    {
-        src: 'https://images.unsplash.com/photo-1745965976680-d00be7dc0377?q=80&w=1000&auto=format&fit=crop',
-        alt: 'Geometric pattern'
-    },
-    {
-        src: 'https://images.unsplash.com/photo-1752588975228-21f44630bb3c?q=80&w=1000&auto=format&fit=crop',
-        alt: 'Textured surface detail'
-    },
-    { src: 'https://pbs.twimg.com/media/Gyla7NnXMAAXSo_?format=jpg&name=large', alt: 'Social media artwork' }
+    { file: 'boo4.png', alt: 'Moody book cover mockup design' },
+    { file: 'horror4.png', alt: 'Horror themed editorial spread' },
+    { file: 'kiss5.png', alt: 'Pop art inspired kiss illustration layout' },
+    { file: 'news2.png', alt: 'Newspaper layout concept with headlines' },
+    { file: 'read more.png', alt: 'Reading themed minimalist poster' },
+    { file: "reading is what's happenig 2.png", alt: 'Playful reading awareness poster' }
 ];
+
+const DEFAULT_IMAGES = DESIGN_IMAGE_FILES.map(({ file, alt }) => ({
+    src: `${DESIGN_ASSET_BASE}${encodeURIComponent(file)}`,
+    alt
+}));
+
 
 const DEFAULTS = {
     maxVerticalRotationDeg: 5,
@@ -48,6 +58,18 @@ const normalizeAngle = d => ((d % 360) + 360) % 360;
 const wrapAngleSigned = deg => {
     const a = (((deg + 180) % 360) + 360) % 360;
     return a - 180;
+};
+const computeFittedDimensions = (maxWidth, maxHeight, aspect, padding = 0.92) => {
+    const safeAspect = Number.isFinite(aspect) && aspect > 0 ? aspect : 1;
+    const paddedWidth = Math.max(1, maxWidth * padding);
+    const paddedHeight = Math.max(1, maxHeight * padding);
+    let width = paddedWidth;
+    let height = width / safeAspect;
+    if (height > paddedHeight) {
+        height = paddedHeight;
+        width = height * safeAspect;
+    }
+    return { width, height };
 };
 const getDataNumber = (el, name, fallback) => {
     const attr = el.dataset[name] ?? el.getAttribute(`data-${name}`);
@@ -113,7 +135,7 @@ function computeItemBaseRotation(offsetX, offsetY, sizeX, sizeY, segments) {
 
 function DomeGallery({
     images = DEFAULT_IMAGES,
-    fit = 0.5,
+    fit = 1,
     fitBasis = 'auto',
     minRadius = 600,
     maxRadius = Infinity,
@@ -128,7 +150,8 @@ function DomeGallery({
     openedImageHeight = '350px',
     imageBorderRadius = '30px',
     openedImageBorderRadius = '30px',
-    grayscale = true
+    grayscale = true,
+    enlargedImagePadding = 0.92
 }) {
     const rootRef = useRef(null);
     const mainRef = useRef(null);
@@ -220,25 +243,24 @@ function DomeGallery({
                 const frameR = frameRef.current.getBoundingClientRect();
                 const mainR = mainRef.current.getBoundingClientRect();
 
-                const hasCustomSize = openedImageWidth && openedImageHeight;
-                if (hasCustomSize) {
-                    const tempDiv = document.createElement('div');
-                    tempDiv.style.cssText = `position: absolute; width: ${openedImageWidth}; height: ${openedImageHeight}; visibility: hidden;`;
-                    document.body.appendChild(tempDiv);
-                    const tempRect = tempDiv.getBoundingClientRect();
-                    document.body.removeChild(tempDiv);
-
-                    const centeredLeft = frameR.left - mainR.left + (frameR.width - tempRect.width) / 2;
-                    const centeredTop = frameR.top - mainR.top + (frameR.height - tempRect.height) / 2;
-
-                    enlargedOverlay.style.left = `${centeredLeft}px`;
-                    enlargedOverlay.style.top = `${centeredTop}px`;
-                } else {
-                    enlargedOverlay.style.left = `${frameR.left - mainR.left}px`;
-                    enlargedOverlay.style.top = `${frameR.top - mainR.top}px`;
-                    enlargedOverlay.style.width = `${frameR.width}px`;
-                    enlargedOverlay.style.height = `${frameR.height}px`;
+                const overlayImg = enlargedOverlay.querySelector('img');
+                const imgAspect = overlayImg && overlayImg.naturalWidth > 0 && overlayImg.naturalHeight > 0
+                    ? overlayImg.naturalWidth / overlayImg.naturalHeight
+                    : Number.parseFloat(enlargedOverlay.dataset.imageAspect || '');
+                let targetWidth = frameR.width;
+                let targetHeight = frameR.height;
+                if (Number.isFinite(imgAspect) && imgAspect > 0) {
+                    const fitted = computeFittedDimensions(frameR.width, frameR.height, imgAspect, enlargedImagePadding);
+                    targetWidth = fitted.width;
+                    targetHeight = fitted.height;
+                    enlargedOverlay.dataset.imageAspect = String(imgAspect);
                 }
+                const centeredLeft = frameR.left - mainR.left + (frameR.width - targetWidth) / 2;
+                const centeredTop = frameR.top - mainR.top + (frameR.height - targetHeight) / 2;
+                enlargedOverlay.style.left = `${centeredLeft}px`;
+                enlargedOverlay.style.top = `${centeredTop}px`;
+                enlargedOverlay.style.width = `${targetWidth}px`;
+                enlargedOverlay.style.height = `${targetHeight}px`;
             }
         });
         ro.observe(root);
@@ -253,8 +275,7 @@ function DomeGallery({
         grayscale,
         imageBorderRadius,
         openedImageBorderRadius,
-        openedImageWidth,
-        openedImageHeight
+        enlargedImagePadding
     ]);
 
     useEffect(() => {
@@ -505,9 +526,16 @@ function DomeGallery({
             overlay.style.height = frameR.height + 'px';
             overlay.style.opacity = '0';
             overlay.style.zIndex = '30';
-            overlay.style.willChange = 'transform, opacity';
+            overlay.style.willChange = 'transform, opacity, left, top, width, height';
             overlay.style.transformOrigin = 'top left';
-            overlay.style.transition = `transform ${enlargeTransitionMs}ms ease, opacity ${enlargeTransitionMs}ms ease`;
+            overlay.style.transition = [
+                `transform ${enlargeTransitionMs}ms ease`,
+                `opacity ${enlargeTransitionMs}ms ease`,
+                `left ${enlargeTransitionMs}ms ease`,
+                `top ${enlargeTransitionMs}ms ease`,
+                `width ${enlargeTransitionMs}ms ease`,
+                `height ${enlargeTransitionMs}ms ease`
+            ].join(', ');
             const rawSrc = parent.dataset.src || el.querySelector('img')?.src || '';
             const img = document.createElement('img');
             img.src = rawSrc;
@@ -529,41 +557,67 @@ function DomeGallery({
                 overlay.style.transform = 'translate(0px, 0px) scale(1, 1)';
                 rootRef.current?.setAttribute('data-enlarging', 'true');
             }, 16);
+            const applyAutoSize = () => {
+                if (!overlay.parentElement || !frameRef.current || !mainRef.current) return;
+                const currentFrame = frameRef.current.getBoundingClientRect();
+                const currentMain = mainRef.current.getBoundingClientRect();
+                const aspect = img.naturalWidth > 0 && img.naturalHeight > 0
+                    ? img.naturalWidth / img.naturalHeight
+                    : Number.parseFloat(overlay.dataset.imageAspect || '');
+                let width = currentFrame.width;
+                let height = currentFrame.height;
+                if (Number.isFinite(aspect) && aspect > 0) {
+                    const fitted = computeFittedDimensions(
+                        currentFrame.width,
+                        currentFrame.height,
+                        aspect,
+                        enlargedImagePadding
+                    );
+                    width = fitted.width;
+                    height = fitted.height;
+                    overlay.dataset.imageAspect = String(aspect);
+                }
+                const left = currentFrame.left - currentMain.left + (currentFrame.width - width) / 2;
+                const top = currentFrame.top - currentMain.top + (currentFrame.height - height) / 2;
+                requestAnimationFrame(() => {
+                    overlay.style.left = `${left}px`;
+                    overlay.style.top = `${top}px`;
+                    overlay.style.width = `${width}px`;
+                    overlay.style.height = `${height}px`;
+                    overlay.dataset.autoSized = 'done';
+                });
+            };
 
-            const wantsResize = openedImageWidth || openedImageHeight;
-            if (wantsResize) {
-                const onFirstEnd = ev => {
-                    if (ev.propertyName !== 'transform') return;
-                    overlay.removeEventListener('transitionend', onFirstEnd);
-                    const prevTransition = overlay.style.transition;
-                    overlay.style.transition = 'none';
-                    const tempWidth = openedImageWidth || `${frameR.width}px`;
-                    const tempHeight = openedImageHeight || `${frameR.height}px`;
-                    overlay.style.width = tempWidth;
-                    overlay.style.height = tempHeight;
-                    const newRect = overlay.getBoundingClientRect();
-                    overlay.style.width = frameR.width + 'px';
-                    overlay.style.height = frameR.height + 'px';
-                    void overlay.offsetWidth;
-                    overlay.style.transition = `left ${enlargeTransitionMs}ms ease, top ${enlargeTransitionMs}ms ease, width ${enlargeTransitionMs}ms ease, height ${enlargeTransitionMs}ms ease`;
-                    const centeredLeft = frameR.left - mainR.left + (frameR.width - newRect.width) / 2;
-                    const centeredTop = frameR.top - mainR.top + (frameR.height - newRect.height) / 2;
-                    requestAnimationFrame(() => {
-                        overlay.style.left = `${centeredLeft}px`;
-                        overlay.style.top = `${centeredTop}px`;
-                        overlay.style.width = tempWidth;
-                        overlay.style.height = tempHeight;
-                    });
-                    const cleanupSecond = () => {
-                        overlay.removeEventListener('transitionend', cleanupSecond);
-                        overlay.style.transition = prevTransition;
+            const scheduleAutoSize = () => {
+                if (!overlay.parentElement) return;
+                if (img.naturalWidth > 0 && img.naturalHeight > 0) {
+                    applyAutoSize();
+                } else {
+                    const onLoad = () => {
+                        img.removeEventListener('load', onLoad);
+                        applyAutoSize();
+
                     };
-                    overlay.addEventListener('transitionend', cleanupSecond, { once: true });
-                };
-                overlay.addEventListener('transitionend', onFirstEnd);
-            }
+                    img.addEventListener('load', onLoad, { once: true });
+                }
+            };
+
+            const onTransformEnd = ev => {
+                if (ev.propertyName !== 'transform') return;
+                overlay.removeEventListener('transitionend', onTransformEnd);
+                scheduleAutoSize();
+            };
+            overlay.addEventListener('transitionend', onTransformEnd);
+            setTimeout(() => {
+                // Fallback in case the transition event is missed.
+                if (!overlay.parentElement) return;
+                if (!overlay.dataset.autoSized) {
+                    overlay.dataset.autoSized = 'pending';
+                    scheduleAutoSize();
+                }
+            }, enlargeTransitionMs + 20);
         },
-        [enlargeTransitionMs, lockScroll, openedImageHeight, openedImageWidth, segments, unlockScroll]
+        [enlargeTransitionMs, enlargedImagePadding, lockScroll, segments, unlockScroll]
     );
 
     const onTileClick = useCallback(
@@ -723,8 +777,6 @@ function DesignPortfolioApp() {
             images={images}
             overlayBlurColor={overlayColor}
             grayscale={grayscale}
-            openedImageWidth="360px"
-            openedImageHeight="520px"
         />
     );
 }
