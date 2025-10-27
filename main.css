@@ -421,6 +421,17 @@ body.college-page {
   font-size: calc(var(--size)*0.15);
 }
 
+.design {
+  --dx: 2vmin + 1vmax;
+  --dy: -26vmin + -3vmax;
+  --light: #ff8ef6;
+  --dark: #7f3df0;
+  --textColor: #fff0ff;
+  --size: 38vmin;
+  z-index: 10;
+  font-size: calc(var(--size)*0.14);
+}
+
 .works {
   --dx: 11vmin + 2vmax;
   --dy: -7vmin + -2vmax;
@@ -989,6 +1000,12 @@ html.light-mode .life {
   --textColor: #000000;
 }
 
+html.light-mode .design {
+  --light: #ffe0fb;
+  --dark: #ff9df5;
+  --textColor: #2a003d;
+}
+
 /* Dark mode base styles */
 
 
@@ -1053,6 +1070,12 @@ html.dark-mode .life {
   --light: yellow;
   --dark: yellow;
   --textColor: #000000;
+}
+
+html.dark-mode .design {
+  --light: #9e63ff;
+  --dark: #632bd1;
+  --textColor: #f9ebff;
 }
 
 /* Invert iridescence colors in dark mode */
