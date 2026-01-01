@@ -8,8 +8,14 @@ import React, {
 import { createRoot } from 'react-dom/client';
 import { useGesture } from '@use-gesture/react';
 
-
 const DESIGN_ASSET_BASE = '../../assets/media/designs/';
+const designAssetImports = import.meta.glob('../../assets/media/designs/*', {
+    eager: true,
+    import: 'default'
+});
+const DESIGN_ASSET_MAP = Object.fromEntries(
+    Object.entries(designAssetImports).map(([path, src]) => [decodeURIComponent(path.split('/').pop() || ''), src])
+);
 const DESIGN_IMAGE_FILES = [
     { file: '1.png', alt: 'Collage of monochrome geometric layouts' },
     { file: '2.png', alt: 'Layered magenta collage poster' },
@@ -41,9 +47,10 @@ const DESIGN_IMAGE_FILES = [
 ];
 
 const DEFAULT_IMAGES = DESIGN_IMAGE_FILES.map(({ file, alt }) => ({
-    src: `${DESIGN_ASSET_BASE}${encodeURIComponent(file)}`,
+    src: DESIGN_ASSET_MAP[file] ?? `${DESIGN_ASSET_BASE}${encodeURIComponent(file)}`,
     alt
 }));
+
 
 
 const DEFAULTS = {
