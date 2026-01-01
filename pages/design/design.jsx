@@ -187,7 +187,7 @@ function DomeGallery({
     openedImageHeight = '350px',
     imageBorderRadius = '30px',
     openedImageBorderRadius = '30px',
-    grayscale = true,
+    grayscale = false,
     enlargedImagePadding = 0.92
 }) {
     const rootRef = useRef(null);
@@ -726,7 +726,15 @@ function DomeGallery({
                                     onClick={onTileClick}
                                     onPointerUp={onTilePointerUp}
                                 >
-                                    <img src={it.src} draggable={false} alt={it.alt} />
+                                    <img
+                                        src={it.src}
+                                        draggable={false}
+                                        alt={it.alt}
+                                        loading="lazy"
+                                        decoding="async"
+                                        fetchPriority="low"
+                                        sizes="(max-width: 768px) 60vw, (max-width: 1280px) 45vw, 30vw"
+                                    />
                                 </div>
                             </div>
                         ))}
@@ -799,7 +807,7 @@ function DesignPortfolioApp() {
     }, []);
 
     const overlayColor = theme === 'light' ? '#d7dcf0' : '#060010';
-    const grayscale = theme !== 'light';
+    const grayscale = false;
 
     useEffect(() => {
         document.body.classList.remove('light-mode', 'dark-mode');
